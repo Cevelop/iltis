@@ -1,4 +1,4 @@
-package com.cevelop.iltis.cpp.includes;
+package ch.hsr.ifs.iltis.cpp.includes;
 
 import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorIncludeStatement;

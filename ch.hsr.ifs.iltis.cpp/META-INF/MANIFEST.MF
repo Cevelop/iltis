@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ILTIS-CPP
-Bundle-SymbolicName: com.cevelop.iltis.cpp;singleton:=true
+Bundle-SymbolicName: ch.hsr.ifs.iltis.cpp;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: CEVELOP
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: com.cevelop.iltis.core;bundle-version="1.0.0",
+Require-Bundle: ch.hsr.ifs.iltis.core;bundle-version="1.0.0",
  org.eclipse.cdt.core,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,
@@ -19,11 +19,11 @@ Require-Bundle: com.cevelop.iltis.core;bundle-version="1.0.0",
  org.eclipse.cdt.codan.core.cxx,
  org.eclipse.cdt.ui,
  org.eclipse.ltk.ui.refactoring
-Export-Package: com.cevelop.iltis.cpp.ast.checker,
- com.cevelop.iltis.cpp.ast.checker.helper,
- com.cevelop.iltis.cpp.codan.marker,
- com.cevelop.iltis.cpp.includes,
- com.cevelop.iltis.cpp.resources,
- com.cevelop.iltis.cpp.ui.refactoring,
- com.cevelop.iltis.cpp.wrappers
+Export-Package: ch.hsr.ifs.iltis.cpp.ast.checker,
+ ch.hsr.ifs.iltis.cpp.ast.checker.helper,
+ ch.hsr.ifs.iltis.cpp.codan.marker,
+ ch.hsr.ifs.iltis.cpp.includes,
+ ch.hsr.ifs.iltis.cpp.resources,
+ ch.hsr.ifs.iltis.cpp.ui.refactoring,
+ ch.hsr.ifs.iltis.cpp.wrappers
 Bundle-ActivationPolicy: lazy

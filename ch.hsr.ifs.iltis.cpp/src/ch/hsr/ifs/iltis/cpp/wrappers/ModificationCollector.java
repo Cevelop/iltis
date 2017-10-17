@@ -1,4 +1,4 @@
-package com.cevelop.iltis.cpp.wrappers;
+package ch.hsr.ifs.iltis.cpp.wrappers;
 
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.dom.rewrite.ASTRewrite;

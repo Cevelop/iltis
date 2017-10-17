@@ -1,4 +1,4 @@
-package com.cevelop.iltis.cpp.ast.checker;
+package ch.hsr.ifs.iltis.cpp.ast.checker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,8 @@ import org.eclipse.cdt.core.dom.ast.ASTVisitor;
 import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 
-import com.cevelop.iltis.core.data.AbstractPair;
-import com.cevelop.iltis.cpp.ast.checker.helper.IProblemId;
+import ch.hsr.ifs.iltis.core.data.AbstractPair;
+import ch.hsr.ifs.iltis.cpp.ast.checker.helper.IProblemId;
 
 public abstract class SimpleChecker<problemId extends IProblemId> extends AbstractIndexAstChecker implements IChecker {
   protected ASTVisitor visitor;

@@ -1,4 +1,4 @@
-package com.cevelop.iltis.cpp.resources;
+package ch.hsr.ifs.iltis.cpp.resources;
 
 import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.model.ITranslationUnit;

@@ -1,4 +1,4 @@
-package com.cevelop.iltis.cpp.ui.refactoring;
+package ch.hsr.ifs.iltis.cpp.ui.refactoring;
 
 /**
  * A flag interface for IRefactoringInfo

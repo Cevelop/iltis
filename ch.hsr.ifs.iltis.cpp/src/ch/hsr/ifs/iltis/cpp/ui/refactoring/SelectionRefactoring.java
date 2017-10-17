@@ -1,11 +1,11 @@
-package com.cevelop.iltis.cpp.ui.refactoring;
+package ch.hsr.ifs.iltis.cpp.ui.refactoring;
 
 import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.model.ICElement;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.jface.viewers.ISelection;
 
-import com.cevelop.iltis.cpp.wrappers.CRefactoring;
+import ch.hsr.ifs.iltis.cpp.wrappers.CRefactoring;
 
 /**
  * @author tstauber

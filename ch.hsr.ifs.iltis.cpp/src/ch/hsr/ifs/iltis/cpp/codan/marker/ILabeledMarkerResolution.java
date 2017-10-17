@@ -1,4 +1,4 @@
-package com.cevelop.iltis.cpp.codan.marker;
+package ch.hsr.ifs.iltis.cpp.codan.marker;
 
 import org.eclipse.cdt.codan.ui.ICodanMarkerResolution;
 
