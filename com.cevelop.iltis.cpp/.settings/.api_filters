@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="com.cevelop.iltis.cpp" version="2">
+    <resource path="src/com/cevelop/iltis/cpp/wrappers/CRefactoring.java" type="com.cevelop.iltis.cpp.wrappers.CRefactoring">
+        <filter id="576720909">
+            <message_arguments>
+                <message_argument value="CRefactoring"/>
+                <message_argument value="CRefactoring"/>
+            </message_arguments>
+        </filter>
+        <filter id="643846161">
+            <message_arguments>
+                <message_argument value="CRefactoringContext"/>
+                <message_argument value="CRefactoring"/>
+                <message_argument value="setContext(CRefactoringContext)"/>
+            </message_arguments>
+        </filter>
+        <filter id="643846161">
+            <message_arguments>
+                <message_argument value="ModificationCollector"/>
+                <message_argument value="CRefactoring"/>
+                <message_argument value="collectModifications(IProgressMonitor, ModificationCollector)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/com/cevelop/iltis/cpp/wrappers/CRefactoringDescriptor.java" type="com.cevelop.iltis.cpp.wrappers.CRefactoringDescriptor">
+        <filter id="576720909">
+            <message_arguments>
+                <message_argument value="CRefactoringDescriptor"/>
+                <message_argument value="CRefactoringDescriptor"/>
+            </message_arguments>
+        </filter>
+        <filter id="643842064">
+            <message_arguments>
+                <message_argument value="CRefactoring"/>
+                <message_argument value="CRefactoringDescriptor"/>
+                <message_argument value="createRefactoring(RefactoringStatus)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>
