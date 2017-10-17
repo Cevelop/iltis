@@ -1,4 +1,4 @@
-package com.cevelop.iltis.core;
+package ch.hsr.ifs.iltis.core;
 
 import org.eclipse.core.runtime.IStatus;
 import org.osgi.framework.BundleActivator;

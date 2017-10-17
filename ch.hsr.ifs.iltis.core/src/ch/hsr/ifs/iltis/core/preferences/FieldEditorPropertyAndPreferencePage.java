@@ -1,4 +1,4 @@
-package com.cevelop.iltis.core.preferences;
+package ch.hsr.ifs.iltis.core.preferences;
 
 import java.util.ArrayList;
 import java.util.List;

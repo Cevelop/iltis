@@ -1,4 +1,4 @@
-package com.cevelop.iltis.core.preferences.fieldeditor;
+package ch.hsr.ifs.iltis.core.preferences.fieldeditor;
 
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.swt.SWT;

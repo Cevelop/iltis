@@ -1,4 +1,4 @@
-package com.cevelop.iltis.core.preferences;
+package ch.hsr.ifs.iltis.core.preferences;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.preference.IPreferenceStore;

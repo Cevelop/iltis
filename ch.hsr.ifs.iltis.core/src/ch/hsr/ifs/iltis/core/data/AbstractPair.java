@@ -1,4 +1,4 @@
-package com.cevelop.iltis.core.data;
+package ch.hsr.ifs.iltis.core.data;
 
 
 /**
