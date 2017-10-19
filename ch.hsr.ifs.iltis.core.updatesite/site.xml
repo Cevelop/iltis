@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description name="ILITS-Core">
+      The ILTIS Core plugin.
+   </description>
+   <feature url="features/ch.hsr.ifs.iltis.core.feature_0.1.0.qualifier.jar" id="ch.hsr.ifs.iltis.core.feature" version="0.1.0.qualifier" nl="de,en,en_US">
+      <category name="ch.hsr.ifs.iltis.core"/>
+   </feature>
+   <category-def name="ch.hsr.ifs.iltis.core" label="ILTIS-Core">
+      <description>
+         The core components of the ILTIS
+      </description>
+   </category-def>
+</site>
