@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description name="ILITS-CPP">
+      The ILTIS CPP plugin
+   </description>
+   <category-def name="ch.hsr.ifs.iltis.cpp" label="ILTIS-CPP">
+      <description>
+         The ILTIS components which make use of cdt features.
+      </description>
+   </category-def>
+</site>
