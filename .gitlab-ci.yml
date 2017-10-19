@@ -1,22 +1,29 @@
-stages:
-  - build
-  - test
-  - deploy
+variables:
+  LC_ALL: "C.UTF-8"
+  LANG: "en_US.UTF-8"
+  LANGUAGE: "en_US.UTF-8"
+  MAVEN_OPTS: "-Dmaven.repo.local=./.m2/repository"
 
-# This is the name of the job.
-# You can choose it freely.
-maven_build:
-  # A job is always executed within a stage.
-  # If no stage is set, it defaults to 'test'.
-  stage: test
-  # Since we require Maven for this job,
-  # we can restrict the job to runners with a certain tag.
-  # Of course, it is our duty to actually configure a runner
-  # with the tag 'maven' and a working maven installation
-  tags:
-    - maven
-  # Here you can execute arbitrate terminal commands.
-  # If any of the commands returns a non zero exit code the job fails.
+build:
+  image: fmorgner/cevelop-plugin-build:latest
+  stage: build
+  cache:
+    key: "ILTISCoreMavenCache"
+    paths:
+      - ./.m2/repository
   script:
-    - echo "Building project with maven"
-    - mvn verify
+    - mvn compile
+  artifacts:
+    paths:
+      - ./**/target/*
+
+test:
+  image: fmorgner/cevelop-plugin-build:latest
+  stage: test
+  cache:
+    key: "ILTISCoreMavenCache"
+    paths:
+      - ./.m2/repository
+    policy: pull
+  script:
+    - 'xvfb-run --server-args="-screen 0 1024x768x24" mvn verify'
