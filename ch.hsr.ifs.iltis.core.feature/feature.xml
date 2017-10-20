@@ -3,8 +3,7 @@
       id="ch.hsr.ifs.iltis.core.feature"
       label="ILTIS-Core"
       version="0.1.0.qualifier"
-      provider-name="Institute for Software"
-      nl="de,en,en_US">
+      provider-name="Institute for Software">
 
    <description url="http://www.example.com/description">
       Meet the ILTIS, feel the ILTIS, love the ILTIS!
@@ -27,6 +26,19 @@ Tobias Stauber &lt;tstauber@hsr.ch&gt; - initial API and implementation
    <license url="http://www.example.com/license">
       [Enter License Description here.]
    </license>
+
+   <url>
+      <update label="Cevelop Internal Updatesite" url="https://www.cevelop.com/internal/iltis-core/"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ltk.core.refactoring"/>
+      <import plugin="org.eclipse.text"/>
+      <import plugin="org.eclipse.osgi"/>
+   </requires>
 
    <plugin
          id="ch.hsr.ifs.iltis.core"
