@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description name="ILITS-CPP">
+   <description name="ILITS-CPP" url="https://www.cevelop.com/internal/iltis-cpp">
       The ILTIS CPP plugin
    </description>
+   <feature url="features/ch.hsr.ifs.iltis.cpp.feature_0.1.0.qualifier.jar" id="ch.hsr.ifs.iltis.cpp.feature" version="0.1.0.qualifier">
+      <category name="ch.hsr.ifs.iltis.cpp"/>
+   </feature>
    <category-def name="ch.hsr.ifs.iltis.cpp" label="ILTIS-CPP">
       <description>
          The ILTIS components which make use of cdt features.
