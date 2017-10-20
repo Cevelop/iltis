@@ -3,7 +3,7 @@
    <description name="ILITS-Core" url="https://www.cevelop.com/internal/iltis-core/">
       The ILTIS Core plugin.
    </description>
-   <feature url="features/ch.hsr.ifs.iltis.core.feature_0.1.0.qualifier.jar" id="ch.hsr.ifs.iltis.core.feature" version="0.1.0.qualifier" nl="">
+   <feature url="features/ch.hsr.ifs.iltis.core.feature_0.1.0.qualifier.jar" id="ch.hsr.ifs.iltis.core.feature" version="0.1.0.qualifier" >
       <category name="ch.hsr.ifs.iltis.core"/>
    </feature>
    <category-def name="ch.hsr.ifs.iltis.core" label="ILTIS-Core">
