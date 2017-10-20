@@ -27,6 +27,9 @@ test:
     policy: pull
   script:
     - 'xvfb-run --server-args="-screen 0 1024x768x24" mvn verify -Djarsigner.skip=true'
+  artifacts:
+    paths:
+      - ./ch.hsr.ifs.iltis.core.updatesite/target/site/*
 
 deploy:
   stage: deploy
