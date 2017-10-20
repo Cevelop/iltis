@@ -19,5 +19,5 @@ location "http://download.eclipse.org/releases/oxygen" {
 }
 
 location "https://www.cevelop.com/internal/iltis-core" {
-    ch.hsr.ifs.iltis.core.feature.feature.group lazy
+    ch.hsr.ifs.iltis.core.feature.feature.group
 }

@@ -31,29 +31,6 @@ Tobias Stauber &lt;tstauber@hsr.ch&gt; - initial API and implementation
       <update label="Cevelop Internal Updatesite" url="https://www.cevelop.com/internal/iltis-cpp/"/>
    </url>
 
-   <includes
-         id="ch.hsr.ifs.iltis.core.feature"
-         version="0.0.0"
-         name="ILTIS-Core"
-         search-location="both"/>
-
-   <requires>
-      <import plugin="org.eclipse.cdt.core"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.ltk.core.refactoring"/>
-      <import plugin="org.eclipse.text"/>
-      <import plugin="org.eclipse.cdt.codan.core"/>
-      <import plugin="org.eclipse.ui" version="3.109.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.cdt.codan.ui" version="3.2.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.cdt.codan.ui.cxx" version="3.3.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.cdt.codan.core.cxx"/>
-      <import plugin="org.eclipse.cdt.ui"/>
-      <import plugin="org.eclipse.ltk.ui.refactoring"/>
-      <import plugin="ch.hsr.ifs.iltis.core" version="0.1.0" match="greaterOrEqual"/>
-   </requires>
-
    <plugin
          id="ch.hsr.ifs.iltis.cpp"
          download-size="0"
