@@ -4,8 +4,9 @@ variables:
   LANGUAGE: "en_US.UTF-8"
   MAVEN_OPTS: "-Dmaven.repo.local=./.m2/repository"
 
+image: fmorgner/cevelop-plugin-build:latest
+
 build:
-  image: fmorgner/cevelop-plugin-build:latest
   stage: build
   cache:
     key: "ILTISCoreMavenCache"
@@ -18,7 +19,6 @@ build:
       - ./**/target/*
 
 test:
-  image: fmorgner/cevelop-plugin-build:latest
   stage: test
   cache:
     key: "ILTISCoreMavenCache"
@@ -27,3 +27,19 @@ test:
     policy: pull
   script:
     - 'xvfb-run --server-args="-screen 0 1024x768x24" mvn verify -Djarsigner.skip=true'
+
+deploy:
+  stage: deploy
+  cache:
+    key: "ILTISCoreMavenCache"
+    paths:
+      - ./.m2/repository
+    policy: pull
+  script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$P2_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo "$P2_HOST_KEY" > ~/.ssh/known_hosts'
+    - 'ssh hudson@cute-test.com "cd /var/www/internal && mkdir -p iltis-core"'
+    - 'scp -r ch.hsr.ifs.iltis.core.updatesite/target/site/* hudson@cute-test.com:/var/www/internal/iltis-core'
