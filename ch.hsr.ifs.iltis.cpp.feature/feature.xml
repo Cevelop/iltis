@@ -28,7 +28,7 @@ Tobias Stauber &lt;tstauber@hsr.ch&gt; - initial API and implementation
    </license>
 
    <url>
-      <update label="Cevelop Internal Updatesite" url="https://www.cevelop.com/internal/iltis-cpp/"/>
+      <update label="Cevelop ILTIS Updatesite" url="https://www.cevelop.com/iltis"/>
    </url>
 
    <plugin

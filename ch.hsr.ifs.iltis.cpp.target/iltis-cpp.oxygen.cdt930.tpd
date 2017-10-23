@@ -18,6 +18,6 @@ location "http://download.eclipse.org/releases/oxygen" {
 	org.eclipse.zest.sdk.feature.group lazy
 }
 
-location "https://www.cevelop.com/internal/iltis-core" {
-    ch.hsr.ifs.iltis.core.feature.feature.group
+location "https://www.cevelop.com/iltis" {
+    ch.hsr.ifs.iltis.core.feature.feature.group lazy
 }
