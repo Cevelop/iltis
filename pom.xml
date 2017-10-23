@@ -12,6 +12,7 @@
   <properties>
     <tycho-version>1.0.0</tycho-version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <versiontag>${project.version}</versiontag>
   </properties>
 
   <modules>
@@ -75,7 +76,7 @@
             <artifact>
               <groupId>ch.hsr.ifs.iltis.cpp</groupId>
               <artifactId>iltis-cpp.oxygen.cdt930</artifactId>
-              <version>${project.version}</version>
+              <version>${versiontag}</version>
             </artifact>
           </target>
 
