@@ -44,5 +44,5 @@ deploy:
     - ssh-add <(echo "$P2_PRIVATE_KEY")
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo "$P2_HOST_KEY" > ~/.ssh/known_hosts'
-    - 'ssh hudson@cute-test.com "cd /var/www/ && mkdir -p iltis"'
-    - 'scp -r ch.hsr.ifs.iltis.cpp.updatesite/target/site/* hudson@cute-test.com:/var/www/iltis'
+    - 'ssh hudson@cute-test.com "cd /var/www/iltis && mkdir -p cpp"'
+    - 'scp -r ch.hsr.ifs.iltis.cpp.updatesite/target/site/* hudson@cute-test.com:/var/www/iltis/cpp'
