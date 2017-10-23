@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description name="ILITS-Core" url="https://www.cevelop.com/internal/iltis-core/">
+   <description name="ILITS-Core" url="https://www.cevelop.com/iltis">
       The ILTIS Core plugin.
    </description>
-   <feature url="features/ch.hsr.ifs.iltis.core.feature_0.1.0.qualifier.jar" id="ch.hsr.ifs.iltis.core.feature" version="0.1.0.qualifier" >
-      <category name="ch.hsr.ifs.iltis.core"/>
+   <feature url="features/ch.hsr.ifs.iltis.core.feature_0.1.0.qualifier.jar" id="ch.hsr.ifs.iltis.core.feature" version="0.1.0.qualifier">
+      <category name="ch.hsr.ifs.iltis"/>
    </feature>
-   <category-def name="ch.hsr.ifs.iltis.core" label="ILTIS-Core">
+   <category-def name="ch.hsr.ifs.iltis" label="ILTIS">
       <description>
-         The core components of the ILTIS
+         The ILTIS infrastructure layer
       </description>
    </category-def>
 </site>
