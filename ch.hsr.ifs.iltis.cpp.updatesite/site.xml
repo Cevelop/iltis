@@ -3,7 +3,7 @@
    <description name="ILITS-CPP" url="https://www.cevelop.com/iltis">
       The ILTIS CPP plugin
    </description>
-   <feature url="features/ch.hsr.ifs.iltis.core.feature_0.1.0.qualifier.jar" id="ch.hsr.ifs.iltis.core.feature" version="0.1.0.qualifier">
+   <feature url="features/ch.hsr.ifs.iltis.cpp.feature_0.1.0.qualifier.jar" id="ch.hsr.ifs.iltis.cpp.feature" version="0.1.0.qualifier">
       <category name="ch.hsr.ifs.iltis"/>
    </feature>
    <category-def name="ch.hsr.ifs.iltis" label="ILTIS">
