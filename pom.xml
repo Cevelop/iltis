@@ -12,7 +12,6 @@
   <properties>
     <tycho-version>1.0.0</tycho-version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <versiontag>${project.version}</versiontag>
   </properties>
 
   <modules>
@@ -20,6 +19,8 @@
     <module>ch.hsr.ifs.iltis.cpp.target</module>
     <!-- Plugins -->
     <module>ch.hsr.ifs.iltis.cpp</module>
+    <!-- Features -->
+    <module>ch.hsr.ifs.iltis.cpp.feature</module>
     <!-- Updatesites -->
     <module>ch.hsr.ifs.iltis.cpp.updatesite</module>
   </modules>
@@ -76,7 +77,7 @@
             <artifact>
               <groupId>ch.hsr.ifs.iltis.cpp</groupId>
               <artifactId>iltis-cpp.oxygen.cdt930</artifactId>
-              <version>${versiontag}</version>
+              <version>${project.version}</version>
             </artifact>
           </target>
 
