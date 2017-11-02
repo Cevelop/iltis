@@ -3,7 +3,9 @@ package ch.hsr.ifs.iltis.core.data;
 /**
  * A templated abstract implementation of a Pair
  *
- * @author tstauber
+ * Can be chained like {@code Tripple<T1, T2, T3> extends AbstractPair<T1, AbstractPair<T2, T3>>}.
+ *
+ * @author tstauber *
  *
  * @param <T1>
  *        Template-type of first element
@@ -20,9 +22,22 @@ public abstract class AbstractPair<T1, T2> {
       this.second = second;
    }
 
+   @SuppressWarnings("rawtypes")
    @Override
    public String toString() {
-      return "First: " + first + "\nSecond: " + second;
+      final StringBuilder str = new StringBuilder();
+      str.append("( ");
+      str.append((first instanceof AbstractPair) ? ((AbstractPair) first).toRawString() : first.toString());
+      str.append((second instanceof AbstractPair) ? ((AbstractPair) second).toRawString() : second.toString());
+      return str.append(" )").toString();
+   }
+
+   @SuppressWarnings("rawtypes")
+   protected String toRawString() {
+      final StringBuilder str = new StringBuilder();
+      str.append((first instanceof AbstractPair) ? ((AbstractPair) first).toRawString() : first.toString());
+      str.append((second instanceof AbstractPair) ? ((AbstractPair) second).toRawString() : second.toString());
+      return str.toString();
    }
 
    @Override
@@ -41,12 +56,10 @@ public abstract class AbstractPair<T1, T2> {
       if (obj == null) { return false; }
       if (getClass() != obj.getClass()) { return false; }
       final AbstractPair other = (AbstractPair) obj;
-      if (first == null) {
-         if (other.first != null) { return false; }
-      } else if (!first.equals(other.first)) { return false; }
-      if (second == null) {
-         if (other.second != null) { return false; }
-      } else if (!second.equals(other.second)) { return false; }
+      if (first == null && other.first != null) { return false; }
+      if (!first.equals(other.first)) { return false; }
+      if (second == null && other.second != null) { return false; }
+      if (!second.equals(other.second)) { return false; }
       return true;
    }
 
