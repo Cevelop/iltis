@@ -1,13 +1,8 @@
 package ch.hsr.ifs.iltis.core.preferences;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.preference.FieldEditor;
-import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
@@ -20,7 +15,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbenchPropertyPage;
 import org.eclipse.ui.dialogs.PreferencesUtil;
@@ -36,19 +30,15 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  *
  * @author tstauber
  */
-public abstract class FieldEditorPropertyAndPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPropertyPage,
-      IWorkbenchPreferencePage {
+public abstract class FieldEditorPropertyAndPreferencePage extends FieldEditorPropertyPage implements IWorkbenchPropertyPage,
+IWorkbenchPreferencePage {
 
-   private static final String S_LINK_TEXT = InfrastructureMessages.FieldEditorPropertyAndPreferencePage_link_text;
+   private static final String S_PREFERENCES_LINK_TEXT = InfrastructureMessages.FieldEditorPropertyAndPreferencePage_preference_link_text;
+   private static final String S_PROPERTY_LINK_TEXT    = InfrastructureMessages.FieldEditorPropertyAndPreferencePage_property_link_text;
+   private static final String S_ENABLE_PROJECT_PREF   = InfrastructureMessages.FieldEditorPropertyAndPreferencePage_checkbox_text;
 
-   private static final String S_ENABLE_PROJECT_PREF = InfrastructureMessages.FieldEditorPropertyAndPreferencePage_checkbox_text;
-
-   private final IPropertyAndPreferenceHelper propertyAndPreferenceHelper = createPropertyAndPreferenceHelper();
-
-   private final List<FieldEditor> editors = new ArrayList<>();
-   private IAdaptable              projectElement;
-   private Button                  headerCheckbox;
-   private Link                    headerLink;
+   private Button headerCheckbox;
+   private Link   headerLink;
 
    public FieldEditorPropertyAndPreferencePage(final int style) {
       super(style);
@@ -63,75 +53,12 @@ public abstract class FieldEditorPropertyAndPreferencePage extends FieldEditorPr
    }
 
    /**
-    * Returns the id of the current preference page as defined in plugin.xml
-    *
-    * Subclasses must implement.
-    */
-   abstract protected String getPageId();
-
-   /**
-    * Initially creates the {@link IPropertyAndPreferenceHelper} for this {@code FieldEditorPropertyAndPreferencePage}
-    *
-    * DO NOT CALL DIRECTLY - USE {@link #getPropertyAndPreferenceHelper()} INSTEAD.
-    *
-    * Subclasses must implement.
-    */
-   abstract protected IPropertyAndPreferenceHelper createPropertyAndPreferenceHelper();
-
-   /**
-    * Returns the {@link IPropertyAndPreferenceHelper}
-    */
-   protected IPropertyAndPreferenceHelper getPropertyAndPreferenceHelper() {
-      return propertyAndPreferenceHelper;
-   }
-
-   /**
-    * Stores the {@link IAdaptable} passed to the property page by the framework.
-    *
-    * @see org.eclipse.ui.IWorkbenchPropertyPage#setElement(org.eclipse.core.runtime.IAdaptable)
-    */
-   @Override
-   public void setElement(final IAdaptable element) {
-      projectElement = element.getAdapter(IResource.class);
-   }
-
-   /**
-    * Delivers the object that owns the properties shown in this property page.
-    *
-    * @see org.eclipse.ui.IWorkbenchPropertyPage#getElement()
-    */
-   @Override
-   public IAdaptable getElement() {
-      return projectElement;
-   }
-
-   /**
     * Returns true if this instance represents a property page
     *
     * @return true for property pages, false for preference pages
     */
    public boolean isPropertyPage() {
       return getElement() != null;
-   }
-
-   /**
-    * Returns true if this instance represents a preference page
-    *
-    * @return false for property pages, true for preference pages
-    */
-   public boolean isPreferencePage() {
-      return !isPropertyPage();
-   }
-
-   /**
-    * The addField method must be overridden to store the created {@link FieldEditor}s.
-    *
-    * @see org.eclipse.jface.preference.FieldEditorPreferencePage#addField(org.eclipse.jface.preference.FieldEditor)
-    */
-   @Override
-   protected void addField(final FieldEditor editor) {
-      editors.add(editor);
-      super.addField(editor);
    }
 
    /**
@@ -157,9 +84,7 @@ public abstract class FieldEditorPropertyAndPreferencePage extends FieldEditorPr
     */
    @Override
    protected Control createContents(final Composite parent) {
-      if (isPropertyPage()) {
-         createAndInitializeHeader(parent);
-      }
+      createAndInitializeHeader(parent);
       return super.createContents(parent);
    }
 
@@ -176,10 +101,15 @@ public abstract class FieldEditorPropertyAndPreferencePage extends FieldEditorPr
    protected void createAndInitializeHeader(final Composite parent) {
       final int numColumnsHeader = 2;
       final Composite headerComposite = createHeaderComposite(parent, numColumnsHeader);
-      headerCheckbox = createHeaderCheckbox(headerComposite, S_ENABLE_PROJECT_PREF);
-      headerLink = createHeaderLink(headerComposite, S_LINK_TEXT);
-      createHeaderSeparator(headerComposite, numColumnsHeader);
-      initializeHeader();
+      if (isPropertyPage()) {
+         headerCheckbox = createHeaderCheckbox(headerComposite, S_ENABLE_PROJECT_PREF);
+         headerLink = createHeaderLink(headerComposite, S_PREFERENCES_LINK_TEXT);
+         createHeaderSeparator(headerComposite, numColumnsHeader);
+         initializeHeader();
+      } else {
+         headerLink = createHeaderLink(headerComposite, S_PROPERTY_LINK_TEXT);
+         createHeaderSeparator(headerComposite, numColumnsHeader);
+      }
    }
 
    /* Creates the composite the header is drawn on */
@@ -221,7 +151,7 @@ public abstract class FieldEditorPropertyAndPreferencePage extends FieldEditorPr
 
          @Override
          public void widgetSelected(final SelectionEvent e) {
-            openWorkspacePreferences();
+            openCorrespondingPage();
          }
       });
       return link;
@@ -237,7 +167,7 @@ public abstract class FieldEditorPropertyAndPreferencePage extends FieldEditorPr
 
    /* Initializes the headers components */
    private void initializeHeader() {
-      final boolean projectPrefEnabled = propertyAndPreferenceHelper.projectSpecificPreferencesEnabled((IProject) getElement());
+      final boolean projectPrefEnabled = getPropertyAndPreferenceHelper().projectSpecificPreferencesEnabled((IProject) getElement());
       headerCheckbox.setSelection(projectPrefEnabled);
       headerLink.setEnabled(!projectPrefEnabled);
    }
@@ -249,15 +179,8 @@ public abstract class FieldEditorPropertyAndPreferencePage extends FieldEditorPr
     */
    @Override
    public IPreferenceStore getPreferenceStore() {
-      return isPropertyPage() ? propertyAndPreferenceHelper.getProjectPreferences((IProject) projectElement) : propertyAndPreferenceHelper
-            .getWorkspacePreferences();
-   }
-
-   /**
-    * Returns the {@link FieldEditor} members
-    */
-   protected List<FieldEditor> getFieldEditors() {
-      return editors;
+      return isPropertyPage() ? getPropertyAndPreferenceHelper().getProjectPreferences((IProject) projectElement) : getPropertyAndPreferenceHelper()
+               .getWorkspacePreferences();
    }
 
    /**
@@ -310,19 +233,24 @@ public abstract class FieldEditorPropertyAndPreferencePage extends FieldEditorPr
    }
 
    /**
-    * If this is a property page, this method opens the corresponding workspace preference page.
+    * Must return the {@code IProject} for which to open the property page.
+    * This could be done by opening a ProjectSelectorDialog.
+    *
+    * @return
     */
-   protected void openWorkspacePreferences() {
-      PreferencesUtil.createPreferenceDialogOn(getShell(), getPageId(), null, null).open();
-   }
+   protected abstract IAdaptable getProjectForWhichToOpenProperties();
 
    /**
-    * Initializes the {@link FieldEditorPreferencePage}'s preference store.
-    *
-    * Subclass can implement, but should call {@link super.init(IWorkbench)}
+    * If this is a property page, this method opens the corresponding workspace preference page.
     */
-   @Override
-   public void init(final IWorkbench workbench) {
-      super.setPreferenceStore(propertyAndPreferenceHelper.getWorkspacePreferences());
+   protected void openCorrespondingPage() {
+      if (isPropertyPage()) {
+         PreferencesUtil.createPreferenceDialogOn(getShell(), getPageId(), new String[] { getPageId() }, null).open();
+      } else {
+         //TODO enable objects to pass flag to set header
+         PreferencesUtil.createPropertyDialogOn(getShell(), getProjectForWhichToOpenProperties(), getPageId(), null, null)
+         .open();
+      }
    }
+
 }

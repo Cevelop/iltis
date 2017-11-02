@@ -13,5 +13,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.osgi
 Export-Package: ch.hsr.ifs.iltis.core,
  ch.hsr.ifs.iltis.core.data,
+ ch.hsr.ifs.iltis.core.functional,
  ch.hsr.ifs.iltis.core.preferences,
  ch.hsr.ifs.iltis.core.preferences.fieldeditor

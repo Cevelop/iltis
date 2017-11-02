@@ -1,13 +1,8 @@
 package ch.hsr.ifs.iltis.core.preferences;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jface.preference.FieldEditor;
-import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IWorkbenchPropertyPage;
@@ -21,10 +16,7 @@ import org.eclipse.ui.IWorkbenchPropertyPage;
  */
 public abstract class FieldEditorPropertyPage extends FieldEditorPreferencePage implements IWorkbenchPropertyPage {
 
-   private final IPropertyAndPreferenceHelper propertyAndPreferenceHelper = createPropertyAndPreferenceHelper();
-
-   private final List<FieldEditor> editors = new ArrayList<FieldEditor>();
-   private IAdaptable              projectElement;
+   protected IAdaptable projectElement;
 
    public FieldEditorPropertyPage(final int style) {
       super(style);
@@ -36,31 +28,6 @@ public abstract class FieldEditorPropertyPage extends FieldEditorPreferencePage 
 
    public FieldEditorPropertyPage(final String title, final ImageDescriptor image, final int style) {
       super(title, image, style);
-   }
-
-   /**
-    * Returns the id of the current preference page as defined in plugin.xml
-    *
-    * Subclasses must implement.
-    */
-   abstract protected String getPageId();
-
-   /**
-    * Initially creates the {@link IPropertyAndPreferenceHelper} for this
-    * {@code FieldEditorPropertyAndPreferencePage}
-    *
-    * DO NOT CALL DIRECTLY - USE {@link #getPropertyAndPreferenceHelper()}
-    * INSTEAD.
-    *
-    * Subclasses must implement.
-    */
-   abstract protected IPropertyAndPreferenceHelper createPropertyAndPreferenceHelper();
-
-   /**
-    * Returns the {@link IPropertyAndPreferenceHelper}
-    */
-   protected IPropertyAndPreferenceHelper getPropertyAndPreferenceHelper() {
-      return propertyAndPreferenceHelper;
    }
 
    /**
@@ -85,33 +52,13 @@ public abstract class FieldEditorPropertyPage extends FieldEditorPreferencePage 
    }
 
    /**
-    * The addField method must be overridden to store the created
-    * {@link FieldEditor}s.
-    *
-    * @see org.eclipse.jface.preference.FieldEditorPreferencePage#addField(org.eclipse.jface.preference.FieldEditor)
-    */
-   @Override
-   protected void addField(final FieldEditor editor) {
-      editors.add(editor);
-      super.addField(editor);
-   }
-
-   /**
-    * Returns the property store in case of this page being used as property page
-    * or the standard preference store in case of being a preference page
+    * Returns the property store
     *
     * @see org.eclipse.jface.preference.PreferencePage#getPreferenceStore()
     */
    @Override
    public IPreferenceStore getPreferenceStore() {
       return getPropertyAndPreferenceHelper().getProjectPreferences((IProject) projectElement);
-   }
-
-   /**
-    * Returns the {@link FieldEditor} members
-    */
-   protected List<FieldEditor> getFieldEditors() {
-      return editors;
    }
 
 }

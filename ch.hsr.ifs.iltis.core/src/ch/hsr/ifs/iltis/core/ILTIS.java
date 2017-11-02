@@ -31,6 +31,10 @@ public class ILTIS extends Plugin {
       PLUGIN_NAME = getBundle().getHeaders().get(Constants.BUNDLE_NAME);
    }
 
+   public static ILTIS instance() {
+      return (ILTIS) plugin;
+   }
+
    /*
     * (non-Javadoc)
     * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
