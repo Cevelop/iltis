@@ -5,6 +5,10 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import ch.hsr.ifs.iltis.core.functional.functions.ThrowingConsumer;
+import ch.hsr.ifs.iltis.core.functional.functions.ThrowingFunction;
+import ch.hsr.ifs.iltis.core.functional.functions.ThrowingSupplier;
+
 
 public abstract class OptHelper {
 

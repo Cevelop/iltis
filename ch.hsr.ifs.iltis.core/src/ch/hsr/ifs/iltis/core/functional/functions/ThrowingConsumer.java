@@ -1,4 +1,4 @@
-package ch.hsr.ifs.iltis.core.functional;
+package ch.hsr.ifs.iltis.core.functional.functions;
 
 @FunctionalInterface
 public interface ThrowingConsumer<T, E extends Exception> {

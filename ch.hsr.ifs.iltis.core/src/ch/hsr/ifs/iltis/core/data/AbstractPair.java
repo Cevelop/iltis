@@ -26,16 +26,18 @@ public abstract class AbstractPair<T1, T2> {
    @Override
    public String toString() {
       final StringBuilder str = new StringBuilder();
-      str.append("( ");
+      str.append("(");
       str.append((first instanceof AbstractPair) ? ((AbstractPair) first).toRawString() : first.toString());
+      str.append(", ");
       str.append((second instanceof AbstractPair) ? ((AbstractPair) second).toRawString() : second.toString());
-      return str.append(" )").toString();
+      return str.append(")").toString();
    }
 
    @SuppressWarnings("rawtypes")
    protected String toRawString() {
       final StringBuilder str = new StringBuilder();
       str.append((first instanceof AbstractPair) ? ((AbstractPair) first).toRawString() : first.toString());
+      str.append(", ");
       str.append((second instanceof AbstractPair) ? ((AbstractPair) second).toRawString() : second.toString());
       return str.toString();
    }
@@ -52,14 +54,28 @@ public abstract class AbstractPair<T1, T2> {
    @Override
    @SuppressWarnings("rawtypes")
    public boolean equals(final Object obj) {
-      if (this == obj) { return true; }
-      if (obj == null) { return false; }
-      if (getClass() != obj.getClass()) { return false; }
+      if (this == obj) {
+         return true;
+      }
+      if (obj == null) {
+         return false;
+      }
+      if (getClass() != obj.getClass()) {
+         return false;
+      }
       final AbstractPair other = (AbstractPair) obj;
-      if (first == null && other.first != null) { return false; }
-      if (!first.equals(other.first)) { return false; }
-      if (second == null && other.second != null) { return false; }
-      if (!second.equals(other.second)) { return false; }
+      if (first == null && other.first != null) {
+         return false;
+      }
+      if (!first.equals(other.first)) {
+         return false;
+      }
+      if (second == null && other.second != null) {
+         return false;
+      }
+      if (!second.equals(other.second)) {
+         return false;
+      }
       return true;
    }
 
