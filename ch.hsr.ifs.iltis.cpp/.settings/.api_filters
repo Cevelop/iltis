@@ -9,13 +9,6 @@
         </filter>
         <filter id="643846161">
             <message_arguments>
-                <message_argument value="CRefactoringContext"/>
-                <message_argument value="CRefactoring"/>
-                <message_argument value="setContext(CRefactoringContext)"/>
-            </message_arguments>
-        </filter>
-        <filter id="643846161">
-            <message_arguments>
                 <message_argument value="ModificationCollector"/>
                 <message_argument value="CRefactoring"/>
                 <message_argument value="collectModifications(IProgressMonitor, ModificationCollector)"/>
