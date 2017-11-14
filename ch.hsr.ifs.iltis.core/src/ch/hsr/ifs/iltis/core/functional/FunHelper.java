@@ -10,6 +10,15 @@ import ch.hsr.ifs.iltis.core.functional.functions.ThrowingRunnable;
 
 public abstract class FunHelper {
 
+   public static <T> T asOrNull(final Class<T> c, final Object o) {
+      return c.isInstance(o) ? c.cast(o) : null;
+   }
+
+   @SuppressWarnings("unchecked")
+   public static <T> T as(final Object o) {
+      return (T) o;
+   }
+
    public static <T, R> R returnIfItIsElse(final Object arg, final Class<T> type, final Supplier<R> funThen, final Supplier<R> funElse) {
       return type.isInstance(arg) ? funThen.get() : funElse.get();
    }
