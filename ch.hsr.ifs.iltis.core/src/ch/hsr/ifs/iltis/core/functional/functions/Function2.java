@@ -1,7 +1,7 @@
 package ch.hsr.ifs.iltis.core.functional.functions;
 
 @FunctionalInterface
-public interface Function2<T1, T2, R> {
+public interface Function2<P1, P2, R> {
 
-   public R apply(T1 t1, T2 t2);
+   public R apply(P1 t1, P2 t2);
 }
