@@ -1,7 +1,5 @@
 package ch.hsr.ifs.iltis.cpp.resources;
 
-import java.net.URI;
-
 import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.model.ICProject;
@@ -9,16 +7,16 @@ import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Path;
+
+import ch.hsr.ifs.iltis.core.resources.ProjectUtil;
+
 
 /**
  * Helps converting resources or extracting resources from other elements.
  *
  * @author tstauber
  */
-public abstract class CPPResourceHelper {
+public abstract class CProjectUtil extends ProjectUtil {
 
    /**
     * Extracts the {@link IProject} from a {@link IASTNode}
@@ -39,20 +37,14 @@ public abstract class CPPResourceHelper {
       }
    }
 
+   //DOC missing
    public static ICProject getCProject(final IFile file) {
       return CoreModel.getDefault().create(file).getCProject();
    }
 
+   //DOC missing
    public static ICProject getCProject(final IProject project) {
       return CoreModel.getDefault().getCModel().getCProject(project.getName());
-   }
-
-   public static boolean isPartOfProject(final URI fileUri, final IProject project) {
-      return project.getLocation().isPrefixOf(new Path(fileUri.getPath()));
-   }
-
-   public static IWorkspaceRoot getWorkspaceRoot() {
-      return ResourcesPlugin.getWorkspace().getRoot();
    }
 
 }
