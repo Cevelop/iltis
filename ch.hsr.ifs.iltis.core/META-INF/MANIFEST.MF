@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: ILTIS-CORE
 Bundle-SymbolicName: ch.hsr.ifs.iltis.core;singleton:=true
 Bundle-Version: 0.1.0.qualifier
-Bundle-Vendor: CEVELOP
+Bundle-Vendor: IFS Institute for Software
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -13,7 +13,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.osgi
 Export-Package: ch.hsr.ifs.iltis.core,
  ch.hsr.ifs.iltis.core.data,
+ ch.hsr.ifs.iltis.core.exception,
  ch.hsr.ifs.iltis.core.functional,
  ch.hsr.ifs.iltis.core.functional.functions,
  ch.hsr.ifs.iltis.core.preferences,
- ch.hsr.ifs.iltis.core.preferences.fieldeditor
+ ch.hsr.ifs.iltis.core.preferences.fieldeditor,
+ ch.hsr.ifs.iltis.core.resources
