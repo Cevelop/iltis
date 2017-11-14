@@ -11,8 +11,8 @@ import org.eclipse.cdt.core.index.IIndex;
 import org.eclipse.cdt.core.model.ICElement;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.model.ITranslationUnit;
-import org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext;
 import org.eclipse.cdt.internal.ui.refactoring.changes.CCompositeChange;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.mapping.IResourceChangeDescriptionFactory;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
@@ -31,144 +31,178 @@ import org.eclipse.ltk.core.refactoring.participants.CheckConditionsContext;
  */
 @SuppressWarnings("restriction")
 public abstract class CRefactoring extends org.eclipse.cdt.internal.ui.refactoring.CRefactoring {
-  protected ModificationCollector modificationCollectorWrapper;
+   protected ModificationCollector modificationCollectorWrapper;
 
-  /**
-   * {@inheritDoc}
-   */
-  public CRefactoring(final ICElement element, final ISelection selection, final ICProject project) {
-    super(element, selection, project);
-  }
+   /**
+    * {@inheritDoc}
+    */
+   public CRefactoring(final ICElement element, final ISelection selection, final ICProject project) {
+      super(element, selection, project);
+   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void setContext(final CRefactoringContext refactoringContext) {
-    Assert.isNotNull(refactoringContext);
-    this.refactoringContext = refactoringContext;
-  }
+   /**
+    * Wrapper method which uses a ILTIS CRefactoringContext
+    */
+   public void setContext(final CRefactoringContext refactoringContext) {
+      Assert.isNotNull(refactoringContext);
+      this.refactoringContext = refactoringContext;
+   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected RefactoringStatus checkFinalConditions(final IProgressMonitor subProgressMonitor, final CheckConditionsContext checkContext)
-      throws CoreException, OperationCanceledException {
-    return super.checkFinalConditions(subProgressMonitor, checkContext);
-  }
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   protected RefactoringStatus checkFinalConditions(final IProgressMonitor subProgressMonitor, final CheckConditionsContext checkContext)
+            throws CoreException, OperationCanceledException {
+      return super.checkFinalConditions(subProgressMonitor, checkContext);
+   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public RefactoringStatus checkInitialConditions(final IProgressMonitor pm) throws CoreException, OperationCanceledException {
-    return super.checkInitialConditions(pm);
-  }
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public RefactoringStatus checkInitialConditions(final IProgressMonitor pm) throws CoreException, OperationCanceledException {
+      return super.checkInitialConditions(pm);
+   }
 
-  /**
-   * Uses reflection to
-   *
-   * @return
-   */
-  protected ModificationCollector getModificationCollector() {
-    return modificationCollectorWrapper;
-  }
+   /**
+    * Uses reflection to
+    *
+    * @return
+    */
+   protected ModificationCollector getModificationCollector() {
+      return modificationCollectorWrapper;
+   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public Change createChange(final IProgressMonitor pm) throws CoreException, OperationCanceledException {
-    final SubMonitor subMonitor = SubMonitor.convert(pm, "Creating change", 10);
-    final CCompositeChange finalChange = modificationCollectorWrapper.createFinalChange();
-    subMonitor.worked(3);
-    finalChange.setDescription(new RefactoringChangeDescriptor(getRefactoringDescriptor()));
-    subMonitor.worked(7);
-    return finalChange;
-  }
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public Change createChange(final IProgressMonitor pm) throws CoreException, OperationCanceledException {
+      final SubMonitor subMonitor = SubMonitor.convert(pm, "Creating change", 10);
+      final CCompositeChange finalChange = modificationCollectorWrapper.createFinalChange();
+      subMonitor.worked(3);
+      finalChange.setDescription(new RefactoringChangeDescriptor(getRefactoringDescriptor()));
+      subMonitor.worked(7);
+      return finalChange;
+   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public String getName() {
-    return super.getName();
-  }
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public String getName() {
+      return super.getName();
+   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public IRegion getSelectedRegion() {
-    return super.selectedRegion;
-  }
+   /**
+    * {@inheritDoc}
+    */
+   public IRegion getSelectedRegion() {
+      return super.selectedRegion;
+   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public ICProject getProject() {
-    return super.project;
-  }
+   /**
+    * {@inheritDoc}
+    */
+   public ICProject getProject() {
+      return super.project;
+   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public ITranslationUnit getTranslationUnit() {
-    return super.getTranslationUnit();
-  }
+   /**
+    * Convenience method to get the {@code IProject} associated with this refactorings {@code ICProject}
+    */
+   public IProject getIProject() {
+      return super.project.getProject();
+   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected IASTTranslationUnit getAST(final ITranslationUnit tu, final IProgressMonitor pm) throws CoreException, OperationCanceledException {
-    return super.getAST(tu, pm);
-  }
+   /**
+    * Wrapper method to get the {@code RefactoringStatus} of the {@code CRefactoring}.
+    */
+   public RefactoringStatus initStatus() {
+      return super.initStatus;
+   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected IIndex getIndex() throws OperationCanceledException, CoreException {
-    return super.getIndex();
-  }
+   /**
+    * Wrapper method to get the {@code RefactoringContext} on which the {@code CRefactoring} operates.
+    */
+   public CRefactoringContext refactoringContext() {
+      return (CRefactoringContext) super.refactoringContext;
+   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected boolean checkAST(final IASTTranslationUnit ast) {
-    return super.checkAST(ast);
-  }
+   /**
+    * Wrapper method to get the {@code Region} on which the {@code CRefactoring} operates.
+    */
+   public IRegion selectedRegion() {
+      return super.selectedRegion;
+   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected List<IASTName> findAllMarkedNames(final IASTTranslationUnit ast) {
-    return super.findAllMarkedNames(ast);
-  }
+   /**
+    * Wrapper method to get the {@code TranslationUnit} on which the {@code CRefactoring} operates.
+    */
+   public ITranslationUnit tu() {
+      return getTranslationUnit();
+   }
 
-  /**
-   * Do not call directly. Delegates the collectModifications call.
-   */
-  @Override
-  protected final void collectModifications(final IProgressMonitor pm, final org.eclipse.cdt.internal.ui.refactoring.ModificationCollector collector)
-      throws CoreException, OperationCanceledException {
-    modificationCollectorWrapper = new ModificationCollector(getDeltaFactory(collector));
-    collectModifications(pm, modificationCollectorWrapper);
-  }
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public ITranslationUnit getTranslationUnit() {
+      return super.getTranslationUnit();
+   }
 
-  abstract protected void collectModifications(IProgressMonitor pm, ModificationCollector collector) throws CoreException, OperationCanceledException;
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   protected IASTTranslationUnit getAST(final ITranslationUnit tu, final IProgressMonitor pm) throws CoreException, OperationCanceledException {
+      return super.getAST(tu, pm);
+   }
 
-  private IResourceChangeDescriptionFactory getDeltaFactory(final org.eclipse.cdt.internal.ui.refactoring.ModificationCollector collector) {
-    try {
-      final Field factory = org.eclipse.cdt.internal.ui.refactoring.ModificationCollector.class.getDeclaredField("deltaFactory");
-      factory.setAccessible(true);
-      return (IResourceChangeDescriptionFactory) factory.get(collector);
-    } catch (IllegalAccessException | NoSuchFieldException | SecurityException e) {
-      throw new RuntimeErrorException(null);
-    }
-  }
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   protected IIndex getIndex() throws OperationCanceledException, CoreException {
+      return super.getIndex();
+   }
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   protected boolean checkAST(final IASTTranslationUnit ast) {
+      return super.checkAST(ast);
+   }
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   protected List<IASTName> findAllMarkedNames(final IASTTranslationUnit ast) {
+      return super.findAllMarkedNames(ast);
+   }
+
+   /**
+    * Do not call directly. Delegates the collectModifications call.
+    */
+   @Override
+   protected void collectModifications(final IProgressMonitor pm, final org.eclipse.cdt.internal.ui.refactoring.ModificationCollector collector)
+            throws CoreException, OperationCanceledException {
+      modificationCollectorWrapper = new ModificationCollector(getDeltaFactory(collector));
+      collectModifications(pm, modificationCollectorWrapper);
+   }
+
+   abstract protected void collectModifications(IProgressMonitor pm, ModificationCollector collector) throws CoreException, OperationCanceledException;
+
+   private IResourceChangeDescriptionFactory getDeltaFactory(final org.eclipse.cdt.internal.ui.refactoring.ModificationCollector collector) {
+      try {
+         final Field factory = org.eclipse.cdt.internal.ui.refactoring.ModificationCollector.class.getDeclaredField("deltaFactory");
+         factory.setAccessible(true);
+         return (IResourceChangeDescriptionFactory) factory.get(collector);
+      } catch (IllegalAccessException | NoSuchFieldException | SecurityException e) {
+         throw new RuntimeErrorException(null);
+      }
+   }
 }
