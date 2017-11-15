@@ -2,8 +2,11 @@ package ch.hsr.ifs.iltis.core.resources;
 
 import java.io.File;
 import java.net.URI;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
@@ -103,5 +106,24 @@ public abstract class FileUtil {
    //DOC missing
    public static URI stringToUri(final String fileString) {
       return new File(fileString).toURI();
+   }
+
+   /**
+    * Returns all those resources which have one of the file extensions specified in fileExtensions.
+    * 
+    * @param resources
+    *        The {@code IResource}s
+    * @param fileExtensions
+    *        The file extensions (as {@code String}s)
+    * @return The filtered set of {@code IResource}s
+    */
+   public static Set<IResource> filterExtensions(final Set<IResource> resources, final Set<String> fileExtensions) {
+      final Set<IResource> filtered = new LinkedHashSet<>();
+      for (final IResource resource : resources) {
+         if (fileExtensions.contains(resource.getFileExtension())) {
+            filtered.add(resource);
+         }
+      }
+      return filtered;
    }
 }
