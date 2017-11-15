@@ -40,6 +40,7 @@ public abstract class CRefactoring extends org.eclipse.cdt.internal.ui.refactori
       super(element, selection, project);
    }
 
+
    /**
     * Wrapper method which uses a ILTIS CRefactoringContext
     */
@@ -127,6 +128,9 @@ public abstract class CRefactoring extends org.eclipse.cdt.internal.ui.refactori
     * Wrapper method to get the {@code RefactoringContext} on which the {@code CRefactoring} operates.
     */
    public CRefactoringContext refactoringContext() {
+      if (!(super.refactoringContext instanceof CRefactoringContext)) {
+         super.refactoringContext = new CRefactoringContext(super.refactoringContext);
+      }
       return (CRefactoringContext) super.refactoringContext;
    }
 

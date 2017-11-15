@@ -14,6 +14,10 @@ public class CRefactoringContext extends org.eclipse.cdt.internal.ui.refactoring
       super(refactoring);
    }
 
+   public CRefactoringContext(final org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext ctx) {
+      super((CRefactoring) ctx.getRefactoring());
+   }
+
    @Override
    public IASTTranslationUnit getAST(final ITranslationUnit tu, final IProgressMonitor pm) throws OperationCanceledException, CoreException {
       return super.getAST(tu, pm);
