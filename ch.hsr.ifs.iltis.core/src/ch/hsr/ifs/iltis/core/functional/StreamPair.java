@@ -21,4 +21,12 @@ public class StreamPair<T1, T2> extends AbstractPair<T1, T2> {
       return new StreamPair<>(FunHelper.as(first), FunHelper.as(second));
    }
 
+   public <newT1, newT2> StreamPair<newT1, newT2> cast(final Class<newT1> clazz1, final Class<newT2> clazz2) {
+      if (clazz1.isAssignableFrom(first.getClass()) && clazz2.isAssignableFrom(second.getClass())) {
+         return new StreamPair<>(clazz1.cast(first), clazz2.cast(second));
+      } else {
+         return null;
+      }
+   }
+
 }
