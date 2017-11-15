@@ -18,6 +18,7 @@ import org.eclipse.cdt.core.dom.ast.IASTDeclSpecifier;
 import org.eclipse.cdt.core.dom.ast.IASTDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTDeclarator;
 import org.eclipse.cdt.core.dom.ast.IASTExpression;
+import org.eclipse.cdt.core.dom.ast.IASTFileLocation;
 import org.eclipse.cdt.core.dom.ast.IASTFunctionCallExpression;
 import org.eclipse.cdt.core.dom.ast.IASTIdExpression;
 import org.eclipse.cdt.core.dom.ast.IASTInitializerClause;
@@ -39,10 +40,12 @@ import org.eclipse.cdt.core.dom.ast.IType;
 import org.eclipse.cdt.core.dom.ast.ITypedef;
 import org.eclipse.cdt.core.dom.ast.IVariable;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTCompositeTypeSpecifier;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTCompoundStatement;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTDeclSpecifier;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTFieldReference;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTFunctionDeclarator;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTFunctionDefinition;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTInitializerList;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTNamespaceDefinition;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTParameterDeclaration;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTQualifiedName;
@@ -57,7 +60,9 @@ import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTCompoundStatement;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPBasicType;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPDeferredClassInstance;
 
+import ch.hsr.ifs.iltis.core.data.AbstractPair;
 import ch.hsr.ifs.iltis.core.exception.ILTISException;
+import ch.hsr.ifs.iltis.core.resources.StringUtil;
 
 
 @SuppressWarnings("restriction")
@@ -444,5 +449,82 @@ public abstract class ASTUtil {
       if (clause instanceof IASTExpression) { return ((IASTExpression) clause).getExpressionType(); }
 
       return new CPPBasicType(Kind.eInt, 0);
+   }
+
+   /* Comparison */
+
+   //DOC missing
+   public static ASTComparisonResult equals(final IASTNode expected, final IASTNode actual) {
+      final IASTNode[] lChilds = expected.getChildren();
+      final IASTNode[] rChilds = actual.getChildren();
+      final IASTFileLocation fileLocation = actual.getOriginalNode().getFileLocation();
+      final int lineNo = fileLocation == null ? -1 : fileLocation.getStartingLineNumber();
+      final ASTComparisonDescription description = new ASTComparisonDescription(lineNo, expected.getRawSignature(), actual.getRawSignature());
+
+      if (lChilds.length != rChilds.length) {
+         return new ASTComparisonResult(ASTComparisonState.DIFFERENT_AMOUNT_OF_CHILDREN, description);
+      } else if (!expected.getClass().equals(actual.getClass())) {
+         return new ASTComparisonResult(ASTComparisonState.DIFFERENT_TYPE, description);
+      } else if (lChilds.length != 0) {
+         for (int i = 0; i < lChilds.length; i++) {
+
+            final ASTComparisonResult childResult = equals(lChilds[i], rChilds[i]);
+            if (childResult.state() != ASTComparisonState.EQUAL) {
+               return childResult;
+            }
+         }
+      } else if (expected instanceof ICPPASTCompoundStatement || expected instanceof ICPPASTInitializerList) {
+         return new ASTComparisonResult(ASTComparisonState.EQUAL, null);
+      } else if (!StringUtil.CodeString.normalize(expected.getRawSignature()).equals(StringUtil.CodeString.normalize(actual.getRawSignature()))) {
+         return new ASTComparisonResult(ASTComparisonState.DIFFERENT_SIGNATURE, description);
+      }
+      return new ASTComparisonResult(ASTComparisonState.EQUAL, null);
+   }
+
+   //DOC missing
+   public enum ASTComparisonState {
+      DIFFERENT_TYPE, DIFFERENT_AMOUNT_OF_CHILDREN, DIFFERENT_SIGNATURE, EQUAL
+   }
+
+   //DOC missing
+   public static class ASTComparisonResult extends AbstractPair<ASTComparisonState, ASTComparisonDescription> {
+
+      public ASTComparisonResult(final ASTComparisonState state, final ASTComparisonDescription description) {
+         super(state, description);
+      }
+
+      public ASTComparisonState state() {
+         return first;
+      }
+
+      public ASTComparisonDescription description() {
+         return second;
+      }
+   }
+
+   //DOC missing
+   public static class ASTComparisonDescription {
+
+      public int      lineNo;
+      public String   expected;
+      public String   actual;
+      public String[] other = null;
+
+      public ASTComparisonDescription(final int lineNo, final String expected, final String actual) {
+         this.lineNo = lineNo;
+         this.expected = expected;
+         this.actual = actual;
+      }
+
+      public ASTComparisonDescription(final int lineNo, final String expected, final String actual, final String[] other) {
+         this(lineNo, expected, actual);
+         this.other = other;
+      }
+
+      @Override
+      public String toString() {
+         return "(" + lineNo + "\n expected: \n" + expected + "\n actual: \n" + actual + (other != null ? "\n other: \n" + other : "") + "\n)";
+      }
+
    }
 }
