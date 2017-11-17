@@ -3,6 +3,7 @@ package ch.hsr.ifs.iltis.core.resources;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+
 public abstract class StringUtil {
 
    public static class CodeString {
@@ -16,7 +17,7 @@ public abstract class StringUtil {
        * @author tstauber
        *
        * @param in
-       *            The {@link String} that should be normalized.
+       *        The {@link String} that should be normalized.
        *
        * @return A normalized copy of the parameter in.
        **/

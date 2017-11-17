@@ -23,7 +23,6 @@ public class CastHelperTest {
    //      assertFalse(CastHelper.isInstanceOf(42, String.class));
    //   }
 
-
    @Test
    public void unsecureCastYieldsCastedValue() {
       final Map<String, String> m = unorderedMap();

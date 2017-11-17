@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import ch.hsr.ifs.iltis.core.exception.ILTISException;
 
+
 public class AssertTest {
 
    @Test(expected = ILTISException.class)

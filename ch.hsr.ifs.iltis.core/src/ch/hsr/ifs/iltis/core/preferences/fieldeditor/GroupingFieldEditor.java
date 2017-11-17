@@ -159,8 +159,8 @@ public abstract class GroupingFieldEditor extends FieldEditor {
       groupLayout.marginWidth = groupLayout.marginHeight = marginInPx;
       composite.setLayout(groupLayout);
 
-      final GridData gd = new GridData(SWT.FILL, SWT.CENTER, (getRealFieldEditorParent() instanceof Group ||
-                                                              !(getFieldEditorParent() instanceof Group)), false);
+      final GridData gd = new GridData(SWT.FILL, SWT.CENTER, (getRealFieldEditorParent() instanceof Group
+                                                              || !(getFieldEditorParent() instanceof Group)), false);
       gd.horizontalIndent = (getRealFieldEditorParent() instanceof Group) ? 0 : marginInPx;
       gd.horizontalSpan = numColumnsExternal;
       composite.setLayoutData(gd);
@@ -173,8 +173,7 @@ public abstract class GroupingFieldEditor extends FieldEditor {
             adjustForNumColumns.setAccessible(true);
             adjustForNumColumns.invoke(numColsPerVirtualColInternal);
             editor.fillIntoGrid(getFieldEditorParent(), numColsPerVirtualColInternal);
-         }
-         catch (final Exception ignored) {}
+         } catch (final Exception ignored) {}
       }
    }
 

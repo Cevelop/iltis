@@ -90,10 +90,8 @@ public abstract class IOUtil {
       if (toClose != null) {
          try {
             toClose.close();
-         }
-         catch (final IOException ignored) {}
+         } catch (final IOException ignored) {}
       }
    }
-
 
 }

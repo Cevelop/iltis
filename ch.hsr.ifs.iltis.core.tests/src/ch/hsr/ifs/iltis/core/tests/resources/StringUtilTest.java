@@ -17,4 +17,3 @@ public class StringUtilTest {
       assertEquals(expected, escaped);
    }
 }
-

@@ -16,7 +16,6 @@ import ch.hsr.ifs.iltis.core.exception.ILTISException;
 @SuppressWarnings("unused")
 public abstract class FileUtil {
 
-
    /* IFile */
 
    //DOC missing
@@ -51,7 +50,6 @@ public abstract class FileUtil {
       return null;
    }
 
-
    /* File */
    //DOC missing
    public static File toFile(final IFile file) {
@@ -72,7 +70,6 @@ public abstract class FileUtil {
    private static File toFile(final URI fileURI) {
       return toFile(toIFile(fileURI));
    }
-
 
    /* Other */
    //DOC missing

@@ -6,8 +6,8 @@ import org.osgi.framework.BundleContext;
 
 public class Activator extends AbstractUIPlugin {
 
-   public static final String        PLUGIN_ID = "ch.hsr.ifs.iltis.core.tests";
-   private static Activator plugin;
+   public static final String PLUGIN_ID = "ch.hsr.ifs.iltis.core.tests";
+   private static Activator   plugin;
 
    @Override
    public void start(final BundleContext context) throws Exception {

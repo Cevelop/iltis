@@ -8,6 +8,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 
+
 /**
  * Helps converting resources or extracting resources from other elements.
  *

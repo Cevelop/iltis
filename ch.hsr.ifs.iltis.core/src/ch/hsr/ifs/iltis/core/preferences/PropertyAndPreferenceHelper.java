@@ -20,8 +20,7 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
          if (projectPreferences != null) {
             try {
                projectPreferences.save();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                e.printStackTrace();
             }
          }
@@ -382,7 +381,9 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
 
    @Override
    public boolean projectSpecificPreferencesEnabled(final IProject project) {
-      if (project == null) { return false; }
+      if (project == null) {
+         return false;
+      }
       final IPreferenceStore projectPreferences = getProjectPreferences(project);
       return projectPreferences.contains(P_USE_PROJECT_PREFERENCES) && projectPreferences.getBoolean(P_USE_PROJECT_PREFERENCES);
    }

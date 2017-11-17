@@ -31,7 +31,7 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  * @author tstauber
  */
 public abstract class FieldEditorPropertyAndPreferencePage extends FieldEditorPropertyPage implements IWorkbenchPropertyPage,
-IWorkbenchPreferencePage {
+         IWorkbenchPreferencePage {
 
    private static final String S_PREFERENCES_LINK_TEXT = InfrastructureMessages.FieldEditorPropertyAndPreferencePage_preference_link_text;
    private static final String S_PROPERTY_LINK_TEXT    = InfrastructureMessages.FieldEditorPropertyAndPreferencePage_property_link_text;
@@ -248,8 +248,7 @@ IWorkbenchPreferencePage {
          PreferencesUtil.createPreferenceDialogOn(getShell(), getPageId(), new String[] { getPageId() }, null).open();
       } else {
          //TODO enable objects to pass flag to set header
-         PreferencesUtil.createPropertyDialogOn(getShell(), getProjectForWhichToOpenProperties(), getPageId(), null, null)
-         .open();
+         PreferencesUtil.createPropertyDialogOn(getShell(), getProjectForWhichToOpenProperties(), getPageId(), null, null).open();
       }
    }
 

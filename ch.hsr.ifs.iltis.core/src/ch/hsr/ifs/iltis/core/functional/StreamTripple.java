@@ -27,6 +27,8 @@ public class StreamTripple<T1, T2, T3> extends AbstractPair<T1, TrippleHelper<T2
 
 }
 
+
+
 class TrippleHelper<T2, T3> extends AbstractPair<T2, T3> {
 
    public TrippleHelper(final T2 second, final T3 third) {
