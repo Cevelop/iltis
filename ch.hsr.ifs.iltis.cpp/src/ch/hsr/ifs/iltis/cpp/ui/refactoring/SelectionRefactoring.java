@@ -7,46 +7,47 @@ import org.eclipse.jface.viewers.ISelection;
 
 import ch.hsr.ifs.iltis.cpp.wrappers.CRefactoring;
 
+
 /**
  * @author tstauber
  */
 public abstract class SelectionRefactoring extends CRefactoring {
-  protected final IRefactoringInfo info;
 
-  public SelectionRefactoring(final ICElement element, final ISelection selection, final ICProject project,
-      final IRefactoringInfo info) {
-    super(element, selection, project);
-    this.info = info;
-  }
+   protected final IRefactoringInfo info;
 
-  public abstract IRefactoringInfo getRefactoringInfo();
+   public SelectionRefactoring(final ICElement element, final ISelection selection, final ICProject project, final IRefactoringInfo info) {
+      super(element, selection, project);
+      this.info = info;
+   }
 
-  protected boolean isInSelection(final IASTNode node) {
-    if (getSelectedRegion().getLength() > 0 && getRefactoringInfo().useSelection()) {
-      return isInSelectionHook(node);
-    } else {
-      return true;
-    }
-  }
+   public abstract IRefactoringInfo getRefactoringInfo();
 
-  // TODO write docu
-  protected boolean isInSelectionHook(final IASTNode node) {
-    return (getNodeStart(node) >= getSelectionStart() && getNodeEnd(node) <= getSelectionEnd());
-  }
+   protected boolean isInSelection(final IASTNode node) {
+      if (getSelectedRegion().getLength() > 0 && getRefactoringInfo().useSelection()) {
+         return isInSelectionHook(node);
+      } else {
+         return true;
+      }
+   }
 
-  protected int getSelectionEnd() {
-    return getSelectionStart() + getSelectedRegion().getLength();
-  }
+   // TODO write docu
+   protected boolean isInSelectionHook(final IASTNode node) {
+      return (getNodeStart(node) >= getSelectionStart() && getNodeEnd(node) <= getSelectionEnd());
+   }
 
-  protected int getSelectionStart() {
-    return getSelectedRegion().getOffset();
-  }
+   protected int getSelectionEnd() {
+      return getSelectionStart() + getSelectedRegion().getLength();
+   }
 
-  protected int getNodeEnd(final IASTNode node) {
-    return getNodeStart(node) + node.getFileLocation().getNodeLength();
-  }
+   protected int getSelectionStart() {
+      return getSelectedRegion().getOffset();
+   }
 
-  protected int getNodeStart(final IASTNode node) {
-    return node.getFileLocation().getNodeOffset();
-  }
+   protected int getNodeEnd(final IASTNode node) {
+      return getNodeStart(node) + node.getFileLocation().getNodeLength();
+   }
+
+   protected int getNodeStart(final IASTNode node) {
+      return node.getFileLocation().getNodeOffset();
+   }
 }

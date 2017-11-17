@@ -26,11 +26,13 @@ import org.eclipse.ltk.core.refactoring.RefactoringChangeDescriptor;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.participants.CheckConditionsContext;
 
+
 /**
  * @author tstauber
  */
 @SuppressWarnings("restriction")
 public abstract class CRefactoring extends org.eclipse.cdt.internal.ui.refactoring.CRefactoring {
+
    protected ModificationCollector modificationCollectorWrapper;
 
    /**
@@ -39,7 +41,6 @@ public abstract class CRefactoring extends org.eclipse.cdt.internal.ui.refactori
    public CRefactoring(final ICElement element, final ISelection selection, final ICProject project) {
       super(element, selection, project);
    }
-
 
    /**
     * Wrapper method which uses a ILTIS CRefactoringContext
@@ -198,7 +199,8 @@ public abstract class CRefactoring extends org.eclipse.cdt.internal.ui.refactori
       collectModifications(pm, modificationCollectorWrapper);
    }
 
-   abstract protected void collectModifications(IProgressMonitor pm, ModificationCollector collector) throws CoreException, OperationCanceledException;
+   abstract protected void collectModifications(IProgressMonitor pm, ModificationCollector collector) throws CoreException,
+            OperationCanceledException;
 
    private IResourceChangeDescriptionFactory getDeltaFactory(final org.eclipse.cdt.internal.ui.refactoring.ModificationCollector collector) {
       try {

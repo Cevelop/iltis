@@ -26,7 +26,7 @@ import ch.hsr.ifs.iltis.core.preferences.FieldEditorPropertyAndPreferencePage;
  */
 @SuppressWarnings("restriction")
 public abstract class CFieldEditorPropertyAndPreferencePage extends FieldEditorPropertyAndPreferencePage implements IWorkbenchPropertyPage,
-IWorkbenchPreferencePage {
+         IWorkbenchPreferencePage {
 
    public CFieldEditorPropertyAndPreferencePage(final int style) {
       super(style);

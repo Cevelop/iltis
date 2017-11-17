@@ -22,7 +22,7 @@ public abstract class CProjectUtil extends ProjectUtil {
     * Extracts the {@link IProject} from a {@link IASTNode}
     *
     * @param An
-    *            {@link IASTNode} that is part of an {@link ITranslationUnit}
+    *        {@link IASTNode} that is part of an {@link ITranslationUnit}
     * @return The {@link IProject} of which the node's translation unit is part
     *         of, or null if the node is not part of a file.
     */

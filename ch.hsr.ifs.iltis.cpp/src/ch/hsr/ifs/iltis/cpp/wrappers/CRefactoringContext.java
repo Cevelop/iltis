@@ -7,6 +7,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 
+
 @SuppressWarnings("restriction")
 public class CRefactoringContext extends org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext {
 

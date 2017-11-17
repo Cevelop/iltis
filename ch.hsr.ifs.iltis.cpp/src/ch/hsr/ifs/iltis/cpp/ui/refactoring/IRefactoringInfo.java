@@ -8,6 +8,6 @@ package ch.hsr.ifs.iltis.cpp.ui.refactoring;
  */
 public interface IRefactoringInfo {
 
-  public boolean useSelection();
+   public boolean useSelection();
 
 }
