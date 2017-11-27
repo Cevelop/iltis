@@ -1,5 +1,10 @@
 package ch.hsr.ifs.iltis.core.data;
 
+/**
+ * A simple wrapper.
+ * 
+ * @author tstauber
+ */
 public class Wrapper<T> {
 
    public T wrapped;
