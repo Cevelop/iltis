@@ -30,14 +30,14 @@ import ch.hsr.ifs.iltis.cpp.resources.CProjectUtil;
  */
 public abstract class SimpleChecker<problemId extends IProblemId> extends AbstractIndexAstChecker implements IChecker {
 
-   protected ASTVisitor                                            visitor;
+   protected ASTVisitor                                            visitor           = getVisitor();
    protected final List<CheckerResult<problemId>>                  nodesToReport     = new ArrayList<>();
    protected final HashMap<CheckerResult<problemId>, List<Object>> argumentsToReport = new HashMap<>();
 
    @Override
    public void processAst(final IASTTranslationUnit ast) {
       nodesToReport.clear();
-      ast.accept(getVisitor());
+      ast.accept(visitor);
       report();
    }
 
@@ -82,6 +82,9 @@ public abstract class SimpleChecker<problemId extends IProblemId> extends Abstra
     * Reports all the nodes in {@code nodesToReport}
     */
    protected void report() {
+      //      for (final CheckerResult<problemId> checkerResult : nodesToReport) {
+      //         reportProblem(checkerResult.getProblemId().getId(), locationHook(checkerResult.getNode()), argsHook(checkerResult));
+      //      }
       nodesToReport.stream().forEach((checkerResult) -> {
          reportProblem(checkerResult.getProblemId().getId(), locationHook(checkerResult.getNode()), argsHook(checkerResult));
       });
@@ -101,7 +104,12 @@ public abstract class SimpleChecker<problemId extends IProblemId> extends Abstra
     * Can be overridden.
     */
    protected Object[] argsHook(final CheckerResult<problemId> result) {
-      return argumentsToReport.get(result).toArray();
+      final List<Object> arguments = argumentsToReport.get(result);
+      if (arguments != null) {
+         return arguments.toArray();
+      } else {
+         return null;
+      }
    }
 
    /**
