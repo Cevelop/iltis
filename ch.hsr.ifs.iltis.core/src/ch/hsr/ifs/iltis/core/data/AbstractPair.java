@@ -27,18 +27,18 @@ public abstract class AbstractPair<T1, T2> {
    public String toString() {
       final StringBuilder str = new StringBuilder();
       str.append("(");
-      str.append((first instanceof AbstractPair) ? ((AbstractPair) first).toRawString() : first.toString());
+      str.append(first instanceof AbstractPair ? ((AbstractPair) first).toRawString() : first.toString());
       str.append(", ");
-      str.append((second instanceof AbstractPair) ? ((AbstractPair) second).toRawString() : second.toString());
+      str.append(second instanceof AbstractPair ? ((AbstractPair) second).toRawString() : second.toString());
       return str.append(")").toString();
    }
 
    @SuppressWarnings("rawtypes")
    protected String toRawString() {
       final StringBuilder str = new StringBuilder();
-      str.append((first instanceof AbstractPair) ? ((AbstractPair) first).toRawString() : first.toString());
+      str.append(first instanceof AbstractPair ? ((AbstractPair) first).toRawString() : first.toString());
       str.append(", ");
-      str.append((second instanceof AbstractPair) ? ((AbstractPair) second).toRawString() : second.toString());
+      str.append(second instanceof AbstractPair ? ((AbstractPair) second).toRawString() : second.toString());
       return str.toString();
    }
 
@@ -46,8 +46,8 @@ public abstract class AbstractPair<T1, T2> {
    public int hashCode() {
       final int prime = 31;
       int result = 1;
-      result = prime * result + ((first == null) ? 0 : first.hashCode());
-      result = prime * result + ((second == null) ? 0 : second.hashCode());
+      result = prime * result + (first == null ? 0 : first.hashCode());
+      result = prime * result + (second == null ? 0 : second.hashCode());
       return result;
    }
 

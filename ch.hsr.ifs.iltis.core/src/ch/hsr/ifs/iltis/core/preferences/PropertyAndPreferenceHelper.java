@@ -20,7 +20,7 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
          if (projectPreferences != null) {
             try {
                projectPreferences.save();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                e.printStackTrace();
             }
          }
@@ -44,7 +44,7 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public boolean getProjectBoolean(String name, IProject project) {
+   public boolean getProjectBoolean(final String name, final IProject project) {
       return getProjectPreferences(project).getBoolean(name);
    }
 
@@ -58,7 +58,7 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public boolean getProjectDefaultBoolean(String name, IProject project) {
+   public boolean getProjectDefaultBoolean(final String name, final IProject project) {
       return getProjectPreferences(project).getDefaultBoolean(name);
    }
 
@@ -72,7 +72,7 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public double getProjectDouble(String name, IProject project) {
+   public double getProjectDouble(final String name, final IProject project) {
       return getProjectPreferences(project).getDouble(name);
    }
 
@@ -86,7 +86,7 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public double getProjectDefaultDouble(String name, IProject project) {
+   public double getProjectDefaultDouble(final String name, final IProject project) {
       return getProjectPreferences(project).getDefaultDouble(name);
    }
 
@@ -100,7 +100,7 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public float getProjectFloat(String name, IProject project) {
+   public float getProjectFloat(final String name, final IProject project) {
       return getProjectPreferences(project).getFloat(name);
    }
 
@@ -114,7 +114,7 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public float getProjectDefaultFloat(String name, IProject project) {
+   public float getProjectDefaultFloat(final String name, final IProject project) {
       return getProjectPreferences(project).getDefaultFloat(name);
    }
 
@@ -128,7 +128,7 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public int getProjectInt(String name, IProject project) {
+   public int getProjectInt(final String name, final IProject project) {
       return getProjectPreferences(project).getInt(name);
    }
 
@@ -142,7 +142,7 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public int getProjectDefaultInt(String name, IProject project) {
+   public int getProjectDefaultInt(final String name, final IProject project) {
       return getProjectPreferences(project).getDefaultInt(name);
    }
 
@@ -156,7 +156,7 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public long getProjectLong(String name, IProject project) {
+   public long getProjectLong(final String name, final IProject project) {
       return getProjectPreferences(project).getLong(name);
    }
 
@@ -170,7 +170,7 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public long getProjectDefaultLong(String name, IProject project) {
+   public long getProjectDefaultLong(final String name, final IProject project) {
       return getProjectPreferences(project).getDefaultLong(name);
    }
 
@@ -198,14 +198,14 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public String getProjectDefaultString(String name, IProject project) {
+   public String getProjectDefaultString(final String name, final IProject project) {
       return getProjectPreferences(project).getDefaultString(name);
    }
 
    /* Setters */
 
    @Override
-   public void setValue(String name, boolean value, IProject project) {
+   public void setValue(final String name, final boolean value, final IProject project) {
       if (projectSpecificPreferencesEnabled(project)) {
          getProjectPreferences(project).setValue(name, value);
       } else {
@@ -214,12 +214,12 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public void setProjectValue(String name, boolean value, IProject project) {
+   public void setProjectValue(final String name, final boolean value, final IProject project) {
       getProjectPreferences(project).setValue(name, value);
    }
 
    @Override
-   public void setDefaultValue(String name, boolean value, IProject project) {
+   public void setDefaultValue(final String name, final boolean value, final IProject project) {
       if (projectSpecificPreferencesEnabled(project)) {
          getProjectPreferences(project).setDefault(name, value);
       } else {
@@ -228,12 +228,12 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public void setProjectDefaultValue(String name, boolean value, IProject project) {
+   public void setProjectDefaultValue(final String name, final boolean value, final IProject project) {
       getProjectPreferences(project).setDefault(name, value);
    }
 
    @Override
-   public void setValue(String name, double value, IProject project) {
+   public void setValue(final String name, final double value, final IProject project) {
       if (projectSpecificPreferencesEnabled(project)) {
          getProjectPreferences(project).setValue(name, value);
       } else {
@@ -242,12 +242,12 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public void setProjectValue(String name, double value, IProject project) {
+   public void setProjectValue(final String name, final double value, final IProject project) {
       getProjectPreferences(project).setValue(name, value);
    }
 
    @Override
-   public void setDefaultValue(String name, double value, IProject project) {
+   public void setDefaultValue(final String name, final double value, final IProject project) {
       if (projectSpecificPreferencesEnabled(project)) {
          getProjectPreferences(project).setDefault(name, value);
       } else {
@@ -256,12 +256,12 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public void setProjectDefaultValue(String name, double value, IProject project) {
+   public void setProjectDefaultValue(final String name, final double value, final IProject project) {
       getProjectPreferences(project).setDefault(name, value);
    }
 
    @Override
-   public void setValue(String name, float value, IProject project) {
+   public void setValue(final String name, final float value, final IProject project) {
       if (projectSpecificPreferencesEnabled(project)) {
          getProjectPreferences(project).setValue(name, value);
       } else {
@@ -270,12 +270,12 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public void setProjectValue(String name, float value, IProject project) {
+   public void setProjectValue(final String name, final float value, final IProject project) {
       getProjectPreferences(project).setValue(name, value);
    }
 
    @Override
-   public void setDefaultValue(String name, float value, IProject project) {
+   public void setDefaultValue(final String name, final float value, final IProject project) {
       if (projectSpecificPreferencesEnabled(project)) {
          getProjectPreferences(project).setDefault(name, value);
       } else {
@@ -284,12 +284,12 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public void setProjectDefaultValue(String name, float value, IProject project) {
+   public void setProjectDefaultValue(final String name, final float value, final IProject project) {
       getProjectPreferences(project).setDefault(name, value);
    }
 
    @Override
-   public void setValue(String name, int value, IProject project) {
+   public void setValue(final String name, final int value, final IProject project) {
       if (projectSpecificPreferencesEnabled(project)) {
          getProjectPreferences(project).setValue(name, value);
       } else {
@@ -298,12 +298,12 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public void setProjectValue(String name, int value, IProject project) {
+   public void setProjectValue(final String name, final int value, final IProject project) {
       getProjectPreferences(project).setValue(name, value);
    }
 
    @Override
-   public void setDefaultValue(String name, int value, IProject project) {
+   public void setDefaultValue(final String name, final int value, final IProject project) {
       if (projectSpecificPreferencesEnabled(project)) {
          getProjectPreferences(project).setDefault(name, value);
       } else {
@@ -312,12 +312,12 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public void setProjectDefaultValue(String name, int value, IProject project) {
+   public void setProjectDefaultValue(final String name, final int value, final IProject project) {
       getProjectPreferences(project).setDefault(name, value);
    }
 
    @Override
-   public void setValue(String name, long value, IProject project) {
+   public void setValue(final String name, final long value, final IProject project) {
       if (projectSpecificPreferencesEnabled(project)) {
          getProjectPreferences(project).setValue(name, value);
       } else {
@@ -326,12 +326,12 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public void setProjectValue(String name, long value, IProject project) {
+   public void setProjectValue(final String name, final long value, final IProject project) {
       getProjectPreferences(project).setValue(name, value);
    }
 
    @Override
-   public void setDefaultValue(String name, long value, IProject project) {
+   public void setDefaultValue(final String name, final long value, final IProject project) {
       if (projectSpecificPreferencesEnabled(project)) {
          getProjectPreferences(project).setDefault(name, value);
       } else {
@@ -340,12 +340,12 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public void setProjectDefaultValue(String name, long value, IProject project) {
+   public void setProjectDefaultValue(final String name, final long value, final IProject project) {
       getProjectPreferences(project).setDefault(name, value);
    }
 
    @Override
-   public void setValue(String name, String value, IProject project) {
+   public void setValue(final String name, final String value, final IProject project) {
       if (projectSpecificPreferencesEnabled(project)) {
          getProjectPreferences(project).setValue(name, value);
       } else {
@@ -354,12 +354,12 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public void setProjectValue(String name, String value, IProject project) {
+   public void setProjectValue(final String name, final String value, final IProject project) {
       getProjectPreferences(project).setValue(name, value);
    }
 
    @Override
-   public void setDefaultValue(String name, String value, IProject project) {
+   public void setDefaultValue(final String name, final String value, final IProject project) {
       if (projectSpecificPreferencesEnabled(project)) {
          getProjectPreferences(project).setDefault(name, value);
       } else {
@@ -368,7 +368,7 @@ public abstract class PropertyAndPreferenceHelper implements IPropertyAndPrefere
    }
 
    @Override
-   public void setProjectDefaultValue(String name, String value, IProject project) {
+   public void setProjectDefaultValue(final String name, final String value, final IProject project) {
       getProjectPreferences(project).setDefault(name, value);
    }
 

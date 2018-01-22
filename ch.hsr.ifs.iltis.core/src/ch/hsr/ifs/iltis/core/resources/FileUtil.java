@@ -107,7 +107,7 @@ public abstract class FileUtil {
 
    /**
     * Returns all those resources which have one of the file extensions specified in fileExtensions.
-    * 
+    *
     * @param resources
     *        The {@code IResource}s
     * @param fileExtensions

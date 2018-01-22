@@ -17,9 +17,9 @@ public class Wrapper<T> {
    }
 
    public void alter() {
-      Wrapper<String> w = new Wrapper<>("");
+      final Wrapper<String> w = new Wrapper<>("");
 
-      String[] strings = { "foo", "bar", "baz", "foobar", "foobaz" };
+      final String[] strings = { "foo", "bar", "baz", "foobar", "foobaz" };
       Arrays.stream(strings, 0, 4).forEach(s -> {
          if (s.contains("foo")) {
             w.wrapped += s;

@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Group;
 public abstract class GroupingFieldEditor extends FieldEditor {
 
    protected static final int        DEFAULT_MARGIN = 8;
-   protected Collection<FieldEditor> members        = new ArrayList<FieldEditor>();
+   protected Collection<FieldEditor> members        = new ArrayList<>();
    protected Composite               composite;
    protected int                     numColumnsExternal;
    protected int                     numVirtualColsInternal;
@@ -159,9 +159,9 @@ public abstract class GroupingFieldEditor extends FieldEditor {
       groupLayout.marginWidth = groupLayout.marginHeight = marginInPx;
       composite.setLayout(groupLayout);
 
-      final GridData gd = new GridData(SWT.FILL, SWT.CENTER, (getRealFieldEditorParent() instanceof Group
-                                                              || !(getFieldEditorParent() instanceof Group)), false);
-      gd.horizontalIndent = (getRealFieldEditorParent() instanceof Group) ? 0 : marginInPx;
+      final GridData gd = new GridData(SWT.FILL, SWT.CENTER, getRealFieldEditorParent() instanceof Group
+                                                             || !(getFieldEditorParent() instanceof Group), false);
+      gd.horizontalIndent = getRealFieldEditorParent() instanceof Group ? 0 : marginInPx;
       gd.horizontalSpan = numColumnsExternal;
       composite.setLayoutData(gd);
    }

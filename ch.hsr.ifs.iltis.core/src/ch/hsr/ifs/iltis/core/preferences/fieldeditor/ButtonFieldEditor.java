@@ -2,8 +2,6 @@ package ch.hsr.ifs.iltis.core.preferences.fieldeditor;
 
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -43,13 +41,7 @@ public class ButtonFieldEditor extends FieldEditor {
          button = new Button(parent, SWT.CHECK | SWT.LEFT);
          button.setFont(parent.getFont());
          button.addSelectionListener(selectionAdapter);
-         button.addDisposeListener(new DisposeListener() {
-
-            @Override
-            public void widgetDisposed(final DisposeEvent event) {
-               button = null;
-            }
-         });
+         button.addDisposeListener(event -> button = null);
       } else {
          checkParent(button, parent);
       }

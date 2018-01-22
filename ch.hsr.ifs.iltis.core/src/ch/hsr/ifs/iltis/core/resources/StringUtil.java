@@ -45,7 +45,7 @@ public abstract class StringUtil {
 
       /**
        * Escapes html-characters in String
-       * 
+       *
        * @author tstauber
        * @param html
        *        unescaped html string
