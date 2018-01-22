@@ -1,7 +1,5 @@
 package ch.hsr.ifs.iltis.cpp.ast;
 
-import static ch.hsr.ifs.iltis.core.functional.FunHelper.as;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -63,6 +61,7 @@ import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPDeferredClassInstance;
 
 import ch.hsr.ifs.iltis.core.data.AbstractPair;
 import ch.hsr.ifs.iltis.core.exception.ILTISException;
+import ch.hsr.ifs.iltis.core.functional.Functional;
 import ch.hsr.ifs.iltis.core.resources.StringUtil;
 
 
@@ -100,14 +99,11 @@ public abstract class ASTUtil {
    public static boolean isDeclConstructor(final IASTDeclaration declaration) {
       final IASTDeclarator declaratorForNode = ASTUtil.getDeclaratorForNode(declaration);
 
-      if (!(declaratorForNode instanceof ICPPASTFunctionDeclarator)) {
-         return false;
-      }
+      if (!(declaratorForNode instanceof ICPPASTFunctionDeclarator)) { return false; }
 
       final Optional<IASTDeclSpecifier> declSpec = ASTUtil.getDeclarationSpecifier(declaration);
-      if (declSpec.isPresent()) {
-         return declSpec.get() instanceof IASTSimpleDeclSpecifier && isUnspecified((IASTSimpleDeclSpecifier) declSpec.get());
-      }
+      if (declSpec.isPresent()) { return declSpec.get() instanceof IASTSimpleDeclSpecifier && isUnspecified((IASTSimpleDeclSpecifier) declSpec
+            .get()); }
 
       return false;
    }
@@ -119,29 +115,21 @@ public abstract class ASTUtil {
    public static boolean isCopyCtor(final ICPPConstructor ctor, final ICPPClassType classType) {
       final IType[] paramTypes = ctor.getType().getParameterTypes();
 
-      if (paramTypes.length == 0) {
-         return false;
-      }
+      if (paramTypes.length == 0) { return false; }
 
-      if (!isFstCopyCtorParam(paramTypes[0], classType)) {
-         return false;
-      }
+      if (!isFstCopyCtorParam(paramTypes[0], classType)) { return false; }
 
       final ICPPParameter[] params = ctor.getParameters();
 
       for (int i = 1; i < params.length; i++) {
-         if (!params[i].hasDefaultValue()) {
-            return false;
-         }
+         if (!params[i].hasDefaultValue()) { return false; }
       }
 
       return true;
    }
 
    private static boolean isFstCopyCtorParam(final IType paramType, final ICPPClassType classType) {
-      if (!(paramType instanceof ICPPReferenceType)) {
-         return false;
-      }
+      if (!(paramType instanceof ICPPReferenceType)) { return false; }
 
       IType candidate = ((ICPPReferenceType) paramType).getType();
 
@@ -153,9 +141,7 @@ public abstract class ASTUtil {
          candidate = ((ICPPDeferredClassInstance) candidate).getClassTemplate();
       }
 
-      if (candidate == null) {
-         return false;
-      }
+      if (candidate == null) { return false; }
 
       return candidate.isSameType(classType);
    }
@@ -166,9 +152,7 @@ public abstract class ASTUtil {
    }
 
    private static boolean isVoid(final ICPPParameter param) {
-      if (param.getType() instanceof IBasicType) {
-         return ((IBasicType) param.getType()).getKind().equals(IBasicType.Kind.eVoid);
-      }
+      if (param.getType() instanceof IBasicType) { return ((IBasicType) param.getType()).getKind().equals(IBasicType.Kind.eVoid); }
       return false;
    }
 
@@ -190,23 +174,15 @@ public abstract class ASTUtil {
 
       if (expression instanceof ICPPASTFieldReference) {
          return ((ICPPASTFieldReference) expression).getFieldName();
-      } else if (expression instanceof IASTIdExpression) {
-         return ((IASTIdExpression) expression).getName().getLastName();
-      }
+      } else if (expression instanceof IASTIdExpression) { return ((IASTIdExpression) expression).getName().getLastName(); }
 
       throw new ILTISException("Was not able to determine name of function call").rethrowUnchecked();
    }
 
    public static IASTDeclaration[] getAllDeclarations(final IASTNode parent) {
-      if (parent instanceof IASTTranslationUnit) {
-         return ((IASTTranslationUnit) parent).getDeclarations();
-      }
-      if (parent instanceof ICPPASTCompositeTypeSpecifier) {
-         return ((ICPPASTCompositeTypeSpecifier) parent).getMembers();
-      }
-      if (parent instanceof ICPPASTNamespaceDefinition) {
-         return ((ICPPASTNamespaceDefinition) parent).getDeclarations();
-      }
+      if (parent instanceof IASTTranslationUnit) { return ((IASTTranslationUnit) parent).getDeclarations(); }
+      if (parent instanceof ICPPASTCompositeTypeSpecifier) { return ((ICPPASTCompositeTypeSpecifier) parent).getMembers(); }
+      if (parent instanceof ICPPASTNamespaceDefinition) { return ((ICPPASTNamespaceDefinition) parent).getDeclarations(); }
 
       return new IASTDeclaration[0];
    }
@@ -214,36 +190,26 @@ public abstract class ASTUtil {
    public static ICPPASTDeclSpecifier getDeclSpec(final ICPPASTFunctionDeclarator funDecl) {
       final ICPPASTFunctionDefinition funDef = ASTUtil.getAncestorOfType(funDecl, ICPPASTFunctionDefinition.class);
 
-      if (funDef != null) {
-         return (ICPPASTDeclSpecifier) funDef.getDeclSpecifier();
-      }
+      if (funDef != null) { return (ICPPASTDeclSpecifier) funDef.getDeclSpecifier(); }
 
       final IASTSimpleDeclaration simpleDecl = ASTUtil.getAncestorOfType(funDecl, IASTSimpleDeclaration.class);
       return (ICPPASTDeclSpecifier) simpleDecl.getDeclSpecifier();
    }
 
    public static boolean hasConstPart(final IType type) {
-      if (!(type instanceof ITypeContainer)) {
-         return false;
-      }
+      if (!(type instanceof ITypeContainer)) { return false; }
 
       if (type instanceof IQualifierType) {
-         if (((IQualifierType) type).isConst()) {
-            return true;
-         }
+         if (((IQualifierType) type).isConst()) { return true; }
       }
 
       return hasConstPart(((ITypeContainer) type).getType());
    }
 
    public static boolean hasVolatilePart(final IType type) {
-      if (!(type instanceof ITypeContainer)) {
-         return false;
-      }
+      if (!(type instanceof ITypeContainer)) { return false; }
 
-      if (type instanceof IQualifierType && ((IQualifierType) type).isVolatile()) {
-         return true;
-      }
+      if (type instanceof IQualifierType && ((IQualifierType) type).isVolatile()) { return true; }
 
       return hasVolatilePart(((ITypeContainer) type).getType());
    }
@@ -265,9 +231,7 @@ public abstract class ASTUtil {
       IASTNode currentNode = node;
 
       while (currentNode != null) {
-         if (T.isInstance(currentNode)) {
-            return as(currentNode);
-         }
+         if (T.isInstance(currentNode)) { return Functional.as(currentNode); }
 
          currentNode = currentNode.getParent();
       }
@@ -275,38 +239,28 @@ public abstract class ASTUtil {
    }
 
    public static <T> T getChildOfType(final IASTNode node, final Class<? extends IASTNode> T) {
-      if (node == null) {
-         return null;
-      }
+      if (node == null) { return null; }
 
-      if (T.isInstance(node)) {
-         return as(node);
-      }
+      if (T.isInstance(node)) { return Functional.as(node); }
 
       for (final IASTNode child : node.getChildren()) {
          final T currentNode = getChildOfType(child, T);
 
-         if (currentNode != null) {
-            return currentNode;
-         }
+         if (currentNode != null) { return currentNode; }
       }
 
       return null;
    }
 
    public static boolean hasPointerOrRefType(final IASTDeclarator declarator) {
-      if (declarator == null) {
-         return false;
-      }
+      if (declarator == null) { return false; }
 
       if (declarator instanceof IASTArrayDeclarator) {
          final IASTArrayDeclarator arrayDecl = (IASTArrayDeclarator) declarator;
          return arrayDecl.getPointerOperators().length > 0;
       }
 
-      if (declarator.getPointerOperators().length > 0) {
-         return true;
-      }
+      if (declarator.getPointerOperators().length > 0) { return true; }
 
       final IBinding declBinding = declarator.getName().resolveBinding();
 
@@ -338,9 +292,7 @@ public abstract class ASTUtil {
    }
 
    public static IASTCompoundStatement toCompoundStatement(final IASTStatement stmt) {
-      if (stmt instanceof IASTCompoundStatement) {
-         return (IASTCompoundStatement) stmt;
-      }
+      if (stmt instanceof IASTCompoundStatement) { return (IASTCompoundStatement) stmt; }
 
       final IASTCompoundStatement compound = new CPPASTCompoundStatement();
       compound.addStatement(stmt);
@@ -390,9 +342,7 @@ public abstract class ASTUtil {
 
    private static boolean haveAllDefaultValue(final ICPPParameter[] parameters) {
       for (int i = 0; i < parameters.length; i++) {
-         if (!parameters[i].hasDefaultValue()) {
-            return false;
-         }
+         if (!parameters[i].hasDefaultValue()) { return false; }
       }
 
       return true;
@@ -407,7 +357,8 @@ public abstract class ASTUtil {
    public static String getQfName(final ICPPBinding binding) {
       try {
          return getQfName(binding.getQualifiedName());
-      } catch (final DOMException e) {
+      }
+      catch (final DOMException e) {
          throw new ILTISException(e).rethrowUnchecked();
       }
    }
@@ -439,9 +390,7 @@ public abstract class ASTUtil {
 
    public static IType windDownToRealType(IType type, final boolean stopAtTypeDef) {
       if (type instanceof ITypeContainer) {
-         if (stopAtTypeDef && type instanceof ITypedef) {
-            return type;
-         }
+         if (stopAtTypeDef && type instanceof ITypedef) { return type; }
 
          type = ((ITypeContainer) type).getType();
          return windDownToRealType(type, stopAtTypeDef);
@@ -453,9 +402,7 @@ public abstract class ASTUtil {
    public static IType getType(final IASTInitializerClause clause) {
       if (clause instanceof IASTInitializerList) {
          final IASTInitializerClause[] clauses = ((IASTInitializerList) clause).getClauses();
-         if (clauses.length > 0) {
-            return getType(clauses[0]);
-         }
+         if (clauses.length > 0) { return getType(clauses[0]); }
 
          final int noQualifiers = 0;
          return new CPPBasicType(Kind.eInt, noQualifiers);
@@ -465,26 +412,14 @@ public abstract class ASTUtil {
          final IASTName name = ((IASTIdExpression) clause).getName();
          final IBinding binding = name.resolveBinding();
 
-         if (binding instanceof IVariable) {
-            return ((IVariable) binding).getType();
-         }
-         if (binding instanceof ICPPConstructor) {
-            return ((ICPPConstructor) binding).getClassOwner();
-         }
-         if (binding instanceof IFunction) {
-            return ((IFunction) binding).getType().getReturnType();
-         }
-         if (binding instanceof ITypedef) {
-            return ((ITypedef) binding).getType();
-         }
-         if (binding instanceof ICPPClassType) {
-            return (ICPPClassType) binding;
-         }
+         if (binding instanceof IVariable) { return ((IVariable) binding).getType(); }
+         if (binding instanceof ICPPConstructor) { return ((ICPPConstructor) binding).getClassOwner(); }
+         if (binding instanceof IFunction) { return ((IFunction) binding).getType().getReturnType(); }
+         if (binding instanceof ITypedef) { return ((ITypedef) binding).getType(); }
+         if (binding instanceof ICPPClassType) { return (ICPPClassType) binding; }
       }
 
-      if (clause instanceof IASTExpression) {
-         return ((IASTExpression) clause).getExpressionType();
-      }
+      if (clause instanceof IASTExpression) { return ((IASTExpression) clause).getExpressionType(); }
 
       return new CPPBasicType(Kind.eInt, 0);
    }
@@ -507,15 +442,12 @@ public abstract class ASTUtil {
          for (int i = 0; i < lChilds.length; i++) {
 
             final ASTComparisonResult childResult = equals(lChilds[i], rChilds[i]);
-            if (childResult.state() != ASTComparisonState.EQUAL) {
-               return childResult;
-            }
+            if (childResult.state() != ASTComparisonState.EQUAL) { return childResult; }
          }
       } else if (expected instanceof ICPPASTCompoundStatement || expected instanceof ICPPASTInitializerList) {
          return new ASTComparisonResult(ASTComparisonState.EQUAL, null);
-      } else if (!StringUtil.CodeString.normalize(expected.getRawSignature()).equals(StringUtil.CodeString.normalize(actual.getRawSignature()))) {
-         return new ASTComparisonResult(ASTComparisonState.DIFFERENT_SIGNATURE, description);
-      }
+      } else if (!StringUtil.CodeString.normalize(expected.getRawSignature()).equals(StringUtil.CodeString.normalize(actual
+            .getRawSignature()))) { return new ASTComparisonResult(ASTComparisonState.DIFFERENT_SIGNATURE, description); }
       return new ASTComparisonResult(ASTComparisonState.EQUAL, null);
    }
 

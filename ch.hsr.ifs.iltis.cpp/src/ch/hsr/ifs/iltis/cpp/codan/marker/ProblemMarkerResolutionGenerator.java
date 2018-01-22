@@ -55,9 +55,7 @@ public class ProblemMarkerResolutionGenerator implements IMarkerResolutionGenera
          readExtensions();
       }
       final String id = marker.getAttribute(ICodanProblemMarker.ID, null);
-      if (id == null && resolutions.get(null) == null) {
-         return new IMarkerResolution[0];
-      }
+      if (id == null && resolutions.get(null) == null) { return new IMarkerResolution[0]; }
       final String message = marker.getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
       final Collection<ConditionalResolution> collection = resolutions.get(id);
       if (collection != null) {
@@ -73,7 +71,8 @@ public class ProblemMarkerResolutionGenerator implements IMarkerResolutionGenera
                   if (id == null) {
                      setArgumentsFromPattern(matcher, marker);
                   }
-               } catch (final Exception e) {
+               }
+               catch (final Exception e) {
                   ILTIS.log(NLS.bind(Messages.PMRG_CannotCompile, res.messagePattern));
                   continue;
                }
@@ -83,9 +82,7 @@ public class ProblemMarkerResolutionGenerator implements IMarkerResolutionGenera
             }
             list.add(res.res);
          }
-         if (list.size() > 0) {
-            return list.toArray(new IMarkerResolution[list.size()]);
-         }
+         if (list.size() > 0) { return list.toArray(new IMarkerResolution[list.size()]); }
       }
       return new IMarkerResolution[0];
    }
@@ -96,9 +93,7 @@ public class ProblemMarkerResolutionGenerator implements IMarkerResolutionGenera
     */
    private void setArgumentsFromPattern(final Matcher matcher, final IMarker marker) {
       final int n = matcher.groupCount();
-      if (n == 0) {
-         return;
-      }
+      if (n == 0) { return; }
       final String[] res = new String[n];
       for (int i = 0; i < n; i++) {
          res[i] = matcher.group(i + 1);
@@ -108,7 +103,8 @@ public class ProblemMarkerResolutionGenerator implements IMarkerResolutionGenera
       if (!Arrays.deepEquals(res, old)) {
          try {
             CodanProblemMarker.setProblemArguments(marker, res);
-         } catch (final CoreException e) {
+         }
+         catch (final CoreException e) {
             ILTIS.log(e);
          }
       }
@@ -116,16 +112,15 @@ public class ProblemMarkerResolutionGenerator implements IMarkerResolutionGenera
 
    private static synchronized void readExtensions() {
       final IExtensionPoint ep = Platform.getExtensionRegistry().getExtensionPoint(ILTIS.PLUGIN_ID, EXTENSION_POINT_NAME);
-      if (ep == null) {
-         return;
-      }
+      if (ep == null) { return; }
       try {
          final IConfigurationElement[] elements = ep.getConfigurationElements();
          // process categories
          for (final IConfigurationElement configurationElement : elements) {
             processResolution(configurationElement);
          }
-      } finally {
+      }
+      finally {
          resolutionsLoaded = true;
       }
    }
@@ -148,14 +143,16 @@ public class ProblemMarkerResolutionGenerator implements IMarkerResolutionGenera
                ((ILabeledMarkerResolution) res).setLabel(configurationElement.getAttribute("labelText")); //$NON-NLS-1$
             }
 
-         } catch (final CoreException e) {
+         }
+         catch (final CoreException e) {
             ILTIS.log(e);
             return;
          }
          if (messagePattern != null) {
             try {
                Pattern.compile(messagePattern);
-            } catch (final Exception e) {
+            }
+            catch (final Exception e) {
                ILTIS.log(NLS.bind(Messages.PMRG_Invalid, EXTENSION_POINT_NAME, e.getMessage()));
                return;
             }

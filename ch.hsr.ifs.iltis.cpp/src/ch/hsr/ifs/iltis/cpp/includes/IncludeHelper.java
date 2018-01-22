@@ -34,7 +34,8 @@ public class IncludeHelper {
          final TextFileChange change = createIncludeIfNotJetIncluded(ast, includeName);
          try {
             change.perform(new NullProgressMonitor());
-         } catch (final CoreException e) {
+         }
+         catch (final CoreException e) {
             e.printStackTrace();
          }
       }
@@ -83,9 +84,7 @@ public class IncludeHelper {
    private static boolean isAlreadyIncluded(final IASTPreprocessorIncludeStatement[] includeStatements, final String header) {
 
       for (final IASTPreprocessorIncludeStatement include : includeStatements) {
-         if (include.getName().toString().equals(header)) {
-            return true;
-         }
+         if (include.getName().toString().equals(header)) { return true; }
       }
       return false;
    }

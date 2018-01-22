@@ -26,7 +26,7 @@ import ch.hsr.ifs.iltis.core.preferences.FieldEditorPropertyAndPreferencePage;
  */
 @SuppressWarnings("restriction")
 public abstract class CFieldEditorPropertyAndPreferencePage extends FieldEditorPropertyAndPreferencePage implements IWorkbenchPropertyPage,
-         IWorkbenchPreferencePage {
+      IWorkbenchPreferencePage {
 
    public CFieldEditorPropertyAndPreferencePage(final int style) {
       super(style);
@@ -65,11 +65,10 @@ public abstract class CFieldEditorPropertyAndPreferencePage extends FieldEditorP
                projectsWithSpecifics.add(curr);
             }
          }
-      } catch (final CModelException ignore) {}
-      final ProjectSelectionDialog dialog = new ProjectSelectionDialog(getShell(), projectsWithSpecifics);
-      if (dialog.open() == Window.OK) {
-         return (ICProject) dialog.getFirstResult();
       }
+      catch (final CModelException ignore) {}
+      final ProjectSelectionDialog dialog = new ProjectSelectionDialog(getShell(), projectsWithSpecifics);
+      if (dialog.open() == Window.OK) { return (ICProject) dialog.getFirstResult(); }
       return null;
    }
 

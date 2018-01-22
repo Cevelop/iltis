@@ -55,7 +55,7 @@ public abstract class CRefactoring extends org.eclipse.cdt.internal.ui.refactori
     */
    @Override
    protected RefactoringStatus checkFinalConditions(final IProgressMonitor subProgressMonitor, final CheckConditionsContext checkContext)
-            throws CoreException, OperationCanceledException {
+         throws CoreException, OperationCanceledException {
       return super.checkFinalConditions(subProgressMonitor, checkContext);
    }
 
@@ -194,20 +194,21 @@ public abstract class CRefactoring extends org.eclipse.cdt.internal.ui.refactori
     */
    @Override
    protected void collectModifications(final IProgressMonitor pm, final org.eclipse.cdt.internal.ui.refactoring.ModificationCollector collector)
-            throws CoreException, OperationCanceledException {
+         throws CoreException, OperationCanceledException {
       modificationCollectorWrapper = new ModificationCollector(getDeltaFactory(collector));
       collectModifications(pm, modificationCollectorWrapper);
    }
 
    abstract protected void collectModifications(IProgressMonitor pm, ModificationCollector collector) throws CoreException,
-            OperationCanceledException;
+         OperationCanceledException;
 
    private IResourceChangeDescriptionFactory getDeltaFactory(final org.eclipse.cdt.internal.ui.refactoring.ModificationCollector collector) {
       try {
          final Field factory = org.eclipse.cdt.internal.ui.refactoring.ModificationCollector.class.getDeclaredField("deltaFactory");
          factory.setAccessible(true);
          return (IResourceChangeDescriptionFactory) factory.get(collector);
-      } catch (IllegalAccessException | NoSuchFieldException | SecurityException e) {
+      }
+      catch (IllegalAccessException | NoSuchFieldException | SecurityException e) {
          throw new RuntimeErrorException(null);
       }
    }

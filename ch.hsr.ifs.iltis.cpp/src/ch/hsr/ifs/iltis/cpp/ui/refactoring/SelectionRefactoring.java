@@ -32,7 +32,7 @@ public abstract class SelectionRefactoring extends CRefactoring {
 
    // TODO write docu
    protected boolean isInSelectionHook(final IASTNode node) {
-      return (getNodeStart(node) >= getSelectionStart() && getNodeEnd(node) <= getSelectionEnd());
+      return getNodeStart(node) >= getSelectionStart() && getNodeEnd(node) <= getSelectionEnd();
    }
 
    protected int getSelectionEnd() {
