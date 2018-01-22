@@ -21,6 +21,10 @@ public class ILTISException extends Exception {
       super(message, cause);
    }
 
+   public ILTISException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+      super(message, cause, enableSuppression, writableStackTrace);
+   }
+
    //DOC missing
    public void rethrow() throws Exception {
       if (originalException != null) {

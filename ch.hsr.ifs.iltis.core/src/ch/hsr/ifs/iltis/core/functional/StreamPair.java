@@ -18,7 +18,7 @@ public class StreamPair<T1, T2> extends AbstractPair<T1, T2> {
    }
 
    public <newT1, newT2> StreamPair<newT1, newT2> as() {
-      return new StreamPair<>(FunHelper.as(first), FunHelper.as(second));
+      return new StreamPair<>(Functional.as(first), Functional.as(second));
    }
 
    public <newT1, newT2> StreamPair<newT1, newT2> cast(final Class<newT1> clazz1, final Class<newT2> clazz2) {

@@ -22,7 +22,7 @@ public class StreamTripple<T1, T2, T3> extends AbstractPair<T1, TrippleHelper<T2
    }
 
    public <newT1, newT2, newT3> StreamTripple<newT1, newT2, newT3> as() {
-      return new StreamTripple<>(FunHelper.as(first()), FunHelper.as(second()), FunHelper.as(third()));
+      return new StreamTripple<>(Functional.as(first()), Functional.as(second()), Functional.as(third()));
    }
 
 }
