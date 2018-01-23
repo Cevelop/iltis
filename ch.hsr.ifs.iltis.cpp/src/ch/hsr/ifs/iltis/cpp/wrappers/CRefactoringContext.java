@@ -6,6 +6,7 @@ import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.ltk.core.refactoring.RefactoringContext;
 
 
 @SuppressWarnings("restriction")
@@ -17,6 +18,24 @@ public class CRefactoringContext extends org.eclipse.cdt.internal.ui.refactoring
 
    public CRefactoringContext(final org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext ctx) {
       super((CRefactoring) ctx.getRefactoring());
+   }
+
+   public static CRefactoringContext wrapp(RefactoringContext ctx) {
+      if (ctx instanceof org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext) {
+         return new CRefactoringContext((org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext) ctx);
+      } else if (ctx instanceof CRefactoringContext) {
+         return (CRefactoringContext) ctx;
+      } else {
+         return null;
+      }
+   }
+
+   public static boolean isUnwrappedType(RefactoringContext ctx) {
+      return ctx instanceof org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext;
+   }
+
+   public static Class<org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext> oldType() {
+      return org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext.class;
    }
 
    @Override

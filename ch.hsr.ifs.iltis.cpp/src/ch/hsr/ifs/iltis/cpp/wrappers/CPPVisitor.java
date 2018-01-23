@@ -171,7 +171,7 @@ public class CPPVisitor extends org.eclipse.cdt.internal.core.dom.parser.cpp.sem
    public static IType deduceReturnType(final IASTStatement functionBody, final IASTDeclSpecifier autoDeclSpec, final IASTDeclarator autoDeclarator,
          final PlaceholderKind placeholder, final IASTNode point) {
       return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.deduceReturnType(functionBody, autoDeclSpec, autoDeclarator,
-            placeholder, point);
+            placeholder);
    }
 
    public static IType createType(final IASTDeclSpecifier declSpec) {
@@ -183,19 +183,19 @@ public class CPPVisitor extends org.eclipse.cdt.internal.core.dom.parser.cpp.sem
    }
 
    public static IType getPointerDiffType(final IASTNode point) {
-      return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.getPointerDiffType(point);
+      return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.getPointerDiffType();
    }
 
    public static IType get_type_info(final IASTNode point) {
-      return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.get_type_info(point);
+      return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.get_type_info();
    }
 
    public static IType get_SIZE_T(final IASTNode sizeofExpr) {
-      return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.get_SIZE_T(sizeofExpr);
+      return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.get_SIZE_T();
    }
 
    public static ICPPClassTemplate get_initializer_list(final IASTNode node) {
-      return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.get_initializer_list(node);
+      return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.get_initializer_list();
    }
 
    public static IASTProblem[] getProblems(final IASTTranslationUnit tu) {
