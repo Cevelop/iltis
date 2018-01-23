@@ -7,17 +7,17 @@ import java.util.Enumeration;
 
 import org.junit.Test;
 
+import ch.hsr.ifs.iltis.core.functional.StreamHelper;
 import ch.hsr.ifs.iltis.core.resources.FileUtil;
 import ch.hsr.ifs.iltis.core.tests.Activator;
 
 
 public class FileUtilTest {
 
-   //TODO cleanup
    @Test
    public void filePartRetrievalYieldsMockatorHeaderFile() {
       final Enumeration<URL> files = Activator.getDefault().getBundle().findEntries("/externalTestResource/iltis", "*.h", false);
-      final String filePart = FileUtil.getFilePart(head(toIterable(files)).get().getFile());
+      final String filePart = FileUtil.getFilePart(StreamHelper.from(files).findFirst().get().getFile());
       assertEquals("iltis.h", filePart);
    }
 
