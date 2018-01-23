@@ -5,6 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import ch.hsr.ifs.iltis.core.tests.data.PairTest;
+import ch.hsr.ifs.iltis.core.tests.data.WrapperTest;
 import ch.hsr.ifs.iltis.core.tests.exception.AssertTest;
 import ch.hsr.ifs.iltis.core.tests.exception.ExceptionTest;
 import ch.hsr.ifs.iltis.core.tests.functional.CastHelperTest;
@@ -16,6 +17,7 @@ import ch.hsr.ifs.iltis.core.tests.resources.IOUtilTest;
 //@formatter:off
 @SuiteClasses({
    PairTest.class,
+   WrapperTest.class,
    AssertTest.class,
    ExceptionTest.class,
    CastHelperTest.class,

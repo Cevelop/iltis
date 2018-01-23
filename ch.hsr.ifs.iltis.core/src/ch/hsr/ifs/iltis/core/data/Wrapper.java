@@ -1,8 +1,5 @@
 package ch.hsr.ifs.iltis.core.data;
 
-import java.util.Arrays;
-
-
 /**
  * A simple wrapper.
  *
@@ -15,16 +12,4 @@ public class Wrapper<T> {
    public Wrapper(final T target) {
       wrapped = target;
    }
-
-   public void alter() {
-      final Wrapper<String> w = new Wrapper<>("");
-
-      final String[] strings = { "foo", "bar", "baz", "foobar", "foobaz" };
-      Arrays.stream(strings, 0, 4).forEach(s -> {
-         if (s.contains("foo")) {
-            w.wrapped += s;
-         }
-      });
-   }
-
 }
