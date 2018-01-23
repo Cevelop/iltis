@@ -9,6 +9,9 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 
+/**
+ * @since 0.1
+ */
 public abstract class StreamHelper {
 
    public static <T> Stream<T> from(final Enumeration<T> enumeration) {

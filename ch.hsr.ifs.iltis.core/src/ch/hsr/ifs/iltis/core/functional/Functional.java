@@ -73,35 +73,56 @@ public abstract class Functional {
       return zip(Arrays.stream(as), Arrays.stream(bs), Arrays.stream(cs));
    }
 
+   /**
+    * @since 0.1
+    */
    public static <T> T asOrNull(final Class<T> c, final Object o) {
       return c.isInstance(o) ? c.cast(o) : null;
    }
 
+   /**
+    * @since 0.1
+    */
    @SuppressWarnings("unchecked")
    public static <T> T as(final Object o) {
       return (T) o;
    }
 
+   /**
+    * @since 0.1
+    */
    public static <T> void doIfItIs(final Object arg, final Class<T> type, final Consumer<T> funThen) {
       if (type.isInstance(arg)) {
          funThen.accept(type.cast(arg));
       }
    }
 
+   /**
+    * @since 0.1
+    */
    public static <T, R> R returnIfItIsElse(final Object arg, final Class<T> type, final Function<T, R> funThen, final Supplier<R> funElse) {
       return type.isInstance(arg) ? funThen.apply(type.cast(arg)) : funElse.get();
    }
 
+   /**
+    * @since 0.1
+    */
    public static <T, R> R returnIfItIsElse(final Object arg, final Class<T> type, final Supplier<R> funThen, final Supplier<R> funElse) {
       return type.isInstance(arg) ? funThen.get() : funElse.get();
    }
 
+   /**
+    * @since 0.1
+    */
    public static <T, E extends Exception> void doIfItIsT(final Object arg, final Class<T> type, final ThrowingConsumer<T, E> funThen) throws E {
       if (type.isInstance(arg)) {
          funThen.accept(type.cast(arg));
       }
    }
 
+   /**
+    * @since 0.1
+    */
    public static <T> void doIfItIsElse(final Object arg, final Class<T> type, final Consumer<T> funThen, final Runnable funElse) {
       if (type.isInstance(arg)) {
          funThen.accept(type.cast(arg));
@@ -110,6 +131,9 @@ public abstract class Functional {
       }
    }
 
+   /**
+    * @since 0.1
+    */
    public static <T, E extends Exception> void doIfItIsTElse(final Object arg, final Class<T> type, final ThrowingConsumer<T, E> funThen,
             final Runnable funElse) throws E {
       if (type.isInstance(arg)) {
@@ -119,6 +143,9 @@ public abstract class Functional {
       }
    }
 
+   /**
+    * @since 0.1
+    */
    public static <T, E extends Exception> void doIfItIsElseT(final Object arg, final Class<T> type, final Consumer<T> funThen,
             final ThrowingRunnable<E> funElse) throws E {
       if (type.isInstance(arg)) {
@@ -128,6 +155,9 @@ public abstract class Functional {
       }
    }
 
+   /**
+    * @since 0.1
+    */
    public static <T, E extends Exception> void doIfItIsTElseT(final Object arg, final Class<T> type, final ThrowingConsumer<T, E> funThen,
             final ThrowingRunnable<E> funElse) throws E {
       if (type.isInstance(arg)) {

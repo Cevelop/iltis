@@ -21,6 +21,9 @@ public class ILTISException extends Exception {
       super(message, cause);
    }
 
+   /**
+    * @since 0.1
+    */
    public ILTISException(final String message, final Throwable cause, final boolean enableSuppression, final boolean writableStackTrace) {
       super(message, cause, enableSuppression, writableStackTrace);
    }
