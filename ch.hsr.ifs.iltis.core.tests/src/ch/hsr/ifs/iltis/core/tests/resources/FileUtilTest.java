@@ -1,7 +1,5 @@
 package ch.hsr.ifs.iltis.core.tests.resources;
 
-import static ch.hsr.ifs.mockator.plugin.base.collections.CollectionHelper.head;
-import static ch.hsr.ifs.mockator.plugin.base.collections.CollectionHelper.toIterable;
 import static org.junit.Assert.assertEquals;
 
 import java.net.URL;
