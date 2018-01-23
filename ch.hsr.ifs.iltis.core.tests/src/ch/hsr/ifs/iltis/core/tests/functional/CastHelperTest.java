@@ -1,6 +1,6 @@
 package ch.hsr.ifs.iltis.core.tests.functional;
 
-import static ch.hsr.ifs.iltis.core.functional.FunHelper.as;
+import static ch.hsr.ifs.iltis.core.functional.Functional.as;
 import static ch.hsr.ifs.mockator.plugin.base.collections.CollectionHelper.unorderedMap;
 import static org.junit.Assert.assertTrue;
 
