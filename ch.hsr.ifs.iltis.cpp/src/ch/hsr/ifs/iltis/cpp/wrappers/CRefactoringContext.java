@@ -20,11 +20,11 @@ public class CRefactoringContext extends org.eclipse.cdt.internal.ui.refactoring
       super((CRefactoring) ctx.getRefactoring());
    }
 
-   public static CRefactoringContext wrapp(RefactoringContext ctx) {
-      if (ctx instanceof org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext) {
-         return new CRefactoringContext((org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext) ctx);
-      } else if (ctx instanceof CRefactoringContext) {
+   public static CRefactoringContext wrap(RefactoringContext ctx) {
+      if (ctx instanceof CRefactoringContext) {
          return (CRefactoringContext) ctx;
+      } else if (ctx instanceof org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext) {
+         return new CRefactoringContext((org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext) ctx);
       } else {
          return null;
       }
@@ -34,7 +34,7 @@ public class CRefactoringContext extends org.eclipse.cdt.internal.ui.refactoring
       return ctx instanceof org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext;
    }
 
-   public static Class<org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext> oldType() {
+   public static Class<org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext> getUnwrappedType() {
       return org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext.class;
    }
 
