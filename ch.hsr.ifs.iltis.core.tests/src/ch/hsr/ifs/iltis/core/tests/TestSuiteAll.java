@@ -4,6 +4,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import ch.hsr.ifs.iltis.core.tests.collections.CollectionHelperTest;
+import ch.hsr.ifs.iltis.core.tests.collections.StackTest;
 import ch.hsr.ifs.iltis.core.tests.data.PairTest;
 import ch.hsr.ifs.iltis.core.tests.data.WrapperTest;
 import ch.hsr.ifs.iltis.core.tests.exception.AssertTest;
@@ -16,6 +18,10 @@ import ch.hsr.ifs.iltis.core.tests.resources.IOUtilTest;
 @RunWith(Suite.class)
 //@formatter:off
 @SuiteClasses({
+
+   CollectionHelperTest.class,
+   StackTest.class,
+   
    PairTest.class,
    WrapperTest.class,
    AssertTest.class,
