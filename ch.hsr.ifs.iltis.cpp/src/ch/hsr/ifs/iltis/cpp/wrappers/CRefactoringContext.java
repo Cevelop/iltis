@@ -20,24 +20,6 @@ public class CRefactoringContext extends org.eclipse.cdt.internal.ui.refactoring
       super((CRefactoring) ctx.getRefactoring());
    }
 
-   public static CRefactoringContext wrap(RefactoringContext ctx) {
-      if (ctx instanceof CRefactoringContext) {
-         return (CRefactoringContext) ctx;
-      } else if (ctx instanceof org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext) {
-         return new CRefactoringContext((org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext) ctx);
-      } else {
-         return null;
-      }
-   }
-
-   public static boolean isUnwrappedType(RefactoringContext ctx) {
-      return ctx instanceof org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext;
-   }
-
-   public static Class<org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext> getUnwrappedType() {
-      return org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext.class;
-   }
-
    @Override
    public IASTTranslationUnit getAST(final ITranslationUnit tu, final IProgressMonitor pm) throws OperationCanceledException, CoreException {
       return super.getAST(tu, pm);
@@ -56,6 +38,25 @@ public class CRefactoringContext extends org.eclipse.cdt.internal.ui.refactoring
    @Override
    protected void finalize() throws Throwable {
       super.finalize();
+   }
+   
+   /*Wrapping*/
+   public static CRefactoringContext wrap(RefactoringContext ctx) {
+      if (ctx instanceof CRefactoringContext) {
+         return (CRefactoringContext) ctx;
+      } else if (ctx instanceof org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext) {
+         return new CRefactoringContext((org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext) ctx);
+      } else {
+         return null;
+      }
+   }
+
+   public static boolean isUnwrappedType(RefactoringContext ctx) {
+      return ctx instanceof org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext;
+   }
+
+   public static Class<org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext> getUnwrappedType() {
+      return org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext.class;
    }
 
 }

@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ltk.core.refactoring.Change;
+import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringChangeDescriptor;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.participants.CheckConditionsContext;
@@ -40,6 +41,14 @@ public abstract class CRefactoring extends org.eclipse.cdt.internal.ui.refactori
     */
    public CRefactoring(final ICElement element, final ISelection selection, final ICProject project) {
       super(element, selection, project);
+   }
+
+   public static boolean isUnwrappedType(Refactoring ref) {
+      return ref instanceof org.eclipse.cdt.internal.ui.refactoring.CRefactoring;
+   }
+
+   public static Class<org.eclipse.cdt.internal.ui.refactoring.CRefactoring> getUnwrappedType() {
+      return org.eclipse.cdt.internal.ui.refactoring.CRefactoring.class;
    }
 
    /**
@@ -68,7 +77,7 @@ public abstract class CRefactoring extends org.eclipse.cdt.internal.ui.refactori
    }
 
    /**
-    * Uses reflection to
+    * Uses reflection
     *
     * @return
     */
