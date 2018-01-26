@@ -8,7 +8,12 @@ import java.util.List;
 import org.eclipse.cdt.codan.core.cxx.model.AbstractIndexAstChecker;
 import org.eclipse.cdt.codan.core.model.IChecker;
 import org.eclipse.cdt.codan.core.model.IProblemLocation;
+import org.eclipse.cdt.codan.core.model.IProblemLocationFactory;
 import org.eclipse.cdt.core.dom.ast.ASTVisitor;
+import org.eclipse.cdt.core.dom.ast.IASTCompositeTypeSpecifier;
+import org.eclipse.cdt.core.dom.ast.IASTFileLocation;
+import org.eclipse.cdt.core.dom.ast.IASTImageLocation;
+import org.eclipse.cdt.core.dom.ast.IASTName;
 import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.index.IIndex;
@@ -141,6 +146,37 @@ public abstract class SimpleChecker<problemId extends IProblemId> extends Abstra
     */
    protected ICProject getCProject() {
       return CProjectUtil.getCProject(getFile());
+   }
+   
+   @Override
+   protected IProblemLocation getProblemLocation(IASTNode astNode) {
+      IASTFileLocation astLocation = astNode.getFileLocation();
+      return getProblemLocation(astNode, astLocation);
+   }
+
+   private IProblemLocation getProblemLocation(IASTNode astNode, IASTFileLocation astLocation) {
+      int line = astLocation.getStartingLineNumber();
+      IProblemLocationFactory locFactory = getRuntime().getProblemLocationFactory();
+      if (enclosedInMacroExpansion(astNode) && astNode instanceof IASTName) {
+         IASTImageLocation imageLocation = ((IASTName) astNode).getImageLocation();
+         if (imageLocation != null) {
+            int start = imageLocation.getNodeOffset();
+            int end = start + imageLocation.getNodeLength();
+            return locFactory.createProblemLocation(getFile(), start, end, line);
+         }
+      }
+      // If the raw signature has more than one line, we highlight only the code
+      // related to the problem. However, if the problem is associated with a
+      // node representing a class definition, do not highlight the entire class
+      // definition, because that can result in many lines being highlighted.
+      if (astNode instanceof IASTCompositeTypeSpecifier) {
+         int start = astLocation.getNodeOffset();
+         int end = start + astNode.toString().length();
+         return locFactory.createProblemLocation(getFile(),start, end, line);
+      } 
+      int start = astLocation.getNodeOffset();
+      int end = start + astLocation.getNodeLength();
+      return locFactory.createProblemLocation(getFile(), start, end, line);
    }
 
 }
