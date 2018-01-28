@@ -3,11 +3,10 @@ package ch.hsr.ifs.iltis.cpp.ast.nodefactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import org.eclipse.cdt.core.dom.ast.IASTBinaryExpression;
 import org.eclipse.cdt.core.dom.ast.IASTCompoundStatement;
+import org.eclipse.cdt.core.dom.ast.IASTConditionalExpression;
 import org.eclipse.cdt.core.dom.ast.IASTDeclSpecifier;
 import org.eclipse.cdt.core.dom.ast.IASTDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTDeclarationStatement;
@@ -140,6 +139,7 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
       return newDeclarationStatement(simpleDeclaration);
    }
 
+   @Override
    public IASTDeclarationStatement newDeclarationStatementFromDeclarator(IASTDeclarator declarator) {
       final IASTDeclSpecifier newDeclSpecifier = ((IASTSimpleDeclaration) declarator.getParent()).getDeclSpecifier().copy();
       final IASTSimpleDeclaration newDeclaration = newSimpleDeclaration(newDeclSpecifier);
@@ -248,6 +248,7 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
       return newTypedefNameSpecifier(newName(name));
    }
 
+   @Override
    public ICPPASTName addTemplateArgumentsToLastName(final String nameStr, final IASTNode... arguments) {
       IASTName name = newName(nameStr);
       IASTName nameToWrapInTemplateId;
@@ -282,42 +283,25 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
       }
    }
 
-   /**
-    * Creates a new template declaration with given template parameters and the
-    * corresponding body of the template (the template implementation).
-    * 
-    * @param params
-    *        Template parameters.
-    * @param body
-    *        Template body (implementation).
-    * @return Template declaration.
-    */
-   public IASTNode newTemplateDeclaration( IASTDeclaration body, ICPPASTSimpleTypeTemplateParameter... params) {
+   @Override
+   public IASTNode newTemplateDeclaration(IASTDeclaration body, ICPPASTSimpleTypeTemplateParameter... params) {
       return newTemplateDeclaration(body, Arrays.asList(params));
    }
-   
-   public IASTNode newTemplateDeclaration( IASTDeclaration body, List<ICPPASTSimpleTypeTemplateParameter> params) {
+
+   @Override
+   public IASTNode newTemplateDeclaration(IASTDeclaration body, List<ICPPASTSimpleTypeTemplateParameter> params) {
       ICPPASTTemplateDeclaration templateDecl = newTemplateDeclaration(body);
       for (ICPPASTSimpleTypeTemplateParameter param : params)
          templateDecl.addTemplateParameter(param);
       return templateDecl;
    }
 
-
    @Override
    public ICPPASTNamedTypeSpecifier newTemplateDeclSpecifier(final String name, final IASTNode... arguments) {
       return newNamedTypeSpecifier(addTemplateArgumentsToLastName(name, arguments));
    }
 
-   /**
-    * TODO move to Interface
-    * Creates a new template parameter with a typename specifier and no default
-    * type, e.g. <code>typename T</code>
-    * 
-    * @param paramName
-    *        Name of the template parameter.
-    * @return Simple type template parameter.
-    */
+   @Override
    public ICPPASTSimpleTypeTemplateParameter newTemplateParameterDefinition(String paramName) {
       return new CPPASTSimpleTypeTemplateParameter(ICPPASTSimpleTypeTemplateParameter.st_typename, newName(paramName.toCharArray()), null);
    }
@@ -390,11 +374,13 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
       return newTypeId(declSpecifier, newDeclarator(""));
    }
 
+   @Override
    public IASTFunctionCallExpression newFunctionCallExpression(String functionName, IASTNode... args) {
       final IASTIdExpression function = newIdExpression(functionName);
       return newFunctionCallExpression(function, getArgArray(args));
    }
 
+   @Override
    public IASTFunctionCallExpression newMemberFunctionCallExpression(IASTName objectName, String methodName, IASTNode... args) {
       final IASTFieldReference fieldReference = newFieldReference(newName(methodName), newIdExpression(objectName.copy()));
       return newFunctionCallExpression(fieldReference, getArgArray(args));
@@ -408,52 +394,64 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
       return argList.toArray(new IASTInitializerClause[] {});
    }
 
+   @Override
    public IASTBinaryExpression newAssignment(IASTExpression lhs, IASTExpression rhs) {
       return newBinaryExpression(IASTBinaryExpression.op_assign, lhs, rhs);
    }
 
+   @Override
    public IASTBinaryExpression newPlusAssignment(IASTExpression lhs, IASTExpression rhs) {
       return newBinaryExpression(IASTBinaryExpression.op_plusAssign, lhs, rhs);
    }
 
+   @Override
    public IASTBinaryExpression newPlusExpression(IASTExpression lhs, IASTExpression rhs) {
       return newBinaryExpression(IASTBinaryExpression.op_plus, lhs, rhs);
    }
 
+   @Override
    public IASTBinaryExpression newMinusExpression(IASTExpression lhs, IASTExpression rhs) {
       return newBinaryExpression(IASTBinaryExpression.op_minus, lhs, rhs);
    }
 
+   @Override
    public IASTUnaryExpression newLogicalNotExpression(IASTExpression operand) {
       return newUnaryExpression(IASTUnaryExpression.op_not, operand);
    }
 
+   @Override
    public IASTBinaryExpression newEqualityComparison(IASTExpression lhs, IASTExpression rhs, boolean isEqual) {
       final int op = isEqual ? IASTBinaryExpression.op_equals : IASTBinaryExpression.op_notequals;
       return newBinaryExpression(op, lhs, rhs);
    }
 
+   @Override
    public IASTUnaryExpression newDereferenceOperatorExpression(IASTExpression expression) {
       return newUnaryExpression(IASTUnaryExpression.op_star, expression);
    }
 
+   @Override
    public IASTUnaryExpression newAdressOperatorExpression(IASTExpression expression) {
       return newUnaryExpression(IASTUnaryExpression.op_amper, expression);
    }
 
+   @Override
    public IASTUnaryExpression newNegatedExpression(IASTExpression expression) {
       return newUnaryExpression(IASTUnaryExpression.op_minus, expression);
    }
 
+   @Override
    public IASTEqualsInitializer newEqualsInitializerWithList(IASTInitializerClause... clauses) {
       return newEqualsInitializer(newInitializerList(clauses));
    }
 
+   @Override
    public IASTDeclarationStatement newDeclarationStatement(String type, String varName, IASTInitializerClause initializerClause) {
       final IASTInitializer initializer = newEqualsInitializer(initializerClause);
       return newDeclarationStatement(type, varName, initializer);
    }
 
+   @Override
    public IASTDeclarationStatement newDeclarationStatement(String type, String varName, IASTInitializer initializer) {
       final IASTDeclSpecifier declSpecifier = newTypedefNameSpecifier(newName(type));
       final IASTSimpleDeclaration simpleDeclaration = newSimpleDeclaration(declSpecifier);
@@ -463,10 +461,12 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
       return newDeclarationStatement(simpleDeclaration);
    }
 
+   @Override
    public ICPPASTArraySubscriptExpression newArraySubscriptExpression(IASTExpression arrayExpr, IASTExpression subscript) {
       return newArraySubscriptExpression(arrayExpr, subscript);
    }
 
+   @Override
    public IASTCompoundStatement newCompoundStatement(IASTStatement... statements) {
       final IASTCompoundStatement compoundStatement = newCompoundStatement();
       for (final IASTStatement statement : statements) {
@@ -475,20 +475,29 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
       return compoundStatement;
    }
 
+   @Override
    public IASTIfStatement newIfStatement(IASTExpression condition, IASTCompoundStatement then) {
       return newIfStatement(condition, then, null);
    }
 
+   @Override
    public IASTUnaryExpression newBracketedExpression(IASTExpression operand) {
       return newUnaryExpression(IASTUnaryExpression.op_bracketedPrimary, operand);
    }
 
+   @Override
    public ICPPASTNamedTypeSpecifier newNamedTypeSpecifier(String typeName) {
       return newTypedefNameSpecifier(newName(typeName));
    }
 
+   @Override
    public ICPPASTTypeId newIASTTypeId(ICPPASTNamedTypeSpecifier newNamedTypeSpecifier) {
       return newTypeId(newNamedTypeSpecifier, newDeclarator(newName()));
+   }
+
+   @Override
+   public IASTConditionalExpression newConditionalExpression(IASTExpression condition, IASTExpression positive, IASTExpression negative) {
+      return newConditionalExpression(condition,positive,negative);
    }
 
 }
