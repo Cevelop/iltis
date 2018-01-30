@@ -29,7 +29,6 @@ import org.eclipse.cdt.core.dom.ast.IASTStatement;
 import org.eclipse.cdt.core.dom.ast.IASTTypeId;
 import org.eclipse.cdt.core.dom.ast.IASTUnaryExpression;
 import org.eclipse.cdt.core.dom.ast.IBasicType.Kind;
-import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTArraySubscriptExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTCompositeTypeSpecifier;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTConstructorChainInitializer;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTConstructorInitializer;
@@ -52,7 +51,7 @@ import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTSimpleTypeTemplatePara
 import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPNodeFactory;
 
 import ch.hsr.ifs.iltis.core.collections.CollectionHelper;
-import ch.hsr.ifs.iltis.cpp.ast.CPPNameConstants;
+import ch.hsr.ifs.iltis.cpp.util.CPPNameConstants;
 
 
 @SuppressWarnings("restriction")
@@ -462,11 +461,6 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
    }
 
    @Override
-   public ICPPASTArraySubscriptExpression newArraySubscriptExpression(IASTExpression arrayExpr, IASTExpression subscript) {
-      return newArraySubscriptExpression(arrayExpr, subscript);
-   }
-
-   @Override
    public IASTCompoundStatement newCompoundStatement(IASTStatement... statements) {
       final IASTCompoundStatement compoundStatement = newCompoundStatement();
       for (final IASTStatement statement : statements) {
@@ -497,7 +491,7 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
 
    @Override
    public IASTConditionalExpression newConditionalExpression(IASTExpression condition, IASTExpression positive, IASTExpression negative) {
-      return newConditionalExpression(condition,positive,negative);
+      return super.newConditionalExpession(condition,positive,negative);
    }
 
 }

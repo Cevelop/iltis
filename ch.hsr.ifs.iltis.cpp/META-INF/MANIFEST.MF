@@ -30,5 +30,6 @@ Export-Package: ch.hsr.ifs.iltis.cpp.ast,
  ch.hsr.ifs.iltis.cpp.preferences,
  ch.hsr.ifs.iltis.cpp.resources,
  ch.hsr.ifs.iltis.cpp.ui.refactoring,
+ ch.hsr.ifs.iltis.cpp.util,
  ch.hsr.ifs.iltis.cpp.wrappers
 Bundle-ActivationPolicy: lazy

@@ -1,4 +1,4 @@
-package ch.hsr.ifs.iltis.cpp.ast;
+package ch.hsr.ifs.iltis.cpp.util;
 
 public abstract class CPPNameConstants {
 
@@ -15,7 +15,18 @@ public abstract class CPPNameConstants {
    public final static String STD_WSTRING   = "std::wstring";
    public final static String STD_U32STRING = "std::u32string";
    public final static String STD_U16STRING = "std::u16string";
-   
+
+   /* Keywords */
+   public static final String CONST_KEYWORD = "const";
+
+   /* Macro */
+   public static final String INCLUDE_DIRECTIVE = "#include";
+   public static final String END_IF_DIRECTIVE  = "#endif";
+   public static final String DEFINE_DIRECTIVE  = "#define";
+   public static final String UNDEF_DIRECTIVE   = "#undef";
+   public static final String IFNDEF_DIRECTIVE  = "#ifndef";
+   public static final String IFDEF_DIRECTIVE   = "#ifdef";
+
    //member functions
    public final static String C_STR             = "c_str";
    public final static String BEGIN             = "begin";
