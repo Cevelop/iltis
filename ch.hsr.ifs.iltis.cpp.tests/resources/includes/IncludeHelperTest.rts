@@ -1,0 +1,60 @@
+
+//! System-include exists
+//@.config
+markerLines=2, headerName=cstding, systemInclude=true
+//@main.cpp
+#include <cstdint>
+short foo {42};
+int bar = (int) foo;
+//=
+#include <cstdint>
+
+short foo {42};
+int bar = (std::int32_t) foo;
+
+//! System-include was added
+//@.config
+markerLines=2, headerName=cstding, systemInclude=true
+//@main.cpp
+short foo {42};
+int bar = (int) foo;
+//=
+#include <cstdint>
+
+short foo {42};
+int bar = (std::int32_t) foo;
+
+//! System-include added into existing mixed includes
+//@.config
+markerLines=3, headerName=cstding, systemInclude=true
+//@main.cpp
+#include "foo.h"
+#include <iostream>
+#include <vector>
+int main(){
+    char foo { 42 };
+    char bar = (char) foo;
+}
+//=
+#include "foo.h"
+#include <iostream>
+#include <vector>
+#include <cstdint>
+int main(){
+    char foo { 42 };
+    char bar = (std::int8_t) foo;
+}
+
+//! Should fail
+//@.config
+markerLines=3, headerName=cstding, systemInclude=true
+//@main.cpp
+int main(){
+    char foo { 42 };
+    char bar = static_cast<char>(foo);
+}
+//=
+int main(){
+    char foo { 42 };
+    char bar = static_cast<std::int8_t>(foo);
+}
