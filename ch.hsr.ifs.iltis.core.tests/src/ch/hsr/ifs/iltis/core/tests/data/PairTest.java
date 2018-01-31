@@ -1,7 +1,9 @@
 package ch.hsr.ifs.iltis.core.tests.data;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,6 +48,46 @@ public class PairTest {
       final Pair<String, Pair<String, Integer>> marriage = new Pair<>("Bill", new Pair<>("Hillary", 15));
       final String s = marriage.toString();
       assertEquals("(Bill, Hillary, 15)", s);
+   }
+
+   @Test
+   public void allElementFirstNestedEquals() {
+      Pair<Pair<String, String>, String> foo = new Pair<>(new Pair<>("Cigar", "Clinton"), "William");
+      assertFalse(AbstractPair.allElementEquals(foo));
+      foo = new Pair<>(new Pair<>("Me!", "Me!"), "Me!");
+      assertTrue(AbstractPair.allElementEquals(foo));
+   }
+
+   @Test
+   public void allElementSecondNestedEquals() {
+      Pair<String, Pair<String, String>> foo = new Pair<>("William", new Pair<>("Cigar", "Clinton"));
+      assertFalse(AbstractPair.allElementEquals(foo));
+      foo = new Pair<>("LOL", new Pair<>("LOL", "LOL"));
+      assertTrue(AbstractPair.allElementEquals(foo));
+   }
+
+   @Test
+   public void allElementBothNested() {
+      Pair<Pair<String, String>, Pair<String, String>> foo = new Pair<>(new Pair<>("Cigar", "Cigar"), new Pair<>("Clinton", "Clinton"));
+      assertFalse(AbstractPair.allElementEquals(foo));
+      foo = new Pair<>(new Pair<>("Cigar", "Cigar"), new Pair<>("Cigar", "Cigar"));
+      assertTrue(AbstractPair.allElementEquals(foo));
+   }
+   
+   @Test
+   public void allElementNull() {
+      Pair<Pair<String, String>, Pair<String, String>> foo = new Pair<>(new Pair<>("Cigar", "Cigar"), new Pair<>(null, null));
+      assertFalse(AbstractPair.allElementEquals(foo));
+      foo = new Pair<>(new Pair<>(null, null), new Pair<>(null, null));
+      assertTrue(AbstractPair.allElementEquals(foo));
+   }
+
+   @Test
+   public void allElementEquals() {
+      Pair<String, String> foo = new Pair<>("William", "Clinton");
+      assertFalse(AbstractPair.allElementEquals(foo));
+      foo = new Pair<>("William", "William");
+      assertTrue(AbstractPair.allElementEquals(foo));
    }
 
    class Pair<T1, T2> extends AbstractPair<T1, T2> {

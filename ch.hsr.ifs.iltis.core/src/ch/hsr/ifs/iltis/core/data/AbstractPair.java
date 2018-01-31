@@ -1,5 +1,10 @@
 package ch.hsr.ifs.iltis.core.data;
 
+import java.util.Optional;
+
+import ch.hsr.ifs.iltis.core.functional.functions.Equals;
+
+
 /**
  * A templated abstract implementation of a Pair
  *
@@ -79,4 +84,47 @@ public abstract class AbstractPair<T1, T2> {
       return true;
    }
 
+   public static <T1, T2> boolean allElementEquals(AbstractPair<T1, T2> pair) {
+      return allElementEquals(pair, (l, r) -> l.equals(r));
+   }
+
+   @SuppressWarnings({ "rawtypes", "unchecked" })
+   public static <T1, T2> boolean allElementEquals(AbstractPair<T1, T2> pair, Equals<T1,T2> comparator) {
+
+      Optional<T1> fst = pair.first instanceof AbstractPair ? ((AbstractPair) pair.first).getValueIfAllValuesSame(comparator) : Optional.ofNullable(
+               pair.first);
+      Optional<T2> snd = pair.second instanceof AbstractPair ? ((AbstractPair) pair.second).getValueIfAllValuesSame(comparator) : Optional.ofNullable(
+               pair.second);
+
+      if (fst == null || snd == null) return false;
+      if (!fst.isPresent() && !snd.isPresent()) return true; //All elements are null
+      return fst.isPresent() && snd.isPresent() && fst.get().getClass().isInstance(snd.get()) && comparator.equal(fst.get(), snd.get());
+   }
+
+   /**
+    * @returns An Optional containing the value if all values are equal
+    * @return An empty Optional if all values are null
+    * @return null if not all values are equal
+    */
+   @SuppressWarnings({ "rawtypes", "unchecked" })
+   protected Optional<T1> getValueIfAllValuesSame(Equals<T1, T2> comparator) {
+      Optional<T1> f = first == null ? Optional.empty() : Optional.of(first);
+      Optional<T2> s = second == null ? Optional.empty() : Optional.of(second);
+      if (first instanceof AbstractPair) {
+         f = ((AbstractPair) first).getValueIfAllValuesSame(comparator);
+      }
+      if (second instanceof AbstractPair) {
+         s = ((AbstractPair) second).getValueIfAllValuesSame(comparator);
+      }
+
+      if (f == null || s == null) {
+         return null;
+      }
+      if (!f.isPresent() && !s.isPresent()) return f;
+      if (f.isPresent() && s.isPresent() && f.get().getClass().isInstance(s.get()) && comparator.equal(f.get(), s.get())) {
+         return f;
+      } else {
+         return null;
+      }
+   }
 }
