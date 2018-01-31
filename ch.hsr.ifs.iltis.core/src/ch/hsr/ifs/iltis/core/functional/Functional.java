@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -71,6 +72,10 @@ public abstract class Functional {
 
    public static <A, B, C> Stream<StreamTripple<A, B, C>> zip(final A[] as, final B[] bs, final C[] cs) {
       return zip(Arrays.stream(as), Arrays.stream(bs), Arrays.stream(cs));
+   }
+
+   public static <A, B> B[] map(final A[] as, Function<A, B> mapping, final IntFunction<B[]> generator) {
+      return Arrays.stream(as).map(mapping).toArray(generator);
    }
 
    /**
