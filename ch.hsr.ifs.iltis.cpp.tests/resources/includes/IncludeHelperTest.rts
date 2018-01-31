@@ -1,60 +1,389 @@
 
 //! System-include exists
 //@.config
-markerLines=2, headerName=cstding, systemInclude=true
+markerLines=2
+headerName=cstdint
+systemInclude=true
 //@main.cpp
 #include <cstdint>
+
 short foo {42};
-int bar = (int) foo;
+
 //=
 #include <cstdint>
 
 short foo {42};
-int bar = (std::int32_t) foo;
 
 //! System-include was added
 //@.config
-markerLines=2, headerName=cstding, systemInclude=true
+markerLines=2
+headerName=algorithm
+systemInclude=true
 //@main.cpp
-short foo {42};
-int bar = (int) foo;
-//=
-#include <cstdint>
 
-short foo {42};
-int bar = (std::int32_t) foo;
+short foo {9001};
+
+//=
+#include <algorithm>
+
+short foo {9001};
 
 //! System-include added into existing mixed includes
 //@.config
-markerLines=3, headerName=cstding, systemInclude=true
+markerLines=3
+headerName=cstdint
+systemInclude=true
 //@main.cpp
 #include "foo.h"
 #include <iostream>
 #include <vector>
 int main(){
-    char foo { 42 };
-    char bar = (char) foo;
 }
+
 //=
 #include "foo.h"
 #include <iostream>
 #include <vector>
 #include <cstdint>
 int main(){
-    char foo { 42 };
-    char bar = (std::int8_t) foo;
+}
+
+//! User-include added into existing mixed includes
+//@.config
+markerLines=3
+headerName=sigmund.h
+systemInclude=false
+//@main.cpp
+#include <iostream>
+#include <vector>
+#include <cstdint>
+
+int main(){
+}
+
+//=
+#include "sigmund.h"
+
+#include <iostream>
+#include <vector>
+#include <cstdint>
+
+int main(){
+}
+
+//! Is include placed at the right position even if other preprocessor statements are present
+//@.config
+markerLines=3
+headerName=cstdint
+systemInclude=true
+//@main.cpp
+#define ABCD 2
+
+#include <iostream>
+ 
+int main()
+{
+ 
+#ifdef ABCD
+    std::cout << "1: yes\n";
+#else
+    std::cout << "1: no\n";
+#endif
+ 
+#ifndef ABCD
+    std::cout << "2: no1\n";
+#elif ABCD == 2
+    std::cout << "2: yes\n";
+#else
+    std::cout << "2: no2\n";
+#endif
+ 
+#if !defined(DCBA) && (ABCD < 2*4-3)
+    std::cout << "3: yes\n";
+#endif
+}
+
+//=
+#define ABCD 2
+
+#include <iostream>
+#include <cstdint>
+ 
+int main()
+{
+ 
+#ifdef ABCD
+    std::cout << "1: yes\n";
+#else
+    std::cout << "1: no\n";
+#endif
+ 
+#ifndef ABCD
+    std::cout << "2: no1\n";
+#elif ABCD == 2
+    std::cout << "2: yes\n";
+#else
+    std::cout << "2: no2\n";
+#endif
+ 
+#if !defined(DCBA) && (ABCD < 2*4-3)
+    std::cout << "3: yes\n";
+#endif
 }
 
 //! Should fail
 //@.config
-markerLines=3, headerName=cstding, systemInclude=true
+markerLines=3
+headerName=cstdint
+systemInclude=true
 //@main.cpp
 int main(){
-    char foo { 42 };
-    char bar = static_cast<char>(foo);
 }
 //=
 int main(){
-    char foo { 42 };
-    char bar = static_cast<std::int8_t>(foo);
 }
+
+//! Is system include inserted at the right position with no other includes
+//@.config
+markerLines=3
+headerName=cstdint
+systemInclude=true
+//@foo.h
+#ifndef GRANDPARENT_H
+#define GRANDPARENT_H
+
+struct foo {
+    int member;
+};
+
+#endif /* GRANDPARENT_H */
+
+//=
+#ifndef GRANDPARENT_H
+#define GRANDPARENT_H
+
+#include <cstdint>
+
+struct foo {
+    int member;
+};
+
+#endif /* GRANDPARENT_H */
+
+//! Is user include inserted at the right position with no other includes
+//@.config
+markerLines=3
+headerName=bampf.h
+systemInclude=false
+//@foo.h
+#ifndef GRANDPARENT_H
+#define GRANDPARENT_H
+
+struct foo {
+    int member;
+};
+
+#endif /* GRANDPARENT_H */
+
+//=
+#ifndef GRANDPARENT_H
+#define GRANDPARENT_H
+
+#include "bampf.h"
+
+struct foo {
+    int member;
+};
+
+#endif /* GRANDPARENT_H */
+
+//! Is system include inserted at the right position with other user includes
+//@.config
+markerLines=3
+headerName=cstdint
+systemInclude=true
+//@foo.h
+#ifndef GRANDPARENT_H
+#define GRANDPARENT_H
+
+#include "foo.h"
+
+struct foo {
+    int member;
+};
+
+#endif /* GRANDPARENT_H */
+
+//=
+#ifndef GRANDPARENT_H
+#define GRANDPARENT_H
+
+#include "foo.h"
+
+#include <cstdint>
+
+struct foo {
+    int member;
+};
+
+#endif /* GRANDPARENT_H */
+
+//! Is user include inserted at the right position with other user includes
+//@.config
+markerLines=3
+headerName=bampf.h
+systemInclude=false
+//@foo.h
+#ifndef GRANDPARENT_H
+#define GRANDPARENT_H
+
+#include "foo.h"
+
+struct foo {
+    int member;
+};
+
+#endif /* GRANDPARENT_H */
+
+//=
+#ifndef GRANDPARENT_H
+#define GRANDPARENT_H
+
+#include "foo.h"
+#include "bampf.h"
+
+struct foo {
+    int member;
+};
+
+#endif /* GRANDPARENT_H */
+
+//! Is system include inserted at the right position with other system includes
+//@.config
+markerLines=3
+headerName=cstdint
+systemInclude=true
+//@foo.h
+#ifndef GRANDPARENT_H
+#define GRANDPARENT_H
+
+#include <algorithm>
+
+struct foo {
+    int member;
+};
+
+#endif /* GRANDPARENT_H */
+
+//=
+#ifndef GRANDPARENT_H
+#define GRANDPARENT_H
+
+#include <algorithm>
+#include <cstdint>
+
+struct foo {
+    int member;
+};
+
+#endif /* GRANDPARENT_H */
+
+//! Is user include inserted at the right position with other system includes
+//@.config
+markerLines=3
+headerName=bampf.h
+systemInclude=false
+//@foo.h
+#ifndef GRANDPARENT_H
+#define GRANDPARENT_H
+
+#include <cstdint>
+
+struct foo {
+    int member;
+};
+
+#endif /* GRANDPARENT_H */
+
+//=
+#ifndef GRANDPARENT_H
+#define GRANDPARENT_H
+
+#include "bampf.h"
+
+#include <cstdint>
+
+struct foo {
+    int member;
+};
+
+#endif /* GRANDPARENT_H */
+
+//! Is system include inserted at the right position with other system and user includes
+//@.config
+markerLines=3
+headerName=cstdint
+systemInclude=true
+//@foo.h
+#ifndef GRANDPARENT_H
+#define GRANDPARENT_H
+
+#include "schnorpsl.h"
+
+#include <algorithm>
+
+struct foo {
+    int member;
+};
+
+#endif /* GRANDPARENT_H */
+
+//=
+#ifndef GRANDPARENT_H
+#define GRANDPARENT_H
+
+#include "schnorpsl.h"
+
+#include <algorithm>
+#include <cstdint>
+
+struct foo {
+    int member;
+};
+
+#endif /* GRANDPARENT_H */
+
+//! Is user include inserted at the right position with other system and user includes
+//@.config
+markerLines=3
+headerName=bampf.h
+systemInclude=false
+//@foo.h
+#ifndef GRANDPARENT_H
+#define GRANDPARENT_H
+
+#include "schnorpsl.h"
+
+#include <cstdint>
+
+struct foo {
+    int member;
+};
+
+#endif /* GRANDPARENT_H */
+
+//=
+#ifndef GRANDPARENT_H
+#define GRANDPARENT_H
+
+#include "schnorpsl.h"
+#include "bampf.h"
+
+#include <cstdint>
+
+struct foo {
+    int member;
+};
+
+#endif /* GRANDPARENT_H */
+

@@ -2,6 +2,8 @@ package ch.hsr.ifs.iltis.cpp.tests.includes;
 
 import java.util.Properties;
 
+import org.eclipse.ltk.core.refactoring.TextFileChange;
+import org.junit.Assert;
 import org.junit.Test;
 
 import ch.hsr.ifs.iltis.cpp.includes.IncludeHelper;
@@ -23,8 +25,9 @@ public class IncludeHelperTest extends CDTTestingTest {
 
    @Test
    public void runTest() throws Throwable {
-      IncludeHelper.createIncludeIfNotJetIncluded(getCurrentAST(), headerName, isSystemInclude);
+      IncludeHelper.includeIfNotJetIncluded(getCurrentAST(), headerName, isSystemInclude, TextFileChange.FORCE_SAVE);
       assertEqualsAST(getExpectedAST(), getCurrentAST());
+      Assert.assertEquals(getExpectedSource(), getCurrentSource());
    }
 
 }

@@ -15,7 +15,7 @@ Require-Bundle:
  ch.hsr.ifs.cdttesting,
  org.eclipse.cdt.core,
  ch.hsr.ifs.iltis.cpp
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.1.0.qualifier
 Bundle-ManifestVersion: 2
 Bundle-Activator: ch.hsr.ifs.iltis.cpp.tests.Activator
 Bundle-SymbolicName: ch.hsr.ifs.iltis.cpp.tests;singleton:=true
