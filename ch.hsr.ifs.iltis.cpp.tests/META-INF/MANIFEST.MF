@@ -13,7 +13,8 @@ Require-Bundle:
  org.hamcrest.core,
  org.eclipse.ui.editors;bundle-version="3.8.100",
  ch.hsr.ifs.cdttesting,
- org.eclipse.cdt.core
+ org.eclipse.cdt.core,
+ ch.hsr.ifs.iltis.cpp
 Bundle-Version: 1.0.0.qualifier
 Bundle-ManifestVersion: 2
 Bundle-Activator: ch.hsr.ifs.iltis.cpp.tests.Activator
