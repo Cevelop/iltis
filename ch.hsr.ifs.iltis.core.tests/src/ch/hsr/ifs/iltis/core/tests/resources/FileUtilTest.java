@@ -17,13 +17,13 @@ public class FileUtilTest {
    @Test
    public void filePartRetrievalYieldsMockatorHeaderFile() {
       final Enumeration<URL> files = Activator.getDefault().getBundle().findEntries("/externalTestResource/iltis", "*.h", false);
-      final String filePart = FileUtil.getFilePart(StreamHelper.from(files).findFirst().get().getFile());
+      final String filePart = FileUtil.getFilename(StreamHelper.from(files).findFirst().get().getFile());
       assertEquals("iltis.h", filePart);
    }
 
    @Test
    public void classicFileRetrieval() {
-      assertEquals("ILTIS.h", FileUtil.getFilePart("/headers/ILTIS.h"));
+      assertEquals("ILTIS.h", FileUtil.getFilename("/headers/ILTIS.h"));
    }
 
    @Test
@@ -34,8 +34,14 @@ public class FileUtilTest {
 
    @Test
    public void removeFilePartYieldsDirectory() {
-      assertEquals("/a/b/c/", FileUtil.removeFilePart("/a/b/c/foo.h"));
-      assertEquals("/a/b/c/", FileUtil.removeFilePart("/a/b/c/"));
+      assertEquals("/a/b/c/", FileUtil.getPathWithoutFilename("/a/b/c/foo.h"));
+      assertEquals("/a/b/c/", FileUtil.getPathWithoutFilename("/a/b/c/"));
+   }
+   
+   @Test
+   public void removeFilePartYieldsDirectoryWindows() {
+      assertEquals("\\a\\b\\c\\", FileUtil.getPathWithoutFilename("\\a\\b\\c\\foo.h"));
+      assertEquals("\\a\\b\\c\\", FileUtil.getPathWithoutFilename("\\a\\b\\c\\"));
    }
 
 }
