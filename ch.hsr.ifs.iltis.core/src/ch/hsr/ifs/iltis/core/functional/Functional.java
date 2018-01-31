@@ -24,12 +24,14 @@ public abstract class Functional {
 
          @Override
          public boolean hasNext() {
-            return i1.hasNext() && i2.hasNext();
+            return i1.hasNext() || i2.hasNext();
          }
 
          @Override
          public StreamPair<A, B> next() {
-            return new StreamPair<>(i1.next(), i2.next());
+            A f = i1.hasNext()? i1.next():null;
+            B s = i2.hasNext()? i2.next():null;
+            return new StreamPair<>(f, s);
          }
       };
       return StreamSupport.stream(i.spliterator(), false);
