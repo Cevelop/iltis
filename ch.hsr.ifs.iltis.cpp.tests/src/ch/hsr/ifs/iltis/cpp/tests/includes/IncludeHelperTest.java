@@ -6,7 +6,7 @@ import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.junit.Assert;
 import org.junit.Test;
 
-import ch.hsr.ifs.iltis.cpp.includes.IncludeHelper;
+import ch.hsr.ifs.iltis.cpp.includes.IncludeUtil;
 
 import ch.hsr.ifs.cdttesting.cdttest.CDTTestingTest;
 
@@ -25,7 +25,7 @@ public class IncludeHelperTest extends CDTTestingTest {
 
    @Test
    public void runTest() throws Throwable {
-      IncludeHelper.includeIfNotJetIncluded(getCurrentAST(), headerName, isSystemInclude, TextFileChange.FORCE_SAVE);
+      IncludeUtil.includeIfNotJetIncluded(getCurrentAST(), headerName, isSystemInclude, TextFileChange.FORCE_SAVE);
       assertEqualsAST(getExpectedAST(), getCurrentAST());
       Assert.assertEquals(getExpectedSource(), getCurrentSource());
    }

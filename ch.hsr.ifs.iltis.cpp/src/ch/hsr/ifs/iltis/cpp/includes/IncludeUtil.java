@@ -15,7 +15,7 @@ import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.TextEdit;
 
-import ch.hsr.ifs.iltis.core.functional.OptHelper;
+import ch.hsr.ifs.iltis.core.functional.OptionalUtil;
 import ch.hsr.ifs.iltis.core.resources.FileUtil;
 import ch.hsr.ifs.iltis.cpp.util.CPPNameConstants;
 
@@ -23,7 +23,7 @@ import ch.hsr.ifs.iltis.cpp.util.CPPNameConstants;
 /**
  * @author tstauber
  */
-public class IncludeHelper {
+public class IncludeUtil {
 
    private static StringBuffer getSystemIncludeStatement(final String includeName) {
       return new StringBuffer(CPPNameConstants.INCLUDE_DIRECTIVE + " <" + includeName + ">");
@@ -68,7 +68,7 @@ public class IncludeHelper {
 
       if (!isAlreadyIncluded(includeStatements, includeName)) {
          try {
-            OptHelper.doIfPresentT(createIncludeIfNotJetIncluded(ast, includeName, isSystemInclude), (change) -> change.perform(
+            OptionalUtil.doIfPresentT(createIncludeIfNotJetIncluded(ast, includeName, isSystemInclude), (change) -> change.perform(
                   new NullProgressMonitor()));
          }
          catch (final CoreException e) {
@@ -93,7 +93,7 @@ public class IncludeHelper {
 
       if (!isAlreadyIncluded(includeStatements, includeName)) {
          try {
-            OptHelper.doIfPresentT(createIncludeIfNotJetIncluded(ast, includeName, isSystemInclude), (change) -> {
+            OptionalUtil.doIfPresentT(createIncludeIfNotJetIncluded(ast, includeName, isSystemInclude), (change) -> {
                change.setSaveMode(textChangeSaveState);
                change.perform(new NullProgressMonitor());
             });
@@ -105,6 +105,7 @@ public class IncludeHelper {
    }
 
    /**
+    * TODO
     * Creates and returns a TextFileChange to insert an include into the passed
     * {@link IASTTranslationUnit}
     *
@@ -189,7 +190,7 @@ public class IncludeHelper {
    }
 
    private static int getInsertOffset(final Optional<IASTNode> lastNode) {
-      return OptHelper.returnIfPresentElse(lastNode, (node) -> node.getFileLocation().getNodeOffset() + node.getFileLocation().getNodeLength(), 0);
+      return OptionalUtil.returnIfPresentElse(lastNode, (node) -> node.getFileLocation().getNodeOffset() + node.getFileLocation().getNodeLength(), 0);
    }
 
    private static TextFileChange createTextFileChange(final IFile file, final TextEdit edit) {
