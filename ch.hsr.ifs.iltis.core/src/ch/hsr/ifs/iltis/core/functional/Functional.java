@@ -9,7 +9,6 @@ import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import ch.hsr.ifs.iltis.core.functional.functions.ThrowingConsumer;
 import ch.hsr.ifs.iltis.core.functional.functions.ThrowingRunnable;
@@ -18,10 +17,14 @@ import ch.hsr.ifs.iltis.core.functional.functions.ThrowingRunnable;
 public abstract class Functional {
 
    public static <A, B> Stream<StreamPair<A, B>> zip(final Stream<A> as, final Stream<B> bs) {
-      final Iterator<A> i1 = as.iterator();
-      final Iterator<B> i2 = bs.iterator();
+      return zipWithDefaults(as,bs, null,null);
+   }
+   
+   public static <A, B> Stream<StreamPair<A, B>> zipWithDefaults(final Stream<A> as, final Stream<B> bs, final A defaultA, final B defaultB) {
       final Iterable<StreamPair<A, B>> i = () -> new Iterator<StreamPair<A, B>>() {
-
+         final Iterator<A> i1 = as.iterator();
+         final Iterator<B> i2 = bs.iterator();
+         
          @Override
          public boolean hasNext() {
             return i1.hasNext() || i2.hasNext();
@@ -29,12 +32,12 @@ public abstract class Functional {
 
          @Override
          public StreamPair<A, B> next() {
-            A f = i1.hasNext()? i1.next():null;
-            B s = i2.hasNext()? i2.next():null;
+            A f = i1.hasNext()? i1.next():defaultA;
+            B s = i2.hasNext()? i2.next():defaultB;
             return new StreamPair<>(f, s);
          }
       };
-      return StreamSupport.stream(i.spliterator(), false);
+      return StreamFactory.from(i);
    }
 
    public static <A, B> Stream<StreamPair<A, B>> zip(final Collection<A> as, final Collection<B> bs) {
@@ -65,7 +68,7 @@ public abstract class Functional {
             return new StreamTripple<>(i1.next(), i2.next(), i3.next());
          }
       };
-      return StreamSupport.stream(i.spliterator(), false);
+      return StreamFactory.from(i);
    }
 
    public static <A, B, C> Stream<StreamTripple<A, B, C>> zip(final Collection<A> as, final Collection<B> bs, final Collection<C> cs) {
@@ -80,56 +83,35 @@ public abstract class Functional {
       return Arrays.stream(as).map(mapping).toArray(generator);
    }
 
-   /**
-    * @since 0.1
-    */
    public static <T> T asOrNull(final Class<T> c, final Object o) {
       return c.isInstance(o) ? c.cast(o) : null;
    }
 
-   /**
-    * @since 0.1
-    */
    @SuppressWarnings("unchecked")
    public static <T> T as(final Object o) {
       return (T) o;
    }
 
-   /**
-    * @since 0.1
-    */
    public static <T> void doIfItIs(final Object arg, final Class<T> type, final Consumer<T> funThen) {
       if (type.isInstance(arg)) {
          funThen.accept(type.cast(arg));
       }
    }
 
-   /**
-    * @since 0.1
-    */
    public static <T, R> R returnIfItIsElse(final Object arg, final Class<T> type, final Function<T, R> funThen, final Supplier<R> funElse) {
       return type.isInstance(arg) ? funThen.apply(type.cast(arg)) : funElse.get();
    }
 
-   /**
-    * @since 0.1
-    */
    public static <T, R> R returnIfItIsElse(final Object arg, final Class<T> type, final Supplier<R> funThen, final Supplier<R> funElse) {
       return type.isInstance(arg) ? funThen.get() : funElse.get();
    }
 
-   /**
-    * @since 0.1
-    */
    public static <T, E extends Exception> void doIfItIsT(final Object arg, final Class<T> type, final ThrowingConsumer<T, E> funThen) throws E {
       if (type.isInstance(arg)) {
          funThen.accept(type.cast(arg));
       }
    }
 
-   /**
-    * @since 0.1
-    */
    public static <T> void doIfItIsElse(final Object arg, final Class<T> type, final Consumer<T> funThen, final Runnable funElse) {
       if (type.isInstance(arg)) {
          funThen.accept(type.cast(arg));
@@ -138,9 +120,6 @@ public abstract class Functional {
       }
    }
 
-   /**
-    * @since 0.1
-    */
    public static <T, E extends Exception> void doIfItIsTElse(final Object arg, final Class<T> type, final ThrowingConsumer<T, E> funThen,
             final Runnable funElse) throws E {
       if (type.isInstance(arg)) {
@@ -150,9 +129,6 @@ public abstract class Functional {
       }
    }
 
-   /**
-    * @since 0.1
-    */
    public static <T, E extends Exception> void doIfItIsElseT(final Object arg, final Class<T> type, final Consumer<T> funThen,
             final ThrowingRunnable<E> funElse) throws E {
       if (type.isInstance(arg)) {
@@ -162,9 +138,6 @@ public abstract class Functional {
       }
    }
 
-   /**
-    * @since 0.1
-    */
    public static <T, E extends Exception> void doIfItIsTElseT(final Object arg, final Class<T> type, final ThrowingConsumer<T, E> funThen,
             final ThrowingRunnable<E> funElse) throws E {
       if (type.isInstance(arg)) {
