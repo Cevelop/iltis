@@ -10,7 +10,7 @@ import ch.hsr.ifs.iltis.core.functional.functions.ThrowingFunction;
 import ch.hsr.ifs.iltis.core.functional.functions.ThrowingSupplier;
 
 
-public abstract class OptHelper {
+public abstract class OptionalUtil {
 
    public static <T, R> Optional<R> returnIfPresentElseEmpty(final Optional<T> optional, final Supplier<Optional<R>> fun) {
       return optional.isPresent() ? fun.get() : Optional.empty();
