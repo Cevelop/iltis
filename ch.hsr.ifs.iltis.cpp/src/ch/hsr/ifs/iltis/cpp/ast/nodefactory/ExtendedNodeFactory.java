@@ -50,7 +50,7 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTypeId;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTSimpleTypeTemplateParameter;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPNodeFactory;
 
-import ch.hsr.ifs.iltis.core.collections.CollectionHelper;
+import ch.hsr.ifs.iltis.core.collections.CollectionUtil;
 import ch.hsr.ifs.iltis.cpp.util.CPPNameConstants;
 
 
@@ -80,7 +80,7 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
    @Override
    public ICPPASTQualifiedName newQualifiedName(final ICPPASTName... names) {
       final ICPPASTQualifiedName qualifiedName = newQualifiedName(names[0]);
-      CollectionHelper.tail(Arrays.asList(names)).forEach(qualifiedName::addName);
+      CollectionUtil.tail(Arrays.asList(names)).forEach(qualifiedName::addName);
       return qualifiedName;
    }
 
