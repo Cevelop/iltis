@@ -4,7 +4,12 @@ import java.util.Map;
 
 import org.eclipse.ltk.core.refactoring.RefactoringDescriptor;
 
-
+/**
+ * A wrapper class for the cdt CRefactoringContribution. Using this wrapper reduces the amount of warnings respectively the amount of {@code @SuppressWarnings} tags
+ * 
+ * @author tstauber
+ *
+ */
 @SuppressWarnings("restriction")
 public abstract class CRefactoringContribution extends org.eclipse.cdt.internal.ui.refactoring.CRefactoringContribution {
 

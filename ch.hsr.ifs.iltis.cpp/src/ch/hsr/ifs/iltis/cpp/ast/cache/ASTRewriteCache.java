@@ -13,6 +13,12 @@ import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 
 
+/**
+ * A cache for AST-rewrites. Especially if an AST outside of the currently loaded TU is edited, this prevents multiple reloads.
+ * 
+ * @author fmorgner (Taken from Constificator) //TODO move
+ *
+ */
 public class ASTRewriteCache {
 
    private Map<IASTTranslationUnit, ASTRewrite> astRewriteCache;
@@ -25,6 +31,13 @@ public class ASTRewriteCache {
       astRewriteCache = new HashMap<>();
    }
 
+   /**
+    * Returns the cached rewrite for the passed translation unit.
+    * 
+    * @param translationUnit
+    *        The translation unit
+    * @return The rewrite, or null if something went wrong
+    */
    public ASTRewrite getASTRewrite(ITranslationUnit translationUnit) {
       IASTTranslationUnit astTranslationUnit = getASTTranslationUnit(translationUnit);
       ASTRewrite rewrite = null;
@@ -41,6 +54,13 @@ public class ASTRewriteCache {
       return rewrite;
    }
 
+   /**
+    * Returns the cached translation unit or loads it if not yet in cache
+    * 
+    * @param translationUnit
+    *        The translation unit
+    * @return The translation unit, or null if something went wrong
+    */
    public IASTTranslationUnit getASTTranslationUnit(ITranslationUnit translationUnit) {
       if (translationUnit == null) { return null; }
       URI locationURI = translationUnit.getLocationURI();
@@ -63,6 +83,11 @@ public class ASTRewriteCache {
       return astTranslationUnit;
    }
 
+   /**
+    * Returns a change representing all changes to all the cached translation units
+    * 
+    * @return The composite change.
+    */
    public Change getChange() {
       CompositeChange compositeChange = new CompositeChange("");
       for (ASTRewrite rewrite : astRewriteCache.values()) {
@@ -71,6 +96,9 @@ public class ASTRewriteCache {
       return compositeChange;
    }
 
+   /**
+    * @return The index with which this ASTRewriteCache was created
+    */
    public IIndex getIndex() {
       return index;
    }

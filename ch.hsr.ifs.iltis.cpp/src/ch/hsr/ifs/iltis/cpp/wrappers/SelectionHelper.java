@@ -7,7 +7,12 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.viewers.ISelection;
 
-
+/**
+ * A wrapper class for the cdt SelectionHelper. Using this wrapper reduces the amount of warnings respectively the amount of {@code @SuppressWarnings} tags
+ * 
+ * @author tstauber
+ *
+ */
 @SuppressWarnings("restriction")
 public class SelectionHelper extends org.eclipse.cdt.internal.ui.refactoring.utils.SelectionHelper {
 

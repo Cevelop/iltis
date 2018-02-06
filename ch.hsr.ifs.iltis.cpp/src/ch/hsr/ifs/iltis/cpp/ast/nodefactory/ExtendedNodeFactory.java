@@ -1,6 +1,5 @@
 package ch.hsr.ifs.iltis.cpp.ast.nodefactory;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -374,23 +373,15 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
    }
 
    @Override
-   public IASTFunctionCallExpression newFunctionCallExpression(String functionName, IASTNode... args) {
+   public IASTFunctionCallExpression newFunctionCallExpression(String functionName, IASTInitializerClause... args) {
       final IASTIdExpression function = newIdExpression(functionName);
-      return newFunctionCallExpression(function, getArgArray(args));
+      return newFunctionCallExpression(function, args);
    }
 
    @Override
-   public IASTFunctionCallExpression newMemberFunctionCallExpression(IASTName objectName, String methodName, IASTNode... args) {
+   public IASTFunctionCallExpression newMemberFunctionCallExpression(IASTName objectName, String methodName, IASTInitializerClause... args) {
       final IASTFieldReference fieldReference = newFieldReference(newName(methodName), newIdExpression(objectName.copy()));
-      return newFunctionCallExpression(fieldReference, getArgArray(args));
-   }
-
-   private IASTInitializerClause[] getArgArray(IASTNode... args) {
-      final ArrayList<IASTInitializerClause> argList = new ArrayList<>();
-      for (final IASTNode arg : args) {
-         argList.add((IASTInitializerClause) arg);
-      }
-      return argList.toArray(new IASTInitializerClause[] {});
+      return newFunctionCallExpression(fieldReference, args);
    }
 
    @Override
@@ -491,7 +482,7 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
 
    @Override
    public IASTConditionalExpression newConditionalExpression(IASTExpression condition, IASTExpression positive, IASTExpression negative) {
-      return super.newConditionalExpession(condition,positive,negative);
+      return super.newConditionalExpession(condition, positive, negative);
    }
 
 }

@@ -10,10 +10,8 @@ import org.eclipse.ltk.core.refactoring.TextChange;
 
 
 /**
- * Wrapper for ModificationCollector. For duck-typing reasons and the fact, that
- * ModificationCollector does not implement an interface, this class extends
- * ModificationCollector.
- *
+ * A wrapper class for the cdt ModificationCollector. Using this wrapper reduces the amount of warnings respectively the amount of {@code @SuppressWarnings} tags
+ * 
  * @author tstauber
  *
  */

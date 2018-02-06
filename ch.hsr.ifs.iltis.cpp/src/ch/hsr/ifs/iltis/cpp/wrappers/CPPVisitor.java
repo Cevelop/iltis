@@ -22,7 +22,12 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPFunctionType;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPPlaceholderType.PlaceholderKind;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPInternalBinding;
 
-
+/**
+ * A wrapper class for the cdt CPPVisitor. Using this wrapper reduces the amount of warnings respectively the amount of {@code @SuppressWarnings} tags
+ * 
+ * @author tstauber
+ *
+ */
 @SuppressWarnings("restriction")
 public class CPPVisitor extends org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor {
 

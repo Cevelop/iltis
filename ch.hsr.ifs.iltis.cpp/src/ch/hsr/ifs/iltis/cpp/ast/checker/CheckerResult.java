@@ -20,6 +20,9 @@ public class CheckerResult<problemId extends IProblemId> extends AbstractPair<pr
       super(first, second);
    }
 
+   /**
+    * @return The problem id which was reported by the checker
+    */
    public problemId getProblemId() {
       return first;
    }
@@ -31,6 +34,9 @@ public class CheckerResult<problemId extends IProblemId> extends AbstractPair<pr
       return first.getId();
    }
 
+   /**
+    * @return The node on which the checker hit
+    */
    public IASTNode getNode() {
       return second;
    }

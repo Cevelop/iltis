@@ -45,16 +45,15 @@ public abstract class CFieldEditorPropertyAndPreferencePage extends FieldEditorP
     */
    @Override
    protected void validationHook() {
-      // Override and do validation checks and setValid in subclass
+      /* Override and do validation checks and setValid in subclass */
    }
 
    /**
     * Must return the {@code IProject} for which to open the property page.
     * This could be done by opening a ProjectSelectorDialog.
     *
-    * @return
+    * @return The project for which to open the project properties
     */
-
    @Override
    protected ICProject getProjectForWhichToOpenProperties() {
       final HashSet<ICProject> projectsWithSpecifics = new HashSet<>();

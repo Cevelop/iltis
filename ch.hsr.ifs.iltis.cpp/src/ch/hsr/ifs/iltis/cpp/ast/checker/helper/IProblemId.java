@@ -8,5 +8,21 @@ package ch.hsr.ifs.iltis.cpp.ast.checker.helper;
  */
 public interface IProblemId {
 
+   /**
+    * Returns the id as String
+    * 
+    * @return
+    */
    public String getId();
+
+   public static IProblemId wrap(String id) {
+      return new IProblemId() {
+
+         @Override
+         public String getId() {
+            return id;
+         }
+
+      };
+   }
 }

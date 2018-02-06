@@ -59,7 +59,11 @@ import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPDeferredClassInstance;
 import ch.hsr.ifs.iltis.core.exception.ILTISException;
 import ch.hsr.ifs.iltis.core.functional.Functional;
 
-
+/**
+ * DOC
+ * @author tstauber
+ *
+ */
 @SuppressWarnings("restriction")
 public abstract class ASTUtil {
 
@@ -345,7 +349,7 @@ public abstract class ASTUtil {
 
    public static String getQfNameF(final ICPPASTCompositeTypeSpecifier clazz) {
       final IBinding clazzBinding = clazz.getName().resolveBinding();
-      ILTISException.Unless.instanceOf(clazzBinding, ICPPClassType.class, "Class expected");
+      ILTISException.Unless.assignableFrom(ICPPClassType.class, clazzBinding, "Class expected");
       return getQfName((ICPPClassType) clazzBinding);
    }
 

@@ -8,7 +8,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.ltk.core.refactoring.RefactoringContext;
 
-
+/**
+ * A wrapper class for the cdt CRefactoringContext. Using this wrapper reduces the amount of warnings respectively the amount of {@code @SuppressWarnings} tags
+ * 
+ * @author tstauber
+ *
+ */
 @SuppressWarnings("restriction")
 public class CRefactoringContext extends org.eclipse.cdt.internal.ui.refactoring.CRefactoringContext {
 

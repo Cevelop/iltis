@@ -13,7 +13,10 @@ import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 
 
 /**
+ * A wrapper class for the cdt CRefactoringDescriptior. Using this wrapper reduces the amount of warnings respectively the amount of {@code @SuppressWarnings} tags
+ * 
  * @author tstauber
+ *
  */
 @SuppressWarnings("restriction")
 public abstract class CRefactoringDescriptor extends org.eclipse.cdt.internal.ui.refactoring.CRefactoringDescriptor {

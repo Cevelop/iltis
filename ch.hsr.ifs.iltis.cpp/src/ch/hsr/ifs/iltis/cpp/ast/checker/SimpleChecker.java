@@ -26,7 +26,7 @@ import ch.hsr.ifs.iltis.cpp.resources.CProjectUtil;
 
 
 /**
- * A checker TODO write
+ * A checker DOC write
  *
  * @author tstauber
  *

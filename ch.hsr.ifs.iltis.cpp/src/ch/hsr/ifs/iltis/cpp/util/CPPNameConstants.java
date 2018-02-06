@@ -1,5 +1,11 @@
 package ch.hsr.ifs.iltis.cpp.util;
 
+/**
+ * An utility class which provides often used C++ strings as constants
+ * 
+ * @author tstauber
+ *
+ */
 public abstract class CPPNameConstants {
 
    public final static String STD          = "std";
@@ -19,7 +25,7 @@ public abstract class CPPNameConstants {
    /* Keywords */
    public static final String CONST_KEYWORD = "const";
 
-   /* Macro */
+   /* Preprocessor */
    public static final String INCLUDE_DIRECTIVE = "#include";
    public static final String END_IF_DIRECTIVE  = "#endif";
    public static final String DEFINE_DIRECTIVE  = "#define";
@@ -27,7 +33,7 @@ public abstract class CPPNameConstants {
    public static final String IFNDEF_DIRECTIVE  = "#ifndef";
    public static final String IFDEF_DIRECTIVE   = "#ifdef";
 
-   //member functions
+   /* member functions */
    public final static String C_STR             = "c_str";
    public final static String BEGIN             = "begin";
    public final static String END               = "end";
@@ -42,23 +48,23 @@ public abstract class CPPNameConstants {
    public final static String FIND_FIRST_OF     = "find_first_of";
    public final static String FIND_FIRST_NOT_OF = "find_first_not_of";
 
-   //operator overloads
+   /* operator overloads */
    public final static String OP_ASSIGNMENT      = "operator=";
    public final static String OP_PLUS_ASSIGNMENT = "operator+=";
    public final static String OP_EQUALS          = "operator==";
    public final static String OP_NOT_EQUALS      = "operator!=";
 
-   //functions
+   /* functions */
    public final static String STOI  = "stoi";
    public final static String STOL  = "stol";
    public final static String STOLL = "stoll";
    public final static String STOD  = "stod";
 
-   //types
+   /* types */
    public final static String STRING_SIZE_TYPE  = "std::string::size_type";
    public final static String WSTRING_SIZE_TYPE = "std::wstring::size_type";
 
-   //constants
+   /* constants */
    public final static String NPOS = "npos";
 
 }

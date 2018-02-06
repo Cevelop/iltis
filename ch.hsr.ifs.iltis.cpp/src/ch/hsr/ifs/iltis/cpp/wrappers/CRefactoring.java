@@ -29,7 +29,10 @@ import org.eclipse.ltk.core.refactoring.participants.CheckConditionsContext;
 
 
 /**
+ * A wrapper class for the cdt CRefactoring. Using this wrapper reduces the amount of warnings respectively the amount of {@code @SuppressWarnings} tags
+ * 
  * @author tstauber
+ *
  */
 @SuppressWarnings("restriction")
 public abstract class CRefactoring extends org.eclipse.cdt.internal.ui.refactoring.CRefactoring {
@@ -42,17 +45,22 @@ public abstract class CRefactoring extends org.eclipse.cdt.internal.ui.refactori
    public CRefactoring(final ICElement element, final ISelection selection, final ICProject project) {
       super(element, selection, project);
    }
-
+   /**
+    * @return {@code true} if refactoring is instance of cdt CRefactoring
+    */
    public static boolean isUnwrappedType(Refactoring ref) {
       return ref instanceof org.eclipse.cdt.internal.ui.refactoring.CRefactoring;
    }
-
+   
+   /**
+    * @return The class of the cdt CRefactoring
+    */
    public static Class<org.eclipse.cdt.internal.ui.refactoring.CRefactoring> getUnwrappedType() {
       return org.eclipse.cdt.internal.ui.refactoring.CRefactoring.class;
    }
 
    /**
-    * Wrapper method which uses a ILTIS CRefactoringContext
+    * Wrapper method which uses an ILTIS CRefactoringContext
     */
    public void setContext(final CRefactoringContext refactoringContext) {
       Assert.isNotNull(refactoringContext);

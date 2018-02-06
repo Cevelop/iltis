@@ -6,7 +6,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Path;
 
 import ch.hsr.ifs.iltis.core.resources.FileUtil;
-import ch.hsr.ifs.iltis.core.resources.ProjectUtil;
+import ch.hsr.ifs.iltis.core.resources.WorkspaceUtil;
 
 
 /**
@@ -24,7 +24,7 @@ public abstract class CFileUtil {
     */
    public static IFile getFile(final IASTNode node) {
       IASTFileLocation location = getNodeFileLocation(node);
-      return location == null ? null : ProjectUtil.getWorkspaceRoot().getFileForLocation(new Path(location.getFileName()));
+      return location == null ? null : WorkspaceUtil.getWorkspaceRoot().getFileForLocation(new Path(location.getFileName()));
    }
 
    /**

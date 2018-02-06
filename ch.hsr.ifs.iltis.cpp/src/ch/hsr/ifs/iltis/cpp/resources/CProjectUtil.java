@@ -37,12 +37,16 @@ public abstract class CProjectUtil extends ProjectUtil {
       }
    }
 
-   //DOC missing
+   /**
+    * @return The {@link ICProject} associated with the file
+    */
    public static ICProject getCProject(final IFile file) {
       return CoreModel.getDefault().create(file).getCProject();
    }
 
-   //DOC missing
+   /**
+    * @return The {@link ICProject} associated with the project
+    */
    public static ICProject getCProject(final IProject project) {
       return CoreModel.getDefault().getCModel().getCProject(project.getName());
    }

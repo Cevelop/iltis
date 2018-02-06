@@ -21,6 +21,8 @@ import ch.hsr.ifs.iltis.cpp.util.CPPNameConstants;
 
 
 /**
+ * A utility class which provides static methods for adding includes.
+ * 
  * @author tstauber
  */
 public class IncludeUtil {
@@ -70,8 +72,7 @@ public class IncludeUtil {
          try {
             OptionalUtil.doIfPresentT(createIncludeIfNotJetIncluded(ast, includeName, isSystemInclude), (change) -> change.perform(
                   new NullProgressMonitor()));
-         }
-         catch (final CoreException e) {
+         } catch (final CoreException e) {
             e.printStackTrace();
          }
       }
@@ -97,17 +98,19 @@ public class IncludeUtil {
                change.setSaveMode(textChangeSaveState);
                change.perform(new NullProgressMonitor());
             });
-         }
-         catch (final CoreException e) {
+         } catch (final CoreException e) {
             e.printStackTrace();
          }
       }
    }
 
    /**
-    * TODO
-    * Creates and returns a TextFileChange to insert an include into the passed
-    * {@link IASTTranslationUnit}
+    * Creates and returns a TextFileChange to insert an include into the passed translation unit. The caller must provide the include name and the
+    * information if it is a system include or a user include.
+    * 
+    * <pre>
+    * An include name can be something like {@code vector} or {@code foo.h} 
+    * </pre>
     *
     * @returns The {@link TextFileChange} or {@code null} if already included
     */
