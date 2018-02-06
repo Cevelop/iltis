@@ -14,7 +14,7 @@ public class WrapperTest {
       final Wrapper<String> w = new Wrapper<>("");
 
       final String[] strings = { "foo", "bar", "baz", "foobar", "foobaz" };
-      Arrays.stream(strings, 0, 5).forEach(s -> {
+      Arrays.stream(strings).forEach(s -> {
          if (s.contains("foo")) {
             w.wrapped += s;
          }

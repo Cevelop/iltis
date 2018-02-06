@@ -8,12 +8,27 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 
+/**
+ * A {@link FieldEditor} which represents a SWT {@link Button}
+ *
+ * @author tstauber
+ */
 public class ButtonFieldEditor extends FieldEditor {
 
    private Button                 button;
    private final SelectionAdapter selectionAdapter;
 
-   public ButtonFieldEditor(final String label, final int style, final SelectionAdapter adapter, final Composite parent) {
+   /**
+    * Creates a new ButtonFieldEditor.
+    * 
+    * @param label
+    *        The button's label
+    * @param adapter
+    *        The button's {@linkplain SelectionAdapter}
+    * @param parent
+    *        The FieldEditor parent
+    */
+   public ButtonFieldEditor(final String label, final SelectionAdapter adapter, final Composite parent) {
       selectionAdapter = adapter;
       init("buttonFieldEditorIngored", label);
       createControl(parent);

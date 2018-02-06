@@ -14,9 +14,10 @@ import ch.hsr.ifs.iltis.core.exception.ILTISException;
 
 
 /**
- * A utility class providing static methods to handle files. For utils using cdt please refer to {@link CFileUtil}. For I/O functionality please
+ * A utility class providing static methods to handle files. For I/O functionality please
  * refer to {@link IOUtil}
  * 
+ * @see ch.hsr.ifs.iltis.cpp.resources.CFileUtil
  * @author tstauber
  *
  */
@@ -52,7 +53,7 @@ public abstract class FileUtil {
     * @return the IFile or null if non existent
     */
    public static IFile toIFile(final IPath filePath) {
-      return ProjectUtil.getWorkspaceRoot().getFile(filePath);
+      return WorkspaceUtil.getWorkspaceRoot().getFile(filePath);
    }
 
    /**
@@ -62,7 +63,7 @@ public abstract class FileUtil {
     * @return the IFile or null if non existent
     */
    private static IFile toIFile(final URI fileURI) {
-      final IFile[] files = ProjectUtil.getWorkspaceRoot().findFilesForLocationURI(fileURI);
+      final IFile[] files = WorkspaceUtil.getWorkspaceRoot().findFilesForLocationURI(fileURI);
 
       if (files.length == 1) {
          return files[0];

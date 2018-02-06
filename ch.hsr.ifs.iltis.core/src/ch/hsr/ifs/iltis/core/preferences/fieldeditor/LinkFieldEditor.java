@@ -9,6 +9,8 @@ import org.eclipse.swt.widgets.Link;
 
 
 /**
+ * A {@linkplain FieldEditor} which is displayed as a clickable link.
+ * 
  * @author tstauber
  */
 public class LinkFieldEditor extends FieldEditor {

@@ -43,7 +43,18 @@ public abstract class CollectionUtil {
     */
    @SafeVarargs
    public static <T> List<T> list(final T... elements) {
-      return asList(elements);
+      return new ArrayList<>(asList(elements));
+   }
+
+   /**
+    * Used for implicit creation of a Map from arrays
+    * 
+    * @param elements
+    *        The elements from which to create the list
+    * @return A {@link Map}
+    */
+   public static <K, V> Map<K, V> map(final K[] keys, final V[] values) {
+      return Functional.zip(keys, values).collect(StreamUtil.toNullableMap());
    }
 
    /**
@@ -145,8 +156,7 @@ public abstract class CollectionUtil {
     *         If the cast is invalid
     */
    public static <T1, T2> Map<T1, T2> checkedCast(final Map<?, ?> map, final Class<T1> keyClazz, final Class<T2> valueClazz) {
-      return Functional.zip(map).map((pair) -> pair.cast(keyClazz, valueClazz)).collect(Collectors.toMap((pair) -> pair.first(), (pair) -> pair
-               .second()));
+      return Functional.zip(map).map((pair) -> pair.cast(keyClazz, valueClazz)).collect(StreamUtil.toMap());
    }
 
    /**
@@ -197,7 +207,7 @@ public abstract class CollectionUtil {
     * @return A {@link Collection} with all elements but the first
     */
    public static <E> Collection<E> tail(final Iterable<E> it) {
-      return StreamFactory.from(it).sequential().skip(1).collect(Collectors.toList());
+      return StreamFactory.stream(it.spliterator()).sequential().skip(1).collect(Collectors.toList());
    }
 
    /**
@@ -237,11 +247,14 @@ public abstract class CollectionUtil {
 
    /**
     * Used to check if two {@link Collection}s contain the same elements in the same order
-    * @param c1 The first Collection
-    * @param c2 The second Collection
+    * 
+    * @param c1
+    *        The first Collection
+    * @param c2
+    *        The second Collection
     * @return {@code true} if both Collections contain the same elements in the same order
     */
    public static <E> boolean haveSameElementsInSameOrder(final Collection<E> c1, final Collection<E> c2) {
-      return Functional.zip(c1, c2).anyMatch(AbstractPair::allElementEquals);
+      return !Functional.zip(c1, c2).anyMatch((pair) -> !AbstractPair.allElementEquals(pair));
    }
 }

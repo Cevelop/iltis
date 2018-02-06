@@ -5,7 +5,7 @@ import org.junit.Test;
 import ch.hsr.ifs.iltis.core.exception.ILTISException;
 
 
-public class AssertTest {
+public class UnlessTest {
 
    @Test(expected = ILTISException.class)
    public void throwsIfNull() {
@@ -40,7 +40,7 @@ public class AssertTest {
    @Test(expected = ILTISException.class)
    public void throwsIfObjOfClassType() {
       final Integer i = 42;
-      ILTISException.Unless.notInstanceOf(i, Number.class, "");
+      ILTISException.Unless.notAssignableFrom(Number.class, i, "");
    }
 
    @Test
@@ -58,6 +58,6 @@ public class AssertTest {
    @Test
    public void noThrowWhenOfClassType() {
       final Integer i = 42;
-      ILTISException.Unless.instanceOf(i, Number.class, "");
+      ILTISException.Unless.assignableFrom(Number.class, i, "");
    }
 }

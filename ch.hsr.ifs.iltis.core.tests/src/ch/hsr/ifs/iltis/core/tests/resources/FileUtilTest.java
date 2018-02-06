@@ -17,7 +17,7 @@ public class FileUtilTest {
    @Test
    public void filePartRetrievalYieldsMockatorHeaderFile() {
       final Enumeration<URL> files = Activator.getDefault().getBundle().findEntries("/externalTestResource/iltis", "*.h", false);
-      final String filePart = FileUtil.getFilename(StreamFactory.from(files).findFirst().get().getFile());
+      final String filePart = FileUtil.getFilename(StreamFactory.stream(files).findFirst().get().getFile());
       assertEquals("iltis.h", filePart);
    }
 

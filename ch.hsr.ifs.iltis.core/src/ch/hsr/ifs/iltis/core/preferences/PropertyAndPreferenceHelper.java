@@ -9,6 +9,12 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 
+/**
+ * The default implementation for IPropertyAndPreferenceHelper (covers most standard needs)
+ * 
+ * @author tstauber
+ *
+ */
 public abstract class PropertyAndPreferenceHelper implements IPropertyAndPreferenceHelper {
 
    private IPersistentPreferenceStore projectPreferences;

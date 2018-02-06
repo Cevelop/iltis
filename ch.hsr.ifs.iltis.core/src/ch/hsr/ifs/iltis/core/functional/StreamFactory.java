@@ -1,5 +1,8 @@
 package ch.hsr.ifs.iltis.core.functional;
 
+import static ch.hsr.ifs.iltis.core.collections.CollectionUtil.array;
+
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Spliterator;
@@ -9,12 +12,25 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 
+/**
+ * A factory which provides static methods for creating a {@linkplain Stream}
+ * 
+ * @author tstauber
+ *
+ */
 public abstract class StreamFactory {
 
-   public static <T> Stream<T> from(final Enumeration<T> enumeration) {
+   /**
+    * Creates a {@linkplain Stream} from an {@linkplain Enumeration}
+    * 
+    * @param enumeration
+    *        The Enumeration
+    * @return A Stream containing the elements of the Enumeration
+    */
+   public static <T> Stream<T> stream(final Enumeration<T> enumeration) {
       //      TODO once using java 9 replace this body with the commented statement
       //      return from(enumeration.asIterator());
-      return StreamSupport.stream(Spliterators.spliteratorUnknownSize(new Iterator<T>() {
+      return stream(Spliterators.spliteratorUnknownSize(new Iterator<T>() {
 
          public T next() {
             return enumeration.nextElement();
@@ -28,11 +44,40 @@ public abstract class StreamFactory {
             while (enumeration.hasMoreElements())
                action.accept(enumeration.nextElement());
          }
-      }, Spliterator.ORDERED), false);
+      }, Spliterator.ORDERED));
    }
 
-   public static <T> Stream<T> from(final Iterable<T> iterable) {
-      return StreamSupport.stream(iterable.spliterator(), false);
+   /**
+    * Creates a {@linkplain Stream} from an {@linkplain Iterator}
+    * 
+    * @param iterator
+    *        The Iterator
+    * @return A Stream containing all the elements of the Iterator
+    */
+   public static <T> Stream<T> stream(final Iterator<T> iterator) {
+      return stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED));
+   }
+
+   /**
+    * Creates a {@linkplain Stream} from an {@linkplain Spliterator}
+    * 
+    * @param spliterator
+    *        The Spliterator
+    * @return A Stream containing all the elements of the Spliterator
+    */
+   public static <T> Stream<T> stream(final Spliterator<T> spliterator) {
+      return StreamSupport.stream(spliterator, false);
+   }
+   
+   /**
+    * Creates a {@linkplain Stream} from an varargs
+    * 
+    * @param elements The elements
+    * @return A Stream containing the elements
+    */
+   @SafeVarargs
+   public static <T> Stream<T> stream(final T... elements) {
+      return Arrays.stream(array(elements));
    }
 
 }

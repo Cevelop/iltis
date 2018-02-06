@@ -27,26 +27,38 @@ public abstract class AbstractPair<T1, T2> {
       this.second = second;
    }
 
-   @SuppressWarnings("rawtypes")
+   /**
+    * {@inheritDoc}
+    * 
+    * Used to print the content of an AbstractPair. The pair is always printed in this style (first,second) this is kept even for nested
+    * structures like (first.first, first.second.first, first.second.second, second.first, second.second).
+    * 
+    */
    @Override
    public String toString() {
-      final StringBuilder str = new StringBuilder();
-      str.append("(");
-      str.append(first instanceof AbstractPair ? ((AbstractPair) first).toRawString() : first.toString());
-      str.append(", ");
-      str.append(second instanceof AbstractPair ? ((AbstractPair) second).toRawString() : second.toString());
-      return str.append(")").toString();
+      return "(" + getFirstString() + ", " + getSecondString() + ")";
    }
 
-   @SuppressWarnings("rawtypes")
+   protected String getFirstString() {
+      return first == null ? "null" : ((first instanceof AbstractPair ? ((AbstractPair<?, ?>) first).toRawString() : first.toString()));
+   }
+
+   protected String getSecondString() {
+      return second == null ? "null" : ((second instanceof AbstractPair ? ((AbstractPair<?, ?>) second).toRawString() : second.toString()));
+   }
+
+   /**
+    * An internal method used to generate the substring for nested pairs.
+    * 
+    * @return
+    */
    protected String toRawString() {
-      final StringBuilder str = new StringBuilder();
-      str.append(first instanceof AbstractPair ? ((AbstractPair) first).toRawString() : first.toString());
-      str.append(", ");
-      str.append(second instanceof AbstractPair ? ((AbstractPair) second).toRawString() : second.toString());
-      return str.toString();
+      return getFirstString() + ", " + getSecondString();
    }
 
+   /**
+    * {@inheritDoc}
+    */
    @Override
    public int hashCode() {
       final int prime = 31;
@@ -56,6 +68,9 @@ public abstract class AbstractPair<T1, T2> {
       return result;
    }
 
+   /**
+    * {@inheritDoc}
+    */
    @Override
    @SuppressWarnings("rawtypes")
    public boolean equals(final Object obj) {
@@ -84,12 +99,84 @@ public abstract class AbstractPair<T1, T2> {
       return true;
    }
 
+   /**
+    * Used to compare two AbstractPairs with a custom {@link Equals} comparator. DOC
+    * 
+    * @param obj
+    *        The object to which to compare {@code this}
+    * @param comparator
+    *        The comparator
+    * @return The same value as the equal method of the comparator returns
+    */
+   public <SndPair> boolean equals(final SndPair obj, Equals<AbstractPair<?, ?>, SndPair> comparator) {
+      return comparator.equal(this, obj);
+   }
+
+   /**
+    * Used to access the elements in a comparison.
+    * 
+    * @author tstauber
+    *
+    * @param <Other>
+    *        The type of the element to compare to this element
+    */
+   public static abstract class AbstractPairEquals<Other> implements Equals<AbstractPair<?, ?>, Other> {
+
+      /**
+       * If the passed object is an instance of AbstractPair, then the first element will be returned else null
+       * 
+       * @param obj
+       *        The object
+       * @return The first element if obj is an AbstractPair, else null
+       */
+      @SuppressWarnings("rawtypes")
+      public Object accessFirst(Other obj) {
+         if (obj instanceof AbstractPair) {
+            return ((AbstractPair) obj).first;
+         } else {
+            return null;
+         }
+      }
+
+      /**
+       * If the passed object is an instance of AbstractPair, then the second element will be returned else null
+       * 
+       * @param obj
+       *        The object
+       * @return The second element if obj is an AbstractPair, else null
+       */
+      @SuppressWarnings("rawtypes")
+      public Object accessSecond(Other obj) {
+         if (obj instanceof AbstractPair) {
+            return ((AbstractPair) obj).second;
+         } else {
+            return null;
+         }
+      }
+   }
+
+   /**
+    * Used to test, if all elements in the pair are equal to each other. This works for nested constructs.
+    * 
+    * @param pair
+    *        The abstractPair to test
+    * @return {@code true} if all elements are equal.
+    */
    public static <T1, T2> boolean allElementEquals(AbstractPair<T1, T2> pair) {
       return allElementEquals(pair, (l, r) -> l.equals(r));
    }
 
+   /**
+    * Used to test, if all elements in the pair are equal to each other. This works for nested constructs. This method takes a custom comparator.
+    * 
+    * @param pair
+    *        The abstractPair to test
+    * @param comparator
+    *        The comparator which tests for the equality.
+    * @return {@code true} if all elements are equal according to the comparator.
+    */
    @SuppressWarnings({ "rawtypes", "unchecked" })
-   public static <T1, T2> boolean allElementEquals(AbstractPair<T1, T2> pair, Equals<T1,T2> comparator) {
+   public static <T1, T2> boolean allElementEquals(AbstractPair<T1, T2> pair, Equals<T1, T2> comparator) {
 
       Optional<T1> fst = pair.first instanceof AbstractPair ? ((AbstractPair) pair.first).getValueIfAllValuesSame(comparator) : Optional.ofNullable(
                pair.first);
@@ -103,8 +190,8 @@ public abstract class AbstractPair<T1, T2> {
 
    /**
     * @returns An Optional containing the value if all values are equal
-    * @return An empty Optional if all values are null
-    * @return null if not all values are equal
+    * @returns An empty Optional if all values are {@code null}
+    * @returns {@code null} if not all values are equal
     */
    @SuppressWarnings({ "rawtypes", "unchecked" })
    protected Optional<T1> getValueIfAllValuesSame(Equals<T1, T2> comparator) {

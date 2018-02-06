@@ -4,8 +4,20 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 
+/**
+ * A utility class which offers convenience methods for Strings
+ * 
+ * @author tstauber
+ *
+ */
 public abstract class StringUtil {
 
+   /**
+    * A utility class which offers convenience methods for Strings which resemble code
+    * 
+    * @author tstauber
+    *
+    */
    public static class CodeString {
 
       /* HTML */

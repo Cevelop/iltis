@@ -1,7 +1,7 @@
 package ch.hsr.ifs.iltis.core.data;
 
 /**
- * A simple wrapper.
+ * A simple wrapper. This can be used to pass values out of a lambda.
  *
  * @author tstauber
  */

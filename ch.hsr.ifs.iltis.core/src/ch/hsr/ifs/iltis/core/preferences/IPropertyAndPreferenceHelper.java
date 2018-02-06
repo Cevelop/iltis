@@ -6,6 +6,9 @@ import org.eclipse.jface.preference.PreferencePage;
 
 
 /**
+ * This interface is used by {@linkplain FieldEditorPreferencePage}, {@linkplain FieldEditorPropertyPage}, and
+ * {@linkplain FieldEditorPropertyAndPreferencePage} and any of their subclasses
+ * 
  * @author tstauber
  */
 public interface IPropertyAndPreferenceHelper {
