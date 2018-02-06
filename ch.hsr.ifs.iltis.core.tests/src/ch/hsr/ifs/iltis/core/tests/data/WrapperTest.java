@@ -3,7 +3,9 @@ package ch.hsr.ifs.iltis.core.tests.data;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
+
 import org.junit.Test;
+
 import ch.hsr.ifs.iltis.core.data.Wrapper;
 
 
