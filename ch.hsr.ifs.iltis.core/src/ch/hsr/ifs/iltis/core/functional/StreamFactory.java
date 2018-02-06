@@ -68,11 +68,12 @@ public abstract class StreamFactory {
    public static <T> Stream<T> stream(final Spliterator<T> spliterator) {
       return StreamSupport.stream(spliterator, false);
    }
-   
+
    /**
     * Creates a {@linkplain Stream} from an varargs
     * 
-    * @param elements The elements
+    * @param elements
+    *        The elements
     * @return A Stream containing the elements
     */
    @SafeVarargs

@@ -252,7 +252,8 @@ public abstract class OptionalUtil {
     *        The Optional to test
     * @param funThen
     *        A function which can throw and takes the extracted value of the passed Optional
-    * @throws E pass-through from funThen
+    * @throws E
+    *         pass-through from funThen
     */
    public static <T, E extends Exception> void doIfPresentT(final Optional<T> optional, final ThrowingConsumer<T, E> funThen) throws E {
       if (optional.isPresent()) {

@@ -13,18 +13,18 @@ import java.util.stream.Stream;
  * 
  * @author tstauber
  *
- * @param <T> The type of the elements
+ * @param <T>
+ *        The type of the elements
  */
 public class Stack<T> {
 
    private final Deque<T> stack;
-  
 
    public Stack() {
       stack = new ArrayDeque<>();
    }
 
-   /** 
+   /**
     * Pushes a new element to the top of the stack
     */
    public void push(final T node) {
@@ -65,11 +65,11 @@ public class Stack<T> {
    public int size() {
       return stack.size();
    }
-   
+
    /**
     * Returns a stream consisting of the elements of the Stack. This does not consume the elements of the Stack.
     */
-   public Stream<T> nonConsumingStream(){
+   public Stream<T> nonConsumingStream() {
       return stack.stream();
    }
 

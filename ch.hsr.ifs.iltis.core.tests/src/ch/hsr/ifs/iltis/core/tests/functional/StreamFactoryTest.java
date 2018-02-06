@@ -15,8 +15,10 @@ public class StreamFactoryTest {
    @Test
    public void fromEnumerationTest() {
       Vector<String> source = new Vector<>();
-      source.add("foo"); source.add("bar"); source.add("baz");
-      
+      source.add("foo");
+      source.add("bar");
+      source.add("baz");
+
       String expected = "foo-bar-baz";
       String actual = StreamFactory.stream(source.elements()).collect(Collectors.joining("-"));
       Assert.assertEquals(expected, actual);
@@ -25,8 +27,10 @@ public class StreamFactoryTest {
    @Test
    public void fromIteratorTestWhichAlsoTestsSpliterator() {
       ArrayList<String> source = new ArrayList<>();
-      source.add("foo"); source.add("bar"); source.add("baz");
-      
+      source.add("foo");
+      source.add("bar");
+      source.add("baz");
+
       String expected = "foo-bar-baz";
       String actual = StreamFactory.stream(source.iterator()).collect(Collectors.joining("-"));
       Assert.assertEquals(expected, actual);

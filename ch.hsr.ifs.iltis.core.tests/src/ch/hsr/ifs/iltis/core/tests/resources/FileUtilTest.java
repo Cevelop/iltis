@@ -37,7 +37,7 @@ public class FileUtilTest {
       assertEquals("/a/b/c/", FileUtil.getPathWithoutFilename("/a/b/c/foo.h"));
       assertEquals("/a/b/c/", FileUtil.getPathWithoutFilename("/a/b/c/"));
    }
-   
+
    @Test
    public void removeFilePartYieldsDirectoryWindows() {
       assertEquals("\\a\\b\\c\\", FileUtil.getPathWithoutFilename("\\a\\b\\c\\foo.h"));

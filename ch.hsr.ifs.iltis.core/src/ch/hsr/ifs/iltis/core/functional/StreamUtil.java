@@ -48,16 +48,16 @@ public abstract class StreamUtil {
     * 
     * @return A Collector which creates a HashMap
     */
-   public static <K, V> Collector<StreamPair<K, V>, ?, HashMap<K,V>> toNullableMap() {
-      return new Collector<StreamPair<K, V>, HashMap<K,V>, HashMap<K,V>>() {
+   public static <K, V> Collector<StreamPair<K, V>, ?, HashMap<K, V>> toNullableMap() {
+      return new Collector<StreamPair<K, V>, HashMap<K, V>, HashMap<K, V>>() {
 
          @Override
-         public Supplier<HashMap<K,V>> supplier() {
-            return HashMap<K,V>::new;
+         public Supplier<HashMap<K, V>> supplier() {
+            return HashMap<K, V>::new;
          }
 
          @Override
-         public BiConsumer<HashMap<K,V>, StreamPair<K, V>> accumulator() {
+         public BiConsumer<HashMap<K, V>, StreamPair<K, V>> accumulator() {
             return (map, element) -> {
                K key = element.first();
                if (map.containsKey(key)) {
@@ -69,7 +69,7 @@ public abstract class StreamUtil {
          }
 
          @Override
-         public BinaryOperator<HashMap<K,V>> combiner() {
+         public BinaryOperator<HashMap<K, V>> combiner() {
             return (current, additional) -> {
                current.putAll(additional);
                return current;
@@ -77,7 +77,7 @@ public abstract class StreamUtil {
          }
 
          @Override
-         public Function<HashMap<K,V>, HashMap<K,V>> finisher() {
+         public Function<HashMap<K, V>, HashMap<K, V>> finisher() {
             return Function.identity();
          }
 

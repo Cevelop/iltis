@@ -153,6 +153,7 @@ public class ILTISException extends Exception {
 
       /**
        * Throws an unchecked {@link ILTISException} with the message msg, if the passed object is NOT assignable from clazz
+       * 
        * @param clazz
        *        The class for which to test the object
        * @param object
@@ -160,7 +161,7 @@ public class ILTISException extends Exception {
        * @param msg
        *        The message
        */
-      public static <T> void instanceOf(final Object object,final Class<T> clazz,  final String msg) {
+      public static <T> void instanceOf(final Object object, final Class<T> clazz, final String msg) {
          if (!checkIsInstance(object, clazz)) {
             throwWith(msg);
          }
@@ -168,6 +169,7 @@ public class ILTISException extends Exception {
 
       /**
        * Throws an unchecked {@link ILTISException} with the message msg, if the passed object is assignable from clazz
+       * 
        * @param clazz
        *        The class for which to test the object
        * @param object
@@ -175,7 +177,7 @@ public class ILTISException extends Exception {
        * @param msg
        *        The message
        */
-      public static <T> void notInstanceOf(final Object object,final Class<T> clazz,  final String msg) {
+      public static <T> void notInstanceOf(final Object object, final Class<T> clazz, final String msg) {
          if (checkIsInstance(object, clazz)) {
             throwWith(msg);
          }

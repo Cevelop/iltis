@@ -73,7 +73,7 @@ public class PairTest {
       foo = new Pair<>(new Pair<>("Cigar", "Cigar"), new Pair<>("Cigar", "Cigar"));
       assertTrue(AbstractPair.allElementEquals(foo));
    }
-   
+
    @Test
    public void allElementNull() {
       Pair<Pair<String, String>, Pair<String, String>> foo = new Pair<>(new Pair<>("Cigar", "Cigar"), new Pair<>(null, null));

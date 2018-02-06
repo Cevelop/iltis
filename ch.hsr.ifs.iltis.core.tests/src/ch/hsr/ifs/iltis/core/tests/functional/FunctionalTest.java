@@ -126,30 +126,30 @@ public class FunctionalTest {
       assertArrayEquals(expected, actual);
    }
 
-      @Test
-      public void asOrNull() {
-         Object source = "foo";
-         String actual = Functional.asOrNull(String.class, source);
-         Assert.assertEquals("foo", actual);
-         
-         Integer actualInt = Functional.asOrNull(Integer.class, source);
-         Assert.assertNull(actualInt);
-      }
-   
-      @Test
-      public void as() {
-         Object source = "foo";
-         String actual = Functional.as(source);
-         Assert.assertEquals("foo", actual);
-      }
-      
-      @Test(expected=ClassCastException.class)
-      public void asExc() {
-         Object source = "foo";
-         Integer actual = Functional.as(source);
-         Assert.assertEquals("foo", actual);
-      }
-   
+   @Test
+   public void asOrNull() {
+      Object source = "foo";
+      String actual = Functional.asOrNull(String.class, source);
+      Assert.assertEquals("foo", actual);
+
+      Integer actualInt = Functional.asOrNull(Integer.class, source);
+      Assert.assertNull(actualInt);
+   }
+
+   @Test
+   public void as() {
+      Object source = "foo";
+      String actual = Functional.as(source);
+      Assert.assertEquals("foo", actual);
+   }
+
+   @Test(expected = ClassCastException.class)
+   public void asExc() {
+      Object source = "foo";
+      Integer actual = Functional.as(source);
+      Assert.assertEquals("foo", actual);
+   }
+
    protected class TestPair<F, S> extends AbstractPair<F, S> {
 
       public TestPair(F first, S second) {

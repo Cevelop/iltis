@@ -13,6 +13,7 @@ public interface Builder<T> {
 
    /**
     * Builds the content for this {@link Builder}
+    * 
     * @return An instance of {@link T}
     */
    T build();
