@@ -83,6 +83,14 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/ch/hsr/ifs/iltis/cpp/wrappers/IndexToASTNameHelper.java" type="ch.hsr.ifs.iltis.cpp.wrappers.IndexToASTNameHelper">
+        <filter id="576720909">
+            <message_arguments>
+                <message_argument value="IndexToASTNameHelper"/>
+                <message_argument value="IndexToASTNameHelper"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/ch/hsr/ifs/iltis/cpp/wrappers/ModificationCollector.java" type="ch.hsr.ifs.iltis.cpp.wrappers.ModificationCollector">
         <filter id="643842064">
             <message_arguments>
