@@ -162,6 +162,7 @@ public abstract class AbstractPair<T1, T2> {
     *        The abstractPair to test
     * @return {@code true} if all elements are equal.
     */
+   @SuppressWarnings("unlikely-arg-type")
    public static <T1, T2> boolean allElementEquals(AbstractPair<T1, T2> pair) {
       return allElementEquals(pair, (l, r) -> l.equals(r));
    }
