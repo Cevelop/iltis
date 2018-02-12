@@ -17,7 +17,7 @@ import org.eclipse.text.edits.TextEdit;
 
 import ch.hsr.ifs.iltis.core.functional.OptionalUtil;
 import ch.hsr.ifs.iltis.core.resources.FileUtil;
-import ch.hsr.ifs.iltis.cpp.util.CPPNameConstants;
+import ch.hsr.ifs.iltis.cpp.util.constants.CommonCPPConstants;
 
 
 /**
@@ -28,11 +28,11 @@ import ch.hsr.ifs.iltis.cpp.util.CPPNameConstants;
 public class IncludeUtil {
 
    private static StringBuffer getSystemIncludeStatement(final String includeName) {
-      return new StringBuffer(CPPNameConstants.INCLUDE_DIRECTIVE + " <" + includeName + ">");
+      return new StringBuffer(CommonCPPConstants.INCLUDE_DIRECTIVE + " <" + includeName + ">");
    }
 
    private static StringBuffer getUserIncludeStatement(final String includeName) {
-      return new StringBuffer(CPPNameConstants.INCLUDE_DIRECTIVE + " \"" + includeName + "\"");
+      return new StringBuffer(CommonCPPConstants.INCLUDE_DIRECTIVE + " \"" + includeName + "\"");
    }
 
    private static StringBuffer getIncludeStatement(final String includeName, final boolean isSystemInclude) {

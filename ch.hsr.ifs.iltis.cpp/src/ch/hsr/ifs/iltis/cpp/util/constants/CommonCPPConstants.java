@@ -1,4 +1,4 @@
-package ch.hsr.ifs.iltis.cpp.util;
+package ch.hsr.ifs.iltis.cpp.util.constants;
 
 /**
  * An utility class which provides often used C++ strings as constants
@@ -6,7 +6,7 @@ package ch.hsr.ifs.iltis.cpp.util;
  * @author tstauber
  *
  */
-public abstract class CPPNameConstants {
+public abstract class CommonCPPConstants {
 
    public final static String STD          = "std";
    public final static String HEADER_NAME  = "string";
@@ -25,25 +25,6 @@ public abstract class CPPNameConstants {
    /* Keywords */
    public static final String CONST_KEYWORD = "const";
 
-   /* Preprocessor */
-   public static final String INCLUDE_DIRECTIVE = "#include";
-   public static final String END_IF_DIRECTIVE  = "#endif";
-   public static final String DEFINE_DIRECTIVE  = "#define";
-   public static final String UNDEF_DIRECTIVE   = "#undef";
-   public static final String IFNDEF_DIRECTIVE  = "#ifndef";
-   public static final String IFDEF_DIRECTIVE   = "#ifdef";
-
-   /* member functions */
-   public final static String C_STR             = "c_str";
-   public final static String BEGIN             = "begin";
-   public final static String END               = "end";
-   public final static String EMPTY             = "empty";
-   public final static String SIZE              = "size";
-   public final static String RESERVE           = "reserve";
-   public final static String APPEND            = "append";
-   public final static String COMPARE           = "compare";
-   public final static String REPLACE           = "replace";
-   public final static String FIND              = "find";
    public final static String RFIND             = "rfind";
    public final static String FIND_FIRST_OF     = "find_first_of";
    public final static String FIND_FIRST_NOT_OF = "find_first_not_of";
@@ -66,5 +47,23 @@ public abstract class CPPNameConstants {
 
    /* constants */
    public final static String NPOS = "npos";
+   /* Preprocessor */
+   public static final String INCLUDE_DIRECTIVE = "#include";
+   public static final String END_IF_DIRECTIVE  = "#endif";
+   public static final String DEFINE_DIRECTIVE  = "#define";
+   public static final String UNDEF_DIRECTIVE   = "#undef";
+   public static final String IFNDEF_DIRECTIVE  = "#ifndef";
+   public static final String IFDEF_DIRECTIVE   = "#ifdef";
+   /* member functions */
+   public final static String C_STR             = "c_str";
+   public final static String BEGIN             = "begin";
+   public final static String END               = "end";
+   public final static String EMPTY             = "empty";
+   public final static String SIZE              = "size";
+   public final static String RESERVE           = "reserve";
+   public final static String APPEND            = "append";
+   public final static String COMPARE           = "compare";
+   public final static String REPLACE           = "replace";
+   public final static String FIND              = "find";
 
 }

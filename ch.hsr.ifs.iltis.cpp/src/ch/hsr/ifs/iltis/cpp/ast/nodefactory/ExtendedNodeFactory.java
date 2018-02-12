@@ -50,7 +50,7 @@ import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTSimpleTypeTemplatePara
 import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPNodeFactory;
 
 import ch.hsr.ifs.iltis.core.collections.CollectionUtil;
-import ch.hsr.ifs.iltis.cpp.util.CPPNameConstants;
+import ch.hsr.ifs.iltis.cpp.util.constants.CommonCPPConstants;
 
 
 @SuppressWarnings("restriction")
@@ -64,7 +64,7 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
 
    @Override
    public ICPPASTName newName(final String strName) {
-      final String[] components = strName.split(CPPNameConstants.SCOPE_RES_OP);
+      final String[] components = strName.split(CommonCPPConstants.SCOPE_RES_OP);
       final ICPPASTName name = newName(components[0].toCharArray());
       if (components.length > 1) {
          final ICPPASTQualifiedName qualifiedName = newQualifiedName(name);
@@ -238,7 +238,7 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
 
    @Override
    public ICPPASTLiteralExpression newNullptr() {
-      return newLiteralExpression(IASTLiteralExpression.lk_nullptr, CPPNameConstants.NULLPTR);
+      return newLiteralExpression(IASTLiteralExpression.lk_nullptr, CommonCPPConstants.NULLPTR);
    }
 
    @Override
