@@ -16,7 +16,9 @@ import org.eclipse.ltk.core.refactoring.CompositeChange;
 /**
  * A cache for AST-rewrites. Especially if an AST outside of the currently loaded TU is edited, this prevents multiple reloads.
  * 
- * @author fmorgner (Taken from Constificator) //TODO move
+ * TODO replace ASTRewriteCache in Constificator by this one
+ * 
+ * @author fmorgner (Taken from Constificator)
  *
  */
 public class ASTRewriteCache {
