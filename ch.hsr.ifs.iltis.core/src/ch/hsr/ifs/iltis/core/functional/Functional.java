@@ -112,7 +112,6 @@ public abstract class Functional {
 
          @Override
          public Spliterator<StreamPair<A, B>> trySplit() {
-            // TODO Auto-generated method stub
             return null;
          }
 
@@ -300,7 +299,6 @@ public abstract class Functional {
 
          @Override
          public Spliterator<StreamTriple<A, B, C>> trySplit() {
-            // TODO Auto-generated method stub
             return null;
          }
 

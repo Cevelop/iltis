@@ -100,7 +100,7 @@ public abstract class AbstractPair<T1, T2> {
    }
 
    /**
-    * Used to compare two AbstractPairs with a custom {@link Equals} comparator. DOC
+    * Used to compare two AbstractPairs with a custom {@link Equals} comparator.
     * 
     * @param obj
     *        The object to which to compare {@code this}

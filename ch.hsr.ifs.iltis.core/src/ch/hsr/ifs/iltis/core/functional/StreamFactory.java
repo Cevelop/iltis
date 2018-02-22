@@ -28,7 +28,7 @@ public abstract class StreamFactory {
     * @return A Stream containing the elements of the Enumeration
     */
    public static <T> Stream<T> stream(final Enumeration<T> enumeration) {
-      //      TODO once using java 9 replace this body with the commented statement
+      //      FIXME once using java 9 replace this body with the commented statement
       //      return from(enumeration.asIterator());
       return stream(Spliterators.spliteratorUnknownSize(new Iterator<T>() {
 
@@ -37,7 +37,7 @@ public abstract class StreamFactory {
          }
 
          public boolean hasNext() {
-            return enumeration.hasMoreElements();
+            return enumeration == null ? false : enumeration.hasMoreElements();
          }
 
          public void forEachRemaining(final Consumer<? super T> action) {
