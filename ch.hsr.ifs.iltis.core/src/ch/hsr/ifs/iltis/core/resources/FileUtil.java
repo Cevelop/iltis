@@ -62,17 +62,13 @@ public abstract class FileUtil {
     * @param fileURI
     * @return the IFile or null if non existent
     */
-   private static IFile toIFile(final URI fileURI) {
+   public static IFile toIFile(final URI fileURI) {
       final IFile[] files = WorkspaceUtil.getWorkspaceRoot().findFilesForLocationURI(fileURI);
 
-      if (files.length == 1) {
-         return files[0];
-      }
+      if (files.length == 1) { return files[0]; }
 
-      for (final IFile file : files) {
-         if (fileURI.getPath().endsWith(file.getFullPath().toString())) {
-            return file;
-         }
+      for (final IFile curfile : files) {
+         if (fileURI.getPath().endsWith(curfile.getFullPath().toString())) { return curfile; }
       }
 
       return null;
