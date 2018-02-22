@@ -64,7 +64,7 @@
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="problemId" type="string" use="required">
+         <attribute name="problemId" type="string">
             <annotation>
                <documentation>
                   Problem id of the problem for which quick fix is defined
@@ -84,7 +84,7 @@
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="labelText" type="string" use="required">
+         <attribute name="labelText" type="string">
             <annotation>
                <documentation>
                   To set the label text in the quick fix, this attribute should be used
