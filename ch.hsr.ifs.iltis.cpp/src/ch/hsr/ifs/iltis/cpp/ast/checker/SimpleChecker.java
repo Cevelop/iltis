@@ -26,7 +26,7 @@ import ch.hsr.ifs.iltis.cpp.resources.CProjectUtil;
 
 
 /**
- * A checker DOC write
+ * A checker which provides a certain infrastructure. Can easily be extended to use ASTRewriteCache.
  *
  * @author tstauber
  *
