@@ -51,4 +51,25 @@ public abstract class StringUtil {
       }
    }
 
+   public static String capitalize(final String word) {
+      final char[] charArray = word.toCharArray();
+      charArray[0] = Character.toUpperCase(charArray[0]);
+      return String.valueOf(charArray);
+   }
+
+   public static String quote(final String s) {
+      return String.format("\"%s\"", s);
+   }
+
+   public static String unquote(String s) {
+      if (s != null && StringUtil.startsAndEndsWithQuotes(s)) {
+         s = s.substring(1, s.length() - 1);
+      }
+      return s;
+   }
+
+   public static boolean startsAndEndsWithQuotes(final String s) {
+      return s.startsWith("\"") && s.endsWith("\"") || s.startsWith("'") && s.endsWith("'");
+   }
+
 }
