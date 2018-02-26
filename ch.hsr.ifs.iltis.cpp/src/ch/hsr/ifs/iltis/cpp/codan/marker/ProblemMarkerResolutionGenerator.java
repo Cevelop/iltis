@@ -1,15 +1,12 @@
 package ch.hsr.ifs.iltis.cpp.codan.marker;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.cdt.codan.core.model.ICodanProblemMarker;
-import org.eclipse.cdt.codan.internal.core.model.CodanProblemMarker;
 import org.eclipse.cdt.codan.ui.ICodanMarkerResolution;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
@@ -28,23 +25,11 @@ import ch.hsr.ifs.iltis.core.ILTIS;
  *
  * @author tstauber
  */
-@SuppressWarnings("restriction")
 public class ProblemMarkerResolutionGenerator implements IMarkerResolutionGenerator {
 
-   private static final String                                         EXTENSION_POINT_NAME = "labeledMarkerResolution"; //$NON-NLS-1$
-   private static final Map<String, Collection<ConditionalResolution>> resolutions          = new HashMap<>();
-   private static boolean                                              resolutionsLoaded;
-
-   static class ConditionalResolution {
-
-      IMarkerResolution res;
-      String            messagePattern;
-
-      public ConditionalResolution(final IMarkerResolution res, final String messagePattern) {
-         this.res = res;
-         this.messagePattern = messagePattern;
-      }
-   }
+   private static final String                                     EXTENSION_POINT_NAME = "labeledMarkerResolution"; //$NON-NLS-1$
+   private static final Map<String, Collection<IMarkerResolution>> resolutions          = new HashMap<>();
+   private static boolean                                          resolutionsLoaded;
 
    /**
     * {@inheritDoc}
@@ -56,58 +41,10 @@ public class ProblemMarkerResolutionGenerator implements IMarkerResolutionGenera
       }
       final String id = marker.getAttribute(ICodanProblemMarker.ID, null);
       if (id == null && resolutions.get(null) == null) { return new IMarkerResolution[0]; }
-      final String message = marker.getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
-      final Collection<ConditionalResolution> collection = resolutions.get(id);
-      if (collection != null) {
-         final ArrayList<IMarkerResolution> list = new ArrayList<>();
-         for (final ConditionalResolution res : collection) {
-            if (res.messagePattern != null) {
-               try {
-                  final Pattern pattern = Pattern.compile(res.messagePattern);
-                  final Matcher matcher = pattern.matcher(message);
-                  if (!matcher.matches()) {
-                     continue;
-                  }
-                  if (id == null) {
-                     setArgumentsFromPattern(matcher, marker);
-                  }
-               }
-               catch (final Exception e) {
-                  ILTIS.log(NLS.bind(Messages.PMRG_CannotCompile, res.messagePattern));
-                  continue;
-               }
-            }
-            if (res.res instanceof ICodanMarkerResolution && !((ICodanMarkerResolution) res.res).isApplicable(marker)) {
-               continue;
-            }
-            list.add(res.res);
-         }
-         if (list.size() > 0) { return list.toArray(new IMarkerResolution[list.size()]); }
-      }
+      final Collection<IMarkerResolution> collection = resolutions.get(id);
+      if (collection != null) { return collection.stream().filter((res) -> res instanceof ICodanMarkerResolution && ((ICodanMarkerResolution) res)
+            .isApplicable(marker)).toArray(IMarkerResolution[]::new); }
       return new IMarkerResolution[0];
-   }
-
-   /**
-    * @param matcher
-    * @param marker
-    */
-   private void setArgumentsFromPattern(final Matcher matcher, final IMarker marker) {
-      final int n = matcher.groupCount();
-      if (n == 0) { return; }
-      final String[] res = new String[n];
-      for (int i = 0; i < n; i++) {
-         res[i] = matcher.group(i + 1);
-      }
-
-      final String[] old = CodanProblemMarker.getProblemArguments(marker);
-      if (!Arrays.deepEquals(res, old)) {
-         try {
-            CodanProblemMarker.setProblemArguments(marker, res);
-         }
-         catch (final CoreException e) {
-            ILTIS.log(e);
-         }
-      }
    }
 
    private static synchronized void readExtensions() {
@@ -119,8 +56,7 @@ public class ProblemMarkerResolutionGenerator implements IMarkerResolutionGenera
          for (final IConfigurationElement configurationElement : elements) {
             processResolution(configurationElement);
          }
-      }
-      finally {
+      } finally {
          resolutionsLoaded = true;
       }
    }
@@ -143,16 +79,14 @@ public class ProblemMarkerResolutionGenerator implements IMarkerResolutionGenera
                ((ILabeledMarkerResolution) res).setLabel(configurationElement.getAttribute("labelText")); //$NON-NLS-1$
             }
 
-         }
-         catch (final CoreException e) {
+         } catch (final CoreException e) {
             ILTIS.log(e);
             return;
          }
          if (messagePattern != null) {
             try {
                Pattern.compile(messagePattern);
-            }
-            catch (final Exception e) {
+            } catch (final Exception e) {
                ILTIS.log(NLS.bind(Messages.PMRG_Invalid, EXTENSION_POINT_NAME, e.getMessage()));
                return;
             }
@@ -162,11 +96,11 @@ public class ProblemMarkerResolutionGenerator implements IMarkerResolutionGenera
    }
 
    public static void addResolution(final String id, final IMarkerResolution res, final String messagePattern) {
-      addResolution(id, new ConditionalResolution(res, messagePattern));
+      addResolution(id, res);
    }
 
-   private static void addResolution(final String id, final ConditionalResolution res) {
-      Collection<ConditionalResolution> collection = resolutions.get(id);
+   private static void addResolution(final String id, final IMarkerResolution res) {
+      Collection<IMarkerResolution> collection = resolutions.get(id);
       if (collection == null) {
          collection = new ArrayList<>();
          resolutions.put(id, collection);

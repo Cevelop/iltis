@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="com.cevelop.iltis.cpp" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="ch.hsr.ifs.iltis.cpp" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="com.cevelop.iltis.cpp" id="labeledMarkerResolution" name="Labeled Marker Resolution"/>
+         <meta.schema plugin="ch.hsr.ifs.iltis.cpp" id="labeledMarkerResolution" name="Labeled Marker Resolution"/>
       </appinfo>
       <documentation>
          Like a classic Marker Resolution, but allows to define the content on the label in the extension definiton.
@@ -74,20 +74,10 @@
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="messagePattern" type="string">
-            <annotation>
-               <documentation>
-                  If problem id is not enough to identify the fix, messagePattern can be used to apply a fix for a given message
-               </documentation>
-               <appinfo>
-                  <meta.attribute translatable="true"/>
-               </appinfo>
-            </annotation>
-         </attribute>
          <attribute name="labelText" type="string">
             <annotation>
                <documentation>
-                  To set the label text in the quick fix, this attribute should be used
+                  The label to show for this resolution
                </documentation>
                <appinfo>
                   <meta.attribute translatable="true"/>
@@ -114,7 +104,7 @@
          &lt;extension
  id=&quot;com.cevelop.ifs.markerResolution&quot;
  name=&quot;Marker Resolution&quot;
- point=&quot;com.cevelop.ifs.LabeledMarkerResolution&quot;&gt;
+ point=&quot;ch.hsr.ifs.iltis.cpp.LabeledMarkerResolution&quot;&gt;
  &lt;resolution
   class=&quot;com.cevelop.ifs.quickfixes.IntQuickFix&quot;
   problemId=&quot;com.cevelop.ifs.problems.variables&quot;
