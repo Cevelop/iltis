@@ -6,12 +6,12 @@ import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.junit.Assert;
 import org.junit.Test;
 
-import ch.hsr.ifs.iltis.cpp.includes.IncludeUtil;
+import ch.hsr.ifs.iltis.cpp.includes.IncludeInsertionUtil;
 
 import ch.hsr.ifs.cdttesting.cdttest.CDTTestingTest;
 
 
-public class IncludeHelperTest extends CDTTestingTest {
+public class IncludeInsertionUtilTest extends CDTTestingTest {
 
    private String  headerName;
    private boolean isSystemInclude;
@@ -25,7 +25,7 @@ public class IncludeHelperTest extends CDTTestingTest {
 
    @Test
    public void runTest() throws Throwable {
-      IncludeUtil.includeIfNotJetIncluded(getCurrentAST(), headerName, isSystemInclude, TextFileChange.FORCE_SAVE);
+      IncludeInsertionUtil.includeIfNotJetIncluded(getCurrentAST(), headerName, isSystemInclude, TextFileChange.FORCE_SAVE);
       assertEqualsAST(getExpectedAST(), getCurrentAST());
       Assert.assertEquals(getExpectedSource(), getCurrentSource());
    }

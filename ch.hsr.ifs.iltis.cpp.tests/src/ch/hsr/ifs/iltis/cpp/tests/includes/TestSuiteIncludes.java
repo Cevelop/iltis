@@ -8,7 +8,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 //@formatter:off
 @SuiteClasses({
-   IncludeHelperTest.class,
+   IncludeInsertionUtilTest.class,
 })
 public class TestSuiteIncludes {
 
