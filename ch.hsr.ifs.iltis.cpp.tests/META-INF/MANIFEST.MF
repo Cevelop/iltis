@@ -1,6 +1,7 @@
 Bundle-ActivationPolicy: lazy
 Bundle-Name: ILTIS CPP Unit Tests
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Fragment-Host: ch.hsr.ifs.iltis.cpp
 Require-Bundle: 
  org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -13,11 +14,9 @@ Require-Bundle:
  org.hamcrest.core,
  org.eclipse.ui.editors;bundle-version="3.8.100",
  ch.hsr.ifs.cdttesting,
- org.eclipse.cdt.core,
- ch.hsr.ifs.iltis.cpp
+ org.eclipse.cdt.core
 Bundle-Version: 0.1.0.qualifier
 Bundle-ManifestVersion: 2
-Bundle-Activator: ch.hsr.ifs.iltis.cpp.tests.Activator
 Bundle-SymbolicName: ch.hsr.ifs.iltis.cpp.tests;singleton:=true
 Bundle-ClassPath: .
 Bundle-Vendor: IFS Institut for Software
