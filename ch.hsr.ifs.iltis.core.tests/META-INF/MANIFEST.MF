@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.workbench,
  org.hamcrest.core,
  org.eclipse.ui.editors;bundle-version="3.8.100"
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.1.0.qualifier
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: ch.hsr.ifs.iltis.core.tests;singleton:=true
 Bundle-ClassPath: .

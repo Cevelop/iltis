@@ -19,6 +19,8 @@
     <module>ch.hsr.ifs.iltis.core.target</module>
     <!-- Plugins -->
     <module>ch.hsr.ifs.iltis.core</module>
+    <!-- Tests -->
+    <module>ch.hsr.ifs.iltis.core.tests</module>
     <!-- Features -->
     <module>ch.hsr.ifs.iltis.core.feature</module>
     <!-- Updatesites -->
@@ -76,7 +78,7 @@
           <target>
             <artifact>
               <groupId>ch.hsr.ifs.iltis.core</groupId>
-              <artifactId>iltis-core.oxygen</artifactId>
+              <artifactId>ch.hsr.ifs.iltis.core.target</artifactId>
               <version>${project.version}</version>
             </artifact>
           </target>
@@ -109,25 +111,25 @@
       </plugin>
 
       <!-- Code-signing settings -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jarsigner-plugin</artifactId>
-        <version>1.4</version>
-        <executions>
-          <execution>
-            <id>sign</id>
-            <goals>
-              <goal>sign</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <keystore>${keystore}</keystore>
-          <alias>${keyalias}</alias>
-          <storepass>${certpass}</storepass>
-          <storetype>pkcs12</storetype>
-        </configuration>
-      </plugin>
+<!--       <plugin> -->
+<!--         <groupId>org.apache.maven.plugins</groupId> -->
+<!--         <artifactId>maven-jarsigner-plugin</artifactId> -->
+<!--         <version>1.4</version> -->
+<!--         <executions> -->
+<!--           <execution> -->
+<!--             <id>sign</id> -->
+<!--             <goals> -->
+<!--               <goal>sign</goal> -->
+<!--             </goals> -->
+<!--           </execution> -->
+<!--         </executions> -->
+<!--         <configuration> -->
+<!--           <keystore>${keystore}</keystore> -->
+<!--           <alias>${keyalias}</alias> -->
+<!--           <storepass>${certpass}</storepass> -->
+<!--           <storetype>pkcs12</storetype> -->
+<!--         </configuration> -->
+<!--       </plugin> -->
 
       <!-- Surefire settings -->
       <plugin>
@@ -135,17 +137,8 @@
         <artifactId>tycho-surefire-plugin</artifactId>
         <version>${tycho-version}</version>
         <configuration>
-          <dependencies>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>org.eclipse.sdk.ide</artifactId>
-              <version>0.0.0</version>
-            </dependency>
-          </dependencies>
           <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
-          <product>org.eclipse.epp.package.cpp.product</product>
-          <application>org.eclipse.ui.ide.workbench</application>
           <includes>
             <include>**/TestSuiteAll.java</include>
           </includes>
