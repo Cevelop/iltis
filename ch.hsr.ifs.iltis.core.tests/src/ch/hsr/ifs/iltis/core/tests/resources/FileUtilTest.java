@@ -6,17 +6,19 @@ import java.net.URL;
 import java.util.Enumeration;
 
 import org.junit.Test;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 import ch.hsr.ifs.iltis.core.functional.StreamFactory;
 import ch.hsr.ifs.iltis.core.resources.FileUtil;
-import ch.hsr.ifs.iltis.core.tests.Activator;
 
 
 public class FileUtilTest {
 
    @Test
-   public void filePartRetrievalYieldsMockatorHeaderFile() {
-      final Enumeration<URL> files = Activator.getDefault().getBundle().findEntries("/externalTestResource/iltis", "*.h", false);
+   public void filePartRetrievalYieldsMockatorHeaderFile() { 
+      Bundle bundle = FrameworkUtil.getBundle(getClass());
+      final Enumeration<URL> files = bundle.findEntries("/externalTestResource/iltis", "*.h", false);
       final String filePart = FileUtil.getFilename(StreamFactory.stream(files).findFirst().get().getFile());
       assertEquals("iltis.h", filePart);
    }

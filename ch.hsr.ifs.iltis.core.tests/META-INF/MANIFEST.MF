@@ -1,8 +1,8 @@
 Bundle-ActivationPolicy: lazy
 Bundle-Name: ILTIS Core Unit Tests
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: ch.hsr.ifs.iltis.core;bundle-version="0.1.0",
- org.eclipse.ui,
+Fragment-Host: ch.hsr.ifs.iltis.core
+Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.7.100",
  org.junit;bundle-version="4.11.0",
@@ -14,7 +14,6 @@ Require-Bundle: ch.hsr.ifs.iltis.core;bundle-version="0.1.0",
  org.eclipse.ui.editors;bundle-version="3.8.100"
 Bundle-Version: 1.0.0.qualifier
 Bundle-ManifestVersion: 2
-Bundle-Activator: ch.hsr.ifs.iltis.core.tests.Activator
 Bundle-SymbolicName: ch.hsr.ifs.iltis.core.tests;singleton:=true
 Bundle-ClassPath: .
 Bundle-Vendor: IFS Institut for Software
