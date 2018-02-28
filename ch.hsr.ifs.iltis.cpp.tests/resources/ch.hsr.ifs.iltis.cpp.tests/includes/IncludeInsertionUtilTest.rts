@@ -131,18 +131,6 @@ int main()
 #endif
 }
 
-//! Should fail
-//@.config
-markerLines=3
-headerName=cstdint
-systemInclude=true
-//@main.cpp
-int main(){
-}
-//=
-int main(){
-}
-
 //! Is system include inserted at the right position with no other includes
 //@.config
 markerLines=3
