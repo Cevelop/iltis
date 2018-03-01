@@ -1,0 +1,9 @@
+target "ILTIS-CPP Development based on Eclipse Oxygen and CDT 9.4.0"
+
+with source requirements
+include "ch.hsr.ifs.iltis.cpp.target.base.tpd"
+
+
+location "https://www.cevelop.com/cdt-testing/development" {
+    ch.hsr.ifs.cdttesting.feature.feature.group lazy
+}
