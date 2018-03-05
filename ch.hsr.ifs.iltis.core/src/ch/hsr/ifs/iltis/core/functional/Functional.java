@@ -63,7 +63,7 @@ public abstract class Functional {
     * @return A {@linkplain Stream} of {@linkplain StreamPair}
     */
    public static <A, B> Stream<StreamPair<A, B>> zipWithDefaults(final Stream<A> as, final Stream<B> bs, final Supplier<A> defaultA,
-            final Supplier<B> defaultB) {
+         final Supplier<B> defaultB) {
       return zipWithDefaults(as, bs, (currentB) -> defaultA.get(), (currentA) -> defaultB.get());
    }
 
@@ -89,7 +89,7 @@ public abstract class Functional {
     * @return A {@linkplain Stream} of {@linkplain StreamPair}
     */
    public static <A, B> Stream<StreamPair<A, B>> zipWithDefaults(final Stream<A> as, final Stream<B> bs, final Function<B, A> defaultA,
-            final Function<A, B> defaultB) {
+         final Function<A, B> defaultB) {
       final Spliterator<A> i1 = as.spliterator();
       final Spliterator<B> i2 = bs.spliterator();
 
@@ -101,9 +101,7 @@ public abstract class Functional {
             i1.tryAdvance((it) -> fst.wrapped = it);
             final Wrapper<B> snd = new Wrapper<B>(null);
             i2.tryAdvance((it) -> snd.wrapped = it);
-            if (fst.wrapped == null && snd.wrapped == null) {
-               return false;
-            }
+            if (fst.wrapped == null && snd.wrapped == null) { return false; }
             if (fst.wrapped == null) fst.wrapped = defaultA.apply(snd.wrapped);
             if (snd.wrapped == null) snd.wrapped = defaultB.apply(fst.wrapped);
             action.accept(new StreamPair<A, B>(fst.wrapped, snd.wrapped));
@@ -145,7 +143,7 @@ public abstract class Functional {
     * @return A {@linkplain Stream} of {@linkplain StreamPair}
     */
    public static <A, B> Stream<StreamPair<A, B>> zip(final Collection<A> as, final Collection<B> bs) {
-      return zip(as.stream(), bs.stream());
+      return zip(as == null ? Stream.empty() : as.stream(), bs == null ? Stream.empty() : bs.stream());
    }
 
    /**
@@ -236,9 +234,9 @@ public abstract class Functional {
     * @return A {@linkplain Stream} of {@linkplain StreamTriple}
     */
    public static <A, B, C> Stream<StreamTriple<A, B, C>> zipWithDefaults(final Stream<A> as, final Stream<B> bs, final Stream<C> cs,
-            final Supplier<A> defaultA, final Supplier<B> defaultB, final Supplier<C> defaultC) {
+         final Supplier<A> defaultA, final Supplier<B> defaultB, final Supplier<C> defaultC) {
       return zipWithDefaults(as, bs, cs, (currentB, currentC) -> defaultA.get(), (currentA, currentC) -> defaultB.get(), (currentA,
-               currentB) -> defaultC.get());
+            currentB) -> defaultC.get());
    }
 
    /**
@@ -272,7 +270,7 @@ public abstract class Functional {
     *        first, and second stream.
     */
    public static <A, B, C> Stream<StreamTriple<A, B, C>> zipWithDefaults(final Stream<A> as, final Stream<B> bs, final Stream<C> cs,
-            final Function2<B, C, A> defaultA, final Function2<A, C, B> defaultB, final Function2<A, B, C> defaultC) {
+         final Function2<B, C, A> defaultA, final Function2<A, C, B> defaultB, final Function2<A, B, C> defaultC) {
       final Spliterator<A> i1 = as.spliterator();
       final Spliterator<B> i2 = bs.spliterator();
       final Spliterator<C> i3 = cs.spliterator();
@@ -287,9 +285,7 @@ public abstract class Functional {
             i2.tryAdvance((it) -> snd.wrapped = it);
             final Wrapper<C> trd = new Wrapper<C>(null);
             i3.tryAdvance((it) -> trd.wrapped = it);
-            if (fst.wrapped == null && snd.wrapped == null && trd.wrapped == null) {
-               return false;
-            }
+            if (fst.wrapped == null && snd.wrapped == null && trd.wrapped == null) { return false; }
             if (fst.wrapped == null) fst.wrapped = defaultA.apply(snd.wrapped, trd.wrapped);
             if (snd.wrapped == null) snd.wrapped = defaultB.apply(fst.wrapped, trd.wrapped);
             if (trd.wrapped == null) trd.wrapped = defaultC.apply(fst.wrapped, snd.wrapped);
@@ -552,7 +548,7 @@ public abstract class Functional {
     *         pass-through from funThen
     */
    public static <T, E extends Exception> void doIfItIsTElse(final Object arg, final Class<T> type, final ThrowingConsumer<T, E> funThen,
-            final Runnable funElse) throws E {
+         final Runnable funElse) throws E {
       if (type.isInstance(arg)) {
          funThen.accept(type.cast(arg));
       } else {
@@ -580,7 +576,7 @@ public abstract class Functional {
     *         pass-through from funElse
     */
    public static <T, E extends Exception> void doIfItIsElseT(final Object arg, final Class<T> type, final Consumer<T> funThen,
-            final ThrowingRunnable<E> funElse) throws E {
+         final ThrowingRunnable<E> funElse) throws E {
       if (type.isInstance(arg)) {
          funThen.accept(type.cast(arg));
       } else {
@@ -612,7 +608,7 @@ public abstract class Functional {
     *         pass-through from funElse
     */
    public static <T, E1 extends Exception, E2 extends Exception> void doIfItIsTElseT(final Object arg, final Class<T> type,
-            final ThrowingConsumer<T, E1> funThen, final ThrowingRunnable<E2> funElse) throws E1, E2 {
+         final ThrowingConsumer<T, E1> funThen, final ThrowingRunnable<E2> funElse) throws E1, E2 {
       if (type.isInstance(arg)) {
          funThen.accept(type.cast(arg));
       } else {
