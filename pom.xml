@@ -9,6 +9,7 @@
 
 	<properties>
 		<tycho.version>1.0.0</tycho.version>
+		<maven.surefire.version>2.20.1</maven.surefire.version>
 		<tycho.extras.version>1.1.0</tycho.extras.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -117,45 +118,45 @@
 			</plugin>
 
 			<!-- Tycho javadoc bundle -->
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.eclipse.tycho.extras</groupId> -->
-<!-- 				<artifactId>tycho-document-bundle-plugin</artifactId> -->
-<!-- 				<version>${tycho.extras.version}</version> -->
-<!-- 				<executions> -->
-<!-- 					<execution> -->
-<!-- 						<id>gen-javadoc</id> -->
-<!-- 						<phase>generate-resources</phase> -->
-<!-- 						<goals> -->
-<!-- 							<goal>javadoc</goal> -->
-<!-- 						</goals> -->
-<!-- 						<configuration> -->
-<!-- 							<tocOptions> -->
-<!-- 								<mainLabel>ILTIS Core API</mainLabel> -->
-<!-- 							</tocOptions> -->
-<!-- 							<sourceTypes>eclipse-plugin</sourceTypes> -->
-<!-- 							<javadocOptions> -->
-<!-- 								<ignoreError>false</ignoreError> -->
-<!-- 								<encoding>UTF-8</encoding> -->
-<!-- 								<additionalArguments> -->
-<!-- 									<additionalArgument>-windowtitle "ILTIS Core APIDoc"</additionalArgument> -->
-<!-- 									<additionalArgument>-nosince</additionalArgument> -->
-<!-- 									<additionalArgument>${javadoc-args}</additionalArgument> -->
-<!-- 									<additionalArgument> -->
-<!-- 										-link -->
-<!-- 										http://docs.oracle.com/javase/8/docs/api/ -->
-<!-- 									</additionalArgument> -->
-<!-- 									<additionalArgument> -->
-<!-- 										-linkoffline -->
-<!-- 										../../${platform.api} -->
-<!-- 										http://help.eclipse.org/oxygen/topic/org.eclipse.platform.doc.isv/reference/api/ -->
-<!-- 									</additionalArgument> -->
-<!-- 									<additionalArgument>-public</additionalArgument> -->
-<!-- 								</additionalArguments> -->
-<!-- 							</javadocOptions> -->
-<!-- 						</configuration> -->
-<!-- 					</execution> -->
-<!-- 				</executions> -->
-<!-- 			</plugin> -->
+			<!-- <plugin> -->
+			<!-- <groupId>org.eclipse.tycho.extras</groupId> -->
+			<!-- <artifactId>tycho-document-bundle-plugin</artifactId> -->
+			<!-- <version>${tycho.extras.version}</version> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <id>gen-javadoc</id> -->
+			<!-- <phase>generate-resources</phase> -->
+			<!-- <goals> -->
+			<!-- <goal>javadoc</goal> -->
+			<!-- </goals> -->
+			<!-- <configuration> -->
+			<!-- <tocOptions> -->
+			<!-- <mainLabel>ILTIS Core API</mainLabel> -->
+			<!-- </tocOptions> -->
+			<!-- <sourceTypes>eclipse-plugin</sourceTypes> -->
+			<!-- <javadocOptions> -->
+			<!-- <ignoreError>false</ignoreError> -->
+			<!-- <encoding>UTF-8</encoding> -->
+			<!-- <additionalArguments> -->
+			<!-- <additionalArgument>-windowtitle "ILTIS Core APIDoc"</additionalArgument> -->
+			<!-- <additionalArgument>-nosince</additionalArgument> -->
+			<!-- <additionalArgument>${javadoc-args}</additionalArgument> -->
+			<!-- <additionalArgument> -->
+			<!-- -link -->
+			<!-- http://docs.oracle.com/javase/8/docs/api/ -->
+			<!-- </additionalArgument> -->
+			<!-- <additionalArgument> -->
+			<!-- -linkoffline -->
+			<!-- ../../${platform.api} -->
+			<!-- http://help.eclipse.org/oxygen/topic/org.eclipse.platform.doc.isv/reference/api/ -->
+			<!-- </additionalArgument> -->
+			<!-- <additionalArgument>-public</additionalArgument> -->
+			<!-- </additionalArguments> -->
+			<!-- </javadocOptions> -->
+			<!-- </configuration> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
 
 			<!-- Code-signing settings -->
 			<!-- <plugin> -->
@@ -178,14 +179,14 @@
 			<!-- </configuration> -->
 			<!-- </plugin> -->
 
-			<!-- Surefire settings -->
+
+
+			<!-- Maven surefire settings -->
 			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tycho.version}</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven.surefire.version}</version>
 				<configuration>
-					<useUIHarness>true</useUIHarness>
-					<useUIThread>true</useUIThread>
 					<includes>
 						<include>**/TestSuiteAll.java</include>
 					</includes>
