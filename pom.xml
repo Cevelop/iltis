@@ -176,7 +176,7 @@
 			<!-- </configuration> -->
 			<!-- </plugin> -->
 
-			<!-- Surefire settings -->
+			<!-- Tycho surefire settings -->
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
@@ -185,7 +185,7 @@
 					<useUIHarness>true</useUIHarness>
 					<useUIThread>true</useUIThread>
 					<includes>
-						<include>**/TestSuiteAll.java</include>
+						<include>**/PluginTestSuiteAll.java</include>
 					</includes>
 				</configuration>
 			</plugin>

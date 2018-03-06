@@ -14,6 +14,6 @@ import ch.hsr.ifs.iltis.cpp.tests.includes.TestSuiteIncludes;
    TestSuiteIncludes.class,
    
 })
-public class TestSuiteAll {
+public class PluginTestSuiteAll {
 
 }
