@@ -1,5 +1,6 @@
 package ch.hsr.ifs.iltis.cpp.tests.includes;
 
+import java.util.EnumSet;
 import java.util.Properties;
 
 import org.eclipse.ltk.core.refactoring.TextFileChange;
@@ -9,6 +10,7 @@ import org.junit.Test;
 import ch.hsr.ifs.iltis.cpp.includes.IncludeInsertionUtil;
 
 import ch.hsr.ifs.cdttesting.cdttest.CDTTestingTest;
+import ch.hsr.ifs.cdttesting.cdttest.comparison.ASTComparison.ComparisonArg;
 
 
 public class IncludeInsertionUtilTest extends CDTTestingTest {
@@ -25,8 +27,9 @@ public class IncludeInsertionUtilTest extends CDTTestingTest {
 
    @Test
    public void runTest() throws Throwable {
-      IncludeInsertionUtil.includeIfNotJetIncluded(getCurrentAST(), headerName, isSystemInclude, TextFileChange.FORCE_SAVE);
-      assertEqualsAST(getExpectedAST(), getCurrentAST());
+      IncludeInsertionUtil.includeIfNotJetIncluded(getCurrentASTOfActiveFile(), headerName, isSystemInclude, TextFileChange.FORCE_SAVE);
+      /* Doing both comparisons to be sure */
+      fastAssertEquals(activeFileName, EnumSet.of(ComparisonArg.COMPARE_INCLUDE_DIRECTIVES));
       Assert.assertEquals(getExpectedSource(), getCurrentSource());
    }
 
