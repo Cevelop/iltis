@@ -6,8 +6,12 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 
 import ch.hsr.ifs.iltis.core.exception.ILTISException;
@@ -279,6 +283,26 @@ public abstract class FileUtil {
     */
    public static IPath toPath(URI uri) {
       return org.eclipse.core.internal.utils.FileUtil.toPath(uri);
+   }
+   
+   
+   /**
+    * Creates the folder specified in the path, including all parent folders.
+    * @param path The path of the folder
+    * @param project The project in which to create the folder
+    */
+   public static void createFolderWithParents(IPath path, IProject project) {
+      for (int i = path.segmentCount() - 1; i > 0; i--) {
+         final IPath folderPath = path.removeLastSegments(i);
+         final IFolder folder = project.getFolder(folderPath);
+         if (!folder.exists()) {
+            try {
+               folder.create(false, true, new NullProgressMonitor());
+            } catch (CoreException e) {
+               e.printStackTrace();
+            }
+         }
+      }
    }
 
 }
