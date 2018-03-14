@@ -31,6 +31,10 @@ public class ILTISException extends Exception {
       super(originalException);
       this.originalException = originalException;
    }
+   
+   public static ILTISException wrap(final Exception originalException) {
+      return new ILTISException(originalException);
+   }
 
    /**
     * Creates a new {@code ILTISException} with a message and a cause
