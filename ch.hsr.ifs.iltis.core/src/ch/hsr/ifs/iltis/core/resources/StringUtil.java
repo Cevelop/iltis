@@ -1,6 +1,7 @@
 package ch.hsr.ifs.iltis.core.resources;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -49,6 +50,14 @@ public abstract class StringUtil {
 
          return escaped;
       }
+   }
+
+   public static boolean equalsOneOf(String input, List<String> compareTo) {
+      return compareTo.stream().anyMatch(str -> str.equals(input));
+   }
+
+   public static boolean equalsNoneOf(String input, List<String> compareTo) {
+      return !equalsOneOf(input, compareTo);
    }
 
    public static String capitalize(final String word) {
