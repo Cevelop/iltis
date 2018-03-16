@@ -5,10 +5,13 @@ import java.net.URI;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.eclipse.core.internal.resources.ICoreConstants;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -66,7 +69,7 @@ public abstract class FileUtil {
     * @param fileURI
     * @return the IFile or null if non existent
     */
-   public static IFile toIFile(final URI fileURI) {
+   public static IFile getIFile(final URI fileURI) {
       final IFile[] files = WorkspaceUtil.getWorkspaceRoot().findFilesForLocationURI(fileURI);
 
       if (files.length == 1) { return files[0]; }
@@ -76,6 +79,16 @@ public abstract class FileUtil {
       }
 
       return null;
+   }
+
+   /**
+    * Used to create the IFile corresponding to a URI
+    * 
+    * @param fileURI
+    * @return the IFile
+    */
+   public static IFile toIFile(final URI fileURI) {
+      return WorkspaceUtil.getWorkspaceRoot().getFile(new Path(fileURI.getPath()));
    }
 
    /**
@@ -284,25 +297,70 @@ public abstract class FileUtil {
    public static IPath toPath(URI uri) {
       return org.eclipse.core.internal.utils.FileUtil.toPath(uri);
    }
-   
-   
+
    /**
     * Creates the folder specified in the path, including all parent folders.
-    * @param path The path of the folder
-    * @param project The project in which to create the folder
+    * 
+    * @param path
+    *        The absolute path
+    * @param root
+    *        The root container
     */
-   public static void createFolderWithParents(IPath path, IProject project) {
-      for (int i = path.segmentCount() - 1; i > 0; i--) {
-         final IPath folderPath = path.removeLastSegments(i);
-         final IFolder folder = project.getFolder(folderPath);
-         if (!folder.exists()) {
-            try {
-               folder.create(false, true, new NullProgressMonitor());
-            } catch (CoreException e) {
-               e.printStackTrace();
+   public static void createFolderWithParents(IPath path, IContainer root, boolean isFolder) {
+      IPath relativePath;
+      if (path.isAbsolute()) {
+         relativePath = path.makeRelativeTo(root.getFullPath());
+      } else {
+         relativePath = path;
+      }
+      int lastSegment = isFolder ? 0 : 1;
+
+      for (int i = relativePath.segmentCount() - 1; i >= lastSegment; i--) {
+         final IPath folderPath = relativePath.removeLastSegments(i);
+         if (folderPath.segmentCount() < ICoreConstants.MINIMUM_FOLDER_SEGMENT_LENGTH && root instanceof IWorkspaceRoot) {
+            final IProject project = ((IWorkspaceRoot) root).getProject(folderPath.toString());
+            if (!project.exists()) {
+               try {
+                  project.create(new NullProgressMonitor());
+               } catch (CoreException e) {
+                  e.printStackTrace();
+               }
+            }
+         } else {
+            final IFolder folder = root.getFolder(folderPath);
+            if (!folder.exists()) {
+               try {
+                  folder.create(false, true, new NullProgressMonitor());
+               } catch (CoreException e) {
+                  e.printStackTrace();
+               }
             }
          }
       }
+   }
+
+   /**
+    * Creates the folder specified in the path, including all parent folders.
+    * 
+    * @param folder
+    *        The folder to create
+    * @param root
+    *        The root container
+    */
+   public static void createFolderWithParents(IFolder folder, IContainer root) {
+      createFolderWithParents(folder.getFullPath(), root, true);
+   }
+
+   /**
+    * Creates the parent folders for the file specified in the path.
+    * 
+    * @param file
+    *        The file for which to create the parent folders
+    * @param root
+    *        The root container
+    */
+   public static void createFolderWithParents(IFile file, IContainer root) {
+      createFolderWithParents(file.getFullPath(), root, false);
    }
 
 }
