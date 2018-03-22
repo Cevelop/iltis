@@ -18,6 +18,7 @@ import ch.hsr.ifs.iltis.core.exception.ILTISException;
 import ch.hsr.ifs.iltis.core.functional.Functional;
 import ch.hsr.ifs.iltis.core.functional.StreamFactory;
 import ch.hsr.ifs.iltis.core.functional.StreamUtil;
+import ch.hsr.ifs.iltis.core.functional.functions.Equals;
 
 
 public abstract class CollectionUtil {
@@ -169,9 +170,7 @@ public abstract class CollectionUtil {
    public static <T> boolean notNull(final Iterable<T> it) {
       ILTISException.Unless.notNull(it, "iterable must not be null");
       for (final T e : it) {
-         if (e == null) {
-            return false;
-         }
+         if (e == null) { return false; }
       }
       return true;
    }
@@ -243,6 +242,44 @@ public abstract class CollectionUtil {
     */
    public static <E> Optional<E> last(final List<E> elements) {
       return elements.isEmpty() ? Optional.empty() : Optional.of(elements.get(elements.size() - 1));
+   }
+
+   /**
+    * Used to check if a collection contains an element using a specific equals method
+    * 
+    * @param collection
+    *        The collection
+    * @param element
+    *        The element to check for
+    * @param comparator
+    *        The comparison method
+    * @return An Optional containing the first match, or an empty Optional.
+    */
+   public static <E1, E2> Optional<E1> firstMatch(final Collection<E1> collection, Equals<E1, E2> comparator, final E2 element) {
+      for (E1 e : collection) {
+         if (comparator.equal(e, element)) return Optional.ofNullable(e);
+      }
+      return Optional.empty();
+   }
+
+   /**
+    * TODO docu
+    * @param c1
+    * @param c2
+    * @param comparator
+    * @return
+    */
+   public static <E1, E2> boolean haveSameElements(final Collection<E1> c1, final Collection<E2> c2, final Equals<E1, E2> comparator) {
+      ArrayList<E1> clone = new ArrayList<>(c1);
+      for (E2 e : c2) {
+         Optional<E1> match = firstMatch(clone, comparator, e);
+         if (match.isPresent()) {
+            clone.remove(match.get());
+         } else {
+            return false;
+         }
+      }
+      return clone.isEmpty();
    }
 
    /**

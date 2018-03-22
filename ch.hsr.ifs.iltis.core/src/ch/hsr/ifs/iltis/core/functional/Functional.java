@@ -1,5 +1,6 @@
 package ch.hsr.ifs.iltis.core.functional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -614,6 +615,45 @@ public abstract class Functional {
       } else {
          funElse.run();
       }
+   }
+
+   /**
+    * Depending if an element fulfills the predicate ifFun or elseFun it will be moved to the respective collection. If neither matches it will be
+    * added to the collection returned.
+    * 
+    * <p>
+    * If an element fulfills both predicates, it will be added to both collections.
+    * 
+    * @param stream
+    *        The stream
+    * @param ifFun
+    *        The predicate for which if true the element is moved to the ifCollection
+    * @param ifCollection
+    *        The collection to fill with the elements fulfilling ifFun
+    * @param elseFun
+    *        The predicate for which if true the element is moved to the elseCollection
+    * @param elseCollection
+    *        The collection to fill with the elements fulfilling elseFun
+    * @return The elements which did neither fulfill ifFun nor elseFun
+    */
+   public static <E> Collection<E> moveToElseTo(Stream<E> stream, Function<E, Boolean> ifFun, Collection<E> ifCollection,
+         Function<E, Boolean> elseFun, Collection<E> elseCollection) {
+      ArrayList<E> others = new ArrayList<>();
+      stream.forEach(element -> {
+         boolean matched = false;
+         if (ifFun.apply(element)) {
+            if (ifCollection != null) ifCollection.add(element);
+            matched = true;
+         }
+         if (elseFun.apply(element)) {
+            if (elseCollection != null) elseCollection.add(element);
+            matched = true;
+         }
+         if (!matched) {
+            others.add(element);
+         }
+      });
+      return others;
    }
 
 }

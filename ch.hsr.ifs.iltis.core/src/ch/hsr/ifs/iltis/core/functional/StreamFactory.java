@@ -81,4 +81,23 @@ public abstract class StreamFactory {
       return Arrays.stream(array(elements));
    }
 
+   /**
+    * Creates a concatenated stream
+    * 
+    * @param first
+    *        The first stream
+    * @param others
+    *        The other streams
+    * @return A concatenated stream
+    */
+   @SuppressWarnings("unchecked")
+   @SafeVarargs
+   public static <T> Stream<T> stream(Stream<? extends T> first, Stream<? extends T>... others) {
+      Stream<? extends T> concatenated = first;
+      for (Stream<? extends T> s : others) {
+         concatenated = Stream.concat(first, s);
+      }
+      return (Stream<T>) concatenated;
+   }
+
 }

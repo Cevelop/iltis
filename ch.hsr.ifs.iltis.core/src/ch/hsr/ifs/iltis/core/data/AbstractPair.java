@@ -74,28 +74,14 @@ public abstract class AbstractPair<T1, T2> {
    @Override
    @SuppressWarnings("rawtypes")
    public boolean equals(final Object obj) {
-      if (this == obj) {
-         return true;
-      }
-      if (obj == null) {
-         return false;
-      }
-      if (getClass() != obj.getClass()) {
-         return false;
-      }
+      if (this == obj) { return true; }
+      if (obj == null) { return false; }
+      if (getClass() != obj.getClass()) { return false; }
       final AbstractPair other = (AbstractPair) obj;
-      if (first == null && other.first != null) {
-         return false;
-      }
-      if (!first.equals(other.first)) {
-         return false;
-      }
-      if (second == null && other.second != null) {
-         return false;
-      }
-      if (!second.equals(other.second)) {
-         return false;
-      }
+      if (first == null && other.first != null) { return false; }
+      if (!first.equals(other.first)) { return false; }
+      if (second == null && other.second != null) { return false; }
+      if (!second.equals(other.second)) { return false; }
       return true;
    }
 
@@ -164,25 +150,37 @@ public abstract class AbstractPair<T1, T2> {
     */
    @SuppressWarnings("unlikely-arg-type")
    public static <T1, T2> boolean allElementEquals(AbstractPair<T1, T2> pair) {
-      return allElementEquals(pair, (l, r) -> l.equals(r));
+      return allElementEquals((l, r) -> l.equals(r), pair);
+   }
+
+   /**
+    * Used to test, if NOT all elements in the pair are equal to each other. This works for nested constructs.
+    * 
+    * @param pair
+    *        The abstractPair to test
+    * @return {@code false} if all elements are equal.
+    */
+   public static <T1, T2> boolean notAllElementEquals(AbstractPair<T1, T2> pair) {
+      return !allElementEquals(pair);
    }
 
    /**
     * Used to test, if all elements in the pair are equal to each other. This works for nested constructs. This method takes a custom comparator.
     * 
-    * @param pair
-    *        The abstractPair to test
     * @param comparator
     *        The comparator which tests for the equality.
+    * @param pair
+    *        The abstractPair to test
+    * 
     * @return {@code true} if all elements are equal according to the comparator.
     */
    @SuppressWarnings({ "rawtypes", "unchecked" })
-   public static <T1, T2> boolean allElementEquals(AbstractPair<T1, T2> pair, Equals<T1, T2> comparator) {
+   public static <T1, T2> boolean allElementEquals(Equals<T1, T2> comparator, AbstractPair<T1, T2> pair) {
 
       Optional<T1> fst = pair.first instanceof AbstractPair ? ((AbstractPair) pair.first).getValueIfAllValuesSame(comparator) : Optional.ofNullable(
-               pair.first);
+            pair.first);
       Optional<T2> snd = pair.second instanceof AbstractPair ? ((AbstractPair) pair.second).getValueIfAllValuesSame(comparator) : Optional.ofNullable(
-               pair.second);
+            pair.second);
 
       if (fst == null || snd == null) return false;
       if (!fst.isPresent() && !snd.isPresent()) return true; //All elements are null
@@ -205,9 +203,7 @@ public abstract class AbstractPair<T1, T2> {
          s = ((AbstractPair) second).getValueIfAllValuesSame(comparator);
       }
 
-      if (f == null || s == null) {
-         return null;
-      }
+      if (f == null || s == null) { return null; }
       if (!f.isPresent() && !s.isPresent()) return f;
       if (f.isPresent() && s.isPresent() && f.get().getClass().isInstance(s.get()) && comparator.equal(f.get(), s.get())) {
          return f;
