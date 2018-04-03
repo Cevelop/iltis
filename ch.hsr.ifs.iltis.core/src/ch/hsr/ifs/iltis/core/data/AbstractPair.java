@@ -211,4 +211,27 @@ public abstract class AbstractPair<T1, T2> {
          return null;
       }
    }
+   
+   /**
+    * Helper class for easier nesting 
+    * @author tstauber
+    *
+    * @param <ST1>
+    * @param <ST2>
+    */
+   protected static class NestingHelper<ST1,ST2> extends AbstractPair<ST1,ST2>{
+
+      public NestingHelper(ST1 first, ST2 second) {
+         super(first, second);
+      }
+      
+      public ST1 first() {
+         return first;
+      }
+      
+      public ST2 second() {
+         return second;
+      }
+      
+   }
 }
