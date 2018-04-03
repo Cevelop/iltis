@@ -33,7 +33,7 @@ public abstract class SelectionRefactoring extends CRefactoring {
     * @return true if no selection is used, or if the node is in the selection.
     */
    protected boolean isInSelection(final IASTNode node) {
-      if (getSelectedRegion().getLength() > 0 && getRefactoringInfo().useSelection()) {
+      if (selectedRegion.getLength() > 0 && getRefactoringInfo().useSelection()) {
          return isInSelectionHook(node);
       } else {
          return true;
@@ -53,14 +53,14 @@ public abstract class SelectionRefactoring extends CRefactoring {
     * @return The end offset of the selection
     */
    protected int getSelectionEnd() {
-      return getSelectionStart() + getSelectedRegion().getLength();
+      return getSelectionStart() + selectedRegion.getLength();
    }
 
    /**
     * @return The start offset of the selection
     */
    protected int getSelectionStart() {
-      return getSelectedRegion().getOffset();
+      return selectedRegion.getOffset();
    }
 
    /**

@@ -2,6 +2,8 @@ package ch.hsr.ifs.iltis.cpp.wrappers;
 
 import java.util.Map;
 
+import org.eclipse.cdt.internal.ui.refactoring.CRefactoringDescriptor;
+import org.eclipse.ltk.core.refactoring.RefactoringContribution;
 import org.eclipse.ltk.core.refactoring.RefactoringDescriptor;
 
 /**
@@ -11,15 +13,18 @@ import org.eclipse.ltk.core.refactoring.RefactoringDescriptor;
  *
  */
 @SuppressWarnings("restriction")
-public abstract class CRefactoringContribution extends org.eclipse.cdt.internal.ui.refactoring.CRefactoringContribution {
+public abstract class CRefactoringContribution extends RefactoringContribution {
+
+   public CRefactoringContribution() {
+      super();
+   }
 
    @Override
-   public Map<String, String> retrieveArgumentMap(final RefactoringDescriptor descriptor) {
+   public Map<String, String> retrieveArgumentMap(RefactoringDescriptor descriptor) {
       if (descriptor instanceof CRefactoringDescriptor) {
-         final CRefactoringDescriptor refDesc = (CRefactoringDescriptor) descriptor;
+         CRefactoringDescriptor refDesc = (CRefactoringDescriptor) descriptor;
          return refDesc.getParameterMap();
       }
       return super.retrieveArgumentMap(descriptor);
    }
-
 }
