@@ -19,7 +19,8 @@
 		<!-- Plugins -->
 		<module>ch.hsr.ifs.iltis.cpp</module>
 		<!-- Tests -->
-		
+<!-- 		TODO reenable after finding a way to execute these tests automatically -->
+<!-- 		<module>ch.hsr.ifs.iltis.cpp.tests</module> -->
 		<!-- Features -->
 		<module>ch.hsr.ifs.iltis.cpp.feature</module>
 		<!-- Updatesites -->
