@@ -12,9 +12,9 @@ Require-Bundle:
  org.eclipse.ui.workbench,
  org.hamcrest.core,
  org.eclipse.ui.editors;bundle-version="3.8.100",
- ch.hsr.ifs.cdttesting,
  org.eclipse.cdt.core,
- ch.hsr.ifs.iltis.cpp
+ ch.hsr.ifs.iltis.cpp,
+ org.eclipse.cdt.core.tests
 Bundle-Version: 0.1.0.qualifier
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: ch.hsr.ifs.iltis.cpp.tests;singleton:=true
