@@ -77,6 +77,18 @@ public abstract class StringUtil {
       return s;
    }
 
+   public static String toString(Iterable<?> it) {
+      StringBuffer buff = new StringBuffer("[");
+      boolean isFirst = true;
+      for (Object o : it) {
+         if (isFirst) buff.append(", ");
+         buff.append(o.toString());
+         isFirst = false;
+      }
+      buff.append("]");
+      return buff.toString();
+   }
+
    public static boolean startsAndEndsWithQuotes(final String s) {
       return s.startsWith("\"") && s.endsWith("\"") || s.startsWith("'") && s.endsWith("'");
    }
