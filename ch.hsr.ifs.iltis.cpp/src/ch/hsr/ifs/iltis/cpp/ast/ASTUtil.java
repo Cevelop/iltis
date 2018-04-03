@@ -349,7 +349,7 @@ public abstract class ASTUtil {
 
    public static String getQfNameF(final ICPPASTCompositeTypeSpecifier clazz) {
       final IBinding clazzBinding = clazz.getName().resolveBinding();
-      ILTISException.Unless.assignableFrom(ICPPClassType.class, clazzBinding, "Class expected");
+      ILTISException.Unless.assignableFrom("Class expected", ICPPClassType.class, clazzBinding);
       return getQfName((ICPPClassType) clazzBinding);
    }
 
