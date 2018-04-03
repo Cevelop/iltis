@@ -12,6 +12,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -66,16 +67,17 @@ public abstract class FileUtil {
    /**
     * Used to obtain the IFile corresponding to a URI
     * 
-    * @param fileURI
+    * @param locationURI
+    *        The locationURI of the file
     * @return the IFile or null if non existent
     */
-   public static IFile getIFile(final URI fileURI) {
-      final IFile[] files = WorkspaceUtil.getWorkspaceRoot().findFilesForLocationURI(fileURI);
+   public static IFile getIFile(final URI locationURI) {
+      final IFile[] files = WorkspaceUtil.getWorkspaceRoot().findFilesForLocationURI(locationURI);
 
       if (files.length == 1) { return files[0]; }
 
       for (final IFile curfile : files) {
-         if (fileURI.getPath().endsWith(curfile.getFullPath().toString())) { return curfile; }
+         if (locationURI.getPath().endsWith(curfile.getFullPath().toOSString())) { return curfile; }
       }
 
       return null;
@@ -84,11 +86,13 @@ public abstract class FileUtil {
    /**
     * Used to create the IFile corresponding to a URI
     * 
-    * @param fileURI
+    * @param locationURI
     * @return the IFile
     */
-   public static IFile toIFile(final URI fileURI) {
-      return WorkspaceUtil.getWorkspaceRoot().getFile(new Path(fileURI.getPath()));
+   public static IFile toIFile(final URI locationURI) {
+      IWorkspaceRoot wsRoot = WorkspaceUtil.getWorkspaceRoot();
+      URI relativeURI = wsRoot.getLocationURI().relativize(locationURI);
+      return wsRoot.getFile(Path.fromOSString(relativeURI.getPath()));
    }
 
    /**
@@ -98,15 +102,6 @@ public abstract class FileUtil {
     */
    public static File toFile(final IFile file) {
       return toFile(file.getLocation());
-   }
-
-   /**
-    * Used to obtain the File corresponding to a filePath
-    * 
-    * @return the File
-    */
-   public static File toFile(final String filePath) {
-      return new File(filePath);
    }
 
    /**
@@ -153,7 +148,7 @@ public abstract class FileUtil {
     */
    public static String getFilename(final String filePath) {
       final Path path = new Path(filePath);
-      ILTISException.Unless.isTrue(path.segmentCount() > 0, "Path elements must not be empty");
+      ILTISException.Unless.isTrue("Path elements must not be empty", path.segmentCount() > 0);
       return path.segment(path.segmentCount() - 1);
    }
 
@@ -161,20 +156,19 @@ public abstract class FileUtil {
     * Used to obtain the file path without the filename and file extension.
     * {@code FileUtil.removeFilePart("/a/b/c/foo.h") -> "/a/b/c/" }
     * 
-    * @return the path without filename and extension
+    * @return The path without filename and extension
     */
    public static String getPathWithoutFilename(final String filePath) {
       return filePath.replaceAll("(\\w)*\\.(\\w)*", "");
    }
 
    /**
-    * Used to obtain the Path corresponding to a IFile
+    * Used to obtain the the path of the folder which contains this IFile
     * 
-    * @return the Path
+    * @return The path of the folder containing this file relative to the workspace
     */
-   public static Path getPath(final IFile file) {
-      final String pathOfFile = file.getFullPath().toOSString();
-      return new Path(getPathWithoutFilename(pathOfFile));
+   public static IPath getFolderPath(final IFile file) {
+      return file.getParent().getFullPath();
    }
 
    /**
