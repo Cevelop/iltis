@@ -168,7 +168,7 @@ public abstract class CollectionUtil {
     * @return {@code true} if none of the elements of it are {@code null}
     */
    public static <T> boolean notNull(final Iterable<T> it) {
-      ILTISException.Unless.notNull(it, "iterable must not be null");
+      ILTISException.Unless.notNull("iterable must not be null", it);
       for (final T e : it) {
          if (e == null) { return false; }
       }
@@ -263,11 +263,15 @@ public abstract class CollectionUtil {
    }
 
    /**
-    * TODO docu
+    * Used to check if two {@link Collection}s contain the same elements. Whereby the comparator is used to check if two elements are equal.
+    * 
     * @param c1
+    *        The first Collection
     * @param c2
+    *        The second Collection
     * @param comparator
-    * @return
+    *        The comparator
+    * @return {@code true} iff both Collections contain the same elements (according to the comparator)
     */
    public static <E1, E2> boolean haveSameElements(final Collection<E1> c1, final Collection<E2> c2, final Equals<E1, E2> comparator) {
       ArrayList<E1> clone = new ArrayList<>(c1);
@@ -289,7 +293,7 @@ public abstract class CollectionUtil {
     *        The first Collection
     * @param c2
     *        The second Collection
-    * @return {@code true} if both Collections contain the same elements in the same order
+    * @return {@code true} iff both Collections contain the same elements in the same order
     */
    public static <E> boolean haveSameElementsInSameOrder(final Collection<E> c1, final Collection<E> c2) {
       return !Functional.zip(c1, c2).anyMatch((pair) -> !AbstractPair.allElementEquals(pair));

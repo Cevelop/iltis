@@ -6,10 +6,11 @@ package ch.hsr.ifs.iltis.core.exception;
  * @author tstauber
  *
  */
-public class ILTISException extends Exception {
+public class ILTISException extends RuntimeException {
 
-   private static final long serialVersionUID = 1L;
-   private Exception         originalException;
+   public static ExceptionFactory Unless           = new ExceptionFactory(ILTISException::new);
+   protected static final long    serialVersionUID = 0x1000000;
+   private Exception              originalException;
 
    /**
     * Creates a new {@code ILTISException} containing a message
@@ -18,7 +19,19 @@ public class ILTISException extends Exception {
     *        The message displayed if the exception is thrown
     */
    public ILTISException(final String message) {
-      super(message);
+      this(message, true);
+   }
+
+   /**
+    * Creates a new {@code ILTISException} containing a message but without a stack-trace if createStacktrace is false
+    * 
+    * @param message
+    *        The message displayed if the exception is thrown
+    * @param createStacktrace
+    *        Whether to create a stack-trace
+    */
+   protected ILTISException(final String message, final boolean createStacktrace) {
+      super(message, null, true, createStacktrace);
    }
 
    /**
@@ -31,7 +44,7 @@ public class ILTISException extends Exception {
       super(originalException);
       this.originalException = originalException;
    }
-   
+
    public static ILTISException wrap(final Exception originalException) {
       return new ILTISException(originalException);
    }
@@ -85,7 +98,17 @@ public class ILTISException extends Exception {
     * @return Theoretically a {@code RuntimeException} but that never happens, as an unchecked Exception is thrown in this method.
     */
    public RuntimeException rethrowUnchecked() {
-      return rethrowUncheckedG();
+      return genericCastAndThrowException();
+   }
+
+   /**
+    * Rethrows the wrapped exception as a checked exception. If there is no wrapped exception, the ILTISException rethrows itself as a checked
+    * exception.
+    * 
+    * @return Theoretically an {@code Exception} but that never happens, as an checked Exception is thrown in this method.
+    */
+   public Exception rethrowChecked() {
+      return genericCastAndThrowException();
    }
 
    /**
@@ -96,7 +119,7 @@ public class ILTISException extends Exception {
     *         To make the magic work, this must be a {@code RuntimeException} or something which extends {@code RuntimeException}
     */
    @SuppressWarnings("unchecked")
-   private <T extends Exception> T rethrowUncheckedG() throws T {
+   private <T extends Exception> T genericCastAndThrowException() throws T {
       if (originalException != null) {
          throw (T) originalException;
       } else {
@@ -104,152 +127,185 @@ public class ILTISException extends Exception {
       }
    }
 
-   /**
-    * An utility class offering static methods to easily check a condition an subsequently throw an unchecked ILTISException, if the condition is
-    * violated.
-    * 
-    * @author tstauber
-    *
-    */
-   public static class Unless {
-
-      /**
-       * Throws an unchecked {@link ILTISException} with the message msg, if the passed expression is False
-       * 
-       * @param expr
-       *        The expression to evaluate
-       * @param msg
-       *        The message
-       */
-      public static void isTrue(final boolean expr, final String msg) {
-         if (!expr) {
-            throwWith(msg);
-         }
-      }
-
-      /**
-       * Throws an unchecked {@link ILTISException} with the message msg, if the passed expression is True
-       * 
-       * @param expr
-       *        The expression to evaluate
-       * @param msg
-       *        The message
-       */
-      public static void isFalse(final boolean expr, final String msg) {
-         if (expr) {
-            throwWith(msg);
-         }
-      }
-
-      /**
-       * Throws an unchecked {@link ILTISException} with the message msg, if the passed object is null
-       * 
-       * @param object
-       *        The object to test
-       * @param msg
-       *        The message
-       */
-      public static void notNull(final Object object, final String msg) {
-         if (object == null) {
-            throwWith(msg);
-         }
-      }
-
-      /**
-       * Throws an unchecked {@link ILTISException} with the message msg, if the passed object is NOT assignable from clazz
-       * 
-       * @param clazz
-       *        The class for which to test the object
-       * @param object
-       *        The object to test
-       * @param msg
-       *        The message
-       */
-      public static <T> void instanceOf(final Object object, final Class<T> clazz, final String msg) {
-         if (!checkIsInstance(object, clazz)) {
-            throwWith(msg);
-         }
-      }
-
-      /**
-       * Throws an unchecked {@link ILTISException} with the message msg, if the passed object is assignable from clazz
-       * 
-       * @param clazz
-       *        The class for which to test the object
-       * @param object
-       *        The object to test
-       * @param msg
-       *        The message
-       */
-      public static <T> void notInstanceOf(final Object object, final Class<T> clazz, final String msg) {
-         if (checkIsInstance(object, clazz)) {
-            throwWith(msg);
-         }
-      }
-
-      /**
-       * Throws an unchecked {@link ILTISException} with the message msg, if the passed object is NOT assignable from clazz
-       * 
-       * @param object
-       *        The object to test
-       * @param clazz
-       *        The class for which to test the object
-       * @param msg
-       *        The message
-       */
-      public static <T> void assignableFrom(final Class<T> clazz, final Object object, final String msg) {
-         if (!checkIsAssignableFrom(object, clazz)) {
-            throwWith(msg);
-         }
-      }
-
-      /**
-       * Throws an unchecked {@link ILTISException} with the message msg, if the passed object is assignable from clazz
-       * 
-       * @param object
-       *        The object to test
-       * @param clazz
-       *        The class for which to test the object
-       * @param msg
-       *        The message
-       */
-      public static <T> void notAssignableFrom(final Class<T> clazz, final Object object, final String msg) {
-         if (checkIsAssignableFrom(object, clazz)) {
-            throwWith(msg);
-         }
-      }
-
-      /**
-       * @param object
-       *        The object to test
-       * @param clazz
-       *        The class to test for
-       * @return {@code true} when the object is instance of clazz
-       */
-      private static <T> boolean checkIsInstance(final Object object, final Class<T> clazz) {
-         return clazz.isInstance(object.getClass());
-      }
-
-      /**
-       * @param object
-       *        The object to test
-       * @param clazz
-       *        The class to test for
-       * @return {@code true} when clazz is assignable from the object
-       */
-      private static <T> boolean checkIsAssignableFrom(final Object object, final Class<T> clazz) {
-         return clazz.isAssignableFrom(object.getClass());
-      }
-
-      /**
-       * Throws a new ILTISException with the message as an unchecked exception
-       * 
-       * @param message
-       *        The message
-       */
-      private static void throwWith(final String message) {
-         new ILTISException(message).rethrowUnchecked();
-      }
-   }
+//   /**
+//    * An utility class offering static methods to easily check a condition an subsequently throw an unchecked ILTISException, if the condition is
+//    * violated.
+//    * 
+//    * @author tstauber
+//    *
+//    */
+//   public static class Unless {
+//
+//      /**
+//       * Throws an unchecked {@link ILTISException} with the message msg, if expected does <b>not</b> equals actual
+//       * 
+//       * @param expected
+//       *        The expected value
+//       * @param actual
+//       *        The actual value
+//       * @param msg
+//       *        The message
+//       */
+//      public static <T1, T2> void isEqual(final T1 expected, final T2 actual, final String msg) {
+//         if (!expected.equals(actual)) {
+//            throwWith(msg);
+//         }
+//      }
+//
+//      /**
+//       * Throws an unchecked {@link ILTISException} with the message msg, if expected equals actual
+//       * 
+//       * @param expected
+//       *        The expected value
+//       * @param actual
+//       *        The actual value
+//       * @param msg
+//       *        The message
+//       */
+//      public static <T1, T2> void isUnEqual(final T1 expected, final T2 actual, final String msg) {
+//         if (expected.equals(actual)) {
+//            throwWith(msg);
+//         }
+//      }
+//
+//      /**
+//       * Throws an unchecked {@link ILTISException} with the message msg, if the passed expression is False
+//       * 
+//       * @param expr
+//       *        The expression to evaluate
+//       * @param msg
+//       *        The message
+//       */
+//      public static void isTrue(final boolean expr, final String msg) {
+//         if (!expr) {
+//            throwWith(msg);
+//         }
+//      }
+//
+//      /**
+//       * Throws an unchecked {@link ILTISException} with the message msg, if the passed expression is True
+//       * 
+//       * @param expr
+//       *        The expression to evaluate
+//       * @param msg
+//       *        The message
+//       */
+//      public static void isFalse(final boolean expr, final String msg) {
+//         if (expr) {
+//            throwWith(msg);
+//         }
+//      }
+//
+//      /**
+//       * Throws an unchecked {@link ILTISException} with the message msg, if the passed object is null
+//       * 
+//       * @param object
+//       *        The object to test
+//       * @param msg
+//       *        The message
+//       */
+//      public static void notNull(final Object object, final String msg) {
+//         if (object == null) {
+//            throwWith(msg);
+//         }
+//      }
+//
+//      /**
+//       * Throws an unchecked {@link ILTISException} with the message msg, if the passed object is NOT assignable from clazz
+//       * 
+//       * @param clazz
+//       *        The class for which to test the object
+//       * @param object
+//       *        The object to test
+//       * @param msg
+//       *        The message
+//       */
+//      public static <T> void instanceOf(final Object object, final Class<T> clazz, final String msg) {
+//         if (!checkIsInstance(object, clazz)) {
+//            throwWith(msg);
+//         }
+//      }
+//
+//      /**
+//       * Throws an unchecked {@link ILTISException} with the message msg, if the passed object is assignable from clazz
+//       * 
+//       * @param clazz
+//       *        The class for which to test the object
+//       * @param object
+//       *        The object to test
+//       * @param msg
+//       *        The message
+//       */
+//      public static <T> void notInstanceOf(final Object object, final Class<T> clazz, final String msg) {
+//         if (checkIsInstance(object, clazz)) {
+//            throwWith(msg);
+//         }
+//      }
+//
+//      /**
+//       * Throws an unchecked {@link ILTISException} with the message msg, if the passed object is NOT assignable from clazz
+//       * 
+//       * @param object
+//       *        The object to test
+//       * @param clazz
+//       *        The class for which to test the object
+//       * @param msg
+//       *        The message
+//       */
+//      public static <T> void assignableFrom(final Class<T> clazz, final Object object, final String msg) {
+//         if (!checkIsAssignableFrom(object, clazz)) {
+//            throwWith(msg);
+//         }
+//      }
+//
+//      /**
+//       * Throws an unchecked {@link ILTISException} with the message msg, if the passed object is assignable from clazz
+//       * 
+//       * @param object
+//       *        The object to test
+//       * @param clazz
+//       *        The class for which to test the object
+//       * @param msg
+//       *        The message
+//       */
+//      public static <T> void notAssignableFrom(final Class<T> clazz, final Object object, final String msg) {
+//         if (checkIsAssignableFrom(object, clazz)) {
+//            throwWith(msg);
+//         }
+//      }
+//
+//      /**
+//       * @param object
+//       *        The object to test
+//       * @param clazz
+//       *        The class to test for
+//       * @return {@code true} when the object is instance of clazz
+//       */
+//      private static <T> boolean checkIsInstance(final Object object, final Class<T> clazz) {
+//         return clazz.isInstance(object.getClass());
+//      }
+//
+//      /**
+//       * @param object
+//       *        The object to test
+//       * @param clazz
+//       *        The class to test for
+//       * @return {@code true} when clazz is assignable from the object
+//       */
+//      private static <T> boolean checkIsAssignableFrom(final Object object, final Class<T> clazz) {
+//         return clazz.isAssignableFrom(object.getClass());
+//      }
+//
+//   }
+//
+//   /**
+//    * Throws a new ILTISException with the message as an unchecked exception
+//    * 
+//    * @param message
+//    *        The message
+//    */
+//   private static void throwWith(final String message) {
+//      throw new ILTISException(message);
+//   }
 
 }
