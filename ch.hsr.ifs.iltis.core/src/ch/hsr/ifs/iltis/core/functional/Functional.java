@@ -656,4 +656,17 @@ public abstract class Functional {
       return others;
    }
 
+   @SafeVarargs
+   public static <T> void doFor(Consumer<T> action, T... elements) {
+      for (T e : elements) {
+         action.accept(e);
+      }
+   }
+
+   @SafeVarargs
+   public static <T, E extends Throwable> void doForT(ThrowingConsumer<T, E> action, T... elements) throws E {
+      for (T e : elements) {
+         action.accept(e);
+      }
+   }
 }
