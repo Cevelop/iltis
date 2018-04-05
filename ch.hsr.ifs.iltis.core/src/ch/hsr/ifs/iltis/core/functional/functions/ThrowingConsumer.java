@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  *        The type of the {@linkplain Exception} which could be thrown
  */
 @FunctionalInterface
-public interface ThrowingConsumer<T, E extends Exception> {
+public interface ThrowingConsumer<T, E extends Throwable> {
 
    /**
     * Executes the consumer

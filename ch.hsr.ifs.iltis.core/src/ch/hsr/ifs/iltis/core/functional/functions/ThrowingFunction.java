@@ -17,7 +17,7 @@ import java.util.function.Function;
  *        The exception type
  */
 @FunctionalInterface
-public interface ThrowingFunction<T, R, E extends Exception> {
+public interface ThrowingFunction<T, R, E extends Throwable> {
 
    /**
     * Executes the Function

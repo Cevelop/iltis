@@ -15,7 +15,7 @@ import java.util.function.Supplier;
  *        The exception type
  */
 @FunctionalInterface
-public interface ThrowingSupplier<R, E extends Exception> {
+public interface ThrowingSupplier<R, E extends Throwable> {
 
    /**
     * Executes the function.

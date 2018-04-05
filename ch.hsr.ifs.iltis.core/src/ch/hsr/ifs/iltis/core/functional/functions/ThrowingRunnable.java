@@ -10,7 +10,7 @@ package ch.hsr.ifs.iltis.core.functional.functions;
  *        The exception type
  */
 @FunctionalInterface
-public interface ThrowingRunnable<E extends Exception> {
+public interface ThrowingRunnable<E extends Throwable> {
 
    /**
     * Executes the runnable
