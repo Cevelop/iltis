@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: ch.hsr.ifs.iltis.core
 Bundle-ManifestVersion: 2
 Bundle-Name: ILTIS-CORE
 Bundle-SymbolicName: ch.hsr.ifs.iltis.core;singleton:=true
