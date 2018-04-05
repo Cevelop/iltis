@@ -35,17 +35,17 @@ public class OptionalUtilTest {
       });
    }
 
-   @Test
+   @Test(expected = Exception.class)
    public void doIfPresentTE() throws Exception {
       Optional<String> source = Optional.empty();
       Wrapper<String> val = new Wrapper<>("old");
-      OptionalUtil.of(source).doIfPresentT((it) -> {
+      OptionalUtil.of(source).doIfNotPresentT((it) -> {
          throw new Exception();
       });
       Assert.assertEquals("old", val.wrapped);
    }
 
-   @Test(expected = Exception.class)
+   @Test
    public void doIfPresentElseTT() throws Exception {
       Optional<String> source = Optional.of("foo");
       OptionalUtil.of(source).doIfNotPresentT((it) -> {
