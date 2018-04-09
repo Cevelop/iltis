@@ -15,7 +15,7 @@ public class OptionalUtilTest {
    public void doIfPresentElseT() {
       Optional<String> source = Optional.of("foo");
       Wrapper<String> val = new Wrapper<>("old");
-      OptionalUtil.of(source).doIfPresent(it -> val.wrapped = it + "bar").doIfNotPresent(() -> val.wrapped += "baz");
+      OptionalUtil.of(source).ifPresent(it -> val.wrapped = it + "bar").ifNotPresent(() -> val.wrapped += "baz");
       Assert.assertEquals("foobar", val.wrapped);
    }
 
@@ -23,14 +23,14 @@ public class OptionalUtilTest {
    public void doIfPresentElseE() {
       Optional<String> source = Optional.empty();
       Wrapper<String> val = new Wrapper<>("foo");
-      OptionalUtil.of(source).doIfPresent(it -> val.wrapped = it + "bar").doIfNotPresent(() -> val.wrapped += "baz");
+      OptionalUtil.of(source).ifPresent(it -> val.wrapped = it + "bar").ifNotPresent(() -> val.wrapped += "baz");
       Assert.assertEquals("foobaz", val.wrapped);
    }
 
    @Test(expected = Exception.class)
    public void doIfPresentTT() throws Exception {
       Optional<String> source = Optional.of("foo");
-      OptionalUtil.of(source).doIfPresentT(it -> {
+      OptionalUtil.of(source).ifPresentT(it -> {
          throw new Exception();
       });
    }
@@ -39,7 +39,7 @@ public class OptionalUtilTest {
    public void doIfPresentTE() throws Exception {
       Optional<String> source = Optional.empty();
       Wrapper<String> val = new Wrapper<>("old");
-      OptionalUtil.of(source).doIfNotPresentT((it) -> {
+      OptionalUtil.of(source).ifNotPresentT((it) -> {
          throw new Exception();
       });
       Assert.assertEquals("old", val.wrapped);
@@ -48,7 +48,7 @@ public class OptionalUtilTest {
    @Test
    public void doIfPresentElseTT() throws Exception {
       Optional<String> source = Optional.of("foo");
-      OptionalUtil.of(source).doIfNotPresentT((it) -> {
+      OptionalUtil.of(source).ifNotPresentT((it) -> {
          throw new Exception();
       });
    }
