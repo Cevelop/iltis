@@ -4,6 +4,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import ch.hsr.ifs.iltis.core.functional.functions.Function;
+
 
 /**
  * A utility class which offers convenience methods for Strings
@@ -77,16 +79,36 @@ public abstract class StringUtil {
       return s;
    }
 
-   public static String toString(Iterable<?> it) {
-      StringBuffer buff = new StringBuffer("[");
+   public static <O> String toString(Iterable<O> it, String prefix, String separator, String postfix, Function<O, String> fun) {
+      StringBuffer buff = new StringBuffer(prefix);
       boolean isFirst = true;
-      for (Object o : it) {
-         if (isFirst) buff.append(", ");
-         buff.append(o.toString());
+      for (O o : it) {
+         if (!isFirst) buff.append(separator);
+         buff.append(fun.apply(o));
          isFirst = false;
       }
-      buff.append("]");
+      buff.append(postfix);
       return buff.toString();
+   }
+
+   public static <O> String toString(Iterable<O> it) {
+      return toString(it, "[", ", ", "]", O::toString);
+   }
+
+   public static <O> String toString(O[] it, String prefix, String separator, String postfix, Function<O, String> fun) {
+      StringBuffer buff = new StringBuffer(prefix);
+      boolean isFirst = true;
+      for (O o : it) {
+         if (!isFirst) buff.append(separator);
+         buff.append(fun.apply(o));
+         isFirst = false;
+      }
+      buff.append(postfix);
+      return buff.toString();
+   }
+
+   public static <O> String toString(O[] it) {
+      return toString(it, "[", ", ", "]", O::toString);
    }
 
    public static boolean startsAndEndsWithQuotes(final String s) {
