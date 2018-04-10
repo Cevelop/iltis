@@ -54,6 +54,11 @@ public class OptionalUtil<T> {
       return optional;
    }
 
+   public <R> OptionalUtil<R> flatFlatMap(final Function<? super T, OptionalUtil<R>> mapper) {
+      if (optional.isPresent()) return mapper.apply(optional.get());
+      return EMPTY();
+   }
+
    public <R> OptionalUtil<R> flatMap(final Function<? super T, Optional<R>> mapper) {
       return OptionalUtil.of(optional.flatMap(mapper));
    }
@@ -75,9 +80,19 @@ public class OptionalUtil<T> {
       return EMPTY();
    }
 
-   public OptionalUtil<T> orElse(Supplier<Optional<T>> supp) {
+   public OptionalUtil<T> orElse(Optional<T> opt) {
       if (optional.isPresent()) return this;
-      return OptionalUtil.of(supp.get());
+      return OptionalUtil.of(opt);
+   }
+
+   public OptionalUtil<T> orElse(OptionalUtil<T> opt) {
+      if (optional.isPresent()) return this;
+      return opt;
+   }
+
+   public OptionalUtil<T> orElse(T val) {
+      if (optional.isPresent()) return this;
+      return OptionalUtil.of(val);
    }
 
    /**
