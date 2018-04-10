@@ -9,12 +9,6 @@
         </filter>
     </resource>
     <resource path="src/ch/hsr/ifs/iltis/cpp/wrappers/CPPVisitor.java" type="ch.hsr.ifs.iltis.cpp.wrappers.CPPVisitor">
-        <filter id="576720909">
-            <message_arguments>
-                <message_argument value="CPPVisitor"/>
-                <message_argument value="CPPVisitor"/>
-            </message_arguments>
-        </filter>
         <filter id="643842064">
             <message_arguments>
                 <message_argument value="PlaceholderKind"/>
@@ -27,67 +21,6 @@
                 <message_argument value="ICPPInternalBinding"/>
                 <message_argument value="CPPVisitor"/>
                 <message_argument value="markRedeclaration(ICPPInternalBinding)"/>
-            </message_arguments>
-        </filter>
-        <filter id="643846161">
-            <message_arguments>
-                <message_argument value="PlaceholderKind"/>
-                <message_argument value="CPPVisitor"/>
-                <message_argument value="deduceReturnType(IASTStatement, IASTDeclSpecifier, IASTDeclarator, CPPPlaceholderTypePlaceholderKind, IASTNode)"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/ch/hsr/ifs/iltis/cpp/wrappers/CRefactoring.java" type="ch.hsr.ifs.iltis.cpp.wrappers.CRefactoring">
-        <filter id="576720909">
-            <message_arguments>
-                <message_argument value="CRefactoring"/>
-                <message_argument value="CRefactoring"/>
-            </message_arguments>
-        </filter>
-        <filter id="643846161">
-            <message_arguments>
-                <message_argument value="ModificationCollector"/>
-                <message_argument value="CRefactoring"/>
-                <message_argument value="collectModifications(IProgressMonitor, ModificationCollector)"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/ch/hsr/ifs/iltis/cpp/wrappers/CRefactoringContext.java" type="ch.hsr.ifs.iltis.cpp.wrappers.CRefactoringContext">
-        <filter id="643850349">
-            <message_arguments>
-                <message_argument value="CRefactoringContext"/>
-                <message_argument value="CRefactoringContext"/>
-                <message_argument value="CRefactoringContext(CRefactoringContext)"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/ch/hsr/ifs/iltis/cpp/wrappers/CRefactoringDescriptor.java" type="ch.hsr.ifs.iltis.cpp.wrappers.CRefactoringDescriptor">
-        <filter id="576720909">
-            <message_arguments>
-                <message_argument value="CRefactoringDescriptor"/>
-                <message_argument value="CRefactoringDescriptor"/>
-            </message_arguments>
-        </filter>
-        <filter id="643842064">
-            <message_arguments>
-                <message_argument value="CRefactoring"/>
-                <message_argument value="CRefactoringDescriptor"/>
-                <message_argument value="createRefactoring(RefactoringStatus)"/>
-            </message_arguments>
-        </filter>
-        <filter id="643842064">
-            <message_arguments>
-                <message_argument value="CRefactoringContext"/>
-                <message_argument value="CRefactoringDescriptor"/>
-                <message_argument value="createRefactoringContext(RefactoringStatus)"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/ch/hsr/ifs/iltis/cpp/wrappers/IndexToASTNameHelper.java" type="ch.hsr.ifs.iltis.cpp.wrappers.IndexToASTNameHelper">
-        <filter id="576720909">
-            <message_arguments>
-                <message_argument value="IndexToASTNameHelper"/>
-                <message_argument value="IndexToASTNameHelper"/>
             </message_arguments>
         </filter>
     </resource>
@@ -104,21 +37,6 @@
                 <message_argument value="CreateFileChange"/>
                 <message_argument value="ModificationCollector"/>
                 <message_argument value="addFileChange(CreateFileChange)"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/ch/hsr/ifs/iltis/cpp/wrappers/RefactoringRunner.java" type="ch.hsr.ifs.iltis.cpp.wrappers.RefactoringRunner">
-        <filter id="576720909">
-            <message_arguments>
-                <message_argument value="RefactoringRunner"/>
-                <message_argument value="RefactoringRunner"/>
-            </message_arguments>
-        </filter>
-        <filter id="643846161">
-            <message_arguments>
-                <message_argument value="CRefactoring"/>
-                <message_argument value="RefactoringRunner"/>
-                <message_argument value="runWithContext(RefactoringWizard, CRefactoring, int)"/>
             </message_arguments>
         </filter>
     </resource>

@@ -11,6 +11,7 @@ import ch.hsr.ifs.iltis.cpp.tests.includes.TestSuiteIncludes;
 //@formatter:off
 @SuiteClasses({
 
+   ValidateWrappers.class,
    TestSuiteIncludes.class,
    
 })

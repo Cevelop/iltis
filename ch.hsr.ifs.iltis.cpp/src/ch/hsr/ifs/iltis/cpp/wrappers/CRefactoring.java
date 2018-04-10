@@ -2,11 +2,13 @@ package ch.hsr.ifs.iltis.cpp.wrappers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.cdt.core.dom.ast.ASTVisitor;
 import org.eclipse.cdt.core.dom.ast.IASTDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTExpression;
 import org.eclipse.cdt.core.dom.ast.IASTName;
+import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.dom.ast.IASTProblem;
 import org.eclipse.cdt.core.dom.ast.IASTProblemDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTProblemExpression;
@@ -15,6 +17,7 @@ import org.eclipse.cdt.core.dom.ast.IASTProblemTypeId;
 import org.eclipse.cdt.core.dom.ast.IASTStatement;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.dom.ast.IASTTypeId;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTCompositeTypeSpecifier;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTQualifiedName;
 import org.eclipse.cdt.core.index.IIndex;
 import org.eclipse.cdt.core.model.CModelException;
@@ -26,7 +29,6 @@ import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.cdt.internal.corext.util.CModelUtil;
 import org.eclipse.cdt.internal.ui.refactoring.changes.CCompositeChange;
 import org.eclipse.cdt.internal.ui.refactoring.utils.SelectionHelper;
-import org.eclipse.cdt.ui.CUIPlugin;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.mapping.IResourceChangeDescriptionFactory;
@@ -37,7 +39,6 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.Region;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringChangeDescriptor;
@@ -46,6 +47,9 @@ import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.participants.CheckConditionsContext;
 import org.eclipse.ltk.core.refactoring.participants.ResourceChangeChecker;
 import org.eclipse.ltk.core.refactoring.participants.ValidateEditChecker;
+
+import ch.hsr.ifs.iltis.core.ILTIS;
+import ch.hsr.ifs.iltis.core.functional.OptionalUtil;
 
 
 /**
@@ -60,15 +64,16 @@ import org.eclipse.ltk.core.refactoring.participants.ValidateEditChecker;
 @SuppressWarnings("restriction")
 public abstract class CRefactoring extends Refactoring {
 
-   protected String                  name = "Refactoring";
-   protected final ICProject         project;
-   protected final ITranslationUnit  tu;
-   protected final RefactoringStatus initStatus;
-   protected Region                  selectedRegion;
-   protected CRefactoringContext     refactoringContext;
-   protected ModificationCollector   modificationCollector;
+   protected String                   name = "Refactoring";
+   protected final ICProject          project;
+   protected final ITranslationUnit   tu;
+   protected final RefactoringStatus  initStatus;
+   protected Region                   selectedRegion;
+   protected Optional<ITextSelection> selection;
+   protected CRefactoringContext      refactoringContext;
+   protected ModificationCollector    modificationCollector;
 
-   public CRefactoring(ICElement element, ISelection selection, ICProject project) {
+   public CRefactoring(ICElement element, Optional<ITextSelection> selection, ICProject project) {
       this.project = project;
       this.initStatus = new RefactoringStatus();
       if (!(element instanceof ISourceReference)) {
@@ -80,27 +85,22 @@ public abstract class CRefactoring extends Refactoring {
       ISourceReference sourceRef = (ISourceReference) element;
       tu = CModelUtil.toWorkingCopy(sourceRef.getTranslationUnit());
 
-      if (selection instanceof ITextSelection) {
-         selectedRegion = SelectionHelper.getRegion(selection);
-      } else {
+      this.selection = selection;
+      initSelectedRegion(selection, sourceRef);
+
+   }
+
+   private void initSelectedRegion(Optional<ITextSelection> selection, ISourceReference sourceRef) {
+      OptionalUtil.of(selection).ifPresent(sel -> {
+         selectedRegion = new Region(sel.getOffset(), sel.getLength());
+      }).ifNotPresent(() -> {
          try {
             ISourceRange sourceRange = sourceRef.getSourceRange();
             selectedRegion = new Region(sourceRange.getIdStartPos(), sourceRange.getIdLength());
          } catch (CModelException e) {
-            CUIPlugin.log(e);
+            ILTIS.log(e);
          }
-      }
-   }
-
-   public ICProject getProject() {
-      return project;
-   }
-
-   /**
-    * Convenience method to get the {@code IProject} associated with this refactorings {@code ICProject}
-    */
-   public IProject getIProject() {
-      return project.getProject();
+      });
    }
 
    public void setContext(CRefactoringContext refactoringContext) {
@@ -295,4 +295,54 @@ public abstract class CRefactoring extends Refactoring {
       }
    }
 
+   /* V Utility Methods V */
+
+   protected Optional<IASTNode> findSelectedNodeExactly(Optional<ITextSelection> selection) {
+      return OptionalUtil.of(selection).ifPresent(sel -> getAST(tu, null).getNodeSelector(null).findNode(sel.getOffset(), sel.getLength()),
+            it -> null).get();
+   }
+
+   protected Optional<IASTName> findSelectedNameExactly(Optional<ITextSelection> selection) {
+      return OptionalUtil.of(selection).ifPresent(sel -> getAST(tu, null).getNodeSelector(null).findName(sel.getOffset(), sel.getLength()),
+            it -> null).get();
+   }
+
+   protected Optional<IASTName> findFirstEnclosingName(Optional<ITextSelection> selection) {
+      return OptionalUtil.of(selection).ifPresent(sel -> getAST(tu, null).getNodeSelector(null).findEnclosingName(sel.getOffset(), sel.getLength()),
+            it -> null).get();
+   }
+
+   protected Optional<IASTNode> findFirstEnclosingNode(Optional<ITextSelection> selection) {
+      return OptionalUtil.of(selection).ifPresent(sel -> getAST(tu, null).getNodeSelector(null).findEnclosingNode(sel.getOffset(), sel.getLength()),
+            it -> null).get();
+   }
+
+   protected Optional<IASTName> findFirstEnclosedName(Optional<ITextSelection> selection) {
+      return OptionalUtil.of(selection).ifPresent(sel -> getAST(tu, null).getNodeSelector(null).findFirstContainedName(sel.getOffset(), sel
+            .getLength()), it -> null).get();
+   }
+
+   protected Optional<IASTNode> findFirstEnclosedNode(Optional<ITextSelection> selection) {
+      return OptionalUtil.of(selection).ifPresent(sel -> getAST(tu, null).getNodeSelector(null).findFirstContainedNode(sel.getOffset(), sel
+            .getLength()), it -> null).get();
+   }
+
+   public Optional<ICPPASTCompositeTypeSpecifier> findFirstEnclosingClass(Optional<ITextSelection> selection) {
+      return findFirstEnclosingNode(selection).flatMap(n -> CPPVisitor.findAncestorWithType(n, ICPPASTCompositeTypeSpecifier.class));
+   }
+
+   public Optional<ICPPASTCompositeTypeSpecifier> findFirstEnclosedClass(Optional<ITextSelection> selection) {
+      return findFirstEnclosingNode(selection).flatMap(n -> CPPVisitor.findChildWithType(n, ICPPASTCompositeTypeSpecifier.class));
+   }
+
+   public ICProject getProject() {
+      return project;
+   }
+
+   /**
+    * Convenience method to get the {@code IProject} associated with this refactorings {@code ICProject}
+    */
+   public IProject getIProject() {
+      return project.getProject();
+   }
 }

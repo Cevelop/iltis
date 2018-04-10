@@ -7,17 +7,24 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.viewers.ISelection;
 
+
 /**
- * A wrapper class for the cdt SelectionHelper. Using this wrapper reduces the amount of warnings respectively the amount of {@code @SuppressWarnings} tags
+ * A wrapper class for the cdt SelectionHelper. Using this wrapper reduces the amount of warnings respectively the amount of {@code @SuppressWarnings}
+ * tags
  * 
  * @author tstauber
  *
  */
 @SuppressWarnings("restriction")
+@ILTISWrapper(org.eclipse.cdt.internal.ui.refactoring.utils.SelectionHelper.class)
 public class SelectionHelper extends org.eclipse.cdt.internal.ui.refactoring.utils.SelectionHelper {
 
    public static Region getRegion(final ISelection selection) {
       return org.eclipse.cdt.internal.ui.refactoring.utils.SelectionHelper.getRegion(selection);
+   }
+
+   protected static IRegion getNodeSpan(final IASTNode region) {
+      return org.eclipse.cdt.internal.ui.refactoring.utils.SelectionHelper.getNodeSpan(region);
    }
 
    public static IASTSimpleDeclaration findFirstSelectedDeclaration(final IRegion textSelection, final IASTTranslationUnit translationUnit) {
@@ -44,7 +51,4 @@ public class SelectionHelper extends org.eclipse.cdt.internal.ui.refactoring.uti
       return org.eclipse.cdt.internal.ui.refactoring.utils.SelectionHelper.nodeMatchesSelection(node, region);
    }
 
-   protected static IRegion getNodeSpan(final IASTNode region) {
-      return org.eclipse.cdt.internal.ui.refactoring.utils.SelectionHelper.getNodeSpan(region);
-   }
 }

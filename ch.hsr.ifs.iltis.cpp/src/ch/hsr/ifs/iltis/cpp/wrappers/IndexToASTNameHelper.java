@@ -16,8 +16,8 @@ import org.eclipse.core.runtime.CoreException;
  *
  */
 @SuppressWarnings("restriction")
+@ILTISWrapper(org.eclipse.cdt.internal.ui.refactoring.IndexToASTNameHelper.class)
 public class IndexToASTNameHelper extends org.eclipse.cdt.internal.ui.refactoring.IndexToASTNameHelper {
-
    public static List<IASTName> findNamesIn(final IASTTranslationUnit tu, final IBinding binding, final IIndex index) {
       return org.eclipse.cdt.internal.ui.refactoring.IndexToASTNameHelper.findNamesIn(tu, binding, index);
    }

@@ -30,16 +30,21 @@ import org.eclipse.ltk.core.refactoring.RefactoringContext;
 @SuppressWarnings("restriction")
 public class CRefactoringContext extends RefactoringContext {
 
-   private static final int PARSE_MODE = ITranslationUnit.AST_SKIP_ALL_HEADERS | ITranslationUnit.AST_CONFIGURE_USING_SOURCE_CONTEXT |
-                                         ITranslationUnit.AST_PARSE_INACTIVE_CODE;
-
-   private final Map<ITranslationUnit, IASTTranslationUnit> fASTCache = new ConcurrentHashMap<>();
-   private IIndex                                           fIndex;
-   private IASTTranslationUnit                              fSharedAST;
+   protected final Map<ITranslationUnit, IASTTranslationUnit> fASTCache = new ConcurrentHashMap<>();
+   protected IIndex                                           fIndex;
+   protected IASTTranslationUnit                              fSharedAST;
 
    public CRefactoringContext(CRefactoring refactoring) {
       super(refactoring);
       refactoring.setContext(this);
+   }
+
+   protected int getParseMode() {
+      return ITranslationUnit.AST_SKIP_ALL_HEADERS | ITranslationUnit.AST_CONFIGURE_USING_SOURCE_CONTEXT | ITranslationUnit.AST_PARSE_INACTIVE_CODE;
+   }
+
+   protected int getIndexOptions() {
+      return IIndexManager.ADD_DEPENDENCIES | IIndexManager.ADD_DEPENDENT;
    }
 
    /**
@@ -60,37 +65,54 @@ public class CRefactoringContext extends RefactoringContext {
     */
    public IASTTranslationUnit getAST(ITranslationUnit tu, IProgressMonitor pm) throws CoreException, OperationCanceledException {
       if (isDisposed()) throw new IllegalStateException("CRefactoringContext is already disposed."); //$NON-NLS-1$
-      getIndex(); // Make sure the index is locked.
-      if (pm != null && pm.isCanceled()) throw new OperationCanceledException();
+      getIndex(); /* Make sure the index is locked. */
+      assertNotCanceled(pm);
 
       ITranslationUnit wc = CModelUtil.toWorkingCopy(tu);
-      IASTTranslationUnit ast = fASTCache.get(wc);
-      if (ast == null) {
-         if (fSharedAST != null && wc.equals(fSharedAST.getOriginatingTranslationUnit())) {
-            ast = fSharedAST;
-         } else {
-            ast = ASTProvider.getASTProvider().acquireSharedAST(wc, fIndex, ASTProvider.WAIT_ACTIVE_ONLY, pm);
-            if (ast != null && ast.hasNodesOmitted()) {
-               // Don't use an incomplete AST.
-               ASTProvider.getASTProvider().releaseSharedAST(ast);
-               ast = null;
-            }
-            if (ast == null) {
-               if (pm != null && pm.isCanceled()) throw new OperationCanceledException();
-               ast = wc.getAST(fIndex, PARSE_MODE);
-               fASTCache.put(wc, ast);
-            } else {
-               if (fSharedAST != null) {
-                  ASTProvider.getASTProvider().releaseSharedAST(fSharedAST);
-               }
-               fSharedAST = ast;
-            }
-         }
+
+      if (fASTCache.get(wc) != null) {
+         done(pm);
+         return fASTCache.get(wc);
+      } else if (fSharedAST != null && wc.equals(fSharedAST.getOriginatingTranslationUnit())) {
+         done(pm);
+         return fSharedAST;
       }
+
+      IASTTranslationUnit sharedAST = ASTProvider.getASTProvider().acquireSharedAST(wc, fIndex, ASTProvider.WAIT_ACTIVE_ONLY, pm);
+      if (sharedAST != null && !sharedAST.hasNodesOmitted()) {
+         updateSharedAST(sharedAST);
+         done(pm);
+         return sharedAST;
+      } else {
+         releaseSharedAST(sharedAST); /* AST had omitted nodes */
+         assertNotCanceled(pm);
+         fASTCache.put(wc, wc.getAST(fIndex, getParseMode())); //TODO confirm: Was put(tu, tu.getAST(...))
+         done(pm);
+         return fASTCache.get(wc);
+      }
+   }
+
+   private void releaseSharedAST(IASTTranslationUnit sharedAST) {
+      if (sharedAST != null) {
+         ASTProvider.getASTProvider().releaseSharedAST(sharedAST);
+      }
+   }
+
+   private void done(IProgressMonitor pm) {
       if (pm != null) {
          pm.done();
       }
-      return ast;
+   }
+
+   private void updateSharedAST(IASTTranslationUnit ast) {
+      if (fSharedAST != null) {
+         ASTProvider.getASTProvider().releaseSharedAST(fSharedAST);
+      }
+      fSharedAST = ast;
+   }
+
+   private void assertNotCanceled(IProgressMonitor pm) {
+      if (pm != null && pm.isCanceled()) throw new OperationCanceledException();
    }
 
    /**
@@ -101,31 +123,34 @@ public class CRefactoringContext extends RefactoringContext {
    public IIndex getIndex() throws CoreException, OperationCanceledException {
       if (isDisposed()) throw new IllegalStateException("CRefactoringContext is already disposed."); //$NON-NLS-1$
       if (fIndex == null) {
-         IIndex index = CCorePlugin.getIndexManager().getIndex(((CRefactoring) getRefactoring()).getProject(), IIndexManager.ADD_DEPENDENCIES &
-                                                                                                               IIndexManager.ADD_DEPENDENT);
-         try {
-            index.acquireReadLock();
-         } catch (InterruptedException e) {
-            throw new OperationCanceledException();
-         }
-         fIndex = index;
+         IIndex index = acquireIndex();
+         lockAndUpdateIndex(index);
       }
       return fIndex;
+   }
+
+   protected IIndex acquireIndex() throws CoreException {
+      return CCorePlugin.getIndexManager().getIndex(((CRefactoring) getRefactoring()).getProject(), getIndexOptions());
+   }
+
+   private void lockAndUpdateIndex(IIndex index) {
+      try {
+         index.acquireReadLock();
+      } catch (InterruptedException e) {
+         throw new OperationCanceledException();
+      }
+      fIndex = index;
    }
 
    @Override
    public void dispose() {
       if (isDisposed()) throw new IllegalStateException("CRefactoringContext.dispose() called more than once."); //$NON-NLS-1$
-      if (fSharedAST != null) {
-         ASTProvider.getASTProvider().releaseSharedAST(fSharedAST);
-      }
-      if (fIndex != null) {
-         fIndex.releaseReadLock();
-      }
+      releaseSharedAST(fSharedAST);
+      if (fIndex != null) fIndex.releaseReadLock();
       super.dispose();
    }
 
-   private boolean isDisposed() {
+   protected boolean isDisposed() {
       return getRefactoring() == null;
    }
 
@@ -134,4 +159,5 @@ public class CRefactoringContext extends RefactoringContext {
       if (!isDisposed()) CUIPlugin.logError("CRefactoringContext was not disposed"); //$NON-NLS-1$
       super.finalize();
    }
+
 }

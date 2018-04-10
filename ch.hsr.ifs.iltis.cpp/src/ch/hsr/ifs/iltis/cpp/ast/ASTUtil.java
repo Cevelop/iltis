@@ -57,10 +57,12 @@ import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPBasicType;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPDeferredClassInstance;
 
 import ch.hsr.ifs.iltis.core.exception.ILTISException;
-import ch.hsr.ifs.iltis.core.functional.Functional;
+import ch.hsr.ifs.iltis.cpp.wrappers.CPPVisitor;
+
 
 /**
  * DOC
+ * 
  * @author tstauber
  *
  */
@@ -187,11 +189,11 @@ public abstract class ASTUtil {
    }
 
    public static ICPPASTDeclSpecifier getDeclSpec(final ICPPASTFunctionDeclarator funDecl) {
-      final ICPPASTFunctionDefinition funDef = ASTUtil.getAncestorOfType(funDecl, ICPPASTFunctionDefinition.class);
+      final ICPPASTFunctionDefinition funDef = CPPVisitor.findAncestorWithType(funDecl, ICPPASTFunctionDefinition.class).orElse(null);
 
       if (funDef != null) { return (ICPPASTDeclSpecifier) funDef.getDeclSpecifier(); }
 
-      final IASTSimpleDeclaration simpleDecl = ASTUtil.getAncestorOfType(funDecl, IASTSimpleDeclaration.class);
+      final IASTSimpleDeclaration simpleDecl = CPPVisitor.findAncestorWithType(funDecl, IASTSimpleDeclaration.class).orElse(null);
       return (ICPPASTDeclSpecifier) simpleDecl.getDeclSpecifier();
    }
 
@@ -217,38 +219,13 @@ public abstract class ASTUtil {
       final List<ICPPASTFunctionDefinition> result = new ArrayList<>();
 
       for (final IASTDeclaration fun : publicMemFuns) {
-         final ICPPASTFunctionDefinition candidate = ASTUtil.getChildOfType(fun, ICPPASTFunctionDefinition.class);
+         final ICPPASTFunctionDefinition candidate = CPPVisitor.findChildWithType(fun, ICPPASTFunctionDefinition.class).orElse(null);
 
          if (candidate != null) {
             result.add(candidate);
          }
       }
       return result;
-   }
-
-   public static <T> T getAncestorOfType(final IASTNode node, final Class<? extends IASTNode> T) {
-      IASTNode currentNode = node;
-
-      while (currentNode != null) {
-         if (T.isInstance(currentNode)) { return Functional.as(currentNode); }
-
-         currentNode = currentNode.getParent();
-      }
-      return null;
-   }
-
-   public static <T> T getChildOfType(final IASTNode node, final Class<? extends IASTNode> T) {
-      if (node == null) { return null; }
-
-      if (T.isInstance(node)) { return Functional.as(node); }
-
-      for (final IASTNode child : node.getChildren()) {
-         final T currentNode = getChildOfType(child, T);
-
-         if (currentNode != null) { return currentNode; }
-      }
-
-      return null;
    }
 
    public static boolean hasPointerOrRefType(final IASTDeclarator declarator) {
@@ -327,13 +304,13 @@ public abstract class ASTUtil {
 
    public static Optional<IASTDeclSpecifier> getDeclarationSpecifier(final IASTNode node) {
       if (isPartOf(node, ICPPASTParameterDeclaration.class)) {
-         final ICPPASTParameterDeclaration paramDecl = ASTUtil.getAncestorOfType(node, ICPPASTParameterDeclaration.class);
+         final ICPPASTParameterDeclaration paramDecl = CPPVisitor.findAncestorWithType(node, ICPPASTParameterDeclaration.class).orElse(null);
          return Optional.of(paramDecl.getDeclSpecifier());
       } else if (isPartOf(node, ICPPASTFunctionDefinition.class)) {
-         final ICPPASTFunctionDefinition funDef = ASTUtil.getAncestorOfType(node, ICPPASTFunctionDefinition.class);
+         final ICPPASTFunctionDefinition funDef = CPPVisitor.findAncestorWithType(node, ICPPASTFunctionDefinition.class).orElse(null);
          return Optional.of(funDef.getDeclSpecifier());
       } else if (isPartOf(node, IASTSimpleDeclaration.class)) {
-         final IASTSimpleDeclaration simpleDecl = ASTUtil.getAncestorOfType(node, IASTSimpleDeclaration.class);
+         final IASTSimpleDeclaration simpleDecl = CPPVisitor.findAncestorWithType(node, IASTSimpleDeclaration.class).orElse(null);
          return Optional.of(simpleDecl.getDeclSpecifier());
       }
       return Optional.empty();
@@ -356,8 +333,7 @@ public abstract class ASTUtil {
    public static String getQfName(final ICPPBinding binding) {
       try {
          return getQfName(binding.getQualifiedName());
-      }
-      catch (final DOMException e) {
+      } catch (final DOMException e) {
          throw new ILTISException(e).rethrowUnchecked();
       }
    }
@@ -373,7 +349,7 @@ public abstract class ASTUtil {
    }
 
    public static boolean isPushBack(final IASTName name) {
-      final IASTFunctionCallExpression funcCall = getAncestorOfType(name, IASTFunctionCallExpression.class);
+      final IASTFunctionCallExpression funcCall = CPPVisitor.findAncestorWithType(name, IASTFunctionCallExpression.class).orElse(null);
 
       if (funcCall != null && funcCall.getFunctionNameExpression() instanceof IASTFieldReference) {
          final IASTFieldReference idExp = (IASTFieldReference) funcCall.getFunctionNameExpression();
@@ -384,7 +360,7 @@ public abstract class ASTUtil {
    }
 
    public static boolean isPartOf(final IASTNode node, final Class<? extends IASTNode> clazz) {
-      return getAncestorOfType(node, clazz) != null;
+      return CPPVisitor.findAncestorWithType(node, clazz).orElse(null) != null;
    }
 
    public static IType windDownToRealType(IType type, final boolean stopAtTypeDef) {

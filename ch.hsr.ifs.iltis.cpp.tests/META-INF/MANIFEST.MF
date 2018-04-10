@@ -15,7 +15,10 @@ Require-Bundle:
  org.eclipse.ui.editors;bundle-version="3.8.100",
  org.eclipse.cdt.core,
  ch.hsr.ifs.iltis.cpp,
- org.eclipse.cdt.core.tests
+ org.eclipse.cdt.core.tests,
+ org.eclipse.osgi,
+ ch.hsr.ifs.iltis.core,
+ org.eclipse.cdt.ui;bundle-version="6.3.0"
 Bundle-Version: 0.1.0.qualifier
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: ch.hsr.ifs.iltis.cpp.tests;singleton:=true

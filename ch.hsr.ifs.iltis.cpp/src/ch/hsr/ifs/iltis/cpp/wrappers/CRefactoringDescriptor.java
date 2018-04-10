@@ -3,6 +3,7 @@ package ch.hsr.ifs.iltis.cpp.wrappers;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
+import java.util.Optional;
 
 import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.model.CoreModelUtil;
@@ -16,8 +17,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextSelection;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ltk.core.refactoring.RefactoringDescriptor;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 
@@ -55,8 +56,8 @@ public abstract class CRefactoringDescriptor extends RefactoringDescriptor {
       return new CRefactoringContext(refactoring);
    }
 
-   protected ISelection getSelection() throws CoreException {
-      ISelection selection;
+   protected Optional<ITextSelection> getSelection() throws CoreException {
+      ITextSelection selection;
       String selectStrings[] = arguments.get(SELECTION).split(","); //$NON-NLS-1$
       if (selectStrings.length >= 2) {
          int offset = Integer.parseInt(selectStrings[0]);
@@ -65,7 +66,7 @@ public abstract class CRefactoringDescriptor extends RefactoringDescriptor {
       } else {
          throw new CoreException(new Status(IStatus.ERROR, CUIPlugin.PLUGIN_ID, "Illegal selection."));
       }
-      return selection;
+      return Optional.ofNullable(selection);
    }
 
    protected ICProject getCProject() throws CoreException {

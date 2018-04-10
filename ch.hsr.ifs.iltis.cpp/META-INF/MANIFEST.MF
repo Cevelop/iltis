@@ -20,7 +20,9 @@ Require-Bundle: ch.hsr.ifs.iltis.core;bundle-version="0.1.0",
  org.eclipse.cdt.codan.core.cxx,
  org.eclipse.cdt.ui,
  org.eclipse.ltk.ui.refactoring,
- org.eclipse.jface.text
+ org.eclipse.jface.text,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.ui.editors
 Export-Package: ch.hsr.ifs.iltis.cpp.ast,
  ch.hsr.ifs.iltis.cpp.ast.checker,
  ch.hsr.ifs.iltis.cpp.ast.checker.helper,

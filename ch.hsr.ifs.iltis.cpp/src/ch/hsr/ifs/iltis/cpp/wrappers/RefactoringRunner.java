@@ -1,9 +1,11 @@
 package ch.hsr.ifs.iltis.cpp.wrappers;
 
+import java.util.Optional;
+
 import org.eclipse.cdt.core.model.ICElement;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.internal.ui.refactoring.RefactoringStarter;
-import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
 
@@ -42,28 +44,31 @@ public abstract class RefactoringRunner {
     */
    public static final int SAVE_REFACTORING = 4;
 
-   protected final ISelection     selection;
-   protected final ICElement      element;
-   protected final ICProject      project;
-   protected final IShellProvider shellProvider;
+   protected final Optional<ITextSelection> selection;
+   protected final ICElement                element;
+   protected final ICProject                project;
+   protected final IShellProvider           shellProvider;
 
-   public RefactoringRunner(ICElement element, ISelection selection, IShellProvider shellProvider, ICProject cProject) {
+   public RefactoringRunner(ICElement element, Optional<ITextSelection> selection, IShellProvider shellProvider, ICProject cProject) {
       this.selection = selection;
       this.element = element;
       this.project = cProject;
       this.shellProvider = shellProvider;
    }
 
+   protected void createAndAddRefactoringContext(CRefactoring refactoring) {
+      new CRefactoringContext(refactoring);
+   }
+
    public abstract void run();
 
    protected void run(RefactoringWizard wizard, CRefactoring refactoring, int saveMode) {
-      CRefactoringContext context = new CRefactoringContext(refactoring);
+      if (refactoring.refactoringContext == null) createAndAddRefactoringContext(refactoring);
       try {
-         RefactoringStarter starter = new RefactoringStarter();
-         starter.activate(wizard, shellProvider.getShell(), refactoring.getName(), saveMode);
+         new RefactoringStarter().activate(wizard, shellProvider.getShell(), refactoring.getName(), saveMode);
       } finally {
-         context.dispose();
+         refactoring.refactoringContext.dispose();
       }
    }
-   
+
 }

@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import org.eclipse.cdt.codan.core.cxx.model.AbstractIndexAstChecker;
+import ch.hsr.ifs.iltis.cpp.wrappers.AbstractIndexAstChecker;
 import org.eclipse.cdt.codan.core.model.IChecker;
 import org.eclipse.cdt.codan.core.model.IProblemLocation;
 import org.eclipse.cdt.codan.core.model.IProblemLocationFactory;

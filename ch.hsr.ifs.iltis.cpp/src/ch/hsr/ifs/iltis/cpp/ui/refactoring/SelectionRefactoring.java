@@ -1,9 +1,11 @@
 package ch.hsr.ifs.iltis.cpp.ui.refactoring;
 
+import java.util.Optional;
+
 import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.model.ICElement;
 import org.eclipse.cdt.core.model.ICProject;
-import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.text.ITextSelection;
 
 import ch.hsr.ifs.iltis.cpp.wrappers.CRefactoring;
 
@@ -17,7 +19,8 @@ public abstract class SelectionRefactoring extends CRefactoring {
 
    protected final IRefactoringInfo info;
 
-   public SelectionRefactoring(final ICElement element, final ISelection selection, final ICProject project, final IRefactoringInfo info) {
+   public SelectionRefactoring(final ICElement element, final Optional<ITextSelection> selection, final ICProject project,
+                               final IRefactoringInfo info) {
       super(element, selection, project);
       this.info = info;
    }
@@ -29,7 +32,9 @@ public abstract class SelectionRefactoring extends CRefactoring {
 
    /**
     * Checks if this refactoring is configured to use selection and if this is the case, if the node is inside the selection.
-    * @param node The node to test
+    * 
+    * @param node
+    *        The node to test
     * @return true if no selection is used, or if the node is in the selection.
     */
    protected boolean isInSelection(final IASTNode node) {
@@ -42,7 +47,9 @@ public abstract class SelectionRefactoring extends CRefactoring {
 
    /**
     * Hook method which can be overridden for different selection check.
-    * @param node The node to check
+    * 
+    * @param node
+    *        The node to check
     * @return {@code true} if the node lies inside the selection
     */
    protected boolean isInSelectionHook(final IASTNode node) {

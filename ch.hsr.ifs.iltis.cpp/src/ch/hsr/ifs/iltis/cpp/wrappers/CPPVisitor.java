@@ -1,7 +1,10 @@
 package ch.hsr.ifs.iltis.cpp.wrappers;
 
+import java.util.Optional;
+
 import org.eclipse.cdt.core.dom.ast.IASTBinaryExpression;
 import org.eclipse.cdt.core.dom.ast.IASTDeclSpecifier;
+import org.eclipse.cdt.core.dom.ast.IASTDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTDeclarator;
 import org.eclipse.cdt.core.dom.ast.IASTExpression;
 import org.eclipse.cdt.core.dom.ast.IASTName;
@@ -22,6 +25,9 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPFunctionType;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPPlaceholderType.PlaceholderKind;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPInternalBinding;
 
+import ch.hsr.ifs.iltis.core.functional.OptionalUtil;
+
+
 /**
  * A wrapper class for the cdt CPPVisitor. Using this wrapper reduces the amount of warnings respectively the amount of {@code @SuppressWarnings} tags
  * 
@@ -29,7 +35,8 @@ import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPInternalBinding;
  *
  */
 @SuppressWarnings("restriction")
-public class CPPVisitor extends org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor {
+@ILTISWrapper(org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.class)
+public class CPPVisitor {
 
    public static IBinding createBinding(final IASTName name) {
       return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.createBinding(name);
@@ -56,6 +63,10 @@ public class CPPVisitor extends org.eclipse.cdt.internal.core.dom.parser.cpp.sem
 
    public static boolean isConstructor(final IScope containingScope, final IASTDeclarator declarator) {
       return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.isConstructor(containingScope, declarator);
+   }
+
+   public IASTDeclaration[] extractActiveDeclarations(IASTDeclaration[] arg0, int arg1) {
+      return org.eclipse.cdt.internal.core.dom.parser.ASTQueries.extractActiveDeclarations(arg0, arg1);
    }
 
    public static boolean isConstructorDeclaration(final IASTName name) {
@@ -174,9 +185,29 @@ public class CPPVisitor extends org.eclipse.cdt.internal.core.dom.parser.cpp.sem
    }
 
    public static IType deduceReturnType(final IASTStatement functionBody, final IASTDeclSpecifier autoDeclSpec, final IASTDeclarator autoDeclarator,
-         final PlaceholderKind placeholder, final IASTNode point) {
+         final PlaceholderKind placeholder) {
       return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.deduceReturnType(functionBody, autoDeclSpec, autoDeclarator,
             placeholder);
+   }
+
+   public IASTDeclarator findTypeRelevantDeclarator(IASTDeclarator arg0) {
+      return org.eclipse.cdt.internal.core.dom.parser.ASTQueries.findTypeRelevantDeclarator(arg0);
+   }
+
+   public IBinding findEnclosingFunction(IASTNode arg0) {
+      return org.eclipse.cdt.internal.core.dom.parser.ASTQueries.findEnclosingFunction(arg0);
+   }
+
+   public boolean isAncestorOf(IASTNode arg0, IASTNode arg1) {
+      return org.eclipse.cdt.internal.core.dom.parser.ASTQueries.isAncestorOf(arg0, arg1);
+   }
+
+   public boolean isSameType(IType arg0, IType arg1) {
+      return org.eclipse.cdt.internal.core.dom.parser.ASTQueries.isSameType(arg0, arg1);
+   }
+
+   public boolean canContainName(IASTNode arg0) {
+      return org.eclipse.cdt.internal.core.dom.parser.ASTQueries.canContainName(arg0);
    }
 
    public static IType createType(final IASTDeclSpecifier declSpec) {
@@ -187,19 +218,19 @@ public class CPPVisitor extends org.eclipse.cdt.internal.core.dom.parser.cpp.sem
       return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.getImpliedObjectType(scope);
    }
 
-   public static IType getPointerDiffType(final IASTNode point) {
+   public static IType getPointerDiffType() {
       return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.getPointerDiffType();
    }
 
-   public static IType get_type_info(final IASTNode point) {
+   public static IType get_type_info() {
       return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.get_type_info();
    }
 
-   public static IType get_SIZE_T(final IASTNode sizeofExpr) {
+   public static IType get_SIZE_T() {
       return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.get_SIZE_T();
    }
 
-   public static ICPPClassTemplate get_initializer_list(final IASTNode node) {
+   public static ICPPClassTemplate get_initializer_list() {
       return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.get_initializer_list();
    }
 
@@ -268,6 +299,14 @@ public class CPPVisitor extends org.eclipse.cdt.internal.core.dom.parser.cpp.sem
       return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.findInnermostDeclarator(dtor);
    }
 
+   public static IASTDeclarator findInnermostDeclarator(IASTDeclarator arg0) {
+      return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.findInnermostDeclarator(arg0);
+   }
+
+   public static IASTDeclarator findOutermostDeclarator(IASTDeclarator arg0) {
+      return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.findOutermostDeclarator(arg0);
+   }
+
    /**
     * Traverses a chain of nested homogeneous left-to-right-associative binary expressions and
     * returns a list of their operands in left-to-right order. For example, for the expression
@@ -279,6 +318,28 @@ public class CPPVisitor extends org.eclipse.cdt.internal.core.dom.parser.cpp.sem
     */
    public static IASTExpression[] getOperandsOfMultiExpression(final IASTBinaryExpression binaryExpression) {
       return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.getOperandsOfMultiExpression(binaryExpression);
+   }
+
+   public static <T extends IASTNode> Optional<T> findAncestorWithType(IASTNode node, Class<T> T) {
+      return Optional.ofNullable(org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.findAncestorWithType(node, T));
+   }
+
+   public static <T extends IASTNode> Optional<T> findChildWithType(IASTNode node, final Class<T> T) {
+
+      if (node == null) Optional.empty();
+
+      if (T.isInstance(node)) return OptionalUtil.<T>asOf(node).get();
+
+      for (final IASTNode child : node.getChildren()) {
+         if (T.isInstance(child)) return OptionalUtil.<T>asOf(child).get();
+      }
+
+      for (final IASTNode child : node.getChildren()) {
+         Optional<T> currentNode = findChildWithType(child, T);
+         if (currentNode.isPresent()) return currentNode;
+      }
+
+      return Optional.empty();
    }
 
 }
