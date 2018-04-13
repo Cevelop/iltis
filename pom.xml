@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -8,7 +9,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<tycho.version>1.0.0</tycho.version>
+		<tycho.version>1.1.0</tycho.version>
 		<maven.surefire.version>2.20.1</maven.surefire.version>
 		<tycho.extras.version>1.1.0</tycho.extras.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -117,46 +118,43 @@
 				</configuration>
 			</plugin>
 
+			<!-- Tycho create source features -->
+			<plugin>
+				<groupId>org.eclipse.tycho.extras</groupId>
+				<artifactId>tycho-source-feature-plugin</artifactId>
+				<version>${tycho.extras.version}</version>
+			</plugin>
+
 			<!-- Tycho javadoc bundle -->
-			<!-- <plugin> -->
-			<!-- <groupId>org.eclipse.tycho.extras</groupId> -->
-			<!-- <artifactId>tycho-document-bundle-plugin</artifactId> -->
-			<!-- <version>${tycho.extras.version}</version> -->
-			<!-- <executions> -->
-			<!-- <execution> -->
-			<!-- <id>gen-javadoc</id> -->
-			<!-- <phase>generate-resources</phase> -->
-			<!-- <goals> -->
-			<!-- <goal>javadoc</goal> -->
-			<!-- </goals> -->
-			<!-- <configuration> -->
-			<!-- <tocOptions> -->
-			<!-- <mainLabel>ILTIS Core API</mainLabel> -->
-			<!-- </tocOptions> -->
-			<!-- <sourceTypes>eclipse-plugin</sourceTypes> -->
-			<!-- <javadocOptions> -->
-			<!-- <ignoreError>false</ignoreError> -->
-			<!-- <encoding>UTF-8</encoding> -->
-			<!-- <additionalArguments> -->
-			<!-- <additionalArgument>-windowtitle "ILTIS Core APIDoc"</additionalArgument> -->
-			<!-- <additionalArgument>-nosince</additionalArgument> -->
-			<!-- <additionalArgument>${javadoc-args}</additionalArgument> -->
-			<!-- <additionalArgument> -->
-			<!-- -link -->
-			<!-- http://docs.oracle.com/javase/8/docs/api/ -->
-			<!-- </additionalArgument> -->
-			<!-- <additionalArgument> -->
-			<!-- -linkoffline -->
-			<!-- ../../${platform.api} -->
-			<!-- http://help.eclipse.org/oxygen/topic/org.eclipse.platform.doc.isv/reference/api/ -->
-			<!-- </additionalArgument> -->
-			<!-- <additionalArgument>-public</additionalArgument> -->
-			<!-- </additionalArguments> -->
-			<!-- </javadocOptions> -->
-			<!-- </configuration> -->
-			<!-- </execution> -->
-			<!-- </executions> -->
-			<!-- </plugin> -->
+			<plugin>
+				<groupId>org.eclipse.tycho.extras</groupId>
+				<artifactId>tycho-document-bundle-plugin</artifactId>
+				<version>${tycho.extras.version}</version>
+
+				<executions>
+					<execution>
+						<id>gen-javadoc</id>
+						<goals>
+							<goal>javadoc</goal>
+						</goals>
+						<phase>verify</phase>
+						<configuration>
+							<buildDirectory>${project.build.directory}</buildDirectory>
+							<sourceDirectory>${project.basedir}/src</sourceDirectory>
+							<skipTocGen>true</skipTocGen>
+							<outputDirectory>${project.basedir}/help/api-docs/javadoc</outputDirectory>
+
+							<javadocOptions>
+								<includes>
+									<include>ch.hsr.ifs.iltis.core.*</include>
+								</includes>
+							</javadocOptions>
+
+						</configuration>
+					</execution>
+
+				</executions>
+			</plugin>
 
 			<!-- Code-signing settings -->
 			<!-- <plugin> -->
@@ -178,8 +176,6 @@
 			<!-- <storetype>pkcs12</storetype> -->
 			<!-- </configuration> -->
 			<!-- </plugin> -->
-
-
 
 			<!-- Maven surefire settings -->
 			<plugin>
