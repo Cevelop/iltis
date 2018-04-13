@@ -1,6 +1,7 @@
-*/target
-*/bin/*
-*/artifacts.jar
-*/content.jar
-*/features/*
-*/plugins/*
+**/target
+**/bin/*
+**/artifacts.jar
+**/content.jar
+**/features/*
+**/plugins/*
+**/help/
