@@ -11,8 +11,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.resources,
  org.eclipse.ltk.core.refactoring,
  org.eclipse.text,
- org.eclipse.osgi,
- ch.hsr.ifs.iltis.core
+ org.eclipse.osgi
 Export-Package: ch.hsr.ifs.iltis.core,
  ch.hsr.ifs.iltis.core.collections,
  ch.hsr.ifs.iltis.core.data,

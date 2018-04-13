@@ -6,25 +6,15 @@
       provider-name="Institute for Software">
 
    <description url="http://www.example.com/description">
-      Meet the ILTIS, feel the ILTIS, love the ILTIS!
+      %description
    </description>
 
-   <copyright url="http://www.example.com/copyright">
-      Copyright (c) 2017 Institute for Software, HSR Hochschule für
-Technik Rapperswil
-The Software and Documentation are copyrighted by HSR and are
-protected by
-international copyright laws. The product contains copyrighted
-software of HSR.
-All rights reserved. You agree not to remove any trademarks or
-copyright notices
-from the Software or Documentation.
-Contributors:
-Tobias Stauber &lt;tstauber@hsr.ch&gt; - initial API and implementation
+   <copyright>
+		%copyright
    </copyright>
 
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
+   <license url="%licenseURL">
+      %license
    </license>
 
    <url>
