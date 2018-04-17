@@ -44,8 +44,8 @@ public abstract class StringUtil {
        *        unescaped html string
        * @return escaped html string
        */
-      public final static String escapeHtml(final String html) {
-         String escaped = new String(html);
+      public final static String escapeHtml(final CharSequence html) {
+         String escaped = html.toString();
          for (final String s : LOOKUP_TABLE.keySet()) {
             escaped = escaped.replace(s, LOOKUP_TABLE.get(s));
          }
@@ -54,11 +54,11 @@ public abstract class StringUtil {
       }
    }
 
-   public static boolean equalsOneOf(String input, List<String> compareTo) {
+   public static boolean equalsOneOf(CharSequence input, List<String> compareTo) {
       return compareTo.stream().anyMatch(str -> str.equals(input));
    }
 
-   public static boolean equalsNoneOf(String input, List<String> compareTo) {
+   public static boolean equalsNoneOf(CharSequence input, List<String> compareTo) {
       return !equalsOneOf(input, compareTo);
    }
 
@@ -68,15 +68,15 @@ public abstract class StringUtil {
       return String.valueOf(charArray);
    }
 
-   public static String quote(final String s) {
+   public static String quote(final CharSequence s) {
       return String.format("\"%s\"", s);
    }
 
-   public static String unquote(String s) {
+   public static String unquote(CharSequence s) {
       if (s != null && StringUtil.startsAndEndsWithQuotes(s)) {
-         s = s.substring(1, s.length() - 1);
+         s = s.subSequence(1, s.length() - 1);
       }
-      return s;
+      return s.toString();
    }
 
    public static <O> String toString(Iterable<O> it, String prefix, String separator, String postfix, Function<O, String> fun) {
@@ -111,8 +111,8 @@ public abstract class StringUtil {
       return toString(it, "[", ", ", "]", O::toString);
    }
 
-   public static boolean startsAndEndsWithQuotes(final String s) {
-      return s.startsWith("\"") && s.endsWith("\"") || s.startsWith("'") && s.endsWith("'");
+   public static boolean startsAndEndsWithQuotes(final CharSequence s) {
+      return s.charAt(0) == '"' && s.charAt(s.length() - 1) == '"' || s.charAt(0) == '\'' && s.charAt(s.length() - 1) == '\'';
    }
 
 }
