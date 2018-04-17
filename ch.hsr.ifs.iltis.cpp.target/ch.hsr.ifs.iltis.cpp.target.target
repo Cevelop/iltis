@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="ILTIS-CPP with Eclipse Oxygen and CDT 9.4.0" sequenceNumber="1522768572">
+<target name="ILTIS-CPP with Eclipse Oxygen and CDT 9.4.0" sequenceNumber="1523619035">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.cdt.sdk.feature.group" version="0.0.0"/>
@@ -9,8 +9,8 @@
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.equinox.sdk.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.platform.sdk" version="4.7.3.M20180301-0715"/>
-      <unit id="org.eclipse.sdk.ide" version="4.7.3.M20180301-0715"/>
+      <unit id="org.eclipse.platform.sdk" version="4.7.3.M20180330-0640"/>
+      <unit id="org.eclipse.sdk.ide" version="4.7.3.M20180330-0640"/>
       <repository location="http://download.eclipse.org/eclipse/updates/4.7"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
