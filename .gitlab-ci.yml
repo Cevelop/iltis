@@ -29,7 +29,7 @@ test:
     - 'xvfb-run --server-args="-screen 0 1024x768x24" mvn verify -Djarsigner.skip=true'
   artifacts:
     paths:
-      - ./ch.hsr.ifs.iltis.cpp.updatesite/target/site/*
+      - ./ch.hsr.ifs.iltis.cpp.update/target/repository/*
 
 deploy:
   stage: deploy
@@ -45,5 +45,5 @@ deploy:
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo "$P2_HOST_KEY" > ~/.ssh/known_hosts'
     - 'ssh hudson@cute-test.com "cd /var/www/iltis && mkdir -p cpp"'
-    - 'scp -r ch.hsr.ifs.iltis.cpp.updatesite/target/site/* hudson@cute-test.com:/var/www/iltis/cpp'
+    - 'scp -r ch.hsr.ifs.iltis.cpp.update/target/repository/* hudson@cute-test.com:/var/www/iltis/cpp'
     - 'ssh hudson@cute-test.com "cd /var/www/iltis && compile-composite-updatesite ILTIS 0.1.0"'
