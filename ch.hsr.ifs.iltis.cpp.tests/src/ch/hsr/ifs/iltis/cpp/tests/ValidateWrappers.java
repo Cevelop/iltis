@@ -20,7 +20,7 @@ import ch.hsr.ifs.iltis.cpp.wrappers.ILTISWrapper;
 import ch.hsr.ifs.iltis.cpp.wrappers.IndexToASTNameHelper;
 import ch.hsr.ifs.iltis.cpp.wrappers.SelectionHelper;
 
-
+//TODO(tstauber - Apr 13, 2018) Extract once ILTIS Testing stands. Then also test ILTIS Core like
 public class ValidateWrappers {
 
    @Test
