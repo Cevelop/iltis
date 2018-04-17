@@ -16,6 +16,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+
 
 /**
  * A utility class providing static methods to handle input/output. For file utility functionality please
@@ -39,6 +42,21 @@ public abstract class IOUtil {
        */
       public static String read(final File file) throws IOException {
          return StringIO.write(new FileInputStream(file), StandardCharsets.UTF_8);
+      }
+      
+
+      /**
+       * Reads the whole content from a file
+       * 
+       * @param file
+       *        The input file
+       * @return The content of the file as a String
+       * @throws IOException
+       *         If an I/O error occurs
+       * @throws CoreException 
+       */
+      public static String read(final IFile file) throws IOException, CoreException {
+         return StringIO.write(file.getContents(), StandardCharsets.UTF_8);
       }
 
       /**
@@ -144,6 +162,7 @@ public abstract class IOUtil {
       public static InputStream read(final String text) {
          return StringIO.read(text, StandardCharsets.UTF_8);
       }
+     
 
       /**
        * Reads the provided text into an input stream using the provided encoding
