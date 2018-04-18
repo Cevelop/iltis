@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="ch.hsr.ifs.iltis.testing.core.examples.feature"
+      id="ch.hsr.ifs.iltis.testing.examples.feature"
       label="ILTIS Testing Examples"
       version="9.4.0.qualifier"
       provider-name="IFS Institute for Software">
