@@ -13,6 +13,7 @@ build:
     paths:
       - ./.m2/repository
   script:
+    - cd ILTISTestingProject
     - mvn compile
   artifacts:
     paths:
@@ -26,6 +27,7 @@ test:
       - ./.m2/repository
     policy: pull
   script:
+    - cd ILTISTestingProject
     - 'xvfb-run --server-args="-screen 0 1024x768x24" mvn test verify -Djarsigner.skip=true'
   artifacts:
     paths:
