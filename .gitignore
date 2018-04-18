@@ -1,6 +1,8 @@
-/*/bin
-*.class
-/*/target/
-/*/surefire-reports/
-workspace_kepler/
-/*/.polyglot.build.properties
+**/target/
+**/bin/
+
+**/screenshots/
+
+.DS_STORE
+.DS_Store
+

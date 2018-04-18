@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/ch.hsr.ifs.iltis.testing.example.feature_9.4.0.qualifier.jar" id="ch.hsr.ifs.iltis.testing.example.feature" version="9.4.0.qualifier">
-      <category name="ch.hsr.ifs.iltis.testing"/>
+   <feature url="features/ch.hsr.ifs.iltis.testing.tools.feature_9.4.0.qualifier.jar" id="ch.hsr.ifs.iltis.testing.tools.feature" version="9.4.0.qualifier">
+      <category name="ch.hsr.ifs.iltis.testing.tools"/>
+   </feature>
+   <feature url="features/ch.hsr.ifs.iltis.testing.core.examples.feature_9.4.0.qualifier.jar" id="ch.hsr.ifs.iltis.testing.core.examples.feature" version="9.4.0.qualifier">
+      <category name="ch.hsr.ifs.itlis.testing"/>
    </feature>
    <feature url="features/ch.hsr.ifs.iltis.testing.feature_9.4.0.qualifier.jar" id="ch.hsr.ifs.iltis.testing.feature" version="9.4.0.qualifier">
-      <category name="ch.hsr.ifs.iltis.testing"/>
+      <category name="ch.hsr.ifs.itlis.testing"/>
    </feature>
-   <feature url="features/ch.hsr.ifs.iltis.testing.tools.feature_9.4.0.qualifier.jar" id="ch.hsr.ifs.iltis.testing.tools.feature" version="9.4.0.qualifier">
-      <category name="ch.hsr.ifs.iltis.testing"/>
-   </feature>
-   <feature url="features/ch.hsr.ifs.iltis.testing.tools.pasta.feature_9.4.0.qualifier.jar" id="ch.hsr.ifs.iltis.testing.tools.pasta.feature" version="9.4.0.qualifier">
-      <category name="ch.hsr.ifs.iltis.testing"/>
-   </feature>
-   <category-def name="ch.hsr.ifs.iltis.testing" label="ILTIS Testing">
-     <description>
-        TODO write the description
-     </description>
+   <category-def name="ch.hsr.ifs.itlis.testing" label="ILTIS Testing">
+      <description>
+         The ILTIS Testing plug-ins (Former CDTTesting)
+      </description>
    </category-def>
+   <category-def name="ch.hsr.ifs.iltis.testing.tools" label="ILTIS Testing Tools">
+      <category name="ch.hsr.ifs.itlis.testing"/>
+   </category-def>
+   <category-def name="ch.hsr.ifs.iltis.testing.dev" label="ILTIS Testing Development Resources"/>
 </site>
