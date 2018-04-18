@@ -1,10 +1,12 @@
-# ch.hsr.ifs.cdttesting
+# ILTIS Testing
 
 Enhanced testing and tooling for **Eclipse CDT C/C++** plug-in projects.
 
 ## Installation
 
-The plugins contained in **ch.hsr.ifs.cdttesting** are grouped into four
+TODO Update as soon as update site is defined
+
+The plugins contained in **ch.hsr.ifs.iltis.testing** are grouped into four
 features that are all available via
 `https://www.cevelop.com/cdt-testing/<eclipse-codename>/` where you need to
 substitute `<eclipse-codename>` for the codename of the eclipse release you are
@@ -50,7 +52,7 @@ obtain an offset from a selection. This is especially useful when you need
 to check exact position information in you plug-in tests. The plug-in add two
 new button to the main **Eclipse** toolbar:
 
-![Show offset and go-to offset](/../media/images/showoffset-buttons.png?raw=true "Show offset and go-to offset")
+![Show offset and go-to offset](media/images/showoffset-buttons.png?raw=true "Show offset and go-to offset")
 
 The left button allows you to enter the offset as well as the length of a
 selection and jumps to the newly created selection, while the right button
@@ -73,7 +75,7 @@ in the same way it is represented in **Eclipse CDT**. The nodes of the tree use
 the exact names of the actual classes you would use in you plug-in since pASTa
 is indeed a one-to-one mapping of the AST.
 
-![The pASTa AST View](/../media/images/pasta-tree-view.png?raw=true "The pASTa AST View")
+![The pASTa AST View](media/images/pasta-tree-view.png?raw=true "The pASTa AST View")
 
 To enable the pASTa *AST View*, use the menu ***Window -> Show View -> Other***.
 Alternatively, you can use the Keyboard shortcut ***Shift+Alt+Q Q***. In the
@@ -93,7 +95,7 @@ selected tree node. It completes your view of the **Eclipse CDT** AST by giving
 you information about the inheritance structure, fields, methods, etc. of any
 given node.
 
-![The pASTa Node View](/../media/images/pasta-node-view.png?raw=true "The pASTa Node View")
+![The pASTa Node View](media/images/pasta-node-view.png?raw=true "The pASTa Node View")
 
 This is an indispensable feature for people that are new to developing with the
 **Eclipse CDT** AST as well as seasoned developers. To enable the pASTa *Node
@@ -118,7 +120,7 @@ provide:
 
 ##### RTS syntax highlighting and line numbers
 
-![RTS editor](/../media/images/rts-editor-content.png?raw=true "The RTS editor content")
+![RTS editor](media/images/rts-editor-content.png?raw=true "The RTS editor content")
 
 **Eclipse CDT** uses its own description language for test files called RTS.
 This language makes use of C-Style comments to mark the different sections of
@@ -135,7 +137,7 @@ based checker plugins.
 
 ##### Test file outline
 
-![RTS outline](/../media/images/rts-editor-outline.png?raw=true "The RTS editor outline")
+![RTS outline](media/images/rts-editor-outline.png?raw=true "The RTS editor outline")
 
 To make you even faster in navigating large test files, *Testfileeditor*
 comes with support for outlining your test files in the **Eclipse** standard
@@ -144,7 +146,7 @@ section to jump directly to the associated position in the test file.
 
 ##### Duplicate test detection
 
-![RTS duplicate detection](/../media/images/rts-editor-duplicate-annotation.png?raw=true "The RTS editor duplicate detection")
+![RTS duplicate detection](media/images/rts-editor-duplicate-annotation.png?raw=true "The RTS editor duplicate detection")
 
 The **Eclipse CDT RTS** test execution environment does not detect is there are
 multiple definitions for the same test. Instead, it simply picks one of them
@@ -158,7 +160,7 @@ file for duplicate test definitions and marks them directly in the editor,
 using a marker similar to the ones you are used to from
 **Eclipse CDT/PDE/JDT**.
 
-![RTS duplicate log](/../media/images/rts-editor-duplicate-log.png?raw=true "The RTS editor duplicate log")
+![RTS duplicate log](media/images/rts-editor-duplicate-log.png?raw=true "The RTS editor duplicate log")
 
 In addition to the markers in the currently open editor, you can also access
 the problems via the built-in **Problems** view. From there, you can jump
@@ -166,7 +168,7 @@ directly to the offending definition.
 
 ##### Jump to RTS
 
-![Jump to RTS](/../media/images/rts-editor-jumptorts.png?raw=true "Jump to RTS")
+![Jump to RTS](media/images/rts-editor-jumptorts.png?raw=true "Jump to RTS")
 
 When tests fail in large test files it is often cumbersome to find the
 description of the failing test. *Testfileeditor* augments the **Eclipse**
