@@ -47,5 +47,5 @@ deploy:
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo "$P2_HOST_KEY" > ~/.ssh/known_hosts'
     - 'ssh hudson@cute-test.com "cd /var/www/iltis && mkdir -p testing"'
-    - 'scp -r ./ch.hsr.ifs.iltis.testing.update/target/repository/* hudson@cute-test.com:/var/www/iltis/testing'
+    - 'scp -r /releng/ch.hsr.ifs.iltis.testing.update/target/repository/* hudson@cute-test.com:/var/www/iltis/testing'
     - 'ssh hudson@cute-test.com "cd /var/www/iltis && compile-composite-updatesite  ILTIS 0.1.0"'
