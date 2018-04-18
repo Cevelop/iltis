@@ -31,7 +31,7 @@ test:
     - 'xvfb-run --server-args="-screen 0 1024x768x24" mvn test verify -Djarsigner.skip=true'
   artifacts:
     paths:
-      - ./ch.hsr.ifs.iltis.testing.update/target/repository/**
+      - /releng/ch.hsr.ifs.iltis.testing.update/target/repository/**
 
 deploy:
   stage: deploy
