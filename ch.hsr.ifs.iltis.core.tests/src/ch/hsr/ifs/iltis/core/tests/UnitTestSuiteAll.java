@@ -39,6 +39,6 @@ import ch.hsr.ifs.iltis.core.tests.resources.StringUtilTest;
    IOUtilTest.class,
    StringUtilTest.class,
 })
-public class TestSuiteAll {
+public class UnitTestSuiteAll {
 
 }
