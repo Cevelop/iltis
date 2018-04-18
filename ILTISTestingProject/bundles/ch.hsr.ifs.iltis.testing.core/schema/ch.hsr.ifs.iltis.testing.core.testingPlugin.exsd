@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="ch.hsr.ifs.iltis.testing" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="ch.hsr.ifs.iltis.testing" id="testingPlugin" name="CDT RTS Testing Plugin"/>
+      </appinfo>
+      <documentation>
+         Extend this extension point if your plugin wants to use the CDT RTS (Refactoring Test Suite) testing framework.
+
+To get a running example, do &quot;File-&gt;Import-&gt;Plug-in Developement-&gt;Plug-ins and Fragments&quot; and select &quot;ch.hsr.ifs.cdttesting.example&quot; from the active target platform.
+Run TestSuiteAll.java as Eclipse Plug-in test.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="testResouresLocation"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="testResouresLocation">
+      <complexType>
+         <attribute name="sourceLocation" type="string" use="required">
+            <annotation>
+               <documentation>
+                  If your rts files reside in [ch.hsr.ifs.examplator.plugin/resources/ch.hsr.ifs.examplator.plugin.tests/package/name/detail/AwesomeTest.rts], then you use &quot;resources/ch.hsr.ifs.examplator.plugin.tests/&quot; as name.
+
+ &lt;testResouresLocation sourceLocation=&quot;resources/ch.hsr.ifs.examplator.tests/&quot;/&gt;
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="resource"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="externalSourceLocation" type="string">
+            <annotation>
+               <documentation>
+                  Describes the base folder of where external test resources (normally external library headers) reside. Use the &apos;stageExternalIncludePathsForBothProjects(&quot;aSubFolder&quot;)&apos; method to add a include directory to the folder ch.hsr.ifs.examplator.plugin.tests/{externalSourceLocation}/aSubFolder to your project.
+
+ &lt;testResouresLocation sourceLocation=&quot;/resources/ch.hsr.ifs.examplator.tests/&quot; externalSourceLocation=&quot;myExternalTestResources/&quot;/&gt;
+
+Default for this value is &quot;externalTestResource&quot;.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="resource"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         &lt;fragment&gt;
+   &lt;extension point=&quot;ch.hsr.ifs.cdttesting.testingPlugin&quot;&gt;
+    &lt;testResouresLocation sourceLocation=&quot;/resources/ch.hsr.ifs.cdttesting.example.exampleTestFolder/&quot;/&gt;
+   &lt;/extension&gt;
+&lt;/fragment&gt;
+
+To get a running example, do &quot;File-&gt;Import-&gt;Plug-in Developement-&gt;Plug-ins and Fragments&quot; and select &quot;ch.hsr.ifs.cdttesting.example&quot; from the active target platform.
+Run TestSuiteAll.java as Eclipse Plug-in test.
+      </documentation>
+   </annotation>
+
+
+
+   <annotation>
+      <appinfo>
+         <meta.section type="copyright"/>
+      </appinfo>
+      <documentation>
+         Copyright (c) 2012 Institute for Software, HSR Hochschule fuer
+Technik Rapperswil, University of applied sciences and others
+All rights reserved.
+      </documentation>
+   </annotation>
+
+</schema>

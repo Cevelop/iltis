@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: ch.hsr.ifs.cdttesting.junitextensions
+Bundle-SymbolicName: ch.hsr.ifs.cdttesting.junitextensions;singleton:=
+ true
+Bundle-Name: CDTTesting JUnit Extensions
+Bundle-Version: 9.4.0.201804051950
+Require-Bundle: org.eclipse.jdt.core,org.eclipse.core.commands,org.ecl
+ ipse.core.runtime,org.eclipse.jface,org.eclipse.ui.workbench,org.ecli
+ pse.ui.editors,org.eclipse.jdt.junit.core,org.eclipse.jdt.junit,org.e
+ clipse.ui.ide,org.eclipse.core.resources,org.eclipse.jdt.ui;bundle-ve
+ rsion="3.13.52",org.eclipse.text,name.graf.emanuel.testfileeditor
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+

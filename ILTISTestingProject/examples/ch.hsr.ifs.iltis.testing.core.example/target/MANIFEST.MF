@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: ch.hsr.ifs.cdttesting.example
+Bundle-SymbolicName: ch.hsr.ifs.cdttesting.example;singleton:=true
+Export-Package: ch.hsr.ifs.cdttesting.example,ch.hsr.ifs.cdttesting.ex
+ ample.annotationtest,ch.hsr.ifs.cdttesting.example.someexampletests
+Bundle-Name: MyCDTTests
+Bundle-Version: 9.4.0.201804051950
+Require-Bundle: org.eclipse.ui,org.eclipse.core.runtime,org.junit,org.
+ eclipse.cdt.core;bundle-version="5.4.0",org.eclipse.core.resources;bu
+ ndle-version="3.7.100",ch.hsr.ifs.cdttesting,org.eclipse.cdt.ui,org.e
+ clipse.ltk.core.refactoring,org.eclipse.text,org.eclipse.jface.text;b
+ undle-version="3.8.101",org.eclipse.cdt.codan.core.cxx,org.eclipse.cd
+ t.codan.ui,org.eclipse.cdt.codan.core;bundle-version="3.2.0",org.ecli
+ pse.cdt.codan.ui.cxx;bundle-version="3.2.0",org.eclipse.ui.ide;bundle
+ -version="3.9.1",ch.hsr.ifs.iltis.cpp
+Bundle-ManifestVersion: 2
+Bundle-Activator: ch.hsr.ifs.cdttesting.example.MyTestPlugin
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+

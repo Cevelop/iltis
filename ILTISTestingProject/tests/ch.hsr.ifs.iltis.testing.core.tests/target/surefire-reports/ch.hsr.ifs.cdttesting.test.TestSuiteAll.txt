@@ -1,0 +1,31 @@
+-------------------------------------------------------------------------------
+Test set: ch.hsr.ifs.cdttesting.test.TestSuiteAll
+-------------------------------------------------------------------------------
+Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.811 sec - in ch.hsr.ifs.cdttesting.test.TestSuiteAll
+shortenMultipleSpaces(ch.hsr.ifs.cdttesting.test.cdttest.tests.NormalizerTest)  Time elapsed: 0.005 sec
+leadingLineBreaks(ch.hsr.ifs.cdttesting.test.cdttest.tests.NormalizerTest)  Time elapsed: 0.01 sec
+removeLeadingSpaces(ch.hsr.ifs.cdttesting.test.cdttest.tests.NormalizerTest)  Time elapsed: 0.001 sec
+removeRTSComments(ch.hsr.ifs.cdttesting.test.cdttest.tests.NormalizerTest)  Time elapsed: 0 sec
+replaceLineBreaks(ch.hsr.ifs.cdttesting.test.cdttest.tests.NormalizerTest)  Time elapsed: 0.002 sec
+trailingLineBreaks(ch.hsr.ifs.cdttesting.test.cdttest.tests.NormalizerTest)  Time elapsed: 0 sec
+removeTrailingSpaces(ch.hsr.ifs.cdttesting.test.cdttest.tests.NormalizerTest)  Time elapsed: 0 sec
+testInlineNamespaceDefinition(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.642 sec
+testFullyQualifiedName(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.168 sec
+testPackExpansionInType(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.125 sec
+testDifferentKindOfEnum(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.017 sec
+testDifferentLambdaDefaultCapture(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.167 sec
+testBasePackExpansion(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.097 sec
+testDifferentKeywordForElaboratedTypeSpecifer(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.034 sec
+testDifferentClassKeyword(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.031 sec
+testTypenameSpecifierLosingTypename(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.039 sec
+testMissingExportTemplateDeclaration(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.023 sec
+testDifferentKindOfCastExpression(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.035 sec
+testMissingTypenameSpecifier(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.041 sec
+testDifferentMissingComment(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.03 sec
+testDifferentUnaryOperator(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.018 sec
+testExplicitTemplate(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.022 sec
+testDifferentBinaryOperator(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.02 sec
+testMissingAttribute(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.041 sec
+testGlobalNew(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.065 sec
+testVectoredDelete(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.03 sec
+testDifferentLinkageSpecification(ch.hsr.ifs.cdttesting.test.cdttest.tests.ASTComparisonTest)  Time elapsed: 0.019 sec

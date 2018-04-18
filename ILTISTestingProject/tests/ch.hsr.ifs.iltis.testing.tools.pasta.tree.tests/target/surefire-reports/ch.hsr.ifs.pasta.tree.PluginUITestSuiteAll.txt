@@ -1,0 +1,27 @@
+-------------------------------------------------------------------------------
+Test set: ch.hsr.ifs.pasta.tree.PluginUITestSuiteAll
+-------------------------------------------------------------------------------
+Tests run: 23, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.117 sec - in ch.hsr.ifs.pasta.tree.PluginUITestSuiteAll
+testgetLeftMostChild(ch.hsr.ifs.pasta.tree.NodeTest)  Time elapsed: 0.004 sec
+testGetLeftSibling(ch.hsr.ifs.pasta.tree.NodeTest)  Time elapsed: 0 sec
+testHasLeftSiblingIfNotExisting(ch.hsr.ifs.pasta.tree.NodeTest)  Time elapsed: 0 sec
+testgetLeftMostSibling(ch.hsr.ifs.pasta.tree.NodeTest)  Time elapsed: 0 sec
+testgetLeftMostChildIfNotExisting(ch.hsr.ifs.pasta.tree.NodeTest)  Time elapsed: 0.001 sec
+testHasLeftSibling(ch.hsr.ifs.pasta.tree.NodeTest)  Time elapsed: 0 sec
+testGetRightSiblingIfNotExisting(ch.hsr.ifs.pasta.tree.NodeTest)  Time elapsed: 0 sec
+testHasRightSiblingIfNotExisting(ch.hsr.ifs.pasta.tree.NodeTest)  Time elapsed: 0 sec
+testgetLeftMostSiblingIfNotExisting(ch.hsr.ifs.pasta.tree.NodeTest)  Time elapsed: 0 sec
+testgetRightMostChildIfNotExisting(ch.hsr.ifs.pasta.tree.NodeTest)  Time elapsed: 0 sec
+testDepthChildren(ch.hsr.ifs.pasta.tree.NodeTest)  Time elapsed: 0 sec
+testGetLeftSiblingIfNotExisting(ch.hsr.ifs.pasta.tree.NodeTest)  Time elapsed: 0 sec
+testHasRightSibling(ch.hsr.ifs.pasta.tree.NodeTest)  Time elapsed: 0 sec
+testShouldReturnThread(ch.hsr.ifs.pasta.tree.NodeTest)  Time elapsed: 0 sec
+testGetRightSibling(ch.hsr.ifs.pasta.tree.NodeTest)  Time elapsed: 0 sec
+testGetNumber(ch.hsr.ifs.pasta.tree.NodeTest)  Time elapsed: 0.001 sec
+testgetRightMostChild(ch.hsr.ifs.pasta.tree.NodeTest)  Time elapsed: 0 sec
+testDepthParent(ch.hsr.ifs.pasta.tree.NodeTest)  Time elapsed: 0 sec
+testParent(ch.hsr.ifs.pasta.tree.NodeTest)  Time elapsed: 0 sec
+testShouldPositionEachNodeCorrectly(ch.hsr.ifs.pasta.tree.JBaumTest)  Time elapsed: 0.002 sec
+testShouldCenterPlaceChildrenOneLevelOfDepthDeeperThanRoot(ch.hsr.ifs.pasta.tree.JBaumTest)  Time elapsed: 0 sec
+testShouldCenterRootNodeOnXCoordinateInSimpleBinaryTree(ch.hsr.ifs.pasta.tree.JBaumTest)  Time elapsed: 0 sec
+testShouldNotCrashWhenAdjustingTree(ch.hsr.ifs.pasta.tree.JBaumTest)  Time elapsed: 0 sec

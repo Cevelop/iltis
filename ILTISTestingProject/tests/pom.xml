@@ -1,0 +1,40 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>ch.hsr.ifs.iltis.testing.tests</artifactId>
+    <packaging>pom</packaging>
+    <parent>
+        <groupId>ch.hsr.ifs.iltis.testing</groupId>
+        <artifactId>ch.hsr.ifs.iltis.testing.root</artifactId>
+        <version>9.4.0-SNAPSHOT</version>
+    </parent>
+    <modules>
+        <module>ch.hsr.ifs.iltis.testing.core.tests</module>
+        <module>ch.hsr.ifs.iltis.testing.tools.pasta.tree.tests</module>
+    </modules>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-surefire-plugin</artifactId>
+                <version>${tycho-version}</version>
+                <configuration>
+                    <dependencies>
+                        <dependency>
+                            <type>p2-installable-unit</type>
+                            <artifactId>org.eclipse.sdk.ide</artifactId>
+                            <version>0.0.0</version>
+                        </dependency>
+                    </dependencies>
+                    <useUIHarness>true</useUIHarness>
+                    <useUIThread>true</useUIThread>
+                    <product>org.eclipse.epp.package.cpp.product</product>
+                    <application>org.eclipse.ui.ide.workbench</application>
+                    <includes>
+                        <include>**/TestSuiteAll.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,42 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: ch.hsr.ifs.iltis.testing.core
+Bundle-ManifestVersion: 2
+Bundle-Name: ILTIS Testing
+Bundle-SymbolicName: ch.hsr.ifs.iltis.testing.core;singleton:=true
+Bundle-Version: 9.4.0.qualifier
+Bundle-Activator: ch.hsr.ifs.iltis.testing.core.TestingPlugin
+Bundle-Vendor: IFS Institute for Software
+Require-Bundle: 
+ org.eclipse.cdt.ui;bundle-version="5.8.1",
+ org.eclipse.core.resources;bundle-version="3.7.100",
+ org.eclipse.jface.text;bundle-version="3.7.0",
+ org.eclipse.ltk.core.refactoring,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.ui.editors,
+ org.eclipse.cdt.codan.core,
+ org.eclipse.ui.ide,
+ org.eclipse.ui;bundle-version="3.106.0",
+ org.eclipse.core.runtime;bundle-version="3.10.0",
+ org.eclipse.cdt.core;bundle-version="5.8.0",
+ org.junit,
+ ch.hsr.ifs.iltis.core,
+ ch.hsr.ifs.iltis.cpp,
+ org.eclipse.core.filesystem,
+ org.eclipse.cdt.codan.ui,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.junit.core,
+ org.eclipse.jdt.junit,
+ org.eclipse.cdt.core.tests,
+ org.eclipse.cdt.ui.tests,
+ org.eclipse.e4.core.commands
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: ch.hsr.ifs.iltis.testing.core,
+ ch.hsr.ifs.iltis.testing.core.cdttest,
+ ch.hsr.ifs.iltis.testing.core.cdttest.base,
+ ch.hsr.ifs.iltis.testing.core.cdttest.base.preferencemixin,
+ ch.hsr.ifs.iltis.testing.core.cdttest.base.projectholder,
+ ch.hsr.ifs.iltis.testing.core.cdttest.comparison,
+ ch.hsr.ifs.iltis.testing.core.helpers,
+ ch.hsr.ifs.iltis.testing.core.rts.junit4,
+ ch.hsr.ifs.iltis.testing.core.testsourcefile

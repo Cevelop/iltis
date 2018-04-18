@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<units size='1'>
+  <unit id='ch.hsr.ifs.cdttesting.tests' version='9.4.0.201804051950'>
+    <update id='ch.hsr.ifs.cdttesting.tests' range='[0.0.0,9.4.0.201804051950)' severity='0'/>
+    <properties size='4'>
+      <property name='org.eclipse.equinox.p2.name' value='Testfileeditor'/>
+      <property name='maven-groupId' value='ch.hsr.ifs.cdttesting'/>
+      <property name='maven-artifactId' value='ch.hsr.ifs.cdttesting.tests'/>
+      <property name='maven-version' value='9.4.0-SNAPSHOT'/>
+    </properties>
+    <provides size='4'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='ch.hsr.ifs.cdttesting.tests' version='9.4.0.201804051950'/>
+      <provided namespace='osgi.bundle' name='ch.hsr.ifs.cdttesting.tests' version='9.4.0.201804051950'/>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      <provided namespace='osgi.fragment' name='ch.hsr.ifs.cdttesting' version='9.4.0.201804051950'/>
+    </provides>
+    <requires size='25'>
+      <required namespace='osgi.bundle' name='ch.hsr.ifs.cdttesting' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.ui' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.core.resources' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.jface.text' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.ui.editors' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.ui.workbench.texteditor' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.ui.views' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.equinox.preferences' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.jdt.core' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.jdt' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.ui.ide' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.ui.browser' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.cdt.core' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.cdt.core.tests' range='0.0.0'/>
+      <required namespace='java.package' name='junit.framework' range='4.12.0'/>
+      <required namespace='java.package' name='org.eclipse.jdt.core' range='0.0.0'/>
+      <required namespace='java.package' name='org.eclipse.jdt.internal.core' range='0.0.0'/>
+      <required namespace='java.package' name='org.eclipse.jdt.internal.junit.model' range='0.0.0'/>
+      <required namespace='java.package' name='org.eclipse.jdt.internal.junit.ui' range='0.0.0'/>
+      <required namespace='java.package' name='org.eclipse.jdt.junit' range='0.0.0'/>
+      <required namespace='java.package' name='org.eclipse.ui.part' range='0.0.0'/>
+      <required namespace='java.package' name='org.junit' range='4.12.0'/>
+      <required namespace='java.package' name='org.junit.runner' range='4.12.0'/>
+      <required namespace='java.package' name='org.junit.runners' range='4.12.0'/>
+    </requires>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='ch.hsr.ifs.cdttesting.tests' version='9.4.0.201804051950'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: ch.hsr.ifs.cdttesting.tests;singleton:=true&#xA;Bundle-Version: 9.4.0.201804051950&#xA;Fragment-Host: ch.hsr.ifs.cdttesting&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+</units>

@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: ch.hsr.ifs.pasta.tree
+Bundle-SymbolicName: ch.hsr.ifs.pasta.tree
+Export-Package: ch.hsr.ifs.pasta.tree
+Bundle-Name: Tree
+Bundle-Version: 9.4.0.201804051950
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: IFS Institute for Software
+Import-Package: org.eclipse.cdt.core.dom.ast,org.eclipse.swt.widgets
+

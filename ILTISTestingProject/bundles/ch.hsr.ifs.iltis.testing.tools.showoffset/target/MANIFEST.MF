@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: ch.hsr.ifs.cdttesting.showoffset
+Bundle-SymbolicName: ch.hsr.ifs.cdttesting.showoffset;singleton:=true
+Bundle-Name: cdttesting Showoffset
+Bundle-Version: 9.4.0.201804051950
+Require-Bundle: org.eclipse.ui,org.eclipse.core.runtime,org.eclipse.ui
+ .console,org.eclipse.ui.editors,org.eclipse.ui.workbench.texteditor,o
+ rg.eclipse.jface.text
+Bundle-ManifestVersion: 2
+Bundle-Activator: ch.hsr.ifs.cdttesting.showoffset.ShowOffsetPlugin
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: IFS
+

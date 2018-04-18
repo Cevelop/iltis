@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Painless AST Analysis
+Bundle-SymbolicName: ch.hsr.ifs.iltis.testing.tools.pasta;singleton:=true
+Bundle-Version: 9.4.0.qualifier
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.jobs;bundle-version="3.5.300",
+ org.eclipse.core.runtime;bundle-version="3.9.0",
+ org.eclipse.core.resources;bundle-version="3.8.100",
+ org.eclipse.ui.navigator;bundle-version="3.5.300",
+ org.eclipse.ui.navigator.resources;bundle-version="3.4.500",
+ org.eclipse.cdt.ui;bundle-version="5.6.1",
+ org.eclipse.jface.text;bundle-version="3.8.100",
+ org.eclipse.ui.ide;bundle-version="3.9.0",
+ org.eclipse.ui.workbench.texteditor;bundle-version="3.8.101",
+ org.eclipse.ui.editors;bundle-version="3.8.100",
+ org.eclipse.cdt.core;bundle-version="5.6.0",
+ org.eclipse.ui.workbench,
+ org.eclipse.swt,
+ org.eclipse.jface,
+ org.eclipse.osgi,
+ org.eclipse.osgi.services;bundle-version="3.3.100",
+ ch.hsr.ifs.iltis.testing.tools.pasta.tree;bundle-version="8.5.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: 
+ ch.hsr.ifs.iltis.testing.tools.pasta
+Bundle-Activator: ch.hsr.ifs.iltis.testing.tools.pasta.PastaPlugin
+Bundle-Vendor: IFS Institute for Software
+Automatic-Module-Name: ch.hsr.ifs.iltis.testing.tools.pasta
