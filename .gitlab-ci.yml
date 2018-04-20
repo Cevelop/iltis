@@ -11,7 +11,7 @@ build:
   cache:
     key: "ILTISCoreMavenCache"
     paths:
-      - ./**/.m2/repository
+      - ./ILTISCoreProject/.m2/repository
   script:
     - cd ILTISCoreProject
     - mvn compile
@@ -24,7 +24,7 @@ test:
   cache:
     key: "ILTISCoreMavenCache"
     paths:
-      - ./**/.m2/repository
+      - ./ILTISCoreProject/.m2/repository
     policy: pull
   script:
     - cd ILTISCoreProject
@@ -38,7 +38,7 @@ deploy:
   cache:
     key: "ILTISCoreMavenCache"
     paths:
-      - ./**.m2/repository
+      - ./ILTISCoreProject/.m2/repository
     policy: pull
   script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
