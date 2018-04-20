@@ -11,7 +11,7 @@
          The ILTIS infrastructure layer
       </description>
    </category-def>
-   <category-def name="ch.hsr.ifs.iltis.dev" label="ILTIS Development">
+   <category-def name="ch.hsr.ifs.iltis.dev" label="ILTIS Development Resources">
       <description>
          The ILTIS infrastructure layer Source
       </description>
