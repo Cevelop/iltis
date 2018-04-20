@@ -1,8 +1,7 @@
-*/target
-*/bin/*
-*/artifacts.jar
-*/content.jar
-*/features/*
-*/plugins/*
+**/target/
+**/bin/
 
-bin/
+**/screenshots/
+
+.DS_STORE
+.DS_Store
