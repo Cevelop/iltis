@@ -25,10 +25,10 @@
       </description>
    </category-def>
       <category-def name="ch.hsr.ifs.iltis.dev.tools" label="ILTIS Development Tools">
+      <category name="ch.hsr.ifs.itlis.dev"/>
       	<description>
         	The ILTIS infrastructure layer Development Tools
       	</description>
-      <category name="ch.hsr.ifs.itlis.dev"/>
    </category-def>
    
 </site>
