@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="ch.hsr.ifs.iltis.core.feature"
+      label="ILTIS Core"
+      version="1.0.0.qualifier"
+      provider-name="Institute for Software">
+
+   <description url="http://www.example.com/description">
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <url>
+      <update label="Cevelop Internal Updatesite" url="https://www.cevelop.com/internal/iltis-core/"/>
+   </url>
+
+   <plugin
+         id="ch.hsr.ifs.iltis.core.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

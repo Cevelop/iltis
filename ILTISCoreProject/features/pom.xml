@@ -1,0 +1,37 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>ch.hsr.ifs.iltis.core.features</artifactId>
+	<packaging>pom</packaging>
+	<parent>
+		<groupId>ch.hsr.ifs.iltis.core</groupId>
+		<artifactId>ch.hsr.ifs.iltis.core.root</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	
+	<modules>
+		<module>ch.hsr.ifs.iltis.core.feature</module>
+	</modules>
+
+	<build>
+		<plugins>
+			<!-- Tycho create source features -->
+			<plugin>
+				<groupId>org.eclipse.tycho.extras</groupId>
+				<artifactId>tycho-source-feature-plugin</artifactId>
+				<version>${tycho-extras-version}</version>
+				<executions>
+					<execution>
+						<id>source-feature</id>
+						<phase>package</phase>
+						<goals>
+							<goal>source-feature</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
