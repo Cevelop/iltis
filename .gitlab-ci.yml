@@ -11,8 +11,9 @@ build:
   cache:
     key: "ILTISCoreMavenCache"
     paths:
-      - ./.m2/repository
+      - ./**/.m2/repository
   script:
+    - cd ILTISCoreProject
     - mvn compile
   artifacts:
     paths:
@@ -23,20 +24,21 @@ test:
   cache:
     key: "ILTISCoreMavenCache"
     paths:
-      - ./.m2/repository
+      - ./**/.m2/repository
     policy: pull
   script:
+    - cd ILTISCoreProject
     - 'xvfb-run --server-args="-screen 0 1024x768x24" mvn verify -Djarsigner.skip=true'
   artifacts:
     paths:
-      - ./ch.hsr.ifs.iltis.core.update/target/repository/*
+      - ./ILTISCoreProject/releng/ch.hsr.ifs.iltis.core.update/target/repository/**
 
 deploy:
   stage: deploy
   cache:
     key: "ILTISCoreMavenCache"
     paths:
-      - ./.m2/repository
+      - ./**.m2/repository
     policy: pull
   script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
@@ -45,5 +47,5 @@ deploy:
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo "$P2_HOST_KEY" > ~/.ssh/known_hosts'
     - 'ssh hudson@cute-test.com "cd /var/www/iltis && mkdir -p core"'
-    - 'scp -r ch.hsr.ifs.iltis.core.update/target/repository/* hudson@cute-test.com:/var/www/iltis/core'
+    - 'scp -r ./ILTISCoreProject/releng/ch.hsr.ifs.iltis.core.update/target/repository/* hudson@cute-test.com:/var/www/iltis/core'
     - 'ssh hudson@cute-test.com "cd /var/www/iltis && compile-composite-updatesite  ILTIS 0.1.0"'

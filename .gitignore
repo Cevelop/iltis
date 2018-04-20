@@ -5,3 +5,8 @@
 **/features/*
 **/plugins/*
 **/help/
+
+**/screenshots/
+
+.DS_STORE
+.DS_Store
