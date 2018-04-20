@@ -6,6 +6,4 @@ Bundle-Version: 9.4.0.qualifier
 Bundle-Vendor: IFS Institute for Software
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: ch.hsr.ifs.iltis.testing.tools.pasta.tree;x-friends:="ch.hsr.ifs.iltis.testing.tools.pasta,ch.hsr.ifs.iltis.testing.tools.pasta.tree.tests"
-Import-Package: org.eclipse.cdt.core.dom.ast,
- org.eclipse.swt.widgets
 Automatic-Module-Name: ch.hsr.ifs.iltis.testing.tools.pasta.tree

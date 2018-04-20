@@ -12,19 +12,12 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.ui.views,
  org.eclipse.equinox.preferences,
- org.eclipse.jdt.core,
- org.eclipse.jdt,
  org.eclipse.ui.ide,
  ch.hsr.ifs.iltis.testing.core,
  org.eclipse.ui.browser
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Import-Package: org.eclipse.jdt.core,
- org.eclipse.jdt.internal.core,
- org.eclipse.jdt.internal.junit.model,
- org.eclipse.jdt.internal.junit.ui,
- org.eclipse.jdt.junit,
- org.eclipse.ui.part
+Import-Package:  org.eclipse.ui.part
 Automatic-Module-Name: name.graf.emanuel.testfileeditor
 Export-Package: name.graf.emanuel.testfileeditor.model;x-friends:="ch.hsr.ifs.iltis.testing.tools.junitextensions",
  name.graf.emanuel.testfileeditor.model.node;x-friends:="ch.hsr.ifs.iltis.testing.tools.junitextensions"
