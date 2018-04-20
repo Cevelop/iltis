@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="ch.hsr.ifs.iltis.core.feature"
-      label="ILTIS-Core"
+      label="ILTIS Core"
       version="0.1.0.qualifier"
       provider-name="Institute for Software">
 
@@ -10,7 +10,7 @@
    </description>
 
    <copyright>
-		%copyright
+      %copyright
    </copyright>
 
    <license url="%licenseURL">
