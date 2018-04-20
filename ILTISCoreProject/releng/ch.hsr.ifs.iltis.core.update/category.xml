@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+	<feature
+		url="features/ch.hsr.ifs.iltis.core.feature_1.0.0.qualifier-sources-feature.jar"
+		id="ch.hsr.ifs.iltis.core.feature.source" version="1.0.0.qualifier">
+		<category name="ch.hsr.ifs.iltis.dev" />
+	</feature>
+	<feature
+		url="features/ch.hsr.ifs.iltis.core.feature_1.0.0.qualifier.jar"
+		id="ch.hsr.ifs.iltis.core.feature" version="1.0.0.qualifier">
+		<category name="ch.hsr.ifs.iltis" />
+	</feature>
+	<category-def name="ch.hsr.ifs.iltis" label="ILTIS">
+		<description>
+			The ILTIS infrastructure layer
+		</description>
+	</category-def>
+	<category-def name="ch.hsr.ifs.iltis.dev"
+		label="ILTIS Development Resources">
+		<description>
+			The ILTIS infrastructure layer Source
+		</description>
+	</category-def>
+</site>
