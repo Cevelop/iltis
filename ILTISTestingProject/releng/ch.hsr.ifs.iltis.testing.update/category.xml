@@ -10,7 +10,7 @@
 		url="features/ch.hsr.ifs.iltis.testing.examples.feature_9.4.0-SNAPSHOT.jar"
 		id="ch.hsr.ifs.iltis.testing.examples.feature"
 		version="9.4.0.qualifier">
-		<category name="ch.hsr.ifs.iltis" />
+		<category name="ch.hsr.ifs.iltis.examples" />
 	</feature>
 
 	<feature

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="ch.hsr.ifs.iltis.testing.feature"
-      label="IFS CDT-Testing Feature"
+      label="ILTIS Testing"
       version="9.4.0.qualifier"
       provider-name="IFS Institute for Software">
 
