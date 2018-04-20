@@ -1,34 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/ch.hsr.ifs.iltis.testing.tools.feature_9.4.0-SNAPSHOT.jar" id="ch.hsr.ifs.iltis.testing.tools.feature" version="9.4.0.qualifier">
-      <category name="ch.hsr.ifs.iltis.dev.tools"/>
-   </feature>
-   <feature url="features/ch.hsr.ifs.iltis.testing.examples.feature_9.4.0-SNAPSHOT.jar" id="ch.hsr.ifs.iltis.testing.examples.feature" version="9.4.0.qualifier">
-      <category name="ch.hsr.ifs.itlis"/>
-   </feature>
-   <feature url="features/ch.hsr.ifs.iltis.testing.feature_9.4.0-SNAPSHOT.jar" id="ch.hsr.ifs.iltis.testing.feature" version="9.4.0.qualifier">
-      <category name="ch.hsr.ifs.itlis"/>
-   </feature>
-   
-   <feature url="features/ch.hsr.ifs.iltis.testing.feature_9.4.0-SNAPSHOT-sources-feature.jar" id="ch.hsr.ifs.iltis.testing.feature" version="9.4.0.qualifier">
-      <category name="ch.hsr.ifs.iltis.dev"/>
-   </feature>
-   
-     <category-def name="ch.hsr.ifs.iltis" label="ILTIS">
-      <description>
-         The ILTIS infrastructure layer
-      </description>
-   </category-def>
-   <category-def name="ch.hsr.ifs.iltis.dev" label="ILTIS Development Resources">
-      <description>
-         The ILTIS infrastructure layer Source
-      </description>
-   </category-def>
-      <category-def name="ch.hsr.ifs.iltis.dev.tools" label="ILTIS Development Tools">
-      <category name="ch.hsr.ifs.itlis.dev"/>
-      	<description>
-        	The ILTIS infrastructure layer Development Tools
-      	</description>
-   </category-def>
-   
+	<feature
+		url="features/ch.hsr.ifs.iltis.testing.tools.feature_9.4.0-SNAPSHOT.jar"
+		id="ch.hsr.ifs.iltis.testing.tools.feature" version="9.4.0.qualifier">
+		<category name="ch.hsr.ifs.iltis.dev.tools" />
+	</feature>
+
+	<feature
+		url="features/ch.hsr.ifs.iltis.testing.examples.feature_9.4.0-SNAPSHOT.jar"
+		id="ch.hsr.ifs.iltis.testing.examples.feature"
+		version="9.4.0.qualifier">
+		<category name="ch.hsr.ifs.iltis" />
+	</feature>
+
+	<feature
+		url="features/ch.hsr.ifs.iltis.testing.feature_9.4.0-SNAPSHOT.jar"
+		id="ch.hsr.ifs.iltis.testing.feature" version="9.4.0.qualifier">
+		<category name="ch.hsr.ifs.iltis" />
+	</feature>
+
+	<feature
+		url="features/ch.hsr.ifs.iltis.testing.feature_9.4.0-SNAPSHOT-sources-feature.jar"
+		id="ch.hsr.ifs.iltis.testing.feature" version="9.4.0.qualifier">
+		<category name="ch.hsr.ifs.iltis.dev" />
+	</feature>
+
+	<category-def name="ch.hsr.ifs.iltis" label="ILTIS">
+		<description>
+			The ILTIS infrastructure layer
+		</description>
+	</category-def>
+
+	<category-def name="ch.hsr.ifs.iltis.examples"
+		label="ILTIS Examples">
+		<category name="ch.hsr.ifs.iltis" />
+		<description>
+			The ILTIS infrastructure layer Examples
+		</description>
+	</category-def>
+
+	<category-def name="ch.hsr.ifs.iltis.dev"
+		label="ILTIS Development Resources">
+		<description>
+			The ILTIS infrastructure layer Source
+		</description>
+	</category-def>
+
+	<category-def name="ch.hsr.ifs.iltis.dev.tools"
+		label="ILTIS Development Tools">
+		<category name="ch.hsr.ifs.iltis.dev" />
+		<description>
+			The ILTIS infrastructure layer Development Tools
+		</description>
+	</category-def>
+
 </site>
