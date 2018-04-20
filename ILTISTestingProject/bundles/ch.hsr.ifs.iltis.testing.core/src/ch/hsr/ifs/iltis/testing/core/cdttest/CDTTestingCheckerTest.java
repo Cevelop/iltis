@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.osgi.util.NLS;
 import org.junit.Before;
 
-import ch.hsr.ifs.iltis.core.resources.StringUtil;
+import ch.hsr.ifs.iltis.core.core.resources.StringUtil;
 
 import ch.hsr.ifs.iltis.testing.core.cdttest.base.CDTTestingTest;
 import ch.hsr.ifs.iltis.testing.core.cdttest.base.projectholder.FakeProjectHolder;

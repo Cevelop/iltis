@@ -1,6 +1,6 @@
 package ch.hsr.ifs.iltis.testing.core.cdttest.base;
 
-import static ch.hsr.ifs.iltis.core.functional.Functional.asOrNull;
+import static ch.hsr.ifs.iltis.core.core.functional.Functional.asOrNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -37,7 +37,7 @@ import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.junit.After;
 import org.junit.Before;
 
-import ch.hsr.ifs.iltis.core.functional.OptionalUtil;
+import ch.hsr.ifs.iltis.core.core.functional.OptionalUtil;
 
 import ch.hsr.ifs.iltis.testing.core.cdttest.base.projectholder.ITestProjectHolder;
 import ch.hsr.ifs.iltis.testing.core.cdttest.base.projectholder.TestProjectHolder;

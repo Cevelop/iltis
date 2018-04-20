@@ -5,8 +5,8 @@ import java.util.EnumSet;
 import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 
-import ch.hsr.ifs.iltis.core.data.StringPrintStream;
-import ch.hsr.ifs.iltis.core.functional.Functional;
+import ch.hsr.ifs.iltis.core.core.data.StringPrintStream;
+import ch.hsr.ifs.iltis.core.core.functional.Functional;
 
 import ch.hsr.ifs.iltis.testing.core.cdttest.comparison.ASTComparison.ComparisonArg;
 import ch.hsr.ifs.iltis.testing.core.cdttest.comparison.ASTComparison.ComparisonAttrID;

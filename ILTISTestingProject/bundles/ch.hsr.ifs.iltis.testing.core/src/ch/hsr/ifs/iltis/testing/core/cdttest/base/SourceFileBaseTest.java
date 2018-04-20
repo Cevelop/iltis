@@ -8,7 +8,7 @@
  ******************************************************************************/
 package ch.hsr.ifs.iltis.testing.core.cdttest.base;
 
-import static ch.hsr.ifs.iltis.core.functional.Functional.doForT;
+import static ch.hsr.ifs.iltis.core.core.functional.Functional.doForT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
@@ -34,7 +34,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.ITextSelection;
 import org.osgi.framework.FrameworkUtil;
 
-import ch.hsr.ifs.iltis.core.data.StringInputStream;
+import ch.hsr.ifs.iltis.core.core.data.StringInputStream;
 
 import ch.hsr.ifs.iltis.testing.core.cdttest.CDTTestingConfigConstants;
 import ch.hsr.ifs.iltis.testing.core.cdttest.base.projectholder.IProjectHolder;

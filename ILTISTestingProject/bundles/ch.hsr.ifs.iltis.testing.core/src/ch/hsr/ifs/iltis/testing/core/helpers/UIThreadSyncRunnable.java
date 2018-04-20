@@ -2,8 +2,8 @@ package ch.hsr.ifs.iltis.testing.core.helpers;
 
 import org.eclipse.ui.PlatformUI;
 
-import ch.hsr.ifs.iltis.core.exception.ILTISException;
-import ch.hsr.ifs.iltis.core.functional.functions.ThrowingRunnable;
+import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
+import ch.hsr.ifs.iltis.core.core.functional.functions.ThrowingRunnable;
 
 
 public abstract class UIThreadSyncRunnable implements Runnable {

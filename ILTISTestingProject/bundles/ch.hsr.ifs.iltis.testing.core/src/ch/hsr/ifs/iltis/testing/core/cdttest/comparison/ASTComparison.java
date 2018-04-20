@@ -1,8 +1,8 @@
 package ch.hsr.ifs.iltis.testing.core.cdttest.comparison;
 
-import static ch.hsr.ifs.iltis.core.functional.Functional.as;
-import static ch.hsr.ifs.iltis.core.functional.Functional.moveToElseTo;
-import static ch.hsr.ifs.iltis.core.functional.Functional.zip;
+import static ch.hsr.ifs.iltis.core.core.functional.Functional.as;
+import static ch.hsr.ifs.iltis.core.core.functional.Functional.moveToElseTo;
+import static ch.hsr.ifs.iltis.core.core.functional.Functional.zip;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -74,11 +74,11 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTUsingDirective;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTVisibilityLabel;
 import org.eclipse.core.runtime.Path;
 
-import ch.hsr.ifs.iltis.core.collections.CollectionUtil;
-import ch.hsr.ifs.iltis.core.data.AbstractPair;
-import ch.hsr.ifs.iltis.core.functional.StreamFactory;
-import ch.hsr.ifs.iltis.core.functional.functions.Consumer;
-import ch.hsr.ifs.iltis.core.resources.WorkspaceUtil;
+import ch.hsr.ifs.iltis.core.core.collections.CollectionUtil;
+import ch.hsr.ifs.iltis.core.core.data.AbstractPair;
+import ch.hsr.ifs.iltis.core.core.functional.StreamFactory;
+import ch.hsr.ifs.iltis.core.core.functional.functions.Consumer;
+import ch.hsr.ifs.iltis.core.core.resources.WorkspaceUtil;
 
 
 /**

@@ -10,7 +10,7 @@ import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
 
-import ch.hsr.ifs.iltis.core.data.AbstractPair;
+import ch.hsr.ifs.iltis.core.core.data.AbstractPair;
 
 import ch.hsr.ifs.iltis.testing.core.testsourcefile.TestSourceFile;
 import ch.hsr.ifs.iltis.testing.core.testsourcefile.RTSTest.Language;

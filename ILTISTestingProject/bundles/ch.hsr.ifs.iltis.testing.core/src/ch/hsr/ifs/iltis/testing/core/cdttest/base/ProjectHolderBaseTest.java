@@ -36,8 +36,8 @@ import org.eclipse.jface.text.IDocument;
 import org.junit.After;
 import org.junit.Before;
 
-import ch.hsr.ifs.iltis.core.functional.functions.Consumer;
-import ch.hsr.ifs.iltis.core.functional.functions.Function;
+import ch.hsr.ifs.iltis.core.core.functional.functions.Consumer;
+import ch.hsr.ifs.iltis.core.core.functional.functions.Function;
 
 import ch.hsr.ifs.iltis.testing.core.cdttest.base.projectholder.IProjectHolder;
 import ch.hsr.ifs.iltis.testing.core.cdttest.base.projectholder.ITestProjectHolder;

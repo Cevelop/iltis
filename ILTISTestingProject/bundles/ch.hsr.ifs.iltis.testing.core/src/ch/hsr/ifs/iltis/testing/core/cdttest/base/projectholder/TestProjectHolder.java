@@ -46,9 +46,9 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.TextEdit;
 
-import ch.hsr.ifs.iltis.core.data.StringInputStream;
-import ch.hsr.ifs.iltis.core.exception.ILTISException;
-import ch.hsr.ifs.iltis.core.resources.FileUtil;
+import ch.hsr.ifs.iltis.core.core.data.StringInputStream;
+import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
+import ch.hsr.ifs.iltis.core.core.resources.FileUtil;
 
 import ch.hsr.ifs.iltis.testing.core.cdttest.formatting.FormatterLoader;
 import ch.hsr.ifs.iltis.testing.core.testsourcefile.TestSourceFile;
