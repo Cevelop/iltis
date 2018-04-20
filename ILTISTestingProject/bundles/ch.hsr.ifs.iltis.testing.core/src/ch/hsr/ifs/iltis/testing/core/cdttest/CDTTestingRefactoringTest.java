@@ -16,8 +16,8 @@ import org.eclipse.ltk.core.refactoring.RefactoringStatusEntry;
 
 import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
 
-import ch.hsr.ifs.iltis.cpp.wrappers.CRefactoring;
-import ch.hsr.ifs.iltis.cpp.wrappers.CRefactoringContext;
+import ch.hsr.ifs.iltis.cpp.core.wrappers.CRefactoring;
+import ch.hsr.ifs.iltis.cpp.core.wrappers.CRefactoringContext;
 
 import ch.hsr.ifs.iltis.testing.core.cdttest.base.CDTTestingUITest;
 import ch.hsr.ifs.iltis.testing.core.cdttest.base.SourceFileBaseTest;

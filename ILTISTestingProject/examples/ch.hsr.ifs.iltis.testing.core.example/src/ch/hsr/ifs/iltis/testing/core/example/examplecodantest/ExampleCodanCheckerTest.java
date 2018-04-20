@@ -2,7 +2,7 @@ package ch.hsr.ifs.iltis.testing.core.example.examplecodantest;
 
 import org.junit.Test;
 
-import ch.hsr.ifs.iltis.cpp.ast.checker.helper.IProblemId;
+import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
 
 import ch.hsr.ifs.iltis.testing.core.cdttest.CDTTestingCheckerTest;
 import ch.hsr.ifs.iltis.testing.core.example.examplecodantest.MyCodanChecker.MyProblemId;

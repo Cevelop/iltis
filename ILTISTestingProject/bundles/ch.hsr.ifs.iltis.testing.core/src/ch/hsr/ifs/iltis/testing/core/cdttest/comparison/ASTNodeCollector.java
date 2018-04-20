@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 
-import ch.hsr.ifs.iltis.cpp.ast.visitor.CallbackVisitor;
+import ch.hsr.ifs.iltis.cpp.core.ast.visitor.CallbackVisitor;
 
 import ch.hsr.ifs.iltis.testing.core.cdttest.comparison.ASTComparison.ComparisonArg;
 

@@ -5,7 +5,7 @@ import java.util.EnumSet;
 import org.eclipse.ui.IMarkerResolution;
 import org.junit.Test;
 
-import ch.hsr.ifs.iltis.cpp.ast.checker.helper.IProblemId;
+import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
 
 import ch.hsr.ifs.iltis.testing.core.cdttest.CDTTestingQuickfixTest;
 import ch.hsr.ifs.iltis.testing.core.cdttest.comparison.ASTComparison.ComparisonArg;

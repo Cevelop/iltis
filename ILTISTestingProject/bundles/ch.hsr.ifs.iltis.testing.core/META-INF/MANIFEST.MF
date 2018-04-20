@@ -20,7 +20,7 @@ Require-Bundle:
  org.eclipse.cdt.core;bundle-version="5.8.0",
  org.junit,
  ch.hsr.ifs.iltis.core.core,
- ch.hsr.ifs.iltis.cpp,
+ ch.hsr.ifs.iltis.cpp.core,
  org.eclipse.core.filesystem,
  org.eclipse.cdt.codan.ui,
  org.eclipse.cdt.core.tests,

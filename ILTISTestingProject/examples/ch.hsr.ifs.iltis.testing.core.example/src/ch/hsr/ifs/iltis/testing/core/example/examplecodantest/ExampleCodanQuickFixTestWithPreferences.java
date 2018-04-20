@@ -4,7 +4,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.IMarkerResolution;
 import org.junit.Test;
 
-import ch.hsr.ifs.iltis.cpp.ast.checker.helper.IProblemId;
+import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
 
 import ch.hsr.ifs.iltis.testing.core.TestingPlugin;
 import ch.hsr.ifs.iltis.testing.core.cdttest.CDTTestingQuickfixTestWithPreferences;
