@@ -19,8 +19,7 @@ build:
     - mvn compile
   artifacts:
     paths:
-      - ./*/*/*/target/**
-      - ILTISCppProject/releng/ch.hsr.ifs.iltis.core.update/target/repository
+      - ./*/*/*/bin/**
       
 test:
   stage: test
@@ -33,7 +32,7 @@ test:
     - 'xvfb-run --server-args="-screen 0 1024x768x24" mvn verify -Djarsigner.skip=true'
   artifacts:
     paths:
-      - ILTISCppProject/releng/ch.hsr.ifs.iltis.core.update/target/repository
+      - ILTISCppProject/releng/ch.hsr.ifs.iltis.core.update/target/repository/**
 
 
 deploy:
