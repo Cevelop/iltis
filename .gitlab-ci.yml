@@ -6,9 +6,6 @@ variables:
 
 image: fmorgner/cevelop-plugin-build:latest
 
-before_script:
-- cd ILTISCppProject
-
 build:
   stage: build
   cache:
@@ -16,6 +13,7 @@ build:
     paths:
       - ./*/.m2/repository
   script:
+    - cd ILTISCppProject
     - mvn compile
   artifacts:
     paths:
@@ -29,6 +27,7 @@ test:
       - ./*/.m2/repository
     policy: pull
   script:
+    - cd ILTISCppProject
     - 'xvfb-run --server-args="-screen 0 1024x768x24" mvn verify -Djarsigner.skip=true'
   artifacts:
     paths:
