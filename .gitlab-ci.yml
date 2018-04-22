@@ -19,12 +19,7 @@ build:
   artifacts:
     paths:
       - ./ILTISCppProject/*/*/target/**
-      - ILTISCppProject/*/*/target/**
-      - ./ILTISCppProject/*/*/target/repository/**
-      - ILTISCppProject/*/*/target/repository/**
       - ./*/*/*/target/**
-      - ./**/target/**
-
 test:
   stage: test
   cache:
@@ -33,6 +28,9 @@ test:
     policy: pull
   script:
     - 'xvfb-run --server-args="-screen 0 1024x768x24" mvn verify -Djarsigner.skip=true'
+  artifacts:
+    paths:
+      - ILTISCppProject/relengch.hsr.ifs.iltis.core.update/target/repository/**
 
 deploy:
   stage: deploy
