@@ -18,7 +18,7 @@ build:
     - mvn compile
   artifacts:
     paths:
-      - ./**/target/*
+      - ./ILTISCppProject/**/target/*
 
 test:
   stage: test
@@ -28,8 +28,6 @@ test:
     policy: pull
   script:
     - 'xvfb-run --server-args="-screen 0 1024x768x24" mvn verify -Djarsigner.skip=true'
-  dependencies:
-    - build
 
 deploy:
   stage: deploy
@@ -46,5 +44,3 @@ deploy:
     - 'ssh hudson@cute-test.com "cd /var/www/iltis && mkdir -p cpp"'
     - 'scp -r ./ILTISCppProject/releng/ch.hsr.ifs.iltis.cpp.update/target/repository/* hudson@cute-test.com:/var/www/iltis/cpp'
     - 'ssh hudson@cute-test.com "cd /var/www/iltis && compile-composite-updatesite ILTIS 0.1.0"'
-  dependencies:
-    - build
