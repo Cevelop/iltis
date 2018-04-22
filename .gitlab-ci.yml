@@ -15,7 +15,7 @@ build:
     key: "ILTISCppMavenCache"
     untracked: true
   script:
-    - mvn compile
+    - mvn compile package
   artifacts:
     paths:
       - ./ILTISCppProject/**/target/*
