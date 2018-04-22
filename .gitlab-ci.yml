@@ -19,7 +19,7 @@ build:
     - mvn compile
   artifacts:
     paths:
-      - ./*/*/*/bin/**
+      - ./*/*/*/target/**
       
 test:
   stage: test
