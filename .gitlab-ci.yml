@@ -18,7 +18,8 @@ build:
     - mvn compile package
   artifacts:
     paths:
-      - ./**/target/**
+      - ./ILTISCppProject/*/target/**
+      - ./ILTISCppProject/releng/ch.hsr.ifs.iltis.cpp.update/target/repository/**
 
 test:
   stage: test
