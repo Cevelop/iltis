@@ -14,9 +14,9 @@ build:
   cache:
     key: "ILTISCppMavenCache"
     paths:
-      - ILTISCppProject/.m2/repository
+      - ./*/.m2/repository
   script:
-    - mvn compile package
+    - mvn compile
   artifacts:
     paths:
       - ./*/*/*/target/**
@@ -27,10 +27,13 @@ test:
   cache:
     key: "ILTISCppMavenCache"
     paths:
-      - ILTISCppProject/.m2/repository
+      - ./*/.m2/repository
     policy: pull
   script:
     - 'xvfb-run --server-args="-screen 0 1024x768x24" mvn verify -Djarsigner.skip=true'
+  artifacts:
+    paths:
+      - ILTISCppProject/releng/ch.hsr.ifs.iltis.core.update/target/repository
 
 
 deploy:
@@ -38,7 +41,7 @@ deploy:
   cache:
     key: "ILTISCppMavenCache"
     paths:
-      - ILTISCppProject/.m2/repository
+      - ./*/.m2/repository
     policy: pull
   script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
