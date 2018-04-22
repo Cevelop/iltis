@@ -18,7 +18,9 @@ build:
     - mvn compile package
   artifacts:
     paths:
-      - ./ILTISCppProject/**/target/**
+      - ./ILTISCppProject/*/*/target/**
+      - ./ILTISCppProject/*/*/target/repository/**
+      - ./*/*/*/target/repository/**
 
 test:
   stage: test
@@ -35,8 +37,6 @@ deploy:
     key: "ILTISCppMavenCache"
     untracked: true
     policy: pull
-  dependencies:
-    - build
   script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
