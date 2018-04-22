@@ -32,9 +32,7 @@ test:
     - 'xvfb-run --server-args="-screen 0 1024x768x24" mvn verify -Djarsigner.skip=true'
   artifacts:
     paths:
-      - ./ILTISCppProject/releng/ch.hsr.ifs.iltis.cpp.update/target/repository
-      - ./*/*/*/target/repository
-
+      - ILTISCppProject/releng/ch.hsr.ifs.iltis.cpp.update/target/repository/**
 
 deploy:
   stage: deploy
