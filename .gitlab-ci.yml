@@ -6,14 +6,15 @@ variables:
 
 image: fmorgner/cevelop-plugin-build:latest
 
+before_script:
+- cd ILTISCppProject
+
 build:
   stage: build
   cache:
     key: "ILTISCppMavenCache"
-    paths:
-      - ./ILTISCppProject/.m2/repository
+    untracked: true
   script:
-    - cd ILTISCppProject
     - mvn compile
   artifacts:
     paths:
@@ -23,11 +24,9 @@ test:
   stage: test
   cache:
     key: "ILTISCppMavenCache"
-    paths:
-      - ./ILTISCppProject/.m2/repository
+    untracked: true
     policy: pull
   script:
-    - cd ILTISCppProject
     - 'xvfb-run --server-args="-screen 0 1024x768x24" mvn verify -Djarsigner.skip=true'
   artifacts:
     paths:
@@ -37,8 +36,7 @@ deploy:
   stage: deploy
   cache:
     key: "ILTISCppMavenCache"
-    paths:
-      - ./ILTISCppProject/.m2/repository
+    untracked: true
     policy: pull
   script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
