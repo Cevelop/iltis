@@ -19,13 +19,11 @@ build:
   artifacts:
     paths:
       - ./ILTISCppProject/*/*/target/**
+      - ILTISCppProject/*/*/target/**
       - ./ILTISCppProject/*/*/target/repository/**
+      - ILTISCppProject/*/*/target/repository/**
       - ./*/*/*/target/**
       - ./**/target/**
-      - ILTISCppProject/*/*/target/**
-      - ILTISCppProject/*/*/target/repository/**
-      - */*/*/target/**
-      - **/target/**
 
 test:
   stage: test
