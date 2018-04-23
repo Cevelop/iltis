@@ -9,7 +9,7 @@ image: fmorgner/cevelop-plugin-build:latest
 build:
   stage: build
   cache:
-    key: "ILTISTestingeMavenCache"
+    key: "ILTISTestingMavenCache"
     paths:
       - ./ILTISTestingProject/.m2/repository
   script:
