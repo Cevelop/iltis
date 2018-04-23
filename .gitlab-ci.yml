@@ -4,25 +4,17 @@ variables:
   LANGUAGE: "en_US.UTF-8"
   MAVEN_OPTS: "-Dmaven.repo.local=./.m2/repository"
 
+stages:
+  - build-test
+  - deploy
+
 image: fmorgner/cevelop-plugin-build:latest
 
 before_script:
-- cd ILTISCppProject
-
-build:
-  stage: build
-  cache:
-    key: "ILTISCppMavenCache"
-    paths:
-      - ./*/.m2/repository
-  script:
-    - mvn compile
-  artifacts:
-    paths:
-      - ./*/*/*/target/**
+  - cd ILTISCppProject
       
-test:
-  stage: test
+build-test:
+  stage: build-test
   cache:
     key: "ILTISCppMavenCache"
     paths:
@@ -36,8 +28,6 @@ test:
 
 deploy:
   stage: deploy
-  dependencies:
-    - test
   script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
