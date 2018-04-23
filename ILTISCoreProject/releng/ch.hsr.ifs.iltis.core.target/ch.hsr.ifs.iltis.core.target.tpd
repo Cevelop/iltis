@@ -1,15 +1,6 @@
-target "ILTIS-CORE for Eclipse Oxygen"
-
-with source requirements
-
-location "http://download.eclipse.org/eclipse/updates/4.7" {
-    org.eclipse.platform.ide [4.7.0,5.0.0)
-    org.eclipse.pde.feature.group lazy
-    org.eclipse.platform.sdk [4.7.0,5.0.0)
-    org.eclipse.sdk.ide [4.7.0,5.0.0)
-    org.eclipse.emf.common.feature.group lazy
-}
+target "ILTIS-CORE for Eclipse Oxygen" with source requirements
 
 location "http://download.eclipse.org/releases/oxygen" {
+	org.eclipse.sdk.ide [4.7.0,5.0.0)
 	org.eclipse.emf.sdk.feature.group lazy
 }

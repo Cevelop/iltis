@@ -6,6 +6,9 @@ variables:
 
 image: fmorgner/cevelop-plugin-build:latest
 
+before_script:
+  - cd ILTISCoreProject
+
 build:
   stage: build
   cache:
@@ -13,11 +16,10 @@ build:
     paths:
       - ./ILTISCoreProject/.m2/repository
   script:
-    - cd ILTISCoreProject
     - mvn compile
   artifacts:
     paths:
-      - ./**/target/*
+      - ./*/*/*/target/**
 
 test:
   stage: test
@@ -27,7 +29,6 @@ test:
       - ./ILTISCoreProject/.m2/repository
     policy: pull
   script:
-    - cd ILTISCoreProject
     - 'xvfb-run --server-args="-screen 0 1024x768x24" mvn verify -Djarsigner.skip=true'
   artifacts:
     paths:
@@ -47,5 +48,5 @@ deploy:
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo "$P2_HOST_KEY" > ~/.ssh/known_hosts'
     - 'ssh hudson@cute-test.com "cd /var/www/iltis && mkdir -p core"'
-    - 'scp -r ./ILTISCoreProject/releng/ch.hsr.ifs.iltis.core.update/target/repository/* hudson@cute-test.com:/var/www/iltis/core'
+    - 'scp -r releng/ch.hsr.ifs.iltis.core.update/target/repository/* hudson@cute-test.com:/var/www/iltis/core'
     - 'ssh hudson@cute-test.com "cd /var/www/iltis && compile-composite-updatesite  ILTIS 0.1.0"'
