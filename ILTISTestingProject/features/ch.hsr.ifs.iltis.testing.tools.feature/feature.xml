@@ -2,7 +2,7 @@
 <feature
       id="ch.hsr.ifs.iltis.testing.tools.feature"
       label="ILTIS Testing -Testing Tools Feature"
-      version="9.4.0.qualifier"
+      version="1.0.0.qualifier"
       provider-name="IFS Institute for Software">
 
    <description url="https://github.com/IFS-HSR/ch.hsr.ifs.cdttesting">
@@ -97,6 +97,26 @@ This Agreement is governed by the laws of the State of New York and the intellec
    <includes
          id="ch.hsr.ifs.iltis.testing.tools.pasta.feature"
          version="0.0.0"/>
+
+   <requires>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.ui.workbench"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.jdt.junit"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.eclipse.text"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.equinox.preferences"/>
+      <import plugin="ch.hsr.ifs.iltis.testing.highlevel"/>
+      <import plugin="org.eclipse.ui.browser"/>
+   </requires>
 
    <plugin
          id="ch.hsr.ifs.iltis.testing.tools.junitextensions"

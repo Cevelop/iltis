@@ -11,7 +11,7 @@ build:
   cache:
     key: "ILTISTestingeMavenCache"
     paths:
-      - ./**/.m2/repository
+      - ./ILTISTestingProject/.m2/repository
   script:
     - cd ILTISTestingProject
     - mvn compile
@@ -24,7 +24,7 @@ test:
   cache:
     key: "ILTISTestingMavenCache"
     paths:
-      - ./**/.m2/repository
+      - ./ILTISTestingProject/.m2/repository
     policy: pull
   script:
     - cd ILTISTestingProject

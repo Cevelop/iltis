@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="ch.hsr.ifs.iltis.testing.highlevel.testingPlugin" name="CDT RTS Testing Plugin" schema="schema/ch.hsr.ifs.iltis.testing.highlevel.testingPlugin.exsd"/>
+</plugin>

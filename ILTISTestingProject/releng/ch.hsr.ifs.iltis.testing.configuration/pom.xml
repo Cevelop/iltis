@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ch.hsr.ifs.iltis.testing</groupId>
 	<artifactId>ch.hsr.ifs.iltis.testing.configuration</artifactId>
-	<version>9.4.0-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<properties>
 		<tycho-version>1.1.0</tycho-version>
@@ -12,6 +12,28 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.surefire.version>2.20.1</maven.surefire.version>
 	</properties>
+
+	<profiles>
+
+		<profile>
+			<id>release</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<target-platform-artifact>ch.hsr.ifs.iltis.testing.target</target-platform-artifact>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>development</id>
+			<properties>
+				<target-platform-artifact>ch.hsr.ifs.iltis.testing.target.dev</target-platform-artifact>
+			</properties>
+		</profile>
+
+	</profiles>
+
 
 	<build>
 		<plugins>
@@ -29,7 +51,7 @@
 					<target>
 						<artifact>
 							<groupId>ch.hsr.ifs.iltis.testing</groupId>
-							<artifactId>ch.hsr.ifs.iltis.testing.target</artifactId>
+							<artifactId>${target-platform-artifact}</artifactId>
 							<version>${project.version}</version>
 						</artifact>
 					</target>

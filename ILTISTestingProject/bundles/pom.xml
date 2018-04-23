@@ -6,9 +6,11 @@
     <parent>
         <groupId>ch.hsr.ifs.iltis.testing</groupId>
         <artifactId>ch.hsr.ifs.iltis.testing.root</artifactId>
-        <version>9.4.0-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modules>
+        <module>ch.hsr.ifs.iltis.testing.highlevel</module>
+        <module>ch.hsr.ifs.iltis.testing.cpp</module>
         <module>ch.hsr.ifs.iltis.testing.core</module>
         <module>ch.hsr.ifs.iltis.testing.tools.junitextensions</module>
         <module>ch.hsr.ifs.iltis.testing.tools.pasta</module>
