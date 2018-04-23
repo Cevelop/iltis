@@ -93,13 +93,17 @@ This Agreement is governed by the laws of the State of New York and the intellec
    </url>
 
    <requires>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.core.runtime" version="3.9.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.cdt.ui" version="5.6.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jface.text" version="3.8.100" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.cdt.core" version="5.6.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.osgi.services" version="3.3.100" match="greaterOrEqual"/>
       <import plugin="ch.hsr.ifs.iltis.testing.tools.pasta.tree" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.runtime" version="3.9.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.osgi.services" version="3.3.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.cdt.core" version="5.6.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.cdt.ui" version="5.6.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.workbench"/>
+      <import plugin="org.eclipse.osgi"/>
+      <import plugin="org.eclipse.swt"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.text"/>
+      <import plugin="org.eclipse.jface.text" version="3.12.2" match="greaterOrEqual"/>
    </requires>
 
    <plugin
