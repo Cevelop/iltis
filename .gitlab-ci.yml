@@ -14,7 +14,7 @@ before_script:
   - cd ILTISTestingProject
 
 build-test:
-  stage: test
+  stage: build-test
   cache:
     key: "ILTISTestingMavenCache"
     paths:
