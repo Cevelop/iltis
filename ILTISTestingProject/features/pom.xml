@@ -10,6 +10,7 @@
     </parent>
     <modules>
         <module>ch.hsr.ifs.iltis.testing.core.feature</module>
+        <module>ch.hsr.ifs.iltis.testing.cpp.feature</module>
         <module>ch.hsr.ifs.iltis.testing.highlevel.feature</module>
         <module>ch.hsr.ifs.iltis.testing.highlevel.examples.feature</module>
         <module>ch.hsr.ifs.iltis.testing.tools.feature</module>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="ch.hsr.ifs.iltis.testing.core.feature"
-      label="ILTIS Testing Core"
+      id="ch.hsr.ifs.iltis.testing.cpp.feature"
+      label="ILTIS Testing Cpp"
       version="1.0.0.qualifier"
       provider-name="IFS Institute for Software">
 
@@ -105,6 +105,10 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <update label="ILTIS Updatesite" url="https://cevelop.com/iltis/"/>
       <discovery label="CDT Test Plug-ins" url="https://www.cevelop.com/cdt-test-plugins/mars"/>
    </url>
+
+   <includes
+         id="org.eclipse.cdt.testing"
+         version="0.0.0"/>
 
    <requires>
       <import plugin="org.junit" version="4.12.0" match="greaterOrEqual"/>

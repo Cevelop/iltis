@@ -18,6 +18,12 @@
    <feature url="features/ch.hsr.ifs.iltis.testing.core.feature_1.0.0.qualifier-sources-feature.jar" id="ch.hsr.ifs.iltis.testing.core.feature.source" version="1.0.0.qualifier">
       <category name="ch.hsr.ifs.iltis.testing.core"/>
    </feature>
+   <feature url="features/ch.hsr.ifs.iltis.testing.cpp.feature_1.0.0.qualifier.jar" id="ch.hsr.ifs.iltis.testing.cpp.feature" version="1.0.0.qualifier">
+      <category name="ch.hsr.ifs.iltis.testing.cpp"/>
+   </feature>
+      <feature url="features/ch.hsr.ifs.iltis.testing.cpp.feature_1.0.0.qualifier-sources-feature.jar" id="ch.hsr.ifs.iltis.testing.cpp.feature.source" version="1.0.0.qualifier">
+      <category name="ch.hsr.ifs.iltis.testing.cpp"/>
+   </feature>
    <category-def name="ch.hsr.ifs.iltis.testing.core" label="ILTIS Testing Core">
       <category name="ch.hsr.ifs.iltis.testing"/>
    </category-def>
@@ -36,6 +42,9 @@
       <category name="ch.hsr.ifs.iltis.dev"/>
    </category-def>
    <category-def name="ch.hsr.ifs.iltis.testing.highlevel" label="ILTIS Testing Highlevel">
+      <category name="ch.hsr.ifs.iltis.testing"/>
+   </category-def>
+   <category-def name="ch.hsr.ifs.iltis.testing.cpp" label="ILTIS Testing Cpp">
       <category name="ch.hsr.ifs.iltis.testing"/>
    </category-def>
 </site>
