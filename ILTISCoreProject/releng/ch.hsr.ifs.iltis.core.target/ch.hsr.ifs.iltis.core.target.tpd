@@ -1,6 +1,10 @@
 target "ILTIS-CORE for Eclipse Oxygen" with source requirements
 
 location "http://download.eclipse.org/releases/oxygen" {
-	org.eclipse.sdk.ide [4.7.0,5.0.0)
-	org.eclipse.emf.sdk.feature.group lazy
+	org.eclipse.emf.common.ui.feature.group lazy
+	org.eclipse.equinox.launcher lazy
+}
+
+location "https://cevelop.com/iltis"{
+	ch.hsr.ifs.iltis.testing.core.feature.feature.group lazy
 }
