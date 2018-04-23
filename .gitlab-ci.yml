@@ -37,11 +37,6 @@ test:
 
 deploy:
   stage: deploy
-  cache:
-    key: "ILTISTestingMavenCache"
-    paths:
-      - ./ILTISTestingProject/.m2/repository
-    policy: pull
   script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
