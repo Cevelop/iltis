@@ -13,7 +13,7 @@ image: fmorgner/cevelop-plugin-build:latest
 before_script:
   - cd ILTISCoreProject
 
-test:
+build-test:
   stage: build-test
   cache:
     key: "ILTISCoreMavenCache"
