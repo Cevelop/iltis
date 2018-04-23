@@ -29,20 +29,6 @@ public abstract class RefactoringAction extends Action {
       super(label);
    }
 
-   /**
-    * Sets behavior with respect to saving dirty editors.
-    * 
-    * @param saveRequired
-    *        if <code>true</code>, dirty editors will be saved before refactoring.
-    *
-    * @deprecated saving of editors should be controlled by refactoring runner, not by the action.
-    * @since 5.3
-    */
-   @Deprecated
-   public void setSaveRequired(boolean saveRequired) {
-      this.saveRequired = saveRequired;
-   }
-
    public void setEditor(IEditorPart editor) {
       fEditor = null;
       fSite = null;

@@ -9,7 +9,7 @@ import org.eclipse.cdt.core.dom.ast.IBinding;
 import org.eclipse.cdt.core.index.IIndex;
 import org.eclipse.core.runtime.CoreException;
 
-import ch.hsr.ifs.iltis.cpp.core.wrappers.ILTISWrapper;
+import ch.hsr.ifs.iltis.testing.core.validators.ILTISWrapper;
 
 /**
  * A wrapper class for the cdt IndexToASTNameHelper. Using this wrapper reduces the amount of warnings respectively the amount of {@code @SuppressWarnings} tags

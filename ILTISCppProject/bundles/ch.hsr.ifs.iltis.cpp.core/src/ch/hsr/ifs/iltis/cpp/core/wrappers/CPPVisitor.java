@@ -25,7 +25,7 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPFunctionType;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPPlaceholderType.PlaceholderKind;
 
 import ch.hsr.ifs.iltis.core.core.functional.OptionalUtil;
-import ch.hsr.ifs.iltis.cpp.core.wrappers.ILTISWrapper;
+import ch.hsr.ifs.iltis.testing.core.validators.ILTISWrapper;
 
 import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPInternalBinding;
 

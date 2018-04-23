@@ -5,6 +5,7 @@ import org.junit.Test;
 import ch.hsr.ifs.iltis.cpp.core.wrappers.CPPVisitor;
 import ch.hsr.ifs.iltis.cpp.core.wrappers.IndexToASTNameHelper;
 import ch.hsr.ifs.iltis.cpp.core.wrappers.SelectionHelper;
+import ch.hsr.ifs.iltis.testing.core.validators.WrapperValidationTest;
 
 
 public class ValidateWrappers extends WrapperValidationTest {

@@ -7,7 +7,7 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.viewers.ISelection;
 
-import ch.hsr.ifs.iltis.cpp.core.wrappers.ILTISWrapper;
+import ch.hsr.ifs.iltis.testing.core.validators.ILTISWrapper;
 
 
 /**
