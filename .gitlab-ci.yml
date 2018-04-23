@@ -4,30 +4,21 @@ variables:
   LANGUAGE: "en_US.UTF-8"
   MAVEN_OPTS: "-Dmaven.repo.local=./.m2/repository"
 
+stages:
+  - build-test
+  - deploy
+
 image: fmorgner/cevelop-plugin-build:latest
 
 before_script:
   - cd ILTISCoreProject
 
-build:
-  stage: build
-  cache:
-    key: "ILTISCoreMavenCache"
-    paths:
-      - ./ILTISCoreProject/.m2/repository
-  script:
-    - mvn compile
-  artifacts:
-    paths:
-      - ./*/*/*/target/**
-
 test:
-  stage: test
+  stage: build-test
   cache:
     key: "ILTISCoreMavenCache"
     paths:
       - ./ILTISCoreProject/.m2/repository
-    policy: pull
   script:
     - 'xvfb-run --server-args="-screen 0 1024x768x24" mvn verify -Djarsigner.skip=true'
   artifacts:
