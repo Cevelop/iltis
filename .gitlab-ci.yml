@@ -3,31 +3,22 @@ variables:
   LANG: "en_US.UTF-8"
   LANGUAGE: "en_US.UTF-8"
   MAVEN_OPTS: "-Dmaven.repo.local=./.m2/repository"
+  
+stages:
+  - build-test
+  - deploy
 
 image: fmorgner/cevelop-plugin-build:latest
 
 before_script:
-- cd ILTISTestingProject
+  - cd ILTISTestingProject
 
-build:
-  stage: build
-  cache:
-    key: "ILTISTestingMavenCache"
-    paths:
-      - ./ILTISTestingProject/.m2/repository
-  script:
-    - mvn compile
-  artifacts:
-    paths:
-      - ./*/*/*/target/**
-
-test:
+build-test:
   stage: test
   cache:
     key: "ILTISTestingMavenCache"
     paths:
       - ./ILTISTestingProject/.m2/repository
-    policy: pull
   script:
     - 'xvfb-run --server-args="-screen 0 1024x768x24" mvn test verify -Djarsigner.skip=true'
   artifacts:
@@ -36,8 +27,6 @@ test:
 
 deploy:
   stage: deploy
-  dependencies:
-    - test
   script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
