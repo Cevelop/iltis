@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="ch.hsr.ifs.iltis.core" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="ch.hsr.ifs.iltis.core.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="ch.hsr.ifs.iltis.core" id="extendedExampleInstallerWizard" name="Extended Example Installer Wizard"/>
+         <meta.schema plugin="ch.hsr.ifs.iltis.core.core" id="extendedExampleInstallerWizard" name="Extended Example Installer Wizard"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
