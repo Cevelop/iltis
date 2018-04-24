@@ -6,7 +6,7 @@
 	<artifactId>ch.hsr.ifs.iltis.core.configuration</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	
+
 	<properties>
 		<tycho-version>1.1.0</tycho-version>
 		<tycho-extras-version>1.1.0</tycho-extras-version>
@@ -135,6 +135,28 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<!-- Jarsigner -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jarsigner-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>sign</id>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<keystore>${keystore}</keystore>
+					<alias>${keyalias}</alias>
+					<storepass>${certpass}</storepass>
+					<storetype>pkcs12</storetype>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>
