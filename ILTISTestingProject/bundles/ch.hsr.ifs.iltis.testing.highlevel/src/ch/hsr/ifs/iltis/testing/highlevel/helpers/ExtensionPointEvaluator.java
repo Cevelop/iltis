@@ -73,7 +73,7 @@ public class ExtensionPointEvaluator {
       } else {
          throw new FileNotFoundException(String.valueOf(rtsPath) +
                                          " (This might happen, if the testplugin has non, or a fauly extension for extension-point \"" +
-                                         TestingPlugin.XML_EXTENSION_POINT_ID + "\")");
+                                         TestingPlugin.PLUGIN_ID + "." + TestingPlugin.XML_EXTENSION_POINT_ID + "\")");
       }
    }
 
@@ -125,8 +125,8 @@ public class ExtensionPointEvaluator {
    }
 
    private static IConfigurationElement[] getExtensionsContributedByBundle(Bundle bundle) {
-      return Stream.of(RegistryFactory.getRegistry().getConfigurationElementsFor(TestingPlugin.XML_EXTENSION_POINT_ID)).filter((element) -> element
-            .getContributor().getName().equals(bundle.getSymbolicName())).toArray(IConfigurationElement[]::new);
+      return Stream.of(RegistryFactory.getRegistry().getConfigurationElementsFor(TestingPlugin.PLUGIN_ID, TestingPlugin.XML_EXTENSION_POINT_ID))
+            .filter((element) -> element.getContributor().getName().equals(bundle.getSymbolicName())).toArray(IConfigurationElement[]::new);
    }
 
    public IPath getExternalTestResourcePath() {

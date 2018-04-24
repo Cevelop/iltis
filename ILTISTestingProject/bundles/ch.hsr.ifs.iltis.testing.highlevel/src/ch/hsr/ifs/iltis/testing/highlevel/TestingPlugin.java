@@ -20,8 +20,8 @@ import org.osgi.framework.BundleContext;
 public class TestingPlugin extends AbstractUIPlugin {
 
    // The plug-in ID
-   public static final String PLUGIN_ID              = "ch.hsr.ifs.cdttesting";              //$NON-NLS-1$
-   public static final String XML_EXTENSION_POINT_ID = "ch.hsr.ifs.cdttesting.testingPlugin";
+   public static final String PLUGIN_ID              = "ch.hsr.ifs.iltis.testing.highlevel";              //$NON-NLS-1$
+   public static final String XML_EXTENSION_POINT_ID = "testingPlugin";
 
    // The shared instance
    private static TestingPlugin plugin;
