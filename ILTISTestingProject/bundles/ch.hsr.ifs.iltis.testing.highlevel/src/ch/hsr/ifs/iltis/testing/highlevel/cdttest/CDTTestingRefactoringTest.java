@@ -58,6 +58,7 @@ public abstract class CDTTestingRefactoringTest extends CDTTestingUITest {
     */
    protected void runRefactoringAndAssertSuccess() throws Exception {
       executeRefactoring(true);
+      saveAllEditors();
       assertAllSourceFilesEqual(makeComparisonArguments());
    }
 

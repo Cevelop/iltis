@@ -29,12 +29,14 @@ import org.eclipse.cdt.core.model.CoreModelUtil;
 import org.eclipse.cdt.core.model.ICElement;
 import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.ITextSelection;
 import org.osgi.framework.FrameworkUtil;
 
 import ch.hsr.ifs.iltis.core.core.data.StringInputStream;
+import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
 
 import ch.hsr.ifs.iltis.testing.highlevel.cdttest.CDTTestingConfigConstants;
 import ch.hsr.ifs.iltis.testing.highlevel.cdttest.base.projectholder.IProjectHolder;
@@ -266,6 +268,8 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
     *        The comparison arguments
     */
    protected void assertAllSourceFilesEqual(EnumSet<ComparisonArg> args) {
+      //TODO save files here
+      
       for (final TestSourceFile testFile : testFiles.values()) {
          fastAssertEquals(testFile.getName(), args);
       }
@@ -377,12 +381,12 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
          assertNotNull(expected);
          assertNotNull(current);
 
-         //                     ASTComparison.assertEqualsAST(expectedTU[0].getAST(), currentTU[0].getAST(), args); //FIXME remove after testing
-         ASTComparison.assertEqualsAST(expectedAST[0], currentAST[0], args);
+         ASTComparison.assertEqualsAST(expectedTU[0].getAST(), currentTU[0].getAST(), args); //FIXME remove after testing
+         //         ASTComparison.assertEqualsAST(expectedAST[0], currentAST[0], args);
+      } catch (CoreException e) {
+         throw ILTISException.wrap(e);
       } catch (InterruptedException e) {
          fail("Thread got interrupted");
-         //      } catch (CoreException e) {
-         //         throw ILTISException.wrap(e);
       } finally {
          if (expectedIndex[0] != null) expectedIndex[0].releaseReadLock();
          if (currentIndex[0] != null) currentIndex[0].releaseReadLock();
