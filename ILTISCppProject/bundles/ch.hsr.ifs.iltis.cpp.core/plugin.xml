@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="ch.hsr.ifs.iltis.cpp.labeledMarkerResolution" 
+   <extension-point id="ch.hsr.ifs.iltis.cpp.core.labeledMarkerResolution" 
    					name="%extensionPoint.labeledMarkerResolution.name" 
-   					schema="schema/ch.hsr.ifs.iltis.cpp.labeledMarkerResolution.exsd"/>
+   					schema="schema/ch.hsr.ifs.iltis.cpp.core.labeledMarkerResolution.exsd"/>
 </plugin>

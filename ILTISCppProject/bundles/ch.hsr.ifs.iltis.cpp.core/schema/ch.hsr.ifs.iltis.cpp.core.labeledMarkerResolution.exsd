@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="ch.hsr.ifs.iltis.cpp" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="ch.hsr.ifs.iltis.cpp.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="ch.hsr.ifs.iltis.cpp" id="labeledMarkerResolution" name="Labeled Marker Resolution"/>
+         <meta.schema plugin="ch.hsr.ifs.iltis.cpp.core" id="labeledMarkerResolution" name="Labeled Marker Resolution"/>
       </appinfo>
       <documentation>
          Like a classic Marker Resolution, but allows to define the content on the label in the extension definiton.
