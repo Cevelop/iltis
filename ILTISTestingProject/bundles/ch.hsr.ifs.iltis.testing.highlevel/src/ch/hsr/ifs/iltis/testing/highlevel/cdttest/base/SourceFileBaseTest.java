@@ -268,8 +268,6 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
     *        The comparison arguments
     */
    protected void assertAllSourceFilesEqual(EnumSet<ComparisonArg> args) {
-      //TODO save files here
-      
       for (final TestSourceFile testFile : testFiles.values()) {
          fastAssertEquals(testFile.getName(), args);
       }
