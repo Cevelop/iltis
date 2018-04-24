@@ -136,6 +136,27 @@
 				</executions>
 			</plugin>
 			
+			<!-- Jarsigner -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jarsigner-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>sign</id>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<keystore>${keystore}</keystore>
+					<alias>${keyalias}</alias>
+					<storepass>${certpass}</storepass>
+					<storetype>pkcs12</storetype>
+				</configuration>
+			</plugin>
+			
         </plugins>
     </build>
 </project>

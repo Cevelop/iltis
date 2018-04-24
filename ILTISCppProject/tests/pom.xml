@@ -13,6 +13,24 @@
 		<module>ch.hsr.ifs.iltis.cpp.core.tests</module>
 	</modules>
 
+	<properties>
+		<osx-jvm-flags />
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>macosx</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<osx-jvm-flags>-XstartOnFirstThread</osx-jvm-flags>
+			</properties>
+		</profile>
+	</profiles>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -32,15 +50,10 @@
 				<configuration>
 					<useUIHarness>true</useUIHarness>
 					<failIfNoTests>false</failIfNoTests>
-					<includes>
-						<include>
-							<!-- Avoids execution of any tests in default execution -->
-						</include>
-					</includes>
 				</configuration>
 				<executions>
 					<execution>
-						<id>plugin-test</id>
+						<id>default-test</id>
 						<configuration>
 							<includes>
 								<include>**/PluginTestSuiteAll.java</include>
@@ -49,7 +62,11 @@
 					</execution>
 
 					<execution>
-						<id>plugin-ui-test</id>
+						<id>plugin-ui-verify</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>test</goal>
+						</goals>
 						<configuration>
 							<useUIThread>false</useUIThread>
 							<includes>
@@ -59,11 +76,15 @@
 					</execution>
 
 					<execution>
-						<id>plugin-swtbot-test</id>
+						<id>plugin-swtbot-verify</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>test</goal>
+						</goals>
 						<configuration>
 							<useUIHarness>true</useUIHarness>
 							<useUIThread>false</useUIThread>
-							<argLine>${memory-settings} ${os-jvm-flags}
+							<argLine>${osx-jvm-flags}
 								-Dorg.eclipse.swtbot.keyboard.layout=EN_US
 								-Dorg.eclipse.swtbot.playback.delay=60</argLine>
 							<includes>
@@ -76,5 +97,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
