@@ -44,7 +44,8 @@ class ASTNodeCollector {
       this.eotNode = new EOTNode(ast);
 
       if (compareComments) {
-         commentRelations = Stream.of(ast.getComments()).map(CommentRelation::new).collect(Collectors.toList());
+         commentRelations = Stream.of(ast.getComments()).filter(IASTNode::isPartOfTranslationUnitFile).map(CommentRelation::new).collect(Collectors
+               .toList());
       }
 
       IPath filePath = new Path(ast.getContainingFilename());
@@ -95,6 +96,7 @@ class ASTNodeCollector {
    }
 
    private int handleNode(IASTNode node) {
+      // FIXME implement working test for isPartOfTranslationUnitFile()
       if (!node.isPartOfTranslationUnitFile()) return ASTVisitor.PROCESS_SKIP;
       try {
          updateAllCommentRelations(commentRelations, node);
