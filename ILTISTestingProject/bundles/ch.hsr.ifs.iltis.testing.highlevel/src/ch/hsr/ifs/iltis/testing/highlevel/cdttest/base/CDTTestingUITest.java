@@ -106,7 +106,7 @@ public abstract class CDTTestingUITest extends CDTTestingTest {
     * Convenience method to get the active editor from the active page
     */
    protected static Optional<AbstractTextEditor> getActiveTextEditor() {
-      return getActivePage().map(p -> asOrNull(AbstractTextEditor.class, p));
+      return getActivePage().map(p -> asOrNull(AbstractTextEditor.class, p.getActiveEditor()));
    }
 
    /**
@@ -135,7 +135,7 @@ public abstract class CDTTestingUITest extends CDTTestingTest {
 
    /**
     * Opens the primary test source file in an editor.
-    * 
+    *
     * @throws Exception
     */
    protected void openPrimaryTestFileInEditor() throws Exception {
