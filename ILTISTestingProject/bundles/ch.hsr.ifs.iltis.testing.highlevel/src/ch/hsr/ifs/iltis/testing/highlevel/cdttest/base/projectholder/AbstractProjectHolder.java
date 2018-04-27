@@ -8,11 +8,18 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.cdt.core.CCProjectNature;
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.dom.IPDOMManager;
+import org.eclipse.cdt.core.language.settings.providers.ILanguageSettingsProvider;
+import org.eclipse.cdt.core.language.settings.providers.ILanguageSettingsProvidersKeeper;
 import org.eclipse.cdt.core.model.ICProject;
+import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
+import org.eclipse.cdt.core.settings.model.ICProjectDescription;
 import org.eclipse.cdt.core.testplugin.CProjectHelper;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -24,6 +31,7 @@ import org.eclipse.jface.text.IDocument;
 
 import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
 
+import ch.hsr.ifs.iltis.testing.highlevel.cdttest.CDTTestingLanguageSettingsProvider;
 import ch.hsr.ifs.iltis.testing.highlevel.helpers.FileCache;
 import ch.hsr.ifs.iltis.testing.highlevel.testsourcefile.RTSTest.Language;
 
@@ -168,7 +176,23 @@ public abstract class AbstractProjectHolder implements IProjectHolder {
    }
 
    protected ICProject createCProject(String projectName) throws CoreException {
-      return CProjectHelper.createNewStyleCProject(projectName, IPDOMManager.ID_NO_INDEXER);
+      ICProject newStyleCProject = CProjectHelper.createNewStyleCProject(projectName, IPDOMManager.ID_NO_INDEXER);
+
+      ICProjectDescription description = CCorePlugin.getDefault().getProjectDescription(newStyleCProject.getProject(), true);
+      ICConfigurationDescription[] configurations = description.getConfigurations();
+
+      for (ICConfigurationDescription configuration : configurations) {
+         if (configuration instanceof ILanguageSettingsProvidersKeeper) {
+            ILanguageSettingsProvidersKeeper keeper = (ILanguageSettingsProvidersKeeper) configuration;
+            Set<ILanguageSettingsProvider> providers = new HashSet<>(keeper.getLanguageSettingProviders());
+            providers.add(new CDTTestingLanguageSettingsProvider());
+            keeper.setLanguageSettingProviders(providers.stream().collect(Collectors.toList()));
+         }
+      }
+
+      CCorePlugin.getDefault().setProjectDescription(newStyleCProject.getProject(), description);
+
+      return newStyleCProject;
    }
 
    protected ICProject createCCProject(String projectName) throws CoreException {
