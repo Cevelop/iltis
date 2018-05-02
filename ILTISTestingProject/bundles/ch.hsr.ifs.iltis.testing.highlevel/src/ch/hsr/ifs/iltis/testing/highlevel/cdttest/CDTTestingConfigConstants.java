@@ -2,13 +2,13 @@ package ch.hsr.ifs.iltis.testing.highlevel.cdttest;
 
 import java.lang.reflect.Field;
 
-import ch.hsr.ifs.iltis.testing.highlevel.cdttest.base.preferencemixin.ITestPreferencesMixin;
+import ch.hsr.ifs.iltis.testing.highlevel.cdttest.base.preferencemixin.ITestPreferencesMixinHost;
 
 
 /**
  * This class contains the default constants usable in the source file based tests.
  * 
- * @author tstauber
+ * @author tstauber  
  *
  */
 public final class CDTTestingConfigConstants {
@@ -51,9 +51,13 @@ public final class CDTTestingConfigConstants {
    public static final String PRIMARY_FILE = "primaryFile";
 
    /**
-    * This tag is used for evaluated preferences. This means the {@link Field}s in {@link ITestPreferencesMixin#getPreferenceConstants()} will be used
+    * This tag is used for evaluated preferences. This means the {@link Field}s in {@link ITestPreferencesMixinHost#getPreferenceConstants()} will be
+    * used
     * to extract the preference identifiers. The values must occur in tuples. The test in this example would look up the value of the Field
     * {@code P_SHORT_MAPPING} and would open the preference with this identifier and set it to the value in the field {@code Intern_V_WIDTH_8}
+    * 
+    * It is also possible to override {@link ITestPreferencesMixinHost#getValueConstants()} so the values are assumed to be fields in the class
+    * returned by this method.
     * 
     * <pre>
     * {@code 

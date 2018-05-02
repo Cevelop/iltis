@@ -2,6 +2,8 @@ package ch.hsr.ifs.iltis.testing.highlevel.cdttest.base.preferencemixin;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 
+import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
+
 
 /**
  * Usage:
@@ -45,6 +47,19 @@ public interface ITestPreferencesMixinHost {
     *         {@code String}s representing the id's for the preferences.
     *
     */
-   public abstract Class<?> getPreferenceConstants();
+   public default Class<?> getPreferenceConstants(){
+      throw new ILTISException("If \"setPreferencesEval=\" is used, the method getPreferenceConstants() must be overridden");
+   }
+   
+   /**
+    * @author tstauber
+    *
+    * @return The {@code Class} containing the static fields that contain the
+    *         {@code String}s representing the values for the preferences.
+    *
+    */
+   public default Class<?> getValueConstants(){
+      return getPreferenceConstants();
+   }
 
 }
