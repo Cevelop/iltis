@@ -28,7 +28,7 @@ public interface ITestProjectHolder extends IProjectHolder {
 
    /**
     * This creates an Eclipse Job which sets up the index for the project held.
-    * 
+    *
     * @return The job.
     */
    public ProjectHolderJob setupIndexAsync();
@@ -36,7 +36,7 @@ public interface ITestProjectHolder extends IProjectHolder {
    /**
     * Adds another external include directory. All calls to this methods must take place before the Job returned by
     * {@code createAddIncludePathDirJob()} is executed.
-    * 
+    *
     * @param path
     *        The path to add
     * @return Itself for chaining
@@ -46,7 +46,7 @@ public interface ITestProjectHolder extends IProjectHolder {
    /**
     * Adds another internal include directory. All calls to this methods must take place before the Job returned by
     * {@code createAddIncludePathDirJob()} is executed.
-    * 
+    *
     * @param path
     *        The path to add
     * @return Itself for chaining
@@ -56,21 +56,21 @@ public interface ITestProjectHolder extends IProjectHolder {
    /**
     * Instantiates a project for the passed language. All calls to this methods must take place before the Job returned by
     * {@code createCreateProjectJob()} is executed.
-    * 
+    *
     * @return Itself for chaining
     */
    public ITestProjectHolder setLanguage(Language lang);
 
    /**
     * This creates an Eclipse Job which sets up the project references.
-    * 
+    *
     * @return The job.
     */
    public ProjectHolderJob setupProjectReferencesAsync();
 
    /**
     * This creates an Eclipse Job which adds the include directories to the project held.
-    * 
+    *
     * @return The job.
     */
    public ProjectHolderJob setupIncludePathsAsync();
@@ -79,7 +79,7 @@ public interface ITestProjectHolder extends IProjectHolder {
     * This creates an Eclipse Job which sets the referenced projects up.
     * This Job should be executed before either {@link #setupProjectReferences()} or
     * {@link #setupIncludePaths()} is executed.
-    * 
+    *
     * @return The job.
     */
    public ProjectHolderJob setupReferencedProjectsAsync();
@@ -88,21 +88,21 @@ public interface ITestProjectHolder extends IProjectHolder {
     * This creates an Eclipse Job which creates the referenced projects and loads its files. This Job should be executed before one of
     * the
     * jobs created by calling {@code createSetupProjectReferencesJob()} or {@code createAddIncludePathDirJob()} is executed.
-    * 
+    *
     * @return The job.
     */
    public void stageReferencedProjects(ReferencedProjectDescription... referencedProjects);
 
    /**
     * This creates an Eclipse Job which formats the file located at the URI.
-    * 
+    *
     * @return The job.
     */
    public ProjectHolderJob formatFileAsync(IPath path);
 
    /**
     * This creates an Eclipse Job which loads the CDTTesting formatter into this holder's project.
-    * 
+    *
     * @return The job.
     */
    public ProjectHolderJob loadFormatterAsync();
@@ -111,7 +111,7 @@ public interface ITestProjectHolder extends IProjectHolder {
     * This creates an Eclipse Job which imports the files added by {@link #stageFilesForImport(Collection)}, {@link #stageFilesForImport(Enumeration)}
     * or
     * {@link #stageTestSourceFilesForImport(Collection)}.
-    * 
+    *
     * @return The job.
     */
    @Override
@@ -120,7 +120,7 @@ public interface ITestProjectHolder extends IProjectHolder {
    /**
     * Imports the files added by {@link #stageFilesForImport(Collection)}, {@link #stageFilesForImport(Enumeration)} or
     * {@link #stageTestSourceFilesForImport(Collection)}.
-    * 
+    *
     * @throws Exception
     */
    @Override
@@ -152,6 +152,11 @@ public interface ITestProjectHolder extends IProjectHolder {
     * @return The {@code ICElement} corresponding to this IFile.
     */
    public Optional<ICElement> getCElement(IFile file);
+
+   /**
+    * @return Whether or not the external resources project shall be seen as a system include path
+    */
+   public boolean externalResourcesProjectIsSystemInclude();
 
    /**
     * A simple holder for a project name and the files used to populate the project

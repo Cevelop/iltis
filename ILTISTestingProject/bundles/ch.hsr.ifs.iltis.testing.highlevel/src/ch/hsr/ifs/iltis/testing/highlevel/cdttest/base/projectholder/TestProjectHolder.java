@@ -217,7 +217,7 @@ public class TestProjectHolder extends AbstractProjectHolder implements ITestPro
          System.arraycopy(allPathEntries, 0, newPathEntries, 0, allPathEntries.length);
          int i = 0;
          for (; i < indexOfFirstReferencedProject; i++) {
-            newPathEntries[allPathEntries.length + i] = CoreModel.newIncludeEntry(null, null, pathsToAdd[i], true);
+            newPathEntries[allPathEntries.length + i] = CoreModel.newIncludeEntry(null, null, pathsToAdd[i], externalResourcesProjectIsSystemInclude());
          }
          for (int j = 0; i < pathsToAdd.length; i++, j++) {
             newPathEntries[allPathEntries.length + i] = CoreModel.newIncludeEntry(null, pathsToAdd[j], null, false);
@@ -351,6 +351,11 @@ public class TestProjectHolder extends AbstractProjectHolder implements ITestPro
    @Override
    public Optional<ICElement> getCElement(IFile file) {
       return getCElement(file.getLocation());
+   }
+
+   @Override
+   public boolean externalResourcesProjectIsSystemInclude() {
+      return true;
    }
 
 }

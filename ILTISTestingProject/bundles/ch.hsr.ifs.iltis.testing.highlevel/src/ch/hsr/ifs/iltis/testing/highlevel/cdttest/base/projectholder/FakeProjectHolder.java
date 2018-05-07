@@ -189,4 +189,9 @@ public class FakeProjectHolder implements ITestProjectHolder {
       return ProjectHolderJob.VOID_JOB;
    }
 
+   @Override
+   public boolean externalResourcesProjectIsSystemInclude() {
+      return true;
+   }
+
 }
