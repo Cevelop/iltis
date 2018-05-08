@@ -3,17 +3,22 @@ package ch.hsr.ifs.iltis.testing.highlevel.cdttest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.cdt.core.language.settings.providers.LanguageSettingsSerializableProvider;
 import org.eclipse.cdt.core.model.ICProject;
+import org.eclipse.cdt.core.model.IPathEntry;
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.core.settings.model.ICFolderDescription;
 import org.eclipse.cdt.core.settings.model.ICLanguageSetting;
 import org.eclipse.cdt.core.settings.model.ICLanguageSettingEntry;
 import org.eclipse.cdt.core.settings.model.ICResourceDescription;
 import org.eclipse.cdt.core.settings.model.ICSettingBase;
+import org.eclipse.cdt.core.settings.model.ICSettingEntry;
+import org.eclipse.cdt.core.settings.model.util.CDataUtil;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import ch.hsr.ifs.iltis.testing.highlevel.TestingPlugin;
 
@@ -64,10 +69,10 @@ public class CDTTestingLanguageSettingsProvider extends LanguageSettingsSerializ
                          a.addAll(l);
                          return a;
                       })
-         ).reduce(new ArrayList<>(), (a, l) -> {
-            a.addAll(l);
-            return a;
-         });
+         )
+         .flatMap(List::stream)
+         .map(e -> CDataUtil.createCIncludePathEntry(e.getName(), e.getFlags() | ICSettingEntry.VALUE_WORKSPACE_PATH))
+         .collect(Collectors.toList());
       //@formatter:on
    }
 
