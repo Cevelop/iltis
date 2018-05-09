@@ -62,8 +62,8 @@
 					</execution>
 
 					<execution>
-						<id>plugin-ui-verify</id>
-						<phase>verify</phase>
+						<id>plugin-ui-test</id>
+						<phase>integration-test</phase>
 						<goals>
 							<goal>test</goal>
 						</goals>
@@ -76,8 +76,8 @@
 					</execution>
 
 					<execution>
-						<id>plugin-swtbot-verify</id>
-						<phase>verify</phase>
+						<id>plugin-swtbot-test</id>
+						<phase>integration-test</phase>
 						<goals>
 							<goal>test</goal>
 						</goals>

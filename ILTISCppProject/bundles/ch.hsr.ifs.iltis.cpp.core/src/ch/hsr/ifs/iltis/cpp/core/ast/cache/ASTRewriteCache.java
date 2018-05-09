@@ -77,8 +77,7 @@ public class ASTRewriteCache {
          try {
             astTranslationUnit = translationUnit.getAST(index, ITranslationUnit.AST_SKIP_INDEXED_HEADERS);
             astTranslationUnitCache.put(fileLocation, astTranslationUnit);
-         }
-         catch (CoreException e) {
+         } catch (CoreException e) {
             astTranslationUnit = null;
          }
       }
