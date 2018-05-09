@@ -5,7 +5,7 @@ import org.eclipse.osgi.util.NLS;
 
 public class InfrastructureMessages extends NLS {
 
-   private static final String BUNDLE_NAME = "ch.hsr.ifs.iltis.core.preferences.infrastructureMessages"; //$NON-NLS-1$
+   private static final String BUNDLE_NAME = "ch.hsr.ifs.iltis.core.core.preferences.infrastructureMessages"; //$NON-NLS-1$
    public static String        FieldEditorPropertyAndPreferencePage_checkbox_text;
    public static String        FieldEditorPropertyAndPreferencePage_preference_link_text;
    public static String        FieldEditorPropertyAndPreferencePage_property_link_text;
