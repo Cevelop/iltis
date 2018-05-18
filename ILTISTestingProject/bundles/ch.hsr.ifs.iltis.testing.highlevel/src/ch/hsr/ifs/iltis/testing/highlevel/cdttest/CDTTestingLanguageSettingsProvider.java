@@ -70,7 +70,6 @@ public class CDTTestingLanguageSettingsProvider extends LanguageSettingsSerializ
          )
          .flatMap(List::stream)
          .map(this::processPath)
-         .peek(e -> System.out.println(e.getValue()))
          .collect(Collectors.toList());
       //@formatter:on
    }
