@@ -1,6 +1,6 @@
 package ch.hsr.ifs.iltis.testing.highlevel.cdttest;
 
-import java.util.ArrayList;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -63,17 +63,29 @@ public class CDTTestingLanguageSettingsProvider extends LanguageSettingsSerializ
       return Arrays.stream(languageSettings)
          .filter(s -> s.getLanguageId() == languageId)
          .map(s -> SUPPORTED_SETTING_KINDS.stream()
-                      .filter(k -> (s.getSupportedEntryKinds() & k) != 0)
+                      .filter(k -> isSupportedEntry(s, k))
                       .map(k -> s.getSettingEntriesList(k))
-                      .reduce(new ArrayList<>(), (a, l) -> {
-                         a.addAll(l);
-                         return a;
-                      })
+                      .flatMap(List::stream)
+                      .collect(Collectors.toList())
          )
          .flatMap(List::stream)
-         .map(e -> CDataUtil.createCIncludePathEntry(e.getName(), e.getFlags() | ICSettingEntry.VALUE_WORKSPACE_PATH))
+         .map(this::processPath)
+         .peek(e -> System.out.println(e.getValue()))
          .collect(Collectors.toList());
       //@formatter:on
+   }
+
+   private boolean isSupportedEntry(ICLanguageSetting s, Integer k) {
+      return (s.getSupportedEntryKinds() & k) != 0;
+   }
+
+   private ICLanguageSettingEntry processPath(ICLanguageSettingEntry e) {
+      if(e.getKind() == ICSettingEntry.INCLUDE_PATH) {
+         if(!Paths.get(e.getValue()).isAbsolute()) {
+            return CDataUtil.createCIncludePathEntry(e.getValue(), e.getFlags() | ICSettingEntry.VALUE_WORKSPACE_PATH);
+         }
+      }
+      return e;
    }
 
    private ICLanguageSetting[] getLanguageSettingsFor(ICResourceDescription description) {
