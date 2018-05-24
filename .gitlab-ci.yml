@@ -1,34 +1,32 @@
-variables:
-  LC_ALL: "C.UTF-8"
-  LANG: "en_US.UTF-8"
-  LANGUAGE: "en_US.UTF-8"
-  MAVEN_OPTS: "-Dmaven.repo.local=./.m2/repository"
-
 stages:
-  - build-test
+  - build and test
   - deploy
 
-image: fmorgner/cevelop-plugin-build:latest
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
-before_script:
-  - cd ILTISCoreProject
-
-build-test:
-  stage: build-test
+build-signed:
+  image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-release:latest
+  stage: build and test
   cache:
     key: "ILTISCoreMavenCache"
     paths:
-      - ./ILTISCoreProject/.m2/repository
+      - .m2/repository
   script:
-    - 'xvfb-run --server-args="-screen 0 1024x768x24" mvn verify -Djarsigner.skip=true'
+    - 'xvfb-run --server-args="-screen 0 1024x768x24" ./build package'
   artifacts:
     paths:
       - ./*/*/*/target/repository/**
+  only:
+    - master
+    - develop
 
 deploy:
+  image: gitlab.dev.ifs.hsr.ch:45023/ifs/docker-alpine-ssh:latest
   stage: deploy
+  before_script:
+    - cd ILTISCoreProject
   script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
     - ssh-add <(echo "$P2_PRIVATE_KEY")
     - mkdir -p ~/.ssh
@@ -36,3 +34,5 @@ deploy:
     - 'ssh hudson@cute-test.com "cd /var/www/iltis && mkdir -p core"'
     - 'scp -r releng/ch.hsr.ifs.iltis.core.update/target/repository/* hudson@cute-test.com:/var/www/iltis/core'
     - 'ssh hudson@cute-test.com "cd /var/www/iltis && compile-composite-updatesite  ILTIS 0.1.0"'
+  only:
+    - develop
