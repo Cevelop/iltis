@@ -28,7 +28,7 @@ deploy:
     - cd ILTISCoreProject
   script:
     - eval $(ssh-agent -s)
-    - ssh-add <(echo "$P2_PRIVATE_KEY")
+    - echo "$P2_PRIVATE_KEY" | ssh-add -
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo "$P2_HOST_KEY" > ~/.ssh/known_hosts'
     - 'ssh hudson@cute-test.com "cd /var/www/iltis && mkdir -p core"'
