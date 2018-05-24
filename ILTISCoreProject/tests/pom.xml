@@ -80,6 +80,7 @@
 				<executions>
 					<execution>
 						<id>default-test</id>
+						<phase>integration-test</phase>
 						<configuration>
 							<includes>
 								<include>**/PluginTestSuiteAll.java</include>
@@ -89,7 +90,7 @@
 
 					<execution>
 						<id>plugin-ui-verify</id>
-						<phase>verify</phase>
+						<phase>integration-test</phase>
 						<goals>
 							<goal>test</goal>
 						</goals>
@@ -103,7 +104,7 @@
 
 					<execution>
 						<id>plugin-swtbot-verify</id>
-						<phase>verify</phase>
+						<phase>integration-test</phase>
 						<goals>
 							<goal>test</goal>
 						</goals>
