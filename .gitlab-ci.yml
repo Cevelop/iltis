@@ -13,7 +13,7 @@ build-signed:
     paths:
       - .m2/repository
   script:
-    - 'xvfb-run --server-args="-screen 0 1024x768x24" ./build package'
+    - 'xvfb-run --server-args="-screen 0 1024x768x24" ./build clean package'
   artifacts:
     paths:
       - ./*/*/*/target/repository/**
@@ -35,4 +35,5 @@ deploy:
     - 'scp -r releng/ch.hsr.ifs.iltis.core.update/target/repository/* hudson@cute-test.com:/var/www/iltis/core'
     - 'ssh hudson@cute-test.com "cd /var/www/iltis && compile-composite-updatesite  ILTIS 0.1.0"'
   only:
+    - master
     - develop
