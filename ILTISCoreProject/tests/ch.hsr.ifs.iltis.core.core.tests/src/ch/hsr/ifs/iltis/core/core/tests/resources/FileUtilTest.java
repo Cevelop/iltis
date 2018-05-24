@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.net.URL;
 import java.util.Enumeration;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
@@ -15,8 +16,10 @@ import ch.hsr.ifs.iltis.core.core.resources.FileUtil;
 
 public class FileUtilTest {
 
+   // TODO(tstauber): Please look at this, I am sure this was not intended to be run as a JUnit test. MOF
+   @Ignore("This test requires an OSGI runtime but we are trying to run it as a JUnitTest.")
    @Test
-   public void filePartRetrievalYieldsMockatorHeaderFile() { 
+   public void filePartRetrievalYieldsMockatorHeaderFile() {
       Bundle bundle = FrameworkUtil.getBundle(getClass());
       final Enumeration<URL> files = bundle.findEntries("/externalTestResource/iltis", "*.h", false);
       final String filePart = FileUtil.getFilename(StreamFactory.stream(files).findFirst().get().getFile());
