@@ -13,7 +13,6 @@ import ch.hsr.ifs.iltis.core.core.tests.functional.FunctionalTest;
 import ch.hsr.ifs.iltis.core.core.tests.functional.OptionalUtilTest;
 import ch.hsr.ifs.iltis.core.core.tests.functional.StreamFactoryTest;
 import ch.hsr.ifs.iltis.core.core.tests.functional.StreamUtilTest;
-import ch.hsr.ifs.iltis.core.core.tests.resources.FileUtilTest;
 import ch.hsr.ifs.iltis.core.core.tests.resources.IOUtilTest;
 import ch.hsr.ifs.iltis.core.core.tests.resources.StringUtilTest;
 
@@ -35,7 +34,6 @@ import ch.hsr.ifs.iltis.core.core.tests.resources.StringUtilTest;
    StreamFactoryTest.class,
    StreamUtilTest.class,
 
-   FileUtilTest.class,
    IOUtilTest.class,
    StringUtilTest.class,
 })
