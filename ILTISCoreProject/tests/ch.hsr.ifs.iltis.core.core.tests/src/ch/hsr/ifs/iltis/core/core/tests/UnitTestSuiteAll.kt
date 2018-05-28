@@ -2,7 +2,6 @@ package ch.hsr.ifs.iltis.core.core.tests;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
 
 import ch.hsr.ifs.iltis.core.core.tests.collections.CollectionHelperTest;
 import ch.hsr.ifs.iltis.core.core.tests.data.PairTest;
@@ -17,26 +16,24 @@ import ch.hsr.ifs.iltis.core.core.tests.resources.IOUtilTest;
 import ch.hsr.ifs.iltis.core.core.tests.resources.StringUtilTest;
 
 
-@RunWith(Suite.class)
+@RunWith(Suite::class)
 //@formatter:off
-@SuiteClasses({
-
-   CollectionHelperTest.class,
+@Suite.SuiteClasses(
+   CollectionHelperTest::class,
    
-   PairTest.class,
-   WrapperTest.class,
+   PairTest::class,
+   WrapperTest::class,
    
-   ExceptionTest.class,
-   UnlessTest.class,
+   ExceptionTest::class,
+   UnlessTest::class,
    
-   FunctionalTest.class,
-   OptionalUtilTest.class,
-   StreamFactoryTest.class,
-   StreamUtilTest.class,
+   FunctionalTest::class,
+   OptionalUtilTest::class,
+   StreamFactoryTest::class,
+   StreamUtilTest::class,
 
-   IOUtilTest.class,
-   StringUtilTest.class,
-})
-public class UnitTestSuiteAll {
-
-}
+   IOUtilTest::class,
+   StringUtilTest::class
+)
+//@formatter:on
+class UnitTestSuiteAll
