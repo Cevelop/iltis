@@ -10,5 +10,6 @@
     </parent>
     <modules>
         <module>ch.hsr.ifs.iltis.core.core</module>
+        <module>ch.hsr.ifs.iltis.core.kotlin</module>
     </modules>
 </project>
