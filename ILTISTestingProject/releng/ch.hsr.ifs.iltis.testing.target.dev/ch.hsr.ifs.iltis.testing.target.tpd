@@ -10,7 +10,7 @@ location "https://hudson.eclipse.org/cdt/job/cdt-9.4/lastSuccessfulBuild/artifac
 	org.eclipse.cdt.testing.source.feature.group [9.4.4,9.5.0)
 }
 
-location "https://www.cevelop.com/iltis" {
+location "https://www.cevelop.com/iltis-unstable" {
 	ch.hsr.ifs.iltis.core.feature.feature.group lazy
 	ch.hsr.ifs.iltis.core.feature.source.feature.group lazy
 	ch.hsr.ifs.iltis.cpp.feature.feature.group lazy
