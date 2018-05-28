@@ -33,6 +33,19 @@ build-signed:
     - master
     - develop
 
+build-unsigned:
+  image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-release:latest
+  stage: build and test
+  cache:
+    key: "ILTISCoreMavenCache"
+    paths:
+      - .m2/repository
+  script:
+    - 'xvfb-run ./build clean verify'
+  except:
+    - master
+    - develop
+
 deploy master:
   image: gitlab.dev.ifs.hsr.ch:45023/ifs/docker-alpine-ssh:latest
   stage: deploy
