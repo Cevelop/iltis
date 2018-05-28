@@ -40,6 +40,6 @@ class IOUtilTest {
       val text = "IlTiS"
       val stringToStream = IOUtil.StringIO.read(text)
 
-      assertEquals(text, stringToStream.toString());
+      assertEquals(text, String(stringToStream.readBytes(text.length)));
    }
 }
