@@ -3,7 +3,7 @@
 
 """
 This is a wrapper script around maven to allow for simple customization of the
-ILTIS build process.
+CDT plug-in build process.
 
 The main goal of this script is to provide a means to exclude certain modules
 from building, in order to quickly test if a given module can be built
@@ -23,14 +23,8 @@ import subprocess
 import xml.etree.ElementTree as etree
 
 
-# USER CONFIGURATION
-PROJECT_NAME = 'ILTISCore'
-PROJECT_PREFIX = 'ch.hsr.ifs.iltis.core'
-DEFAULT_EXCLUDES = []
-
 # INTERNAL CONSTANTS
 SCRIPT_PATH = op.abspath(op.dirname(__file__))
-PROJECT_ROOT = op.join(SCRIPT_PATH, PROJECT_NAME + 'Project')
 POM_NAMESPACE = 'http://maven.apache.org/POM/4.0.0'
 POM_FILENAME = 'pom.xml'
 LOGGER = None
@@ -279,7 +273,7 @@ def resolve_feature_dependencies(module, tree):
                     if plugin_module:
                         module.add_dependency(plugin_module)
                     else:
-                        raise UnresolvedDependencyError(module, plugin)
+                        raise UnresolvedDependencyError(module, plugin_module)
 
     for plugin in feature.iter('plugin'):
         plugin_id = plugin.attrib['id']
@@ -288,7 +282,7 @@ def resolve_feature_dependencies(module, tree):
             if plugin_module:
                 module.add_dependency(plugin_module)
             else:
-                raise UnresolvedDependencyError(module, plugin_id)
+                raise UnresolvedDependencyError(module, plugin_module)
 
 
 def resolve_update_dependencies(module, tree):
@@ -309,7 +303,7 @@ def resolve_update_dependencies(module, tree):
             if plugin_module:
                 module.add_dependency(plugin_module)
             else:
-                raise UnresolvedDependencyError(module, plugin_id)
+                raise UnresolvedDependencyError(module, plugin_module)
 
 
 def resolve_dependencies(tree):
@@ -402,13 +396,21 @@ def parse_arguments():
         action='store_true',
         help='Run maven in offline mode'
     )
+    parser.add_argument(
+        '-T',
+        '--threads',
+        dest='threads',
+        type=str,
+        help='Run maven with N threads per core'
+    )
     return parser.parse_args()
 
 
 def select(patterns, kind, tree, mappings):
     """Select the given patterns of the given kind from the given tree"""
-    subtree = tree.find_by_id(mappings[kind])
-    modules = [m for m in subtree if m.artifact_id != mappings[kind]]
+    mapping_id = PROJECT_PREFIX + '.' + mappings[kind]
+    subtree = tree.find_by_id(mapping_id)
+    modules = [m for m in subtree if m.artifact_id != mapping_id]
     if 'all' in patterns:
         return modules
     selected = []
@@ -426,12 +428,13 @@ def select_modules(args, mappings, tree):
     elif args.features:
         result = select(args.features, 'features', tree, mappings)
     else:
+        prefix = PROJECT_PREFIX
         result = [m for m in tree
-                  if m.artifact_id != mappings['root']
-                  and m.artifact_id != mappings['tests']
-                  and m.artifact_id != mappings['bundles']
-                  and m.artifact_id != mappings['features']
-                  and m.artifact_id != mappings['releng']]
+                  if m.artifact_id != prefix + '.' + mappings['root']
+                  and m.artifact_id != prefix + '.' + mappings['tests']
+                  and m.artifact_id != prefix + '.' + mappings['bundles']
+                  and m.artifact_id != prefix + '.' + mappings['features']
+                  and m.artifact_id != prefix + '.' + mappings['releng']]
     return set(result)
 
 
@@ -442,8 +445,8 @@ def get_excluded_modules(tree, selected_modules):
         for dep in mod.dependencies:
             transitively_selected.add(dep)
     excludes = set([m for m in tree if m not in transitively_selected])
-    for default_exclude in DEFAULT_EXCLUDES:
-        mod = tree.find_by_id(default_exclude)
+    for default_exclude in PROJECT_EXCLUDES:
+        mod = tree.find_by_id(PROJECT_PREFIX + '.' + default_exclude)
         excludes.add(mod)
     return excludes
 
@@ -466,6 +469,7 @@ def get_base_command(args, excluded_modules):
         '-pl \'%s\'' % skip_string(excluded_modules),
         '-Djarsigner.skip=%s' % ('false' if args.sign else 'true'),
         '-fae' if not args.fail_fast else '',
+        '' if not args.threads else '-T %s' % args.threads,
     ]
 
 
@@ -502,7 +506,11 @@ def build_main(args, mappings, build):
 
     excluded_modules = get_excluded_modules(tree, selected_modules)
     for mapping in mappings:
-        excluded_modules.remove(tree.find_by_id(mappings[mapping]))
+        excluded_modules.remove(
+            tree.find_by_id(
+                PROJECT_PREFIX + '.' + mappings[mapping]
+            )
+        )
     LOGGER.info('Excluding the following modules from the build:')
     for mod in excluded_modules:
         LOGGER.info('   \u2514\u2500\u2500\u2192 %s', mod.name)
@@ -520,7 +528,17 @@ if __name__ == '__main__':
     CONFIG_PARSER = configparser.ConfigParser()
     CONFIG_PARSER.read(op.join(CONFIG_PATH, 'build.ini'))
 
-    if CONFIG_PARSER.sections():
+    PROJECT_NAME = CONFIG_PARSER['project']['name']
+    PROJECT_PREFIX = CONFIG_PARSER['project']['prefix']
+    if CONFIG_PARSER.has_option('project', 'exclude'):
+        PROJECT_EXCLUDES = [
+            e.strip() for e in CONFIG_PARSER['project']['exclude'].split(',')
+        ]
+    else:
+        PROJECT_EXCLUDES = []
+    PROJECT_ROOT = op.join(SCRIPT_PATH, PROJECT_NAME + 'Project')
+
+    if CONFIG_PARSER.has_section('logging'):
         logging.basicConfig(**CONFIG_PARSER['logging'])
     LOGGER = logging.getLogger('build')
 
