@@ -102,19 +102,18 @@ public class ASTView extends ViewPart {
    private IASTTranslationUnit getAST() {
       final IEditorInput editorInput = CUIPlugin.getActivePage().getActiveEditor().getEditorInput();
       final IWorkingCopy workingCopy = CUIPlugin.getDefault().getWorkingCopyManager().getWorkingCopy(editorInput);
-      IIndex index;
+
+      if (workingCopy == null) { return null; }
+
+      IIndex index = null;
       try {
          index = CCorePlugin.getIndexManager().getIndex(workingCopy.getCProject());
-      } catch (final CoreException e) {
-         throw new RuntimeException(e);
-      }
-      try {
          index.acquireReadLock();
-         return workingCopy.getAST(index, ITranslationUnit.AST_SKIP_ALL_HEADERS).copy(IASTNode.CopyStyle.withoutLocations);
+         return workingCopy.getAST(index, ITranslationUnit.AST_SKIP_ALL_HEADERS);
       } catch (final CoreException | InterruptedException e) {
          throw new RuntimeException(e);
       } finally {
-         index.releaseReadLock();
+         if (index != null) index.releaseReadLock();
       }
    }
 

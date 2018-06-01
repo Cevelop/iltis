@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
+<<<<<<< HEAD:ILTISTestingProject/releng/ch.hsr.ifs.iltis.testing.target.dev/ch.hsr.ifs.iltis.testing.target.dev.target
 <target name="ILTIS Testing Development" sequenceNumber="1527524859">
+=======
+<target name="ILTIS Testing Development" sequenceNumber="1527260647">
+>>>>>>> 781995a... Pasta: bugfix in ui and cuda support:ILTISTestingProject/releng/ch.hsr.ifs.iltis.testing.target.dev/ch.hsr.ifs.iltis.testing.target.target
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.equinox.launcher" version="0.0.0"/>
       <unit id="org.eclipse.cdt.sdk.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.jdt.feature.group" version="0.0.0"/>
       <repository location="http://download.eclipse.org/releases/oxygen"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">

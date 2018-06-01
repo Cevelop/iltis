@@ -7,14 +7,14 @@ import java.util.List;
 import ch.hsr.ifs.iltis.testing.tools.pasta.tree.NodeVisitor.AfterVisitBehaviour;
 
 
-public class Node<T> {
+public class TreeNode<DataType> {
 
-   private final T             data;
-   private final List<Node<T>> children;
+   public final DataType             data;
+   private final List<TreeNode<DataType>> children;
 
-   private Node<T> parent;
-   private Node<T> ancestor;
-   private Node<T> thread;
+   private TreeNode<DataType> parent;
+   private TreeNode<DataType> ancestor;
+   private TreeNode<DataType> thread;
    private float   x;
    private float   y;
    private float   mod;
@@ -24,11 +24,11 @@ public class Node<T> {
    private float   width;
    private boolean treatAsLeaf;
 
-   public Node(final T data) {
-      this(new ArrayList<Node<T>>(), data);
+   public TreeNode(final DataType data) {
+      this(new ArrayList<TreeNode<DataType>>(), data);
    }
 
-   public Node(final List<Node<T>> children, final T data) {
+   public TreeNode(final List<TreeNode<DataType>> children, final DataType data) {
       this.parent = null;
       this.thread = null;
       this.data = data;
@@ -42,15 +42,15 @@ public class Node<T> {
       this.treatAsLeaf = false;
    }
 
-   public List<Node<T>> children() {
-      return hasChildren() ? children : Collections.<Node<T>>emptyList();
+   public List<TreeNode<DataType>> children() {
+      return hasChildren() ? children : Collections.<TreeNode<DataType>>emptyList();
    }
 
-   public List<Node<T>> getChildren() {
+   public List<TreeNode<DataType>> getChildren() {
       return children;
    }
 
-   public Node<T> parent() {
+   public TreeNode<DataType> parent() {
       return parent;
    }
 
@@ -59,20 +59,20 @@ public class Node<T> {
     *
     * @param visitor
     */
-   public void visit(final NodeVisitor<T> visitor) {
+   public void visit(final NodeVisitor<DataType> visitor) {
 
       final AfterVisitBehaviour visit = visitor.visit(this);
       if (visit == AfterVisitBehaviour.Abort) { return; }
-      for (final Node<T> child : children) {
+      for (final TreeNode<DataType> child : children) {
          child.visit(visitor);
       }
    }
 
-   public Node<T> leftMostSibling() {
+   public TreeNode<DataType> leftMostSibling() {
       return (parent.children().get(0) != this) ? parent.children().get(0) : null;
    }
 
-   public Node<T> leftMostChild() {
+   public TreeNode<DataType> leftMostChild() {
       if (thread != null) { return thread; }
       return hasChildren() ? children.get(0) : null;
    }
@@ -81,16 +81,16 @@ public class Node<T> {
       return !(children.isEmpty() || treatAsLeaf);
    }
 
-   public Node<T> rightMostChild() {
+   public TreeNode<DataType> rightMostChild() {
       if (thread != null) { return thread; }
       return hasChildren() ? children.get(children.size() - 1) : null;
    }
 
-   public Node<T> leftSibling() {
+   public TreeNode<DataType> leftSibling() {
       return hasLeftSibling() ? parent.children().get(this.number() - 2) : null;
    }
 
-   public Node<T> rightSibling() {
+   public TreeNode<DataType> rightSibling() {
       return hasRightSibling() ? parent.children().get(this.number()) : null;
    }
 
@@ -102,7 +102,7 @@ public class Node<T> {
       return (parent != null && this.number > 1);
    }
 
-   public void addChild(final Node<T> child) {
+   public void addChild(final TreeNode<DataType> child) {
       children.add(child);
       child.setNumber(children.size());
       child.setY(this.y() + 1);
@@ -134,10 +134,6 @@ public class Node<T> {
 
    }
 
-   public T data() {
-      return data;
-   }
-
    public void treatAsLeaf(final boolean isLeaf) {
       this.treatAsLeaf = isLeaf;
    }
@@ -146,11 +142,11 @@ public class Node<T> {
       return treatAsLeaf;
    }
 
-   protected Node<T> ancestor() {
+   protected TreeNode<DataType> ancestor() {
       return ancestor;
    }
 
-   protected void setAncestor(final Node<T> ancestor) {
+   protected void setAncestor(final TreeNode<DataType> ancestor) {
       this.ancestor = ancestor;
    }
 
@@ -162,11 +158,11 @@ public class Node<T> {
       this.mod = mod;
    }
 
-   protected Node<T> thread() {
+   protected TreeNode<DataType> thread() {
       return thread;
    }
 
-   public void setThread(final Node<T> thread) {
+   public void setThread(final TreeNode<DataType> thread) {
       this.thread = thread;
    }
 
@@ -195,7 +191,7 @@ public class Node<T> {
       this.shift = shift;
    }
 
-   protected void setParent(final Node<T> parent) {
+   protected void setParent(final TreeNode<DataType> parent) {
       this.parent = parent;
    }
 

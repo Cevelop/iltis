@@ -28,13 +28,14 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
 import ch.hsr.ifs.iltis.testing.tools.pasta.plugin.preferences.PreferenceConstants;
-import ch.hsr.ifs.iltis.testing.tools.pasta.tree.Node;
+import ch.hsr.ifs.iltis.testing.tools.pasta.tree.TreeNode;
 import ch.hsr.ifs.iltis.testing.tools.pasta.tree.NodeVisitor;
 
 
 public class ASTWidget extends ScrolledComposite {
 
    private static final Color GOLDEN_YELLOW = new Color(Display.getCurrent(), 255, 168, 0);
+   private static final Color CUDA_GREEN    = new Color(Display.getCurrent(), 118, 185, 0);
    private static final Color WHITE         = Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);
 
    private static final int   DEFAULT_NODE_HEIGHT = 20;
@@ -42,46 +43,42 @@ public class ASTWidget extends ScrolledComposite {
    private static final float BRANCH_DISTANCE     = 15;
    private static final int   GAP_SIZE            = 20;
 
-   private final ASTScrolledCanvas canvas;
    private int                     nodeHeight = DEFAULT_NODE_HEIGHT;
+   private final ASTScrolledCanvas canvas     = new ASTScrolledCanvas(this, SWT.BACKGROUND);
 
-   private NodeSelectionListener        listener;
-   private Node<Pair<Button, IASTNode>> root;
-   private Node<Pair<Button, IASTNode>> lastControl = null;
+   private NodeSelectionListener listener;
+   private TreeNode<ButtonNode>  root;
+   private TreeNode<ButtonNode>  lastControl = null;
 
    private final IPreferenceStore prefStore;
 
    public ASTWidget(final Composite parent) {
       super(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
-
       prefStore = PastaPlugin.getDefault().getPreferenceStore();
-      canvas = new ASTScrolledCanvas(this, SWT.BACKGROUND);
-
-      setupScrolledComposite(parent);
+      setupScrolledComposite();
       setupCanvas();
    }
 
    void showSelectedNode(final IASTNode sParent) {
 
-      IASTNode parent = sParent;
 
       if (!root.isTreatedAsLeaf()) {
          buildChildrenAndRefresh(root);
       }
 
       final LinkedList<IASTNode> nodeList = new LinkedList<>();
-      while (parent.getParent() != null) {
+      for(IASTNode parent = sParent; parent.getParent()!= null; parent = parent.getParent()) {
          nodeList.add(parent);
          parent = parent.getParent();
       }
 
+      TreeNode<ButtonNode> currentNode = root;
       IASTNode listNode;
-      Node<Pair<Button, IASTNode>> currentNode = root;
       while (!nodeList.isEmpty()) {
          listNode = nodeList.removeLast();
          buildChildrenAndRefresh(currentNode);
-         for (final Node<Pair<Button, IASTNode>> child : currentNode.getChildren()) {
-            if (child.data().getSecond().getRawSignature().equals(listNode.getRawSignature())) {
+         for (final TreeNode<ButtonNode> child : currentNode.getChildren()) {
+            if (child.data.astNode.getRawSignature().equals(listNode.getRawSignature())) {
                currentNode = child;
                break;
             }
@@ -90,12 +87,13 @@ public class ASTWidget extends ScrolledComposite {
       buildChildrenAndRefresh(currentNode);
    }
 
-   private void setupScrolledComposite(final Composite parent) {
+   private void setupScrolledComposite() {
       setAlwaysShowScrollBars(true);
       setBackground(WHITE);
       setContent(canvas);
-      setExpandHorizontal(true);
-      setExpandVertical(true);
+      // TODO(tstauber - Jun 1, 2018) Are those necessary for Windows or OSX?
+      setExpandHorizontal(false);
+      setExpandVertical(false);
    }
 
    private void setupCanvas() {
@@ -110,7 +108,7 @@ public class ASTWidget extends ScrolledComposite {
             }
             if (root != null) {
                root.visit(node -> {
-                  if (node.data().getFirst().isVisible()) {
+                  if (node.data.button.isVisible()) {
                      if (node.parent() != null) {
                         drawArrowFromParent(e.gc, node);
                      }
@@ -129,7 +127,6 @@ public class ASTWidget extends ScrolledComposite {
       final Point widgetSize = getSize();
       final Point computedSize = canvas.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
       final Point newSize = new Point(Math.max(computedSize.x, widgetSize.x), Math.max(computedSize.y, widgetSize.y));
-      setMinSize(newSize);
       canvas.setSize(newSize);
    }
 
@@ -140,7 +137,7 @@ public class ASTWidget extends ScrolledComposite {
       setOrigin(0, 0);
       updateNodePositions(root);
       resizeCanvas();
-      final Button rootButton = root.data().getFirst();
+      final Button rootButton = root.data.button;
       rootButton.setLocation(new Point(getSize().x / 2 - rootButton.getBounds().x / 2, 0));
       rootButton.setVisible(true);
       refresh();
@@ -157,7 +154,7 @@ public class ASTWidget extends ScrolledComposite {
       }
    }
 
-   private void drawArrowFromParent(final GC gc, final Node<?> node) {
+   private void drawArrowFromParent(final GC gc, final TreeNode<?> node) {
       final int parentX = (int) (getXCoord(node.parent()) + ((node.parent().width()) / 2));
       final int parentY = getYCoord(node.parent()) + nodeHeight;
       final int nodeX = (int) (getXCoord(node) + ((node.width()) / 2));
@@ -194,21 +191,21 @@ public class ASTWidget extends ScrolledComposite {
       gc.drawLine((int) (x2 - arrowLength * Math.cos(theta + arrowAngle)), (int) (y2 - arrowLength * Math.sin(theta + arrowAngle)), x2, y2);
    }
 
-   private void updateNodePositions(final Node<Pair<Button, IASTNode>> node) {
-      if (node.parent() != null && !node.parent().data().getFirst().isVisible()) {
-         node.data().getFirst().setVisible(false);
+   private void updateNodePositions(final TreeNode<ButtonNode> node) {
+      if (node.parent() != null && !node.parent().data.button.isVisible()) {
+         node.data.button.setVisible(false);
       }
-      node.data().getFirst().setBounds(getXCoord(node), getYCoord(node), (int) (node.width()), nodeHeight);
-      for (final Node<Pair<Button, IASTNode>> child : node.getChildren()) {
+      node.data.button.setBounds(getXCoord(node), getYCoord(node), (int) (node.width()), nodeHeight);
+      for (final TreeNode<ButtonNode> child : node.getChildren()) {
          updateNodePositions(child);
       }
    }
 
-   private int getYCoord(final Node<?> node) {
+   private int getYCoord(final TreeNode<?> node) {
       return (int) (node.y() * (nodeHeight + GAP_SIZE));
    }
 
-   private int getXCoord(final Node<?> node) {
+   private int getXCoord(final TreeNode<?> node) {
       return (int) node.x();
    }
 
@@ -217,9 +214,9 @@ public class ASTWidget extends ScrolledComposite {
       canvas.update();
    }
 
-   private void adjustView(final Node<Pair<Button, IASTNode>> node) {
+   private void adjustView(final TreeNode<ButtonNode> node) {
 
-      final Rectangle buttonBounds = node.data().getFirst().getBounds();
+      final Rectangle buttonBounds = node.data.button.getBounds();
 
       final int leftmostIndex;
       final int bottommostIndex;
@@ -227,7 +224,7 @@ public class ASTWidget extends ScrolledComposite {
          leftmostIndex = buttonBounds.x;
          bottommostIndex = buttonBounds.y + buttonBounds.height;
       } else {
-         final Rectangle bounds = node.leftMostChild().data().getFirst().getBounds();
+         final Rectangle bounds = node.leftMostChild().data.button.getBounds();
          leftmostIndex = Math.min(bounds.x, buttonBounds.x);
          bottommostIndex = bounds.y + bounds.height;
       }
@@ -236,7 +233,7 @@ public class ASTWidget extends ScrolledComposite {
       if (node.rightMostChild() == null) {
          rightmostIndex = buttonBounds.x + buttonBounds.width;
       } else {
-         final Rectangle bounds = node.rightMostChild().data().getFirst().getBounds();
+         final Rectangle bounds = node.rightMostChild().data.button.getBounds();
          rightmostIndex = Math.max(bounds.x + bounds.width, buttonBounds.x + buttonBounds.width);
       }
 
@@ -252,14 +249,15 @@ public class ASTWidget extends ScrolledComposite {
       this.setOrigin(correctedX, correctedY);
    }
 
-   private Node<Pair<Button, IASTNode>> constructTree(final IASTNode astNode, final Composite parent) {
+   private TreeNode<ButtonNode> constructTree(final IASTNode astNode, final Composite parent) {
       final Button button = createButton(astNode.getClass().getSimpleName(), parent);
-      final Node<Pair<Button, IASTNode>> node = createNode(button, astNode);
+      final TreeNode<ButtonNode> node = createNode(button, astNode);
 
       if (astNode.getChildren().length == 0) {
          final Button leafButton = createButton(astNode.getRawSignature(), parent);
          leafButton.setEnabled(false);
-         final Node<Pair<Button, IASTNode>> leafNode = createNode(leafButton, astNode);
+         final TreeNode<ButtonNode> leafNode = createNode(leafButton, astNode);
+         node.treatAsLeaf(true);
          node.addChild(leafNode);
       }
       return node;
@@ -275,17 +273,19 @@ public class ASTWidget extends ScrolledComposite {
       return button;
    }
 
-   private Node<Pair<Button, IASTNode>> createNode(final Button button, final IASTNode astNode) {
-      final Node<Pair<Button, IASTNode>> node = new Node<>(new Pair<>(button, astNode));
+   private TreeNode<ButtonNode> createNode(final Button button, final IASTNode astNode) {
+      final TreeNode<ButtonNode> node = new TreeNode<ButtonNode>(new ButtonNode(button, astNode));
 
       final Point minButtonSize = button.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
       nodeHeight = Math.max(nodeHeight, minButtonSize.y);
       node.setWidth(minButtonSize.x);
-      node.treatAsLeaf(true);
 
+      String nodeClassName = astNode.getClass().getSimpleName();
       if (astNode instanceof ICPPASTTranslationUnit) {
          button.setBackground(GOLDEN_YELLOW);
          button.getFont().getFontData()[0].setStyle(SWT.BOLD);
+      } else if (nodeClassName.equals("KernelCallExpression") || nodeClassName.startsWith("Cuda")) {
+         button.setBackground(CUDA_GREEN);
       }
 
       button.addMouseListener(new MouseAdapter() {
@@ -344,19 +344,19 @@ public class ASTWidget extends ScrolledComposite {
       }
    }
 
-   private void buildChildrenAndRefresh(final Node<Pair<Button, IASTNode>> node) {
+   private void buildChildrenAndRefresh(final TreeNode<ButtonNode> node) {
       lastControl = node;
       node.treatAsLeaf(!node.isTreatedAsLeaf());
       if (!node.isTreatedAsLeaf() && node.getChildren().size() == 0) {
-         for (final IASTNode child : node.data().getSecond().getChildren()) {
+         for (final IASTNode child : node.data.astNode.getChildren()) {
             node.addChild(constructTree(child, canvas));
          }
       }
-      for (final Node<Pair<Button, IASTNode>> child : node.getChildren()) {
+      for (final TreeNode<ButtonNode> child : node.getChildren()) {
          if (!node.isTreatedAsLeaf()) {
             child.treatAsLeaf(true);
          }
-         child.data().getFirst().setVisible(!node.isTreatedAsLeaf());
+         child.data.button.setVisible(!node.isTreatedAsLeaf());
       }
       if (!node.isTreatedAsLeaf()) {
          root.adjust(ASTWidget.SIBLING_DISTANCE, ASTWidget.BRANCH_DISTANCE);

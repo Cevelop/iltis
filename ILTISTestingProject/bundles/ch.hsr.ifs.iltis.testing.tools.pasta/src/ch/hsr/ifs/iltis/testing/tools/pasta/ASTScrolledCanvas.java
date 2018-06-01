@@ -1,5 +1,6 @@
 package ch.hsr.ifs.iltis.testing.tools.pasta;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.DragDetectEvent;
 import org.eclipse.swt.events.DragDetectListener;
@@ -17,7 +18,7 @@ public class ASTScrolledCanvas extends Canvas {
 
    private static final int CURSOR_SIZE = 38;
 
-   private Point   dragSource = null;
+   private Point   dragSource = new Point(0, 0);
    private boolean dragFlag   = false;
 
    private final ImageData grabImage  = AbstractUIPlugin.imageDescriptorFromPlugin(PastaPlugin.PLUGIN_ID, "/icons/closedhand.gif").getImageData(100);
@@ -27,7 +28,7 @@ public class ASTScrolledCanvas extends Canvas {
    private final Cursor    openCursor = new Cursor(getDisplay(), openImage.scaledTo(CURSOR_SIZE, CURSOR_SIZE), CURSOR_SIZE / 2, CURSOR_SIZE / 4);
 
    ASTScrolledCanvas(final ScrolledComposite parent, final int style) {
-      super(parent, style);
+      super(parent, style | SWT.DOUBLE_BUFFERED);
       setCursor(openCursor);
       addDragFunctionality();
    }
@@ -42,14 +43,14 @@ public class ASTScrolledCanvas extends Canvas {
 
          @Override
          public void mouseDown(final MouseEvent e) {
-            dragSource = new Point(e.x, e.y);
+            dragSource.x = e.x;
+            dragSource.y = e.y;
             setCursor(grabCursor);
          }
 
          @Override
          public void mouseUp(final MouseEvent e) {
             dragFlag = false;
-            dragSource = null;
             setCursor(openCursor);
          }
 
@@ -75,6 +76,13 @@ public class ASTScrolledCanvas extends Canvas {
          }
 
       });
+   }
+
+   @Override
+   protected void finalize() throws Throwable {
+      super.finalize();
+      if (!grabCursor.isDisposed()) grabCursor.dispose();
+      if (!openCursor.isDisposed()) openCursor.dispose();
    }
 
 }

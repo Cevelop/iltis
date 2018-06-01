@@ -7,6 +7,6 @@ public interface NodeVisitor<T> {
 
    }
 
-   AfterVisitBehaviour visit(Node<T> node);
+   AfterVisitBehaviour visit(TreeNode<T> node);
 
 }

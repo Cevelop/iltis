@@ -11,7 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import ch.hsr.ifs.iltis.testing.tools.pasta.tree.JBaum;
-import ch.hsr.ifs.iltis.testing.tools.pasta.tree.Node;
+import ch.hsr.ifs.iltis.testing.tools.pasta.tree.TreeNode;
 import ch.hsr.ifs.iltis.testing.tools.pasta.tree.NodeVisitor;
 
 
@@ -22,9 +22,9 @@ public class JBaumDebugView extends JPanel {
    private final int         yOffset          = 20;
    private final int         nodeWidth        = 20;
 
-   private final Node<String> root;
+   private final TreeNode<String> root;
 
-   public JBaumDebugView(final Node<String> root) {
+   public JBaumDebugView(final TreeNode<String> root) {
       super();
       this.root = root;
    }
@@ -37,7 +37,7 @@ public class JBaumDebugView extends JPanel {
       root.visit(new NodeVisitor<String>() {
 
          @Override
-         public AfterVisitBehaviour visit(Node<String> node) {
+         public AfterVisitBehaviour visit(TreeNode<String> node) {
             if (node.parent() != null) {
                drawLineToParent(node, g);
             }
@@ -47,15 +47,15 @@ public class JBaumDebugView extends JPanel {
       });
    }
 
-   private int getYCoord(Node<?> node) {
+   private int getYCoord(TreeNode<?> node) {
       return (int) (node.y() * nodeWidth) + yOffset;
    }
 
-   private int getXCoord(Node<?> node) {
+   private int getXCoord(TreeNode<?> node) {
       return (int) (node.x() * nodeWidth) + xOffset;
    }
 
-   private void drawLineToParent(Node<?> node, Graphics g) {
+   private void drawLineToParent(TreeNode<?> node, Graphics g) {
       g.setColor(Color.GRAY);
       int relativeOffsetX = (int) (node.width() * nodeWidth) / 2;
       int relativeOffsetXParent = (int) (node.parent().width() * nodeWidth) / 2;
@@ -67,7 +67,7 @@ public class JBaumDebugView extends JPanel {
       g.drawLine(sourceX, sourceY, targetX, targetY);
    }
 
-   private void drawNode(final Node<String> node, Graphics g) {
+   private void drawNode(final TreeNode<String> node, Graphics g) {
       g.setColor(Color.ORANGE);
       JButton button = new JButton();
       button.setEnabled(false);
@@ -87,8 +87,8 @@ public class JBaumDebugView extends JPanel {
       this.add(button);
    }
 
-   private void addChild(final Node<String> node) {
-      Node<String> child = new Node<String>("child " + (node.children().size() + 1));
+   private void addChild(final TreeNode<String> node) {
+      TreeNode<String> child = new TreeNode<String>("child " + (node.children().size() + 1));
       child.setWidth(new Random(System.currentTimeMillis()).nextInt(5) + 1);
       node.addChild(child);
       JBaum.reset(root);

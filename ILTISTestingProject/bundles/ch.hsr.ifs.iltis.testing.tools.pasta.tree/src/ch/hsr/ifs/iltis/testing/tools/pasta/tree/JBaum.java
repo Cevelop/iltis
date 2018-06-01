@@ -10,7 +10,7 @@ public class JBaum {
 
    private static float INITIAL_DISTANCE = 1f;
 
-   private static <T> Node<T> firstWalk(final Node<T> node, final float siblingDistance, final float branchDistance) {
+   private static <T> TreeNode<T> firstWalk(final TreeNode<T> node, final float siblingDistance, final float branchDistance) {
 
       if (node.children().isEmpty()) {
          if (node.hasLeftSibling()) {
@@ -19,8 +19,8 @@ public class JBaum {
             node.setX(0.0f);
          }
       } else {
-         Node<T> defaultAncestor = node.children().get(0);
-         for (final Node<T> child : node.children()) {
+         TreeNode<T> defaultAncestor = node.children().get(0);
+         for (final TreeNode<T> child : node.children()) {
             firstWalk(child, siblingDistance, branchDistance);
             defaultAncestor = apportion(child, defaultAncestor, branchDistance);
          }
@@ -36,12 +36,12 @@ public class JBaum {
       return node;
    }
 
-   private static <T> Node<T> apportion(final Node<T> node, final Node<T> defaultAncestor, final float branchDistance) {
+   private static <T> TreeNode<T> apportion(final TreeNode<T> node, final TreeNode<T> defaultAncestor, final float branchDistance) {
       if (node.hasLeftSibling()) {
-         Node<T> innerRight = node;
-         Node<T> outerRight = node;
-         Node<T> innerLeft = node.leftSibling();
-         Node<T> outerLeft = node.leftMostSibling();
+         TreeNode<T> innerRight = node;
+         TreeNode<T> outerRight = node;
+         TreeNode<T> innerLeft = node.leftSibling();
+         TreeNode<T> outerLeft = node.leftMostSibling();
 
          float sInnerRight = node.mod();
          float sOuterRight = node.mod();
@@ -82,11 +82,11 @@ public class JBaum {
       return defaultAncestor;
    }
 
-   private static <T> Node<T> ancestor(final Node<T> innerLeft, final Node<T> node, final Node<T> defaultAncestor) {
+   private static <T> TreeNode<T> ancestor(final TreeNode<T> innerLeft, final TreeNode<T> node, final TreeNode<T> defaultAncestor) {
       return (node.parent().children().contains(innerLeft.ancestor())) ? innerLeft.ancestor() : defaultAncestor;
    }
 
-   private static <T> void moveSubtree(final Node<T> wl_anc, final Node<T> wr_node, final float shift) {
+   private static <T> void moveSubtree(final TreeNode<T> wl_anc, final TreeNode<T> wr_node, final float shift) {
       final float subtrees = wr_node.number() - wl_anc.number();
       wr_node.setChange(wr_node.change() - (shift / subtrees));
       wr_node.setShift(wr_node.shift() + shift);
@@ -95,11 +95,11 @@ public class JBaum {
       wr_node.setMod(wr_node.mod() + shift);
    }
 
-   private static <T> void executeShifts(final Node<T> node) {
+   private static <T> void executeShifts(final TreeNode<T> node) {
       float shift = 0;
       float change = 0;
       for (int i = node.children().size() - 1; i > -1; --i) {
-         final Node<T> child = node.children().get(i);
+         final TreeNode<T> child = node.children().get(i);
          child.setX(child.x() + shift);
          child.setMod(child.mod() + shift);
          change += child.change();
@@ -107,27 +107,27 @@ public class JBaum {
       }
    }
 
-   private static <T> float secondWalk(final Node<T> node, final float m, final float depth, Float min) {
+   private static <T> float secondWalk(final TreeNode<T> node, final float m, final float depth, Float min) {
       node.setX(node.x() + m);
       node.setY(depth);
       if (min == null || node.x() < min) {
          min = node.x();
       }
-      for (final Node<T> child : node.children()) {
+      for (final TreeNode<T> child : node.children()) {
          min = secondWalk(child, m + node.mod(), depth + JBaum.INITIAL_DISTANCE, min);
       }
       return min;
    }
 
-   private static <T> void thirdWalk(final Node<T> node, final float n) {
+   private static <T> void thirdWalk(final TreeNode<T> node, final float n) {
       node.setX(node.x() + n);
-      for (final Node<T> child : node.children()) {
+      for (final TreeNode<T> child : node.children()) {
          thirdWalk(child, n);
       }
    }
 
-   public static <T> Node<T> adjustTree(final Node<T> tree, final float siblingDistance, final float branchDistance) {
-      final Node<T> intermediate = firstWalk(tree, siblingDistance, branchDistance);
+   public static <T> TreeNode<T> adjustTree(final TreeNode<T> tree, final float siblingDistance, final float branchDistance) {
+      final TreeNode<T> intermediate = firstWalk(tree, siblingDistance, branchDistance);
       final float min = secondWalk(intermediate, 0f, 0f, null);
       if (min < 0) {
          thirdWalk(intermediate, -min);
@@ -135,7 +135,7 @@ public class JBaum {
       return intermediate;
    }
 
-   public static <T> void reset(final Node<T> node) {
+   public static <T> void reset(final TreeNode<T> node) {
 
       node.visit(n -> {
          n.setShift(0);

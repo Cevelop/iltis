@@ -7,22 +7,22 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.hsr.ifs.iltis.testing.tools.pasta.tree.Node;
+import ch.hsr.ifs.iltis.testing.tools.pasta.tree.TreeNode;
 
 
 public class NodeTest {
 
-   private Node<String> root;
-   private Node<String> leftChild;
-   private Node<String> middleChild;
-   private Node<String> rightChild;
+   private TreeNode<String> root;
+   private TreeNode<String> leftChild;
+   private TreeNode<String> middleChild;
+   private TreeNode<String> rightChild;
 
    @Before
    public void beforeEachTest() {
-      root = new Node<>("root");
-      leftChild = new Node<String>("leftChild");
-      middleChild = new Node<String>("centerChild");
-      rightChild = new Node<String>("rightChild");
+      root = new TreeNode<>("root");
+      leftChild = new TreeNode<String>("leftChild");
+      middleChild = new TreeNode<String>("centerChild");
+      rightChild = new TreeNode<String>("rightChild");
       root.addChild(leftChild);
       root.addChild(middleChild);
       root.addChild(rightChild);
@@ -100,7 +100,7 @@ public class NodeTest {
 
    @Test
    public void testShouldReturnThread() {
-      Node<String> thread = new Node<String>("thread");
+      TreeNode<String> thread = new TreeNode<String>("thread");
       rightChild.setThread(thread);
       assertEquals(thread, rightChild.leftMostChild());
       assertEquals(thread, rightChild.rightMostChild());
