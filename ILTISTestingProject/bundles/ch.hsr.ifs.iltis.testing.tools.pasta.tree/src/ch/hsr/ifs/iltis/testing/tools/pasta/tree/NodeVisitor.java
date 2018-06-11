@@ -1,12 +1,11 @@
 package ch.hsr.ifs.iltis.testing.tools.pasta.tree;
 
-public interface NodeVisitor<T> {
+public interface NodeVisitor<TypeName, SELF extends TreeNode<TypeName, SELF>> {
 
    public enum AfterVisitBehaviour {
       Continue, Abort
-
    }
 
-   AfterVisitBehaviour visit(TreeNode<T> node);
+   AfterVisitBehaviour visit(SELF node);
 
 }

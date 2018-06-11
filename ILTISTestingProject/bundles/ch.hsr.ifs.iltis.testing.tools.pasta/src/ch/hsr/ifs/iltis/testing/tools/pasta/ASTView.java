@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.dom.ast.IASTNode;
-import org.eclipse.cdt.core.dom.ast.IASTNodeSelector;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.index.IIndex;
 import org.eclipse.cdt.core.model.ITranslationUnit;
@@ -23,6 +22,7 @@ import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.part.ViewPart;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -47,7 +47,7 @@ public class ASTView extends ViewPart {
 
          @Override
          public void run() {
-            treeView.drawAST(getAST());
+            treeView.resetAndDrawAST(getAST());
          }
 
          @Override
@@ -64,7 +64,7 @@ public class ASTView extends ViewPart {
 
       });
 
-      treeView.drawAST(getAST());
+      treeView.resetAndDrawAST(getAST());
       treeView.setListener(new NodeSelectionListener() {
 
          @Override
@@ -83,10 +83,11 @@ public class ASTView extends ViewPart {
 
             final ISelection selection = (ISelection) event.getProperty(PastaEventConstants.SELECTION);
             if (selection instanceof ITextSelection) {
-               treeView.drawAST(getAST());
-               final IASTNodeSelector selector = getAST().getNodeSelector(getAST().getFilePath());
-               treeView.showSelectedNode(selector.findEnclosingNode(((ITextSelection) selection).getOffset(), ((ITextSelection) selection)
-                     .getLength()));
+               IASTTranslationUnit cachedAST = getAST();
+               treeView.resetAndDrawAST(cachedAST);
+               IASTNode findEnclosingNode = cachedAST.getNodeSelector(cachedAST.getFilePath()).findEnclosingNodeInExpansion(
+                     ((ITextSelection) selection).getOffset(), ((ITextSelection) selection).getLength());
+               treeView.showSelectedNode(findEnclosingNode);
             }
          }
       });
@@ -99,11 +100,17 @@ public class ASTView extends ViewPart {
       ctx.registerService(EventHandler.class.getName(), handler, props);
    }
 
+   /**
+    * Extract AST from active editor
+    */
+   //    TODO(tstauber - Jun 7, 2018) This AST can be cached!
    private IASTTranslationUnit getAST() {
-      final IEditorInput editorInput = CUIPlugin.getActivePage().getActiveEditor().getEditorInput();
+      IEditorPart activeEditor = CUIPlugin.getActivePage().getActiveEditor();
+      if (activeEditor == null) return null;
+      final IEditorInput editorInput = activeEditor.getEditorInput();
       final IWorkingCopy workingCopy = CUIPlugin.getDefault().getWorkingCopyManager().getWorkingCopy(editorInput);
 
-      if (workingCopy == null) { return null; }
+      if (workingCopy == null) return null;
 
       IIndex index = null;
       try {

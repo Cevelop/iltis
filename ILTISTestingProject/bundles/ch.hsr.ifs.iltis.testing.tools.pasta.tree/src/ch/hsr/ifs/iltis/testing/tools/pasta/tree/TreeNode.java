@@ -1,34 +1,39 @@
 package ch.hsr.ifs.iltis.testing.tools.pasta.tree;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
+
+import ch.hsr.ifs.iltis.core.core.functional.functions.Equals;
 
 import ch.hsr.ifs.iltis.testing.tools.pasta.tree.NodeVisitor.AfterVisitBehaviour;
 
 
-public class TreeNode<DataType> {
+@SuppressWarnings("unchecked")
+public class TreeNode<DataType, SELF extends TreeNode<DataType, SELF>> {
 
-   public final DataType             data;
-   private final List<TreeNode<DataType>> children;
+   public final DataType data;
 
-   private TreeNode<DataType> parent;
-   private TreeNode<DataType> ancestor;
-   private TreeNode<DataType> thread;
-   private float   x;
-   private float   y;
-   private float   mod;
-   private int     number;
-   private float   change;
-   private float   shift;
-   private float   width;
-   private boolean treatAsLeaf;
+   protected final List<SELF> children;
+
+   protected SELF parent;
+   protected SELF ancestor;
+   protected SELF thread;
+
+   protected float   x;
+   protected float   y;
+   protected float   mod;
+   protected int     number;
+   protected float   change;
+   protected float   shift;
+   protected float   width;
+   protected boolean treatAsLeaf;
 
    public TreeNode(final DataType data) {
-      this(new ArrayList<TreeNode<DataType>>(), data);
+      this(data, new ArrayList<>());
    }
 
-   public TreeNode(final List<TreeNode<DataType>> children, final DataType data) {
+   public TreeNode(final DataType data, final ArrayList<SELF> children) {
       this.parent = null;
       this.thread = null;
       this.data = data;
@@ -36,21 +41,33 @@ public class TreeNode<DataType> {
       this.x = 0;
       this.y = 0;
       this.mod = 0;
-      this.ancestor = this;
+      this.ancestor = (SELF) this;
       this.number = 1;
       this.width = 1;
-      this.treatAsLeaf = false;
+      this.treatAsLeaf = true;
    }
 
-   public List<TreeNode<DataType>> children() {
-      return hasChildren() ? children : Collections.<TreeNode<DataType>>emptyList();
-   }
-
-   public List<TreeNode<DataType>> getChildren() {
+   public List<SELF> getChildren() {
       return children;
    }
 
-   public TreeNode<DataType> parent() {
+   public SELF find(DataType data) {
+      return find(data, (l, r) -> l.equals(r));
+   }
+
+   public SELF find(DataType data, Equals<DataType, DataType> comparator) {
+      if (comparator.equal(data, this.data)) {
+         return (SELF) this;
+      } else {
+         for (SELF child : getChildren()) {
+            SELF subResult = child.find(data, comparator);
+            if (subResult != null) return subResult;
+         }
+      }
+      return null;
+   }
+
+   public SELF parent() {
       return parent;
    }
 
@@ -59,54 +76,54 @@ public class TreeNode<DataType> {
     *
     * @param visitor
     */
-   public void visit(final NodeVisitor<DataType> visitor) {
+   public void visit(final NodeVisitor<DataType, SELF> visitor) {
 
-      final AfterVisitBehaviour visit = visitor.visit(this);
+      final AfterVisitBehaviour visit = visitor.visit((SELF) this);
       if (visit == AfterVisitBehaviour.Abort) { return; }
-      for (final TreeNode<DataType> child : children) {
+      for (final SELF child : children) {
          child.visit(visitor);
       }
    }
 
-   public TreeNode<DataType> leftMostSibling() {
-      return (parent.children().get(0) != this) ? parent.children().get(0) : null;
+   public SELF leftMostSibling() {
+      return (parent.getChildren().get(0) != this) ? parent.getChildren().get(0) : null;
    }
 
-   public TreeNode<DataType> leftMostChild() {
+   public SELF leftMostChild() {
       if (thread != null) { return thread; }
-      return hasChildren() ? children.get(0) : null;
+      return hasChildren() ? getChildren().get(0) : null;
    }
 
-   private boolean hasChildren() {
+   protected boolean hasChildren() {
       return !(children.isEmpty() || treatAsLeaf);
    }
 
-   public TreeNode<DataType> rightMostChild() {
+   public SELF rightMostChild() {
       if (thread != null) { return thread; }
       return hasChildren() ? children.get(children.size() - 1) : null;
    }
 
-   public TreeNode<DataType> leftSibling() {
-      return hasLeftSibling() ? parent.children().get(this.number() - 2) : null;
+   public SELF leftSibling() {
+      return hasLeftSibling() ? parent.getChildren().get(this.number() - 2) : null;
    }
 
-   public TreeNode<DataType> rightSibling() {
-      return hasRightSibling() ? parent.children().get(this.number()) : null;
+   public SELF rightSibling() {
+      return hasRightSibling() ? parent.getChildren().get(this.number()) : null;
    }
 
    public boolean hasRightSibling() {
-      return (parent != null && (parent.children().size() > this.number()));
+      return (parent != null && (parent.getChildren().size() > this.number()));
    }
 
    public boolean hasLeftSibling() {
       return (parent != null && this.number > 1);
    }
 
-   public void addChild(final TreeNode<DataType> child) {
+   public void addChild(SELF child) {
       children.add(child);
       child.setNumber(children.size());
       child.setY(this.y() + 1);
-      child.setParent(this);
+      child.setParent((SELF) this);
    }
 
    public float x() {
@@ -115,7 +132,7 @@ public class TreeNode<DataType> {
 
    protected void setX(final float x) {
       this.x = x;
-   }
+   } 
 
    public float y() {
       return y;
@@ -142,11 +159,11 @@ public class TreeNode<DataType> {
       return treatAsLeaf;
    }
 
-   protected TreeNode<DataType> ancestor() {
+   protected SELF ancestor() {
       return ancestor;
    }
 
-   protected void setAncestor(final TreeNode<DataType> ancestor) {
+   protected void setAncestor(final SELF ancestor) {
       this.ancestor = ancestor;
    }
 
@@ -158,11 +175,11 @@ public class TreeNode<DataType> {
       this.mod = mod;
    }
 
-   protected TreeNode<DataType> thread() {
+   protected SELF thread() {
       return thread;
    }
 
-   public void setThread(final TreeNode<DataType> thread) {
+   public void setThread(final SELF thread) {
       this.thread = thread;
    }
 
@@ -191,8 +208,24 @@ public class TreeNode<DataType> {
       this.shift = shift;
    }
 
-   protected void setParent(final TreeNode<DataType> parent) {
+   protected void setParent(final SELF parent) {
       this.parent = parent;
+   }
+
+   public void propagateUp(final Consumer<SELF> task) {
+      task.accept((SELF) this);
+      if (parent != null) parent.propagateUp(task);
+   }
+
+   public void propagateDown(final Consumer<SELF> task) {
+      task.accept((SELF) this);
+      for (SELF child : children) {
+         child.propagateDown(task);
+      }
+   }
+
+   public void clearChildren() {
+      children.clear();
    }
 
    @Override
@@ -201,12 +234,11 @@ public class TreeNode<DataType> {
    }
 
    public void adjust() {
-      JBaum.reset(this);
-      JBaum.adjustTree(this, 1f, 1f);
+      adjust(1f, 1f);
    }
 
    public void adjust(final float siblingDistance, final float branchDistance) {
-      JBaum.reset(this);
-      JBaum.adjustTree(this, siblingDistance, branchDistance);
+      JBaum.reset((SELF) this);
+      JBaum.adjustTree((SELF) this, siblingDistance, branchDistance);
    }
 }
