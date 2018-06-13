@@ -9,6 +9,7 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modules>
-        <module>ch.hsr.ifs.iltis.cpp.feature</module>
+        <module>ch.hsr.ifs.iltis.cpp.core.feature</module>
+        <module>ch.hsr.ifs.iltis.cpp.versionator.feature</module>
     </modules>
 </project>

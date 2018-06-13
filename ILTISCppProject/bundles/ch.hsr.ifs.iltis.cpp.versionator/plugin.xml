@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point 
+   		 id="ch.hsr.ifs.iltis.cpp.versionator.versionmodification" 
+   		 name="Version Modification Operations" 
+   		 schema="schema/ch.hsr.ifs.iltis.cpp.versionator.versionmodification.exsd"
+   />
+   <extension point="org.eclipse.cdt.managedbuilder.ui.newWizardPages">
+   		<wizardPage
+            ID="ch.hsr.ifs.iltis.cpp.versionator.wizardpage.version"
+            operationClass="ch.hsr.ifs.iltis.cpp.versionator.SelectVersionOperation"
+            pageClass="ch.hsr.ifs.iltis.cpp.versionator.view.SelectVersionWizardPage">
+		
+			<!-- IDs for Cygwin GCC toolchain -->
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.cygwin.exe.debug"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.cygwin.exe.release"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.cygwin.so.debug"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.cygwin.so.release"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.cygwin.lib.debug"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.cygwin.lib.release"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.cygwin.base"></toolchain>
+		
+			<!-- IDs for Linux GCC toolchain -->
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.exe.debug"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.exe.release"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.so.debug"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.so.release"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.lib.debug"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.lib.release"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.base"></toolchain>
+			
+			<!-- IDs for MacOSX GCC toolchain -->
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.macosx.exe.debug"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.macosx.exe.release"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.macosx.so.debug"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.macosx.so.release"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.macosx.lib.debug"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.macosx.lib.release"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.macosx.base"></toolchain>
+			
+			<!-- IDs for MinGW GCC toolchain -->
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.mingw.exe.debug"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.mingw.exe.release"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.mingw.so.debug"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.mingw.so.release"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.mingw.lib.debug"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.mingw.lib.release"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.mingw.base"></toolchain>
+			
+			<!-- IDs for Solaris GCC toolchain -->
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.solaris.exe.debug"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.solaris.exe.release"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.solaris.so.debug"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.solaris.so.release"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.solaris.lib.debug"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.solaris.lib.release"></toolchain>
+			<toolchain toolchainID="cdt.managedbuild.toolchain.gnu.solaris.base"></toolchain>
+			
+			<nature natureID="org.eclipse.cdt.core.ccnature"></nature>
+		</wizardPage>
+	</extension>
+   
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.cdt.ui.preferences.CPluginPreferencePage"
+            class="ch.hsr.ifs.iltis.cpp.versionator.preferences.CPPVersionSelectionPreferencePage"
+            id="ch.hsr.ifs.iltis.cpp.versionator.preferences.CPPVersionSelectionPreferencePage"
+            name="%preferencePage.version.name">
+         <keywordReference
+               id="ch.hsr.ifs.iltis.cpp.versionator.keyword.version">
+         </keywordReference>
+         <keywordReference
+               id="org.eclipse.cdt.ui.common">
+         </keywordReference>
+      </page>
+   </extension>
+   <extension
+         id="ch.hsr.ifs.iltis.cpp.versionator.prefs.selection"
+         name="Version Selection"
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="ch.hsr.ifs.iltis.cpp.versionator.preferences.CPPVersionPreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.keywords">
+      <keyword
+            id="ch.hsr.ifs.iltis.cpp.versionator.keyword.version"
+            label="%preferenceKeywords.version">
+      </keyword>
+   </extension>
+   <extension
+         point="ch.hsr.ifs.iltis.cpp.versionator.versionmodification">
+      <ALL_VERSIONS>
+         <versionModification
+               checkedByDefault="true"
+               name="Set Dialect Compiler Flag"
+               operationClass="ch.hsr.ifs.iltis.cpp.versionator.operation.ChangeCompilerDialectFlagOperation">
+         </versionModification>
+         <versionModification
+               checkedByDefault="true"
+               name="Set Disable Attribute Warning Compiler Flag"
+               operationClass="ch.hsr.ifs.iltis.cpp.versionator.operation.ChangeCompilerAttributeWarningsFlagOperation">
+         </versionModification>
+         <versionModification
+               checkedByDefault="true"
+               name="Set Index Flag"
+               operationClass="ch.hsr.ifs.iltis.cpp.versionator.operation.ChangeIndexFlagOperation">
+         </versionModification>
+      </ALL_VERSIONS>
+   </extension>
+
+</plugin>

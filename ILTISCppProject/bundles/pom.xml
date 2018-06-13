@@ -10,5 +10,6 @@
     </parent>
     <modules>
         <module>ch.hsr.ifs.iltis.cpp.core</module>
+        <module>ch.hsr.ifs.iltis.cpp.versionator</module>
     </modules>
 </project>

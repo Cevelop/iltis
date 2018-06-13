@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="ch.hsr.ifs.iltis.cpp.feature"
-      label="ILTIS CPP"
+      id="ch.hsr.ifs.iltis.cpp.core.feature"
+      label="ILTIS CPP Core"
       version="1.0.0.qualifier"
-      provider-name="Institute for Software">
+      provider-name="IFS Institute for Software">
 
    <description url="http://www.example.com/description">
       Meet the ILTIS, feel the ILTIS, love the ILTIS!

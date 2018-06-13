@@ -1,0 +1,247 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="ch.hsr.ifs.iltis.cpp.versionator" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="ch.hsr.ifs.iltis.cpp.versionator" id="versionmodification" name="Version Modification Operations"/>
+      </appinfo>
+      <documentation>
+         [Enter description of this extension point.]
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+         <documentation>
+            The Elevenator Version Modification Operations enable the User to perform a set of actions that can be executed for a specific C dialect or for all dialects. 
+
+Supported dialects are CPP_98, CPP_03, CPP_11, CPP_14 and CPP_17
+         </documentation>
+      </annotation>
+      <complexType>
+         <choice>
+            <choice>
+               <element ref="ALL_VERSIONS"/>
+            </choice>
+            <choice>
+               <element ref="CPP_98"/>
+            </choice>
+            <choice>
+               <element ref="CPP_03"/>
+            </choice>
+            <choice>
+               <element ref="CPP_11"/>
+            </choice>
+            <choice>
+               <element ref="CPP_14"/>
+            </choice>
+            <choice>
+               <element ref="CPP_17"/>
+            </choice>
+         </choice>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="ALL_VERSIONS">
+      <complexType>
+         <choice minOccurs="0" maxOccurs="unbounded">
+            <element ref="versionModification"/>
+            <element ref="group"/>
+         </choice>
+      </complexType>
+   </element>
+
+   <element name="CPP_98">
+      <annotation>
+         <documentation>
+            Root Node for Version Modifications for CPP_98.
+         </documentation>
+      </annotation>
+      <complexType>
+         <choice minOccurs="0" maxOccurs="unbounded">
+            <element ref="versionModification"/>
+            <element ref="group"/>
+         </choice>
+      </complexType>
+   </element>
+
+   <element name="CPP_03">
+      <annotation>
+         <documentation>
+            Root Node for Version Modifications for CPP_03.
+         </documentation>
+      </annotation>
+      <complexType>
+         <choice minOccurs="0" maxOccurs="unbounded">
+            <element ref="versionModification"/>
+            <element ref="group"/>
+         </choice>
+      </complexType>
+   </element>
+
+   <element name="CPP_11">
+      <annotation>
+         <documentation>
+            Root Node for Version Modifications for CPP_11.
+         </documentation>
+      </annotation>
+      <complexType>
+         <choice minOccurs="0" maxOccurs="unbounded">
+            <element ref="versionModification"/>
+            <element ref="group"/>
+         </choice>
+      </complexType>
+   </element>
+
+   <element name="CPP_14">
+      <annotation>
+         <documentation>
+            Root Node for Version Modifications for CPP_14.
+         </documentation>
+      </annotation>
+      <complexType>
+         <choice minOccurs="0" maxOccurs="unbounded">
+            <element ref="versionModification"/>
+            <element ref="group"/>
+         </choice>
+      </complexType>
+   </element>
+
+   <element name="CPP_17">
+      <annotation>
+         <documentation>
+            Root Node for Version Modifications for CPP_17.
+         </documentation>
+      </annotation>
+      <complexType>
+         <choice minOccurs="0" maxOccurs="unbounded">
+            <element ref="versionModification"/>
+            <element ref="group"/>
+         </choice>
+      </complexType>
+   </element>
+
+   <element name="versionModification">
+      <annotation>
+         <documentation>
+            A Version Modification is one action that can be performed for a dialect. It can not have additional child nodes.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The name of the Version Modification.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="operationClass" type="string">
+            <annotation>
+               <documentation>
+                  The source code that is executed when the version modification is executed. It has to implement the ch.hsr.ifs.iltis.cpp.versionator.definition.IVersionModificationOperation interface. 
+
+To use the interface you have to add the ch.hsr.ifs.iltis.cpp.versionator.definition package to the required bundle of your plugin.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":ch.hsr.ifs.iltis.cpp.versionator.definition.IVersionModificationOperation"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="checkedByDefault" type="boolean" use="required">
+            <annotation>
+               <documentation>
+                  Defines if a Version Modification is checked is active by default. This is relevant when the plugin is installed for the first time. The preference page is initialized accodring to the checked modifications.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="group">
+      <annotation>
+         <documentation>
+            A group can have an arbitrary number of Version Modifications as children. It also can have an arbitrary  number of groups as children to form a tree like structure. 
+
+A group can not have any code attached that is executed.
+         </documentation>
+      </annotation>
+      <complexType>
+         <choice minOccurs="0" maxOccurs="unbounded">
+            <element ref="versionModification"/>
+            <element ref="group"/>
+         </choice>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Name of the Version Modification Group.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         [Enter the first release in which this extension point appears.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         [Enter extension point usage example here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+
+</schema>
