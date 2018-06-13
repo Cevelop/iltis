@@ -25,7 +25,7 @@ import xml.etree.ElementTree as etree
 
 # INTERNAL CONSTANTS
 SCRIPT_PATH = op.abspath(op.dirname(__file__))
-POM_NAMESPACE = 'http://maven.apache.org/POM/4.0.0'
+POM_NAMESPACES = { 'pom': 'http://maven.apache.org/POM/4.0.0'}
 POM_FILENAME = 'pom.xml'
 LOGGER = None
 
@@ -53,15 +53,16 @@ class UnresolvedDependencyError(Exception):
 class Module:
     """A type to represent a project module"""
 
-    Kind = Enum('Kind', 'plugin fragment feature update unknown')
+    Kind = Enum('Kind', 'plugin fragment feature update target unknown')
 
     # pylint: disable=too-many-arguments
-    def __init__(self, artifact_id, name, modules, path, pom):
+    def __init__(self, artifact_id, name, modules, path, pom, packaging):
         self._artifact_id = artifact_id
         self._name = name
         self._modules = modules
         self._path = path
         self._pom = pom
+        self._packaging = packaging
         self._dependencies = []
 
         if op.exists(op.join(self.path, 'plugin.xml')):
@@ -72,6 +73,8 @@ class Module:
             self._kind = Module.Kind.feature
         elif op.exists(op.join(self.path, 'category.xml')):
             self._kind = Module.Kind.update
+        elif self._packaging == "eclipse-target-definition":
+            self._kind = Module.Kind.target
         else:
             if op.exists(op.join(self.path, 'META-INF/MANIFEST.MF')):
                 self._kind = self._kind_from_manifest()
@@ -132,7 +135,7 @@ class Module:
         """Find all children matching the given needle"""
         result = set()
         for mod in self:
-            if mod.artifact_id == needle or mod.name.lower().find(needle) > -1:
+            if mod.artifact_id == needle or needle.lower() in mod.name.lower():
                 result.add(mod)
         return list(result)
 
@@ -161,6 +164,9 @@ class Module:
                 parts.append(' ' * 3 + line)
         return '\n'.join(parts)
 
+    def __repr__(self):
+        return f"{self._kind} ({self._packaging}): {self.artifact_id}"
+
 
 def name_from_id(artifact_id):
     """Convert an artifact ID into a friendly name."""
@@ -184,14 +190,15 @@ def scan_module(root, name):
     path = op.join(root, name)
     pom_path = op.join(path, POM_FILENAME)
     if not op.exists(pom_path):
-        return Module(name, name_from_id(name), [], path, None)
+        return Module(name, name_from_id(name), [], path, None, None)
 
     pom = etree.parse(pom_path).getroot()
-    artifact_id = pom.find('{%s}artifactId' % POM_NAMESPACE).text
+    packaging = pom.findtext('pom:packaging', namespaces=POM_NAMESPACES)
+    artifact_id = pom.findtext('pom:artifactId', namespaces=POM_NAMESPACES)
     name = name_from_id(artifact_id)
-    scanned = Module(artifact_id, name, [], path, pom_path)
+    scanned = Module(artifact_id, name, [], path, pom_path, packaging)
 
-    for mod in pom.iter('{%s}module' % POM_NAMESPACE):
+    for mod in pom.iterfind('.//pom:module', namespaces=POM_NAMESPACES):
         scanned.modules.append(scan_module(path, mod.text))
 
     return scanned
@@ -204,11 +211,13 @@ def scan_project():
     if not op.exists(pom_path):
         return None
 
-    pom = etree.parse(pom_path).getroot()
-    artifact_id = pom.find('{%s}artifactId' % POM_NAMESPACE).text
-    module = Module(artifact_id, PROJECT_NAME, [], PROJECT_ROOT, pom_path)
+    pom = etree.parse(pom_path)
+    packaging = pom.findtext('pom:packaging', namespaces=POM_NAMESPACES)
+    artifact_id = pom.findtext('pom:artifactId', namespaces=POM_NAMESPACES)
+    module = Module(artifact_id, PROJECT_NAME, [], PROJECT_ROOT, pom_path,
+            packaging)
 
-    for mod in pom.iter('{%s}module' % POM_NAMESPACE):
+    for mod in pom.iterfind('.//pom:module', namespaces=POM_NAMESPACES):
         module.modules.append(scan_module(PROJECT_ROOT, mod.text))
 
     return module
@@ -441,10 +450,10 @@ def select_modules(args, mappings, tree):
 def get_excluded_modules(tree, selected_modules):
     """Get all modules that are excluded from the build"""
     transitively_selected = selected_modules.copy()
-    for mod in selected_modules:
-        for dep in mod.dependencies:
-            transitively_selected.add(dep)
-    excludes = set([m for m in tree if m not in transitively_selected])
+    for dep in (dep for mod in selected_modules for dep in mod.dependencies):
+        transitively_selected.add(dep)
+    excludes = {m for m in tree if m not in transitively_selected and
+            m._kind != Module.Kind.target}
     for default_exclude in PROJECT_EXCLUDES:
         mod = tree.find_by_id(PROJECT_PREFIX + '.' + default_exclude)
         excludes.add(mod)
@@ -459,6 +468,15 @@ def skip_string(excluded_modules):
     return skips.strip(',')
 
 
+def get_enabled_git_flow_branch():
+    command = ['git', 'rev-parse', '--abbrev-ref', 'HEAD']
+    get_branch_proc = subprocess.run(command,stderr=subprocess.PIPE,
+            stdout=subprocess.PIPE, shell=True)
+    return 'master' if str(get_branch_proc.stdout) in 'master' else 'develop'
+
+def get_disabled_git_flow_branch():
+    return 'master' if get_enabled_git_flow_branch() in 'develop' else 'develop'
+
 def get_base_command(args, excluded_modules):
     """Get the base command for the build"""
     return [
@@ -468,6 +486,7 @@ def get_base_command(args, excluded_modules):
         '-f %s' % op.join(PROJECT_ROOT, POM_FILENAME),
         '-pl \'%s\'' % skip_string(excluded_modules),
         '-Djarsigner.skip=%s' % ('false' if args.sign else 'true'),
+        '-Dgitflow.branch=%s' % get_enabled_git_flow_branch(),
         '-fae' if not args.fail_fast else '',
         '' if not args.threads else '-T %s' % args.threads,
     ]
@@ -496,8 +515,13 @@ def build_main(args, mappings, build):
 
     LOGGER.info('Resolved project dependencies for %s', tree.name)
 
+    git_flow_branch = get_enabled_git_flow_branch()
+    LOGGER.info('Detected git-flow branch [%s]' % git_flow_branch)
+    target_module_name = build['target'] + " " + git_flow_branch.capitalize()
+
     selected_modules = select_modules(args, mappings, tree)
-    selected_modules.add(tree.find_by_name(build['target'])[0])
+    target_module = tree.find_by_name(target_module_name)[0]
+    selected_modules.add(target_module)
     LOGGER.info('Selected the following modules for build:')
     for mod in selected_modules:
         LOGGER.info('   \u2514\u2500\u2500\u2192 %s', mod.name)
@@ -511,9 +535,13 @@ def build_main(args, mappings, build):
                 PROJECT_PREFIX + '.' + mappings[mapping]
             )
         )
-    LOGGER.info('Excluding the following modules from the build:')
-    for mod in excluded_modules:
-        LOGGER.info('   \u2514\u2500\u2500\u2192 %s', mod.name)
+
+    if not excluded_modules:
+        LOGGER.info('No modules were excluded from the build')
+    else :
+        LOGGER.info('Excluding the following modules from the build:')
+        for mod in excluded_modules:
+            LOGGER.info('   \u2514\u2500\u2500\u2192 %s', mod.name)
 
     base_command = get_base_command(args, excluded_modules)
     base_command.extend(args.goals)
