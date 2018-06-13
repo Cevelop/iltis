@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.CoreException;
 
 import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
+import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.ISimpleReporter;
 import ch.hsr.ifs.iltis.cpp.core.resources.CProjectUtil;
 import ch.hsr.ifs.iltis.cpp.core.wrappers.AbstractIndexAstChecker;
 

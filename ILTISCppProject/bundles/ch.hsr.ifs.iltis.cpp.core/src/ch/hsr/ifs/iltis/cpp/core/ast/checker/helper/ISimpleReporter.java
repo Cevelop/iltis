@@ -1,11 +1,11 @@
-package ch.hsr.ifs.iltis.cpp.core.ast.checker;
+package ch.hsr.ifs.iltis.cpp.core.ast.checker.helper;
 
 import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.cdt.core.dom.ast.IASTNode;
 
-import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
+import ch.hsr.ifs.iltis.cpp.core.ast.checker.VisitorReport;
 
 
 public interface ISimpleReporter<ProblemId extends IProblemId> {

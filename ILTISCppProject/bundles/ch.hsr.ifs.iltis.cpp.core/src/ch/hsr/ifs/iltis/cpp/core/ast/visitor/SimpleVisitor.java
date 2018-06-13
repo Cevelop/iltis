@@ -12,9 +12,9 @@ import org.eclipse.cdt.codan.core.model.IChecker;
 import org.eclipse.cdt.codan.core.model.IProblem;
 import org.eclipse.cdt.core.dom.ast.ASTVisitor;
 
-import ch.hsr.ifs.iltis.cpp.core.ast.checker.ISimpleReporter;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.SimpleChecker;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
+import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.ISimpleReporter;
 import ch.hsr.ifs.iltis.cpp.core.ast.visitor.helper.IVisitorArgument;
 import ch.hsr.ifs.iltis.cpp.core.wrappers.CRefactoring;
 
