@@ -519,6 +519,8 @@ def build_main(args, mappings, build):
     LOGGER.info('Detected git-flow branch [%s]' % git_flow_branch)
     target_module_name = build['target'] + " " + git_flow_branch.capitalize()
 
+    LOGGER.info("Resolving target: " + str(target_module_name))
+
     selected_modules = select_modules(args, mappings, tree)
     target_module = tree.find_by_name(target_module_name)[0]
     selected_modules.add(target_module)
