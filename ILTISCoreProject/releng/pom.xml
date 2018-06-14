@@ -10,6 +10,46 @@
     </parent>
     <modules>
         <module>ch.hsr.ifs.iltis.core.update</module>
-        <module>ch.hsr.ifs.iltis.core.target</module>
     </modules>
+    
+    	<profiles>
+		<profile>
+			<id>master</id>
+			<activation>
+				<property>
+					<name>gitflow.branch</name>
+					<value>master</value>
+				</property>
+			</activation>
+			<modules>
+				<module>ch.hsr.ifs.iltis.core.target.master</module>
+			</modules>
+		</profile>
+
+		<profile>
+			<id>develop</id>
+			<activation>
+				<property>
+					<name>gitflow.branch</name>
+					<value>develop</value>
+				</property>
+			</activation>
+			<modules>
+				<module>ch.hsr.ifs.iltis.core.target.develop</module>
+			</modules>
+		</profile>
+
+		<profile>
+			<id>illegal</id>
+			<activation>
+				<property>
+					<name>!gitflow.branch</name>
+				</property>
+			</activation>
+			<modules>
+				<module>ch.hsr.ifs.iltis.core.target.develop</module>
+			</modules>
+		</profile>
+	</profiles>
+	
 </project>

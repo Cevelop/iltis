@@ -14,6 +14,75 @@
 		<maven.surefire.version>2.18.1</maven.surefire.version>
 		<kotlin.version>1.2.41</kotlin.version>
 	</properties>
+	
+	<profiles>
+		<profile>
+			<id>master</id>
+			<activation>
+				<property>
+					<name>gitflow.branch</name>
+					<value>master</value>
+				</property>
+			</activation>
+			<properties>
+				<target-platform-artifact>${project.groupId}.target.master</target-platform-artifact>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>develop</id>
+			<activation>
+				<property>
+					<name>gitflow.branch</name>
+					<value>develop</value>
+				</property>
+			</activation>
+			<properties>
+				<target-platform-artifact>${project.groupId}.target.develop</target-platform-artifact>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>illegal</id>
+			<activation>
+				<property>
+					<name>!gitflow.branch</name>
+				</property>
+			</activation>
+			<properties>
+				<target-platform-artifact>${project.groupId}.target.develop</target-platform-artifact>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-enforcer-plugin</artifactId>
+						<version>1.4.1</version>
+						<executions>
+							<execution>
+								<id>gitflow.branch not set</id>
+								<phase>validate</phase>
+								<goals>
+									<goal>enforce</goal>
+								</goals>
+								<configuration>
+									<rules>
+										<requireProperty>
+											<property>gitflow.branch</property>
+											<message>The gitflow.branch property must be set to either
+												master or develop! Either pass
+												-Dgitflow.branch=[master|develop] or use the build-script!</message>
+										</requireProperty>
+									</rules>
+									<fail>true</fail>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
 
 	<build>
 		<plugins>
@@ -31,7 +100,7 @@
 					<target>
 						<artifact>
 							<groupId>ch.hsr.ifs.iltis.core</groupId>
-							<artifactId>ch.hsr.ifs.iltis.core.target</artifactId>
+							<artifactId>${target-platform-artifact}</artifactId>
 							<version>${project.version}</version>
 						</artifact>
 					</target>

@@ -14,7 +14,7 @@
   </parent>
 
   <groupId>ch.hsr.ifs.iltis.core</groupId>
-  <artifactId>ch.hsr.ifs.iltis.core.target</artifactId>
+  <artifactId>ch.hsr.ifs.iltis.core.target.master</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>eclipse-target-definition</packaging>
 
