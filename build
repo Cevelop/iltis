@@ -3,7 +3,7 @@
 
 """
 This is a wrapper script around maven to allow for simple customization of the
-CDT plug-in build process.
+ILTIS CPP build process.
 
 The main goal of this script is to provide a means to exclude certain modules
 from building, in order to quickly test if a given module can be built
