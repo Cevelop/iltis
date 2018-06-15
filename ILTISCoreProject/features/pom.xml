@@ -11,7 +11,8 @@
 	</parent>
 	
 	<modules>
-		<module>ch.hsr.ifs.iltis.core.feature</module>
+		<module>ch.hsr.ifs.iltis.core.core.feature</module>
+		<module>ch.hsr.ifs.iltis.core.kotlin.feature</module>
 	</modules>
 
 	<build>
