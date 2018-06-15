@@ -6,6 +6,6 @@
         <artifactId>ch.hsr.ifs.iltis.testing.releng</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>ch.hsr.ifs.iltis.testing.target</artifactId>
+    <artifactId>ch.hsr.ifs.iltis.testing.target.master</artifactId>
     <packaging>eclipse-target-definition</packaging>
 </project>

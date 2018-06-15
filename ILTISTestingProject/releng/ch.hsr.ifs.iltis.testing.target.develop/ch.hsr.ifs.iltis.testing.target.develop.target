@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<<<<<<< HEAD:ILTISTestingProject/releng/ch.hsr.ifs.iltis.testing.target.dev/ch.hsr.ifs.iltis.testing.target.dev.target
-<target name="ILTIS Testing Development" sequenceNumber="1527524859">
-=======
-<target name="ILTIS Testing Development" sequenceNumber="1527260647">
->>>>>>> 781995a... Pasta: bugfix in ui and cuda support:ILTISTestingProject/releng/ch.hsr.ifs.iltis.testing.target.dev/ch.hsr.ifs.iltis.testing.target.target
+<target name="ILTIS Testing Development" sequenceNumber="1529051555">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.equinox.launcher" version="0.0.0"/>
@@ -19,10 +15,10 @@
       <repository location="https://hudson.eclipse.org/cdt/job/cdt-9.4/lastSuccessfulBuild/artifact/releng/org.eclipse.cdt.testing.repo/target/repository/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
-      <unit id="ch.hsr.ifs.iltis.core.feature.feature.group" version="0.0.0"/>
-      <unit id="ch.hsr.ifs.iltis.core.feature.source.feature.group" version="0.0.0"/>
-      <unit id="ch.hsr.ifs.iltis.cpp.feature.feature.group" version="0.0.0"/>
-      <unit id="ch.hsr.ifs.iltis.cpp.feature.source.feature.group" version="0.0.0"/>
+      <unit id="ch.hsr.ifs.iltis.core.core.feature.feature.group" version="0.0.0"/>
+      <unit id="ch.hsr.ifs.iltis.core.core.feature.source.feature.group" version="0.0.0"/>
+      <unit id="ch.hsr.ifs.iltis.cpp.core.feature.feature.group" version="0.0.0"/>
+      <unit id="ch.hsr.ifs.iltis.cpp.core.feature.source.feature.group" version="0.0.0"/>
       <repository location="https://www.cevelop.com/iltis-unstable"/>
     </location>
   </locations>

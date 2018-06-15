@@ -12,8 +12,8 @@ location "https://hudson.eclipse.org/cdt/job/cdt-9.4/lastSuccessfulBuild/artifac
 }
 
 location "https://www.cevelop.com/iltis-unstable" {
-	ch.hsr.ifs.iltis.core.feature.feature.group lazy
-	ch.hsr.ifs.iltis.core.feature.source.feature.group lazy
-	ch.hsr.ifs.iltis.cpp.feature.feature.group lazy
-	ch.hsr.ifs.iltis.cpp.feature.source.feature.group lazy
+	ch.hsr.ifs.iltis.core.core.feature.feature.group lazy
+	ch.hsr.ifs.iltis.core.core.feature.source.feature.group lazy
+	ch.hsr.ifs.iltis.cpp.core.feature.feature.group lazy
+	ch.hsr.ifs.iltis.cpp.core.feature.source.feature.group lazy
 }
