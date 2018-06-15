@@ -6,7 +6,7 @@ location "http://download.eclipse.org/releases/oxygen" {
 }
 
 location "https://www.cevelop.com/iltis-unstable" {
-	ch.hsr.ifs.iltis.core.feature.feature.group lazy
+	ch.hsr.ifs.iltis.core.core.feature.feature.group lazy
 	ch.hsr.ifs.iltis.testing.core.feature.feature.group lazy
 }
 
