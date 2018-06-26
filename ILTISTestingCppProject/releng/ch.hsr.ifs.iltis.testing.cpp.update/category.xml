@@ -6,13 +6,10 @@
    <feature url="features/ch.hsr.ifs.iltis.testing.cpp.feature_1.0.0.qualifier.jar" id="ch.hsr.ifs.iltis.testing.cpp.feature" version="1.0.0.qualifier">
       <category name="ch.hsr.ifs.iltis.testing.cpp"/>
    </feature>
-   <category-def name="ch.hsr.ifs.iltis.dev" label="ILTIS Development Resources">
-      <description>
-         The ILTIS infrastructure layer Source
-      </description>
-   </category-def>
    <category-def name="ch.hsr.ifs.iltis.testing" label="ILTIS Testing">
-      <category name="ch.hsr.ifs.iltis.dev"/>
+      <description>
+         The ILTIS testing plug-ins
+      </description>
    </category-def>
    <category-def name="ch.hsr.ifs.iltis.testing.cpp" label="ILTIS Testing Cpp">
       <category name="ch.hsr.ifs.iltis.testing"/>
