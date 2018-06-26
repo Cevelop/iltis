@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/ch.hsr.ifs.iltis.testing.tools.feature_1.0.0-SNAPSHOT.jar" id="ch.hsr.ifs.iltis.testing.tools.feature" version="1.0.0.qualifier">
+      <category name="ch.hsr.ifs.iltis.dev.tools"/>
+   </feature>
+   <category-def name="ch.hsr.ifs.iltis.dev" label="ILTIS Development Resources">
+      <description>
+         The ILTIS infrastructure layer Source
+      </description>
+   </category-def>
+   <category-def name="ch.hsr.ifs.iltis.dev.tools" label="ILTIS Development Tools">
+      <category name="ch.hsr.ifs.iltis.dev"/>
+      <description>
+         The ILTIS infrastructure layer Development Tools
+      </description>
+   </category-def>
+</site>
