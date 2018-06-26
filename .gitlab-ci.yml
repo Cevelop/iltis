@@ -14,8 +14,8 @@ variables:
     - echo "$P2_PRIVATE_KEY" | ssh-add -
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo "$P2_HOST_KEY" > ~/.ssh/known_hosts'
-    - 'ssh hudson@cute-test.com "cd /var/www/${UPDATE_SITE} && mkdir -p testing && cd testing && mkdir core"'
-    - 'scp -r releng/ch.hsr.ifs.iltis.testing.update/target/repository/* hudson@cute-test.com:/var/www/${UPDATE_SITE}/testing/core'
+    - 'ssh hudson@cute-test.com "cd /var/www/${UPDATE_SITE} && mkdir -p testing/core"'
+    - 'scp -r releng/ch.hsr.ifs.iltis.testing.core.update/target/repository/* hudson@cute-test.com:/var/www/${UPDATE_SITE}/testing/core'
     - 'ssh hudson@cute-test.com "cd /var/www/${UPDATE_SITE}/testing && compile-composite-updatesite ILTISTesting 1.0.0"'
     - 'ssh hudson@cute-test.com "cd /var/www/${UPDATE_SITE} && compile-composite-updatesite ILTIS 1.0.0"'
 
