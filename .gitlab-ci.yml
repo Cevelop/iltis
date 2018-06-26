@@ -27,7 +27,7 @@ build-signed:
     paths:
       - .m2/repository
   script:
-    - 'xvfb-run ./build clean verify -s'
+    - 'xvfb-run ./tools/build clean verify -s'
   artifacts:
     paths:
       - ./*/*/*/target/repository/**
@@ -43,7 +43,7 @@ build-unsigned:
     paths:
       - .m2/repository
   script:
-    - 'xvfb-run ./build clean verify'
+    - 'xvfb-run ./tools/build clean verify'
   except:
     - master
     - develop

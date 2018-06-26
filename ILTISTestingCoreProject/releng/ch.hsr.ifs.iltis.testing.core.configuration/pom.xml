@@ -97,7 +97,7 @@
 				<configuration>
 					<target>
 						<artifact>
-							<groupId>ch.hsr.ifs.iltis.testing</groupId>
+							<groupId>ch.hsr.ifs.iltis.testing.core</groupId>
 							<artifactId>${target-platform-artifact}</artifactId>
 							<version>${project.version}</version>
 						</artifact>
