@@ -1,0 +1,17 @@
+target "ILTIS Testing Master" with source requirements
+
+location "http://download.eclipse.org/releases/oxygen" {
+	org.eclipse.equinox.launcher lazy
+}
+//location "http://download.eclipse.org/releases/photon" {
+//	org.eclipse.equinox.launcher lazy
+//}
+
+location "https://www.cevelop.com/iltis" {
+	ch.hsr.ifs.iltis.cpp.core.feature.feature.group lazy
+	ch.hsr.ifs.iltis.testing.cpp.feature.feature.group lazy
+}
+
+location "http://download.eclipse.org/collections/9.2.0/repository/" {
+	org.eclipse.collections.feature.feature.group
+}

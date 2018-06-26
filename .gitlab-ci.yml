@@ -4,28 +4,30 @@ stages:
 
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+  GIT_SUBMODULE_STRATEGY: recursive
 
 .deployScript: &DEPLOY_SCRIPT
   before_script:
-    - cd ILTISTestingProject
+    - cd ILTISTestingHighlevelProject
   script:
     - eval $(ssh-agent -s)
     - echo "$P2_PRIVATE_KEY" | ssh-add -
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo "$P2_HOST_KEY" > ~/.ssh/known_hosts'
-    - 'ssh hudson@cute-test.com "cd /var/www/${UPDATE_SITE} && mkdir -p testing"'
-    - 'scp -r releng/ch.hsr.ifs.iltis.testing.update/target/repository/* hudson@cute-test.com:/var/www/${UPDATE_SITE}/testing'
+    - 'ssh hudson@cute-test.com "cd /var/www/${UPDATE_SITE} && mkdir -p testing/highlevel"'
+    - 'scp -r releng/ch.hsr.ifs.iltis.testing.highlevel.update/target/repository/* hudson@cute-test.com:/var/www/${UPDATE_SITE}/testing/highlevel'
+    - 'ssh hudson@cute-test.com "cd /var/www/${UPDATE_SITE}/testing && compile-composite-updatesite ILTISTesting 1.0.0"'
     - 'ssh hudson@cute-test.com "cd /var/www/${UPDATE_SITE} && compile-composite-updatesite ILTIS 1.0.0"'
 
 build-signed:
   image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-release:latest
   stage: build and test
   cache:
-    key: "ILTISCoreMavenCache"
+    key: "ILTISTestingHighlevelMavenCache"
     paths:
       - .m2/repository
   script:
-    - 'xvfb-run ./build clean verify -s'
+    - 'xvfb-run ./tools/build clean verify -s'
   artifacts:
     paths:
       - ./*/*/*/target/repository/**
@@ -37,11 +39,11 @@ build-unsigned:
   image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-release:latest
   stage: build and test
   cache:
-    key: "ILTISCoreMavenCache"
+    key: "ILTISTestingHighlevelMavenCache"
     paths:
       - .m2/repository
   script:
-    - 'xvfb-run ./build clean verify'
+    - 'xvfb-run ./tools/build clean verify'
   except:
     - master
     - develop
