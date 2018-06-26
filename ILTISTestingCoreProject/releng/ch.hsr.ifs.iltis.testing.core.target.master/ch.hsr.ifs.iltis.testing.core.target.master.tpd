@@ -1,6 +1,6 @@
 target "ILTIS Testing Master" with source requirements
 
-location "http://download.eclipse.org/releases/oxygen" {
+location "http://download.eclipse.org/releases/photon" {
 	org.eclipse.equinox.launcher lazy
 	org.junit lazy
 }
