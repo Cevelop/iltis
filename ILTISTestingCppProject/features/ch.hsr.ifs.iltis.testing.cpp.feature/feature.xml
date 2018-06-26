@@ -106,10 +106,6 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <discovery label="CDT Test Plug-ins" url="https://www.cevelop.com/cdt-test-plugins/mars"/>
    </url>
 
-   <includes
-         id="org.eclipse.cdt.testing"
-         version="0.0.0"/>
-
    <requires>
       <import plugin="ch.hsr.ifs.iltis.testing.core.core" version="1.0.0" match="greaterOrEqual"/>
    </requires>
