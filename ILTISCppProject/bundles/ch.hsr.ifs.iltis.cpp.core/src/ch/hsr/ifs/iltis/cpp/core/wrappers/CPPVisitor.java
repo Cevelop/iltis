@@ -25,7 +25,7 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPFunctionType;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPPlaceholderType.PlaceholderKind;
 
 import ch.hsr.ifs.iltis.core.core.functional.OptionalUtil;
-import ch.hsr.ifs.iltis.testing.core.validators.ILTISWrapper;
+import ch.hsr.ifs.iltis.testing.core.core.validators.ILTISWrapper;
 
 import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPInternalBinding;
 
@@ -101,8 +101,8 @@ public class CPPVisitor {
 
    public static class CollectDeclarationsAction extends org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.CollectDeclarationsAction {
 
-      public CollectDeclarationsAction(final IBinding binding) {
-         super(binding);
+      public CollectDeclarationsAction(final IBinding binding, boolean permissive) {
+         super(binding, permissive);
       }
 
       @Override

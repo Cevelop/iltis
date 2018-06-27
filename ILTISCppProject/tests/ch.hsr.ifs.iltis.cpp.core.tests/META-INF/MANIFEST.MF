@@ -11,7 +11,7 @@ Require-Bundle:
  org.eclipse.ltk.core.refactoring,
  org.eclipse.equinox.common,
  ch.hsr.ifs.iltis.cpp.core,
- ch.hsr.ifs.iltis.testing.core
+ ch.hsr.ifs.iltis.testing.core.core
 Bundle-Version: 1.0.0.qualifier
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: ch.hsr.ifs.iltis.cpp.core.tests;singleton:=true
