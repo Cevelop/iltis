@@ -43,7 +43,7 @@ build-unsigned:
     paths:
       - .m2/repository
   script:
-    - 'xvfb-run ./tools/build clean verify'
+    - 'cd ILTISTestingToolsProject && xvfb-run mvn clean verify -e -X'
   except:
     - master
     - develop
