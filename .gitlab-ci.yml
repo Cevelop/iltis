@@ -4,6 +4,7 @@ stages:
 
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+  GIT_SUBMODULE_STRATEGY: recursive
 
 .deployScript: &DEPLOY_SCRIPT
   before_script:
@@ -21,11 +22,11 @@ build-signed:
   image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-release:latest
   stage: build and test
   cache:
-    key: "ILTISCoreMavenCache"
+    key: "ILTISCppMavenCache"
     paths:
       - .m2/repository
   script:
-    - 'xvfb-run ./build clean verify -s'
+    - 'env SWT_GTK3=0 xvfb-run ./tools/build clean verify -s'
   artifacts:
     paths:
       - ./*/*/*/target/repository/**
@@ -37,11 +38,11 @@ build-unsigned:
   image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-release:latest
   stage: build and test
   cache:
-    key: "ILTISCoreMavenCache"
+    key: "ILTISCppMavenCache"
     paths:
       - .m2/repository
   script:
-    - 'xvfb-run ./build clean verify'
+    - 'env SWT_GTK3=0 xvfb-run ./build clean verify --verbose'
   except:
     - master
     - develop
