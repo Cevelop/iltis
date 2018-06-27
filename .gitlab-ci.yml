@@ -43,7 +43,7 @@ build-unsigned:
     paths:
       - .m2/repository
   script:
-    - 'cd ILTISTestingToolsProject && xvfb-run mvn clean verify -e -X'
+    - 'cd ILTISTestingToolsProject && xvfb-run mvn clean verify -Djarsigner.skip=true -Dgitflow.branch=develop -e -X'
   except:
     - master
     - develop
