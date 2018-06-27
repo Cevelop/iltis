@@ -43,7 +43,7 @@ build-unsigned:
     paths:
       - .m2/repository
   script:
-    - 'xvfb-run ./tools/build clean verify'
+    - 'cd ILTISTestingToolsProject && env SWT_GTK3=0 xvfb-run mvn clean verify -Djarsigner.skip=true -Dgitflow.branch=develop -e -X'
   except:
     - master
     - develop
