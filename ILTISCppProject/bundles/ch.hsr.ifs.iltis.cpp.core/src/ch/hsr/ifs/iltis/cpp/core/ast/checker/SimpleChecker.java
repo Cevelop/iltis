@@ -7,7 +7,6 @@ import java.util.List;
 import org.eclipse.cdt.codan.core.model.IChecker;
 import org.eclipse.cdt.codan.core.model.IProblemLocation;
 import org.eclipse.cdt.codan.core.model.IProblemLocationFactory;
-import org.eclipse.cdt.core.dom.ast.ASTVisitor;
 import org.eclipse.cdt.core.dom.ast.IASTCompositeTypeSpecifier;
 import org.eclipse.cdt.core.dom.ast.IASTFileLocation;
 import org.eclipse.cdt.core.dom.ast.IASTImageLocation;
@@ -21,6 +20,7 @@ import org.eclipse.core.runtime.CoreException;
 import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.ISimpleReporter;
+import ch.hsr.ifs.iltis.cpp.core.ast.visitor.SimpleVisitor;
 import ch.hsr.ifs.iltis.cpp.core.resources.CProjectUtil;
 import ch.hsr.ifs.iltis.cpp.core.wrappers.AbstractIndexAstChecker;
 
@@ -35,7 +35,8 @@ import ch.hsr.ifs.iltis.cpp.core.wrappers.AbstractIndexAstChecker;
  */
 public abstract class SimpleChecker<ProblemId extends IProblemId> extends AbstractIndexAstChecker implements IChecker, ISimpleReporter<ProblemId> {
 
-   protected ASTVisitor                                                       visitor           = getVisitor();
+   protected SimpleVisitor<?, ?> visitor = createVisitor();
+
    protected final List<VisitorReport<? extends IProblemId>>                  nodesToReport     = new ArrayList<>();
    protected final HashMap<VisitorReport<? extends IProblemId>, List<Object>> argumentsToReport = new HashMap<>();
 
@@ -48,9 +49,11 @@ public abstract class SimpleChecker<ProblemId extends IProblemId> extends Abstra
 
    /**
     * Returns the {@code ASTVisitor} which should be used. If the visitor is a SimpleVisitor,
-    * {@code this::addNodeForReporting} can be used as callback
+    * {@code this::addNodeForReporting} can be used as callback.
+    * 
+    * This method should only create a visitor. The created visitor will be stored in {@link #visitor}.
     */
-   protected abstract ASTVisitor getVisitor();
+   protected abstract SimpleVisitor<?, ?> createVisitor();
 
    @Override
    public void addNodeForReporting(final VisitorReport<ProblemId> result, final List<Object> args) {

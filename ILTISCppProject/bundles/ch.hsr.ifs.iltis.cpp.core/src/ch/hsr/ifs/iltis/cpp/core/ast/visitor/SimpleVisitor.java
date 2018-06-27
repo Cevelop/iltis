@@ -1,8 +1,8 @@
 package ch.hsr.ifs.iltis.cpp.core.ast.visitor;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,7 +15,6 @@ import org.eclipse.cdt.core.dom.ast.ASTVisitor;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.SimpleChecker;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.ISimpleReporter;
-import ch.hsr.ifs.iltis.cpp.core.ast.visitor.helper.IVisitorArgument;
 import ch.hsr.ifs.iltis.cpp.core.wrappers.CRefactoring;
 
 
@@ -27,9 +26,9 @@ import ch.hsr.ifs.iltis.cpp.core.wrappers.CRefactoring;
  * @param <ProblemId>
  *        An enum which implements IProblemId
  */
-public abstract class SimpleVisitor<ProblemId extends Enum<ProblemId> & IProblemId> extends ASTVisitor {
+public abstract class SimpleVisitor<ProblemId extends Enum<ProblemId> & IProblemId, ArgType> extends ASTVisitor {
 
-   protected final List<IVisitorArgument>     args;
+   protected final List<ArgType>              arguments;
    protected final ISimpleReporter<ProblemId> reporter;
 
    protected boolean isInCompositeSkipMode = false;
@@ -42,7 +41,8 @@ public abstract class SimpleVisitor<ProblemId extends Enum<ProblemId> & IProblem
     * @param args
     *        Optional arguments
     */
-   public SimpleVisitor(ISimpleReporter<ProblemId> reporter, final IVisitorArgument... args) {
+   @SafeVarargs
+   public SimpleVisitor(ISimpleReporter<ProblemId> reporter, final ArgType... args) {
       this(reporter, Arrays.asList(args));
    }
 
@@ -54,9 +54,9 @@ public abstract class SimpleVisitor<ProblemId extends Enum<ProblemId> & IProblem
     * @param args
     *        Optional arguments
     */
-   public SimpleVisitor(ISimpleReporter<ProblemId> reporter, final List<IVisitorArgument> args) {
+   public SimpleVisitor(ISimpleReporter<ProblemId> reporter, final List<ArgType> args) {
       this.reporter = reporter;
-      this.args = args;
+      this.arguments = args;
    }
 
    /**
@@ -66,7 +66,30 @@ public abstract class SimpleVisitor<ProblemId extends Enum<ProblemId> & IProblem
     *        The reporter. Mostly this would be a {@link SimpleChecker} or a {@link CRefactoring} implementing {@link ISimpleReporter}
     */
    public SimpleVisitor(ISimpleReporter<ProblemId> reporter) {
-      this(reporter, Collections.emptyList());
+      this(reporter, new ArrayList<ArgType>(10));
+   }
+
+   /**
+    * Adds a collection of arguments to this visitors. This method returns the visitors itself to allow chaining.
+    * 
+    * @param args
+    *        The arguments to add
+    * @return Itself to allow chaining
+    */
+   public SimpleVisitor<ProblemId, ArgType> addArguments(Collection<ArgType> args) {
+      arguments.addAll(args);
+      return this;
+   }
+
+   /**
+    * Adds a collection of arguments to this visitors. This method returns the visitors itself to allow chaining.
+    * 
+    * @param args
+    *        The arguments to add
+    * @return Itself to allow chaining
+    */
+   public SimpleVisitor<ProblemId, ArgType> addArguments(ArgType[] args) {
+      return addArguments(Arrays.asList(args));
    }
 
    /**
@@ -93,17 +116,17 @@ public abstract class SimpleVisitor<ProblemId extends Enum<ProblemId> & IProblem
     * @return If this visitor shall be enabled
     */
    public boolean isEnabled() {
-      if (reporter instanceof IChecker) {
+      if (reporter instanceof IChecker && CodanRuntime.getInstance() != null) {
          Collection<? extends IProblemId> enabledProblemIds = getEnabledProblemIds();
          return getProblemIds().stream().anyMatch(enabledProblemIds::contains);
       }
-      return false;
+      return true;
    }
 
    private Set<? extends IProblemId> getEnabledProblemIds() {
       Set<String> codanProblems = CodanRuntime.getInstance().getCheckersRegistry().getRefProblems((IChecker) reporter).parallelStream().filter(
             IProblem::isEnabled).map(IProblem::getId).collect(Collectors.toSet());
-      return getProblemIds().parallelStream().filter(ipid -> codanProblems.contains(ipid.getId())).collect(Collectors.toSet());
+      return getProblemIds().stream().filter(ipid -> codanProblems.contains(ipid.getId())).collect(Collectors.toSet());
    }
 
 }

@@ -1,6 +1,7 @@
 package ch.hsr.ifs.iltis.cpp.core.ast.visitor.composite;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.eclipse.cdt.codan.core.model.IChecker;
 import org.eclipse.cdt.core.dom.ast.ASTVisitor;
 import org.eclipse.cdt.core.dom.ast.IASTArrayModifier;
 import org.eclipse.cdt.core.dom.ast.IASTAttribute;
@@ -43,7 +45,6 @@ import ch.hsr.ifs.iltis.core.core.functional.functions.Function2;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.ISimpleReporter;
 import ch.hsr.ifs.iltis.cpp.core.ast.visitor.SimpleVisitor;
-import ch.hsr.ifs.iltis.cpp.core.wrappers.AbstractIndexAstChecker;
 
 
 /**
@@ -51,26 +52,37 @@ import ch.hsr.ifs.iltis.cpp.core.wrappers.AbstractIndexAstChecker;
  * @author tstauber, P. Bertschi, A. Deicha
  *
  */
-public class VisitorComposite<ProblemId extends Enum<ProblemId> & IProblemId, CheckerType extends AbstractIndexAstChecker & ISimpleReporter<ProblemId>>
-      extends SimpleVisitor<ProblemId> {
+public class VisitorComposite<ProblemId extends Enum<ProblemId> & IProblemId, CheckerType extends IChecker & ISimpleReporter<ProblemId>, ArgType>
+      extends SimpleVisitor<ProblemId, ArgType> {
 
-   private final List<SimpleVisitor<?>>                          visitors;
-   private final List<SimpleVisitor<?>>                          visitorsThatAborted;
-   private final VisitorCache                                    cache;
-   private final Function<IASTNode, ArrayList<SimpleVisitor<?>>> listFactory;
+   private final List<SimpleVisitor<?, ArgType>>                          visitors;
+   private final List<SimpleVisitor<?, ArgType>>                          visitorsThatAborted;
+   private final VisitorCache<SimpleVisitor<?, ArgType>>                  cache;
+   private final Function<IASTNode, ArrayList<SimpleVisitor<?, ArgType>>> listFactory;
 
-   private final IdentityHashMap<IASTNode, ArrayList<SimpleVisitor<?>>> visitorsToSkipForSubnodes = new IdentityHashMap<>();
+   private final IdentityHashMap<IASTNode, ArrayList<SimpleVisitor<?, ArgType>>> visitorsToSkipForSubnodes = new IdentityHashMap<>();
 
-   public VisitorComposite(final CheckerType checker, Collection<SimpleVisitor<?>> subVisitors) {
+   @SafeVarargs
+   public VisitorComposite(final CheckerType checker, SimpleVisitor<?, ArgType>... subVisitors) {
+      this(checker, Arrays.asList(subVisitors));
+   }
+
+   public VisitorComposite(final CheckerType checker, Collection<SimpleVisitor<?, ArgType>> subVisitors) {
       super(checker);
       visitors = subVisitors.stream().filter(SimpleVisitor::isEnabled).collect(Collectors.toList());
-      listFactory = ignored -> new ArrayList<SimpleVisitor<?>>(visitors.size());
-      cache = new VisitorCache(visitors.size());
+      listFactory = ignored -> new ArrayList<SimpleVisitor<?, ArgType>>(visitors.size());
+      cache = new VisitorCache<>(visitors.size());
       visitorsThatAborted = listFactory.apply(null);
       visitors.forEach(this::addToCache);
    }
 
-   public List<SimpleVisitor<?>> getVisitors() {
+   @Override
+   public SimpleVisitor<ProblemId, ArgType> addArguments(Collection<ArgType> args) {
+      visitors.forEach(v -> v.addArguments(args));
+      return this;
+   }
+
+   public List<SimpleVisitor<?, ArgType>> getVisitors() {
       return visitors;
    }
 
@@ -78,7 +90,7 @@ public class VisitorComposite<ProblemId extends Enum<ProblemId> & IProblemId, Ch
       return visitors.size() > 0;
    }
 
-   private void addToCache(final SimpleVisitor<?> visitor) {
+   private void addToCache(final SimpleVisitor<?, ArgType> visitor) {
       if (visitor.shouldVisitAmbiguousNodes) {
          shouldVisitAmbiguousNodes = true;
          cache.addCache(IASTTranslationUnit.class, visitor);
@@ -189,7 +201,7 @@ public class VisitorComposite<ProblemId extends Enum<ProblemId> & IProblemId, Ch
       }
    }
 
-   private void processResult(final int result, final IASTNode node, final SimpleVisitor<?> visitor) {
+   private void processResult(final int result, final IASTNode node, final SimpleVisitor<?, ArgType> visitor) {
       switch (result) {
       case PROCESS_ABORT:
          visitorsThatAborted.add(visitor);
@@ -205,7 +217,7 @@ public class VisitorComposite<ProblemId extends Enum<ProblemId> & IProblemId, Ch
     * After returning from the subtree and leaving the node, all visitors which skipped the subtree are re-enabled.
     */
    private int processLeave(final IASTNode node) {
-      final ArrayList<SimpleVisitor<?>> skipped = visitorsToSkipForSubnodes.remove(node);
+      final ArrayList<SimpleVisitor<?, ArgType>> skipped = visitorsToSkipForSubnodes.remove(node);
       if (skipped != null) {
          visitors.addAll(skipped);
          visitors.forEach(SimpleVisitor::exitCompositeSkipMode);
@@ -242,7 +254,7 @@ public class VisitorComposite<ProblemId extends Enum<ProblemId> & IProblemId, Ch
 
    public <Node extends IASTNode> int doVisitForNode(final Class<?> nodeType, final Node node, final Function2<ASTVisitor, Node, Integer> function) {
       //TODO Think about using one thread/job per composite to handle the nodes... this would mean to change the handling of processResult
-      cache.getCache(nodeType).stream().filter(v -> v.isInCompositeSkipMode()).forEach(v -> processResult(function.apply(v, node), node, v));
+      cache.getCache(nodeType).stream().filter(v -> !v.isInCompositeSkipMode()).forEach(v -> processResult(function.apply(v, node), node, v));
       return getCurrentResult();
    }
 
