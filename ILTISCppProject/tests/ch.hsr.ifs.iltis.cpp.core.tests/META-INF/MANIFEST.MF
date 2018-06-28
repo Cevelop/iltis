@@ -4,14 +4,15 @@ Bundle-Name: ILTIS CPP Unit Tests
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: 
  ch.hsr.ifs.iltis.core.core;bundle-version="1.0.0",
+ ch.hsr.ifs.iltis.testing.core.core,
+ ch.hsr.ifs.iltis.testing.cpp.core;bundle-version="1.0.0",
+ ch.hsr.ifs.iltis.cpp.core,
  org.junit,
- org.eclipse.cdt.core.tests,
  org.eclipse.osgi,
  org.eclipse.cdt.core,
  org.eclipse.ltk.core.refactoring,
  org.eclipse.equinox.common,
- ch.hsr.ifs.iltis.cpp.core,
- ch.hsr.ifs.iltis.testing.core.core
+ org.eclipse.cdt.core.tests
 Bundle-Version: 1.0.0.qualifier
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: ch.hsr.ifs.iltis.cpp.core.tests;singleton:=true

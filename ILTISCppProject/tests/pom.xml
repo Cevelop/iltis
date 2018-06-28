@@ -9,6 +9,7 @@
 		<artifactId>ch.hsr.ifs.iltis.cpp.root</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
+
 	<modules>
 		<module>ch.hsr.ifs.iltis.cpp.core.tests</module>
 	</modules>
@@ -50,11 +51,13 @@
 				<configuration>
 					<useUIHarness>true</useUIHarness>
 					<failIfNoTests>false</failIfNoTests>
+					<product>org.eclipse.epp.package.cpp.product</product>
 				</configuration>
 				<executions>
 					<execution>
 						<id>default-test</id>
 						<configuration>
+							<useUIHarness>false</useUIHarness>
 							<includes>
 								<include>**/PluginTestSuiteAll.java</include>
 							</includes>
@@ -68,7 +71,8 @@
 							<goal>test</goal>
 						</goals>
 						<configuration>
-							<useUIThread>false</useUIThread>
+							<argLine>${osx-jvm-flags}</argLine>
+							<useUIThread>true</useUIThread>
 							<includes>
 								<include>**/PluginUITestSuiteAll.java</include>
 							</includes>
@@ -84,9 +88,8 @@
 						<configuration>
 							<useUIHarness>true</useUIHarness>
 							<useUIThread>false</useUIThread>
-							<argLine>${osx-jvm-flags}
-								-Dorg.eclipse.swtbot.keyboard.layout=EN_US
-								-Dorg.eclipse.swtbot.playback.delay=60</argLine>
+							<argLine>${osx-jvm-flags}</argLine>
+							<appArgLine>-Dorg.eclipse.swtbot.keyboard.layout=EN_US -Dorg.eclipse.swtbot.playback.delay=60</appArgLine>
 							<includes>
 								<include>**/SWTBotTestSuiteAll.java</include>
 							</includes>
