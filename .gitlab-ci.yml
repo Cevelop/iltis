@@ -19,7 +19,7 @@ variables:
     - 'ssh hudson@cute-test.com "cd /var/www/${UPDATE_SITE}/testing && compile-composite-updatesite ILTISTesting 1.0.0"'
     - 'ssh hudson@cute-test.com "cd /var/www/${UPDATE_SITE} && compile-composite-updatesite ILTIS 1.0.0"'
 
-build-signed:
+build signed:
   image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-release:latest
   stage: build and test
   cache:
@@ -35,8 +35,8 @@ build-signed:
     - master
     - develop
 
-build-unsigned:
-  image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-release:latest
+build unsigned:
+  image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-build:latest
   stage: build and test
   cache:
     key: "ILTISTestingCoreMavenCache"
