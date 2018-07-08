@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.eclipse.cdt.codan.core.model.IChecker;
 import org.eclipse.cdt.core.dom.ast.ASTVisitor;
 import org.eclipse.cdt.core.dom.ast.IASTArrayModifier;
 import org.eclipse.cdt.core.dom.ast.IASTAttribute;
@@ -52,8 +51,8 @@ import ch.hsr.ifs.iltis.cpp.core.ast.visitor.SimpleVisitor;
  * @author tstauber, P. Bertschi, A. Deicha
  *
  */
-public class VisitorComposite<ProblemId extends Enum<ProblemId> & IProblemId, CheckerType extends IChecker & ISimpleReporter<ProblemId>, ArgType>
-      extends SimpleVisitor<ProblemId, ArgType> {
+public class VisitorComposite<ProblemId extends Enum<ProblemId> & IProblemId, Reporter extends ISimpleReporter<ProblemId>, ArgType> extends
+      SimpleVisitor<ProblemId, ArgType> {
 
    private final List<SimpleVisitor<?, ArgType>>                          visitors;
    private final List<SimpleVisitor<?, ArgType>>                          visitorsThatAborted;
@@ -63,12 +62,12 @@ public class VisitorComposite<ProblemId extends Enum<ProblemId> & IProblemId, Ch
    private final IdentityHashMap<IASTNode, ArrayList<SimpleVisitor<?, ArgType>>> visitorsToSkipForSubnodes = new IdentityHashMap<>();
 
    @SafeVarargs
-   public VisitorComposite(final CheckerType checker, SimpleVisitor<?, ArgType>... subVisitors) {
-      this(checker, Arrays.asList(subVisitors));
+   public VisitorComposite(SimpleVisitor<?, ArgType>... subVisitors) {
+      this(Arrays.asList(subVisitors));
    }
 
-   public VisitorComposite(final CheckerType checker, Collection<SimpleVisitor<?, ArgType>> subVisitors) {
-      super(checker);
+   public VisitorComposite(Collection<SimpleVisitor<?, ArgType>> subVisitors) {
+      super(null);
       visitors = subVisitors.stream().filter(SimpleVisitor::isEnabled).collect(Collectors.toList());
       listFactory = ignored -> new ArrayList<SimpleVisitor<?, ArgType>>(visitors.size());
       cache = new VisitorCache<>(visitors.size());

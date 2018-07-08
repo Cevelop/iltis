@@ -31,6 +31,11 @@ public abstract class SimpleVisitor<ProblemId extends Enum<ProblemId> & IProblem
    protected final List<ArgType>              arguments;
    protected final ISimpleReporter<ProblemId> reporter;
 
+   
+   public ISimpleReporter<ProblemId> getReporter() {
+      return reporter;
+   }
+
    protected boolean isInCompositeSkipMode = false;
 
    /**
