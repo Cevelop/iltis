@@ -65,13 +65,12 @@ public class TestProjectHolder extends AbstractProjectHolder implements ITestPro
    private boolean isExpectedProject;
 
    private List<ICProject> referencedProjects = new ArrayList<>();
+   private List<IPath>     formattedDocuments = new ArrayList<>();
 
    private ArrayList<IPath>                        stagedExternalIncudePaths  = new ArrayList<>();
    private ArrayList<IPath>                        stagedInternalIncludePaths = new ArrayList<>();
    private ArrayList<ReferencedProjectDescription> stagedReferncedProjects    = new ArrayList<>();
    private HashMap<String, String>                 stagedTestSourcesToImport  = new HashMap<>();
-
-   private List<IPath> formattedDocuments;
 
    public TestProjectHolder(String projectName, Language language, boolean isExpectedProject) {
       this.projectName = projectName;
@@ -111,7 +110,7 @@ public class TestProjectHolder extends AbstractProjectHolder implements ITestPro
       disposeCDTAstCache();
       getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
       /* Does not seem to be needed */
-//      ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor()); 
+      //      ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor()); 
       /* reindexing will happen automatically after call of setIndexerId */
       CCorePlugin.getIndexManager().setIndexerId(getCProject(), IPDOMManager.ID_FAST_INDEXER);
       referencedProjects.forEach(proj -> CCorePlugin.getIndexManager().setIndexerId(proj, IPDOMManager.ID_FAST_INDEXER));
@@ -218,7 +217,8 @@ public class TestProjectHolder extends AbstractProjectHolder implements ITestPro
          System.arraycopy(allPathEntries, 0, newPathEntries, 0, allPathEntries.length);
          int i = 0;
          for (; i < indexOfFirstReferencedProject; i++) {
-            newPathEntries[allPathEntries.length + i] = CoreModel.newIncludeEntry(null, null, pathsToAdd[i], externalResourcesProjectIsSystemInclude());
+            newPathEntries[allPathEntries.length + i] = CoreModel.newIncludeEntry(null, null, pathsToAdd[i],
+                  externalResourcesProjectIsSystemInclude());
          }
          for (int j = 0; i < pathsToAdd.length; i++, j++) {
             newPathEntries[allPathEntries.length + i] = CoreModel.newIncludeEntry(null, pathsToAdd[j], null, false);
@@ -239,9 +239,11 @@ public class TestProjectHolder extends AbstractProjectHolder implements ITestPro
                final ITranslationUnit tu = CoreModelUtil.findTranslationUnitForLocation(path, cProject);
                options.put(DefaultCodeFormatterConstants.FORMATTER_TRANSLATION_UNIT, tu);
                final CodeFormatter formatter = ToolFactory.createCodeFormatter(options);
-               final TextEdit te = formatter.format(CodeFormatter.K_TRANSLATION_UNIT, path.toOSString(), 0, doc.getLength(), 0, NL);
-               te.apply(doc);
-               formattedDocuments.add(path);
+               if (doc.getLength() > 0) {
+                  final TextEdit te = formatter.format(CodeFormatter.K_TRANSLATION_UNIT, path.toOSString(), 0, doc.getLength(), 0, NL);
+                  te.apply(doc);
+                  formattedDocuments.add(path);
+               }
             } catch (CModelException | MalformedTreeException | BadLocationException e) {
                e.printStackTrace();
             }
@@ -289,7 +291,8 @@ public class TestProjectHolder extends AbstractProjectHolder implements ITestPro
    private void setupReferencedProjects() throws CoreException {
       for (ReferencedProjectDescription pd : stagedReferncedProjects) {
 
-         final ICProject referencedCProject = createNewProject(pd.getProjectName(), pd.getLanguage());
+         final ICProject referencedCProject = createNewProject(pd.getProjectName() + (isExpectedProject ? "_expected" : "_current"), pd
+               .getLanguage());
          for (TestSourceFile file : pd.getSourceFiles()) {
             IProject referencedProject = referencedCProject.getProject();
             importFile(referencedProject.getFile(file.getName()), referencedProject, new StringInputStream(isExpectedProject ? file
