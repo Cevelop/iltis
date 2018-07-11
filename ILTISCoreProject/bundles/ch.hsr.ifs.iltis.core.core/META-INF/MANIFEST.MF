@@ -22,5 +22,6 @@ Export-Package: ch.hsr.ifs.iltis.core.core,
  ch.hsr.ifs.iltis.core.core.functional.functions,
  ch.hsr.ifs.iltis.core.core.preferences,
  ch.hsr.ifs.iltis.core.core.preferences.fieldeditor,
+ ch.hsr.ifs.iltis.core.core.reflection,
  ch.hsr.ifs.iltis.core.core.resources,
  ch.hsr.ifs.iltis.core.core.ui.examples
