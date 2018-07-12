@@ -16,7 +16,7 @@ variables:
     - '[[ -f /.dockerenv ]] && echo "$P2_HOST_KEY" > ~/.ssh/known_hosts'
     - 'ssh hudson@cute-test.com "cd /var/www/${UPDATE_SITE} && mkdir -p core"'
     - 'scp -r releng/ch.hsr.ifs.iltis.core.update/target/repository/* hudson@cute-test.com:/var/www/${UPDATE_SITE}/core'
-    - 'ssh hudson@cute-test.com "cd /var/www/${UPDATE_SITE} && compile-composite-updatesite ILTIS 1.0.0"'
+    - 'ssh hudson@cute-test.com "cd /var/www/${UPDATE_SITE} && compile-composite-updatesite ILTIS 1.1.0"'
 
 build-signed:
   image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-release:latest
