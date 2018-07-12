@@ -8,11 +8,81 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<tycho-version>1.1.0</tycho-version>
-		<tycho-extras-version>1.1.0</tycho-extras-version>
+		<tycho-version>1.2.0</tycho-version>
+		<tycho-extras-version>1.2.0</tycho-extras-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.surefire.version>2.18.1</maven.surefire.version>
+		<maven.surefire.version>2.22.0</maven.surefire.version>
+		<kotlin.version>1.2.50</kotlin.version>
 	</properties>
+	
+	<profiles>
+		<profile>
+			<id>master</id>
+			<activation>
+				<property>
+					<name>gitflow.branch</name>
+					<value>master</value>
+				</property>
+			</activation>
+			<properties>
+				<target-platform-artifact>${project.groupId}.target.master</target-platform-artifact>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>develop</id>
+			<activation>
+				<property>
+					<name>gitflow.branch</name>
+					<value>develop</value>
+				</property>
+			</activation>
+			<properties>
+				<target-platform-artifact>${project.groupId}.target.develop</target-platform-artifact>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>illegal</id>
+			<activation>
+				<property>
+					<name>!gitflow.branch</name>
+				</property>
+			</activation>
+			<properties>
+				<target-platform-artifact>${project.groupId}.target.develop</target-platform-artifact>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-enforcer-plugin</artifactId>
+						<version>1.4.1</version>
+						<executions>
+							<execution>
+								<id>gitflow.branch not set</id>
+								<phase>validate</phase>
+								<goals>
+									<goal>enforce</goal>
+								</goals>
+								<configuration>
+									<rules>
+										<requireProperty>
+											<property>gitflow.branch</property>
+											<message>The gitflow.branch property must be set to either
+												master or develop! Either pass
+												-Dgitflow.branch=[master|develop] or use the build-script!</message>
+										</requireProperty>
+									</rules>
+									<fail>true</fail>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
 
 	<build>
 		<plugins>
@@ -30,7 +100,7 @@
 					<target>
 						<artifact>
 							<groupId>ch.hsr.ifs.iltis.core</groupId>
-							<artifactId>ch.hsr.ifs.iltis.core.target</artifactId>
+							<artifactId>${target-platform-artifact}</artifactId>
 							<version>${project.version}</version>
 						</artifact>
 					</target>
@@ -62,6 +132,22 @@
 						</environment>
 					</environments>
 				</configuration>
+			</plugin>
+
+			<!-- Kotlin compiler settings -->
+			<plugin>
+				<groupId>org.jetbrains.kotlin</groupId>
+				<artifactId>kotlin-maven-plugin</artifactId>
+				<version>${kotlin.version}</version>
+				<executions>
+					<execution>
+						<id>compile</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<!-- Tycho packaging settings -->
@@ -118,8 +204,6 @@
 				</configuration>
 			</plugin>
 
-
-
 			<!-- Tycho p2 -->
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
@@ -159,4 +243,12 @@
 
 		</plugins>
 	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-stdlib</artifactId>
+			<version>${kotlin.version}</version>
+		</dependency>
+	</dependencies>
 </project>

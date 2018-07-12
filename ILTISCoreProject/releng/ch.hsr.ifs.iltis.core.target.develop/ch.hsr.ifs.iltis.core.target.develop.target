@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde?>
+<!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
+<target name="ILTIS-CORE" sequenceNumber="1530112405">
+  <locations>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.emf.common.ui.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.equinox.launcher" version="0.0.0"/>
+      <unit id="org.eclipse.core.resources" version="0.0.0"/>
+      <unit id="org.eclipse.ui.ide.application" version="0.0.0"/>
+      <unit id="org.junit.jupiter.api" version="0.0.0"/>
+      <unit id="org.junit.platform.suite.api" version="0.0.0"/>
+      <unit id="org.junit.platform.runner" version="0.0.0"/>
+      <unit id="org.junit.platform.launcher" version="0.0.0"/>
+      <unit id="org.junit.platform.commons" version="0.0.0"/>
+      <unit id="org.junit.jupiter.engine" version="0.0.0"/>
+      <unit id="org.junit.platform.engine" version="0.0.0"/>
+      <unit id="org.junit.vintage.engine" version="0.0.0"/>
+      <repository location="http://download.eclipse.org/releases/photon"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="ch.hsr.ifs.iltis.testing.core.core.feature.feature.group" version="0.0.0"/>
+      <repository location="https://cevelop.com/iltis-unstable"/>
+    </location>
+  </locations>
+</target>

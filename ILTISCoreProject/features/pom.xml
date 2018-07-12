@@ -7,11 +7,12 @@
 	<parent>
 		<groupId>ch.hsr.ifs.iltis.core</groupId>
 		<artifactId>ch.hsr.ifs.iltis.core.root</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.1.0-SNAPSHOT</version>
 	</parent>
-	
+
 	<modules>
-		<module>ch.hsr.ifs.iltis.core.feature</module>
+		<module>ch.hsr.ifs.iltis.core.core.feature</module>
+		<module>ch.hsr.ifs.iltis.core.kotlin.feature</module>
 	</modules>
 
 	<build>
@@ -21,6 +22,12 @@
 				<groupId>org.eclipse.tycho.extras</groupId>
 				<artifactId>tycho-source-feature-plugin</artifactId>
 				<version>${tycho-extras-version}</version>
+				<configuration>
+					<excludes>
+						<plugin id="ch.hsr.ifs.iltis.core.kotlin" />
+						<feature id="ch.hsr.ifs.iltis.core.kotlin.feature" />
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<id>source-feature</id>
