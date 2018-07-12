@@ -250,6 +250,27 @@ public abstract class ASTUtil {
 
       return false;
    }
+   
+   public static boolean hasPointerType(final IASTDeclarator declarator) {
+      if (declarator == null) { return false; }
+
+      if (declarator instanceof IASTArrayDeclarator) {
+         final IASTArrayDeclarator arrayDecl = (IASTArrayDeclarator) declarator;
+         return arrayDecl.getPointerOperators().length > 0;
+      }
+
+      if (declarator.getPointerOperators().length > 0) { return true; }
+
+      final IBinding declBinding = declarator.getName().resolveBinding();
+
+      if (declBinding instanceof IVariable) {
+         return ((IVariable) declBinding).getType() instanceof IPointerType;
+      } else if (declBinding instanceof ICPPMethod) {
+         return ((ICPPMethod) declBinding).getType().getReturnType() instanceof IPointerType;
+      }
+
+      return false;
+   }
 
    public static boolean hasPointerOrRefType(final IType type) {
       return type instanceof ICPPReferenceType || type instanceof IPointerType;
