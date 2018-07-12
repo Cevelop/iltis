@@ -33,6 +33,7 @@ build-signed:
   only:
     - master
     - develop
+    - /^release\/.*$/
 
 build-unsigned:
   image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-release:latest
@@ -46,6 +47,7 @@ build-unsigned:
   except:
     - master
     - develop
+    - /^release\/.*$/
 
 deploy master:
   image: gitlab.dev.ifs.hsr.ch:45023/ifs/docker-alpine-ssh:latest

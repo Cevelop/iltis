@@ -3,7 +3,7 @@ Automatic-Module-Name: ch.hsr.ifs.iltis.core.core
 Bundle-ManifestVersion: 2
 Bundle-Name: ILTIS CORE
 Bundle-SymbolicName: ch.hsr.ifs.iltis.core.core;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: IFS Institute for Software
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.ui.workbench,
