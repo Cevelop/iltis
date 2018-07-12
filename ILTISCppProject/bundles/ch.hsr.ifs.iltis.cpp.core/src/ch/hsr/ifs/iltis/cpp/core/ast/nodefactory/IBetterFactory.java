@@ -36,6 +36,8 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTNewExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTQualifiedName;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTSimpleDeclSpecifier;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTSimpleTypeTemplateParameter;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateDeclaration;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateParameter;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTypeId;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPNodeFactory;
 
@@ -127,9 +129,9 @@ public interface IBetterFactory extends ICPPNodeFactory {
 
    IASTDeclarationStatement newDeclarationStatementFromDeclarator(IASTDeclarator declarator);
 
-   IASTNode newTemplateDeclaration(IASTDeclaration body, ICPPASTSimpleTypeTemplateParameter... params);
+   ICPPASTTemplateDeclaration newTemplateDeclaration(IASTDeclaration body, ICPPASTTemplateParameter... params);
 
-   IASTNode newTemplateDeclaration(IASTDeclaration body, List<ICPPASTSimpleTypeTemplateParameter> params);
+   ICPPASTTemplateDeclaration newTemplateDeclaration(IASTDeclaration body, List<ICPPASTTemplateParameter> params);
 
    ICPPASTSimpleTypeTemplateParameter newTemplateParameterDefinition(String paramName);
 
