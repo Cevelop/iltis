@@ -3,8 +3,8 @@ package ch.hsr.ifs.iltis.cpp.versionator;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
+import org.eclipse.cdt.internal.ui.wizards.ICDTCommonProjectWizard;
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPageManager;
-import org.eclipse.cdt.ui.wizards.CDTCommonProjectWizard;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ISafeRunnable;
@@ -18,9 +18,10 @@ import ch.hsr.ifs.iltis.cpp.versionator.preferences.CPPVersionProjectSetting;
 import ch.hsr.ifs.iltis.cpp.versionator.view.SelectVersionWizardPage;
 
 
+@SuppressWarnings("restriction")
 public class SelectVersionOperation implements IRunnableWithProgress {
 
-   @Override
+@Override
    public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
       IWizardPage[] pages = MBSCustomPageManager.getCustomPages();
       IWizard wizard = pages[0].getWizard();
@@ -42,8 +43,8 @@ public class SelectVersionOperation implements IRunnableWithProgress {
          }
       }
 
-      if (wizard instanceof CDTCommonProjectWizard) {
-         CDTCommonProjectWizard projectWizard = (CDTCommonProjectWizard) wizard;
+      if (wizard instanceof ICDTCommonProjectWizard) {
+         ICDTCommonProjectWizard projectWizard = (ICDTCommonProjectWizard) wizard;
          IProject project = projectWizard.getProject(false);
 
          CPPVersionProjectSetting.saveProjectVersion(project, selectedVersion);
