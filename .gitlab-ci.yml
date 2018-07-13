@@ -65,7 +65,7 @@ Deploy:
   dependencies:
     - Build Signed
   variables:
-    P2_ROOT: "${P2_ROOT_BASE}$( (echo ${CI_COMMIT_REF_NAME} | grep develop &>/dev/null) && echo '-unstable')"
     P2_COMPOSITE_VERSION: "$(sed -n 's/<version>\\([0-9]\\.[0-9]\\.[0.9]\\)<\\/version>/\\1/p' *Project/pom.xml)"
   script:
-    - "./tools/ci/deploy"
+    - "_update_type=$( (echo ${CI_COMMIT_REF_NAME} | grep develop &>/dev/null) && echo '-unstable')"
+    - "P2_ROOT=${P2_ROOT_BASE}${_update_type} ./tools/ci/deploy"
