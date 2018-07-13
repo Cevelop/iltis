@@ -1,68 +1,71 @@
+#=============================================================================#
+# General configuration                                                       #
+#=============================================================================#
+
 stages:
-  - build and test
+  - build
   - deploy
 
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_SUBMODULE_STRATEGY: "normal"
+  SWT_GTK3: "0"
+  P2_ENABLE_COMPOSITE: "1"
+  P2_COMPOSITE_NAME: "ILTIS"
+  P2_ROOT_BASE: "/var/www/iltis"
+  P2_DESTINATION: "core"
+  P2_SOURCE: "./ILTISCoreProject/releng/ch.hsr.ifs.iltis.core.update/target/repository"
 
-.deployScript: &DEPLOY_SCRIPT
-  before_script:
-    - cd ILTISCoreProject
+#=============================================================================#
+# Build jobs                                                                  #
+#=============================================================================#
+
+.buildCommon: &BUILD_COMMON
+  stage: build
   script:
-    - eval $(ssh-agent -s)
-    - echo "$P2_PRIVATE_KEY" | ssh-add -
-    - mkdir -p ~/.ssh
-    - '[[ -f /.dockerenv ]] && echo "$P2_HOST_KEY" > ~/.ssh/known_hosts'
-    - 'ssh hudson@cute-test.com "cd /var/www/${UPDATE_SITE} && mkdir -p core"'
-    - 'scp -r releng/ch.hsr.ifs.iltis.core.update/target/repository/* hudson@cute-test.com:/var/www/${UPDATE_SITE}/core'
-    - 'ssh hudson@cute-test.com "cd /var/www/${UPDATE_SITE} && compile-composite-updatesite ILTIS 1.0.0"'
-
-build-signed:
-  image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-release:latest
-  stage: build and test
+    - 'xvfb-run ./tools/build clean verify ${BUILD_FLAGS}'
   cache:
-    key: "ILTISCoreMavenCache"
+    key: "maven-$CI_PROJECT_ID"
     paths:
-      - .m2/repository
-  script:
-    - 'env SWT_GTK3=0 xvfb-run ./tools/build clean verify -s'
-  artifacts:
-    paths:
-      - ./*/*/*/target/repository/**
+      - ".m2/repository"
+    policy: pull-push
+
+
+Build Signed:
+  <<: *BUILD_COMMON
+  image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-release:latest
   only:
     - master
     - develop
     - /^release\/.*$/
-
-build-unsigned:
-  image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-release:latest
-  stage: build and test
-  cache:
-    key: "ILTISCoreMavenCache"
+  variables:
+    BUILD_FLAGS: "--sign"
+  artifacts:
     paths:
-      - .m2/repository
-  script:
-    - 'env SWT_GTK3=0 xvfb-run ./tools/build clean verify --verbose'
+      - ./*/*/*/target/repository/**
+
+Build Unsigned:
+  <<: *BUILD_COMMON
+  image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-build:latest
   except:
     - master
     - develop
     - /^release\/.*$/
 
-deploy master:
-  image: gitlab.dev.ifs.hsr.ch:45023/ifs/docker-alpine-ssh:latest
-  stage: deploy
-  variables:
-    UPDATE_SITE: iltis
-  only:
-    - master
-  <<: *DEPLOY_SCRIPT
+#=============================================================================#
+# Deployment jobs                                                             #
+#=============================================================================#
 
-deploy develop:
-  image: gitlab.dev.ifs.hsr.ch:45023/ifs/docker-alpine-ssh:latest
+Deploy:
   stage: deploy
-  variables:
-    UPDATE_SITE: iltis-unstable
+  image: gitlab.dev.ifs.hsr.ch:45023/ifs/docker-alpine-ssh:latest
+  cache: {}
   only:
     - develop
-  <<: *DEPLOY_SCRIPT
+    - master
+  dependencies:
+    - Build Signed
+  script:
+    - "export P2_ROOT=${P2_ROOT_BASE}$( (echo ${CI_COMMIT_REF_NAME} | grep develop &>/dev/null) && echo '-unstable')"
+    - "export P2_COMPOSITE_VERSION=$(sed -n 's/[ \\t]*<version>\\([0-9]\\.[0-9]\\.[0-9]\\)-SNAPSHOT<\\/version>/\\1/p' *Project/**/*.update/pom.xml | head -1)"
+    - "./tools/ci/deploy"
