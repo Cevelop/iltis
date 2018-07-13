@@ -65,6 +65,6 @@ Deploy:
   dependencies:
     - Build Signed
   script:
-    - "_update_type=$( (echo ${CI_COMMIT_REF_NAME} | grep develop &>/dev/null) && echo '-unstable')"
-    - "_update_version=$(sed -n 's/<version>\\([0-9]\\.[0-9]\\.[0.9]\\)<\\/version>/\\1/p' *Project/pom.xml)"
-    - "P2_ROOT=${P2_ROOT_BASE}${_update_type} P2_COMPOSITE_VERSION=${_update_version} ./tools/ci/deploy"
+    - "export P2_ROOT=${P2_ROOT_BASE}$( (echo ${CI_COMMIT_REF_NAME} | grep develop &>/dev/null) && echo '-unstable')"
+    - "export P2_COMPOSITE_VERSION=$(sed -n 's/[ \\t]*<version>\\([0-9]\\.[0-9]\\.[0-9]\\)-SNAPSHOT<\\/version>/\\1/p' *Project/**/*.update/pom.xml)"
+    - "./tools/ci/deploy"
