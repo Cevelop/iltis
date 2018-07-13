@@ -1,6 +1,6 @@
-target "ILTIS Testing Master" with source requirements
+target "ILTIS Testing Core" with requirements
 
 location "http://download.eclipse.org/releases/photon" {
 	org.eclipse.equinox.launcher lazy
-	org.junit lazy
+	org.junit 4.12.0
 }
