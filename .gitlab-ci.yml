@@ -1,25 +1,22 @@
+#=============================================================================#
+# General configuration                                                       #
+#=============================================================================#
+
 stages:
   - build and test
   - deploy
 
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_SUBMODULE_STRATEGY: "recursive"
+  P2_SOURCE: "releng/ch.hsr.ifs.iltis.testing.core.update/target/repository"
+  P2_DESTINATION: "testing/core"
 
-.deployScript: &DEPLOY_SCRIPT
-  before_script:
-    - cd ILTISTestingCoreProject
-  script:
-    - eval $(ssh-agent -s)
-    - echo "$P2_PRIVATE_KEY" | ssh-add -
-    - mkdir -p ~/.ssh
-    - '[[ -f /.dockerenv ]] && echo "$P2_HOST_KEY" > ~/.ssh/known_hosts'
-    - 'ssh hudson@cute-test.com "cd /var/www/${UPDATE_SITE} && mkdir -p testing/core"'
-    - 'scp -r releng/ch.hsr.ifs.iltis.testing.core.update/target/repository/* hudson@cute-test.com:/var/www/${UPDATE_SITE}/testing/core'
-    - 'ssh hudson@cute-test.com "cd /var/www/${UPDATE_SITE}/testing && compile-composite-updatesite ILTISTesting 1.0.0"'
-    - 'ssh hudson@cute-test.com "cd /var/www/${UPDATE_SITE} && compile-composite-updatesite ILTIS 1.0.0"'
+#=============================================================================#
+# Build jobs                                                                  #
+#=============================================================================#
 
-build-signed:
+build signed:
   image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-release:latest
   stage: build and test
   cache:
@@ -35,8 +32,8 @@ build-signed:
     - master
     - develop
 
-build-unsigned:
-  image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-release:latest
+build unsigned:
+  image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-build:latest
   stage: build and test
   cache:
     key: "ILTISTestingCoreMavenCache"
@@ -48,20 +45,30 @@ build-unsigned:
     - master
     - develop
 
-deploy master:
-  image: gitlab.dev.ifs.hsr.ch:45023/ifs/docker-alpine-ssh:latest
-  stage: deploy
-  variables:
-    UPDATE_SITE: iltis
-  only:
-    - master
-  <<: *DEPLOY_SCRIPT
+#=============================================================================#
+# Deployment jobs                                                             #
+#=============================================================================#
 
-deploy develop:
+.deployCommon: &DEPLOY_COMMON
   image: gitlab.dev.ifs.hsr.ch:45023/ifs/docker-alpine-ssh:latest
+  cache: {}
   stage: deploy
+  dependencies:
+    - build signed
+  script:
+    - "cd ILTISTestingCoreProject"
+    - "../tools/ci/deploy"
+
+deploy development:
+  <<: *DEPLOY_COMMON
   variables:
-    UPDATE_SITE: iltis-unstable
+    P2_ROOT: "/var/www/iltis-unstable"
   only:
     - develop
-  <<: *DEPLOY_SCRIPT
+
+deploy release:
+  <<: *DEPLOY_COMMON
+  variables:
+    P2_ROOT: "/var/www/iltis"
+  only:
+    - master
