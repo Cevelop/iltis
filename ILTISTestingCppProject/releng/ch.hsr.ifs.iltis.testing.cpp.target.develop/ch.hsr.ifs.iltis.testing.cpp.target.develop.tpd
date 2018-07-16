@@ -1,8 +1,11 @@
-target "ILTIS Testing Develop" with source requirements
+target "ILTIS Testing C++ for Photon (Develop)" with source requirements
 
 location "http://download.eclipse.org/releases/photon" {
 	org.eclipse.equinox.launcher lazy
-	org.eclipse.cdt.sdk.feature.group lazy
+}
+
+location "http://download.eclipse.org/tools/cdt/releases/9.5/" {
+	org.eclipse.cdt.sdk lazy
 }
 
 location "http://download.eclipse.org/tools/orbit/downloads/drops/R20180606145124/repository/" {

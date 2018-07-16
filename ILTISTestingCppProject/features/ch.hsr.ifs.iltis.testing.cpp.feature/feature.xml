@@ -2,7 +2,7 @@
 <feature
       id="ch.hsr.ifs.iltis.testing.cpp.feature"
       label="ILTIS Testing Cpp"
-      version="1.0.0.qualifier"
+      version="1.1.0.qualifier"
       provider-name="IFS Institute for Software">
 
    <description url="https://github.com/IFS-HSR/ch.hsr.ifs.cdttesting">
@@ -107,7 +107,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
    </url>
 
    <requires>
-      <import plugin="ch.hsr.ifs.iltis.testing.core.core" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="ch.hsr.ifs.iltis.testing.core.core" version="1.1.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

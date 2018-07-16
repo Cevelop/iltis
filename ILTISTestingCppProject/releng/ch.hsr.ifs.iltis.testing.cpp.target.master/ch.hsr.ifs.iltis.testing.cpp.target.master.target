@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="ILTIS Testing Master" sequenceNumber="1530013498">
+<target name="ILTIS Testing C++ for Photon" sequenceNumber="1531718777">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.equinox.launcher" version="0.0.0"/>
-      <unit id="org.eclipse.cdt.sdk.feature.group" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/releases/oxygen"/>
+      <repository location="http://download.eclipse.org/releases/photon"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.cdt.sdk" version="9.5.1.201807051742"/>
+      <repository location="http://download.eclipse.org/tools/cdt/releases/9.5/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.mockito" version="0.0.0"/>
       <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20180606145124/repository/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
-      <unit id="org.eclipse.cdt.testing.feature.group" version="9.4.4.201803220800"/>
-      <repository location="https://hudson.eclipse.org/cdt/job/cdt-9.4/lastSuccessfulBuild/artifact/releng/org.eclipse.cdt.testing.repo/target/repository/"/>
+      <unit id="org.eclipse.cdt.testing.feature.group" version="9.5.2.201807130005"/>
+      <repository location="https://hudson.eclipse.org/cdt/job/cdt-9.5/lastSuccessfulBuild/artifact/releng/org.eclipse.cdt.testing.repo/target/repository/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="ch.hsr.ifs.iltis.core.core.feature.feature.group" version="0.0.0"/>
       <unit id="ch.hsr.ifs.iltis.testing.core.core.feature.feature.group" version="0.0.0"/>
-      <repository location="https://www.cevelop.com/iltis-unstable"/>
+      <repository location="https://www.cevelop.com/iltis"/>
     </location>
   </locations>
 </target>

@@ -22,7 +22,7 @@ variables:
 .buildCommon: &BUILD_COMMON
   stage: build
   script:
-    - './tools/build clean verify ${BUILD_FLAGS}'
+    - 'xvfb-run ./tools/build clean verify ${BUILD_FLAGS}'
   cache:
     key: "maven-$CI_PROJECT_ID"
     paths:
