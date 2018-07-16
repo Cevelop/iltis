@@ -1,4 +1,4 @@
-target "ILTIS Testing Master" with source requirements
+target "ILTIS Testing Tools for Photon" with requirements
 
 location "http://download.eclipse.org/releases/photon" {
 	org.eclipse.equinox.launcher lazy
@@ -8,5 +8,5 @@ location "http://download.eclipse.org/releases/photon" {
 }
 
 location "https://www.cevelop.com/iltis" {
-	ch.hsr.ifs.iltis.core.core.feature.feature.group lazy
+	ch.hsr.ifs.iltis.core.core.feature.feature.group 1.1.0
 }
