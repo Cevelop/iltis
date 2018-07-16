@@ -112,22 +112,22 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <import plugin="org.eclipse.cdt.codan.core"/>
       <import plugin="org.eclipse.core.resources" version="3.7.100" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.10.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.workbench"/>
       <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.text"/>
       <import plugin="org.eclipse.core.filesystem"/>
       <import plugin="org.eclipse.cdt.ui" version="5.8.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.cdt.core" version="5.8.0" match="greaterOrEqual"/>
       <import plugin="org.junit"/>
       <import plugin="org.eclipse.ltk.core.refactoring"/>
+      <import plugin="org.eclipse.jface.text" version="3.12.2" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.ide" version="3.13.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.cdt.ui.tests"/>
       <import plugin="org.eclipse.cdt.codan.ui"/>
       <import plugin="org.eclipse.cdt.core.tests"/>
-      <import plugin="ch.hsr.ifs.iltis.testing.cpp.core" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.workbench"/>
-      <import plugin="org.eclipse.jface"/>
-      <import plugin="org.eclipse.text"/>
-      <import plugin="org.eclipse.jface.text" version="3.12.2" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.ide" version="3.13.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.collections" version="9.2.0" match="greaterOrEqual"/>
+      <import plugin="ch.hsr.ifs.iltis.testing.cpp.core" version="1.1.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
