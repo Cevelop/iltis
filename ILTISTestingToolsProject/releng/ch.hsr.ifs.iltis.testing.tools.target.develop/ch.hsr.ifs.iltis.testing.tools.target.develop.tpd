@@ -1,4 +1,4 @@
-target "ILTIS Testing Develop" with source requirements
+target "ILTIS Testing Tools (Develop)" with source requirements
 
 location "http://download.eclipse.org/releases/photon" {
 	org.eclipse.equinox.launcher lazy

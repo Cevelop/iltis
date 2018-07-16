@@ -2,7 +2,7 @@
 <feature
       id="ch.hsr.ifs.iltis.testing.tools.pasta.feature"
       label="Painless AST Analysis"
-      version="1.0.0.qualifier"
+      version="1.1.0.qualifier"
       provider-name="IFS Institute for Software">
 
    <description url="https://github.com/IFS-HSR/ch.hsr.ifs.cdttesting">
@@ -94,16 +94,17 @@ This Agreement is governed by the laws of the State of New York and the intellec
 
    <requires>
       <import plugin="ch.hsr.ifs.iltis.testing.tools.pasta.tree" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.runtime" version="3.9.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.osgi.services" version="3.3.100" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.cdt.core" version="5.6.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.cdt.ui" version="5.6.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.workbench"/>
       <import plugin="org.eclipse.osgi"/>
       <import plugin="org.eclipse.swt"/>
       <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.osgi.services"/>
       <import plugin="org.eclipse.text"/>
-      <import plugin="org.eclipse.jface.text" version="3.12.2" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.cdt.core"/>
+      <import plugin="org.eclipse.cdt.ui"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="ch.hsr.ifs.iltis.core.core" version="1.1.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
