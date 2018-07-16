@@ -13,7 +13,7 @@ Require-Bundle:
  org.eclipse.ltk.core.refactoring,
  org.eclipse.equinox.common,
  org.eclipse.cdt.core.tests
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: ch.hsr.ifs.iltis.cpp.core.tests;singleton:=true
 Bundle-ClassPath: .
