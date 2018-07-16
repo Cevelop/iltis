@@ -2,11 +2,11 @@
 <feature
       id="ch.hsr.ifs.iltis.cpp.core.feature"
       label="ILTIS CPP Core"
-      version="1.0.0.qualifier"
+      version="1.1.0.qualifier"
       provider-name="IFS Institute for Software">
 
    <description url="http://www.example.com/description">
-      Meet the ILTIS, feel the ILTIS, love the ILTIS!
+      ILTIS CPP Core provides core infrastructure components for use in CDT plugin development
    </description>
 
    <copyright url="http://www.example.com/copyright">
@@ -30,6 +30,26 @@ Tobias Stauber &lt;tstauber@hsr.ch&gt; - initial API and implementation
    <url>
       <update label="Cevelop ILTIS Updatesite" url="https://www.cevelop.com/iltis"/>
    </url>
+
+   <requires>
+      <import plugin="ch.hsr.ifs.iltis.core.core" version="1.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.cdt.codan.ui"/>
+      <import plugin="org.eclipse.cdt.core"/>
+      <import plugin="org.eclipse.equinox.common"/>
+      <import plugin="org.eclipse.ltk.core.refactoring"/>
+      <import plugin="org.eclipse.cdt.codan.core"/>
+      <import plugin="org.eclipse.cdt.codan.core.cxx"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui.workbench"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.cdt.ui"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.ltk.ui.refactoring"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.collections"/>
+   </requires>
 
    <plugin
          id="ch.hsr.ifs.iltis.cpp.core"
