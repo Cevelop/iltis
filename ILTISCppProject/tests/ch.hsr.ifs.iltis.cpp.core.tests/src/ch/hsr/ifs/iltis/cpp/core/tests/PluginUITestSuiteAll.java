@@ -10,9 +10,8 @@ import ch.hsr.ifs.iltis.cpp.core.tests.validators.ValidateWrappers;
 @RunWith(Suite.class)
 //@formatter:off
 @SuiteClasses({
-
    ValidateWrappers.class,
 //   TestSuiteIncludes.class, // FIXME https://gitlab.dev.ifs.hsr.ch/iltis/iltis-cpp/issues/1
    
 })
-public class PluginTestSuiteAll {}
+public class PluginUITestSuiteAll {}

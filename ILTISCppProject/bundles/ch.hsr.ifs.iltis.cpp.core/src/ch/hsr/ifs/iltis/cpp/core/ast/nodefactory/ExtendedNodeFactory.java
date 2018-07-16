@@ -45,6 +45,7 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTSimpleDeclSpecifier;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTSimpleTypeTemplateParameter;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateDeclaration;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateId;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateParameter;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTypeId;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTSimpleTypeTemplateParameter;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPNodeFactory;
@@ -282,16 +283,16 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
    }
 
    @Override
-   public IASTNode newTemplateDeclaration(IASTDeclaration body, ICPPASTSimpleTypeTemplateParameter... params) {
-      return newTemplateDeclaration(body, Arrays.asList(params));
+   public ICPPASTTemplateDeclaration newTemplateDeclaration(IASTDeclaration body, ICPPASTTemplateParameter... params) {
+      ICPPASTTemplateDeclaration templateDecl = newTemplateDeclaration(body);
+      for (ICPPASTTemplateParameter param : params)
+         templateDecl.addTemplateParameter(param);
+      return templateDecl;
    }
 
    @Override
-   public IASTNode newTemplateDeclaration(IASTDeclaration body, List<ICPPASTSimpleTypeTemplateParameter> params) {
-      ICPPASTTemplateDeclaration templateDecl = newTemplateDeclaration(body);
-      for (ICPPASTSimpleTypeTemplateParameter param : params)
-         templateDecl.addTemplateParameter(param);
-      return templateDecl;
+   public ICPPASTTemplateDeclaration newTemplateDeclaration(IASTDeclaration body, List<ICPPASTTemplateParameter> params) {
+      return newTemplateDeclaration(body, params.toArray(new ICPPASTTemplateParameter[params.size()]));
    }
 
    @Override

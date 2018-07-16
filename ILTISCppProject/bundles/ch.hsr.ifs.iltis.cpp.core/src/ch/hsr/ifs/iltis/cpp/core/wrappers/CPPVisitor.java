@@ -19,13 +19,14 @@ import org.eclipse.cdt.core.dom.ast.IScope;
 import org.eclipse.cdt.core.dom.ast.IType;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTDeclarator;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTFunctionDeclarator;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTInitCapture;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTParameterDeclaration;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPClassTemplate;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPFunctionType;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPPlaceholderType.PlaceholderKind;
 
 import ch.hsr.ifs.iltis.core.core.functional.OptionalUtil;
-import ch.hsr.ifs.iltis.testing.core.validators.ILTISWrapper;
+import ch.hsr.ifs.iltis.testing.core.core.validators.ILTISWrapper;
 
 import org.eclipse.cdt.internal.core.dom.parser.cpp.ICPPInternalBinding;
 
@@ -101,8 +102,8 @@ public class CPPVisitor {
 
    public static class CollectDeclarationsAction extends org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.CollectDeclarationsAction {
 
-      public CollectDeclarationsAction(final IBinding binding) {
-         super(binding);
+      public CollectDeclarationsAction(final IBinding binding, boolean permissive) {
+         super(binding, permissive);
       }
 
       @Override
@@ -178,6 +179,10 @@ public class CPPVisitor {
       return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.usesAuto(declSpec);
    }
 
+   public IType createType(ICPPASTInitCapture arg0) {
+      return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.createType(arg0);
+   }
+
    public static IType createType(final IASTDeclarator declarator) {
       return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.createType(declarator);
    }
@@ -250,6 +255,10 @@ public class CPPVisitor {
 
    public static IASTName[] getDeclarations(final IASTTranslationUnit tu, final IBinding binding) {
       return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.getDeclarations(tu, binding);
+   }
+
+   public IASTName[] getDeclarations(IASTTranslationUnit arg0, IBinding arg1, boolean arg2) {
+      return org.eclipse.cdt.internal.core.dom.parser.cpp.semantics.CPPVisitor.getDeclarations(arg0, arg1, arg2);
    }
 
    public static String[] getQualifiedName(final IBinding binding) {

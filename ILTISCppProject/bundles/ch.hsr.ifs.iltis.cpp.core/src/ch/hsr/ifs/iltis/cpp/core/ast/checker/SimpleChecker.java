@@ -1,14 +1,12 @@
 package ch.hsr.ifs.iltis.cpp.core.ast.checker;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.cdt.codan.core.model.IChecker;
 import org.eclipse.cdt.codan.core.model.IProblemLocation;
 import org.eclipse.cdt.codan.core.model.IProblemLocationFactory;
-import org.eclipse.cdt.core.dom.ast.ASTVisitor;
 import org.eclipse.cdt.core.dom.ast.IASTCompositeTypeSpecifier;
 import org.eclipse.cdt.core.dom.ast.IASTFileLocation;
 import org.eclipse.cdt.core.dom.ast.IASTImageLocation;
@@ -21,6 +19,8 @@ import org.eclipse.core.runtime.CoreException;
 
 import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
+import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.ISimpleReporter;
+import ch.hsr.ifs.iltis.cpp.core.ast.visitor.SimpleVisitor;
 import ch.hsr.ifs.iltis.cpp.core.resources.CProjectUtil;
 import ch.hsr.ifs.iltis.cpp.core.wrappers.AbstractIndexAstChecker;
 
@@ -30,14 +30,15 @@ import ch.hsr.ifs.iltis.cpp.core.wrappers.AbstractIndexAstChecker;
  *
  * @author tstauber
  *
- * @param <problemId>
+ * @param <ProblemId>
  *        A class which implements IProblemId (It is recommended to use an enum for this)
  */
-public abstract class SimpleChecker<problemId extends IProblemId> extends AbstractIndexAstChecker implements IChecker {
+public abstract class SimpleChecker<ProblemId extends IProblemId> extends AbstractIndexAstChecker implements IChecker, ISimpleReporter<ProblemId> {
 
-   protected ASTVisitor                                            visitor           = getVisitor();
-   protected final List<CheckerResult<problemId>>                  nodesToReport     = new ArrayList<>();
-   protected final HashMap<CheckerResult<problemId>, List<Object>> argumentsToReport = new HashMap<>();
+   protected SimpleVisitor<?, ?> visitor = createVisitor();
+
+   protected final List<VisitorReport<? extends IProblemId>>                  nodesToReport     = new ArrayList<>();
+   protected final HashMap<VisitorReport<? extends IProblemId>, List<Object>> argumentsToReport = new HashMap<>();
 
    @Override
    public void processAst(final IASTTranslationUnit ast) {
@@ -48,48 +49,22 @@ public abstract class SimpleChecker<problemId extends IProblemId> extends Abstra
 
    /**
     * Returns the {@code ASTVisitor} which should be used. If the visitor is a SimpleVisitor,
-    * {@code this::addNodeForReporting} can be used as callback
+    * {@code this::addNodeForReporting} can be used as callback.
+    * 
+    * This method should only create a visitor. The created visitor will be stored in {@link #visitor}.
     */
-   protected abstract ASTVisitor getVisitor();
+   protected abstract SimpleVisitor<?, ?> createVisitor();
 
-   /**
-    * Adds {@code node} to the list of nodes that will be reported
-    *
-    * @param result
-    *        The {@link Pair<IASTNode, ProblemId} that shall be reported
-    */
-   public void addNodeForReporting(final CheckerResult<problemId> result) {
+   @Override
+   public void addNodeForReporting(final VisitorReport<ProblemId> result, final List<Object> args) {
       nodesToReport.add(result);
-   }
-
-   /**
-    * Adds {@code node} to the list of nodes that will be reported
-    *
-    * @param result
-    *        The {@link Pair<IASTNode, ProblemId} that shall be reported
-    */
-   public void addNodeForReporting(final CheckerResult<problemId> result, final List<Object> args) {
-      nodesToReport.add(result);
-      argumentsToReport.put(result, args);
-   }
-
-   /**
-    * Adds {@code node} to the list of nodes that will be reported
-    *
-    * @param result
-    *        The {@link Pair<IASTNode, ProblemId} that shall be reported
-    */
-   public void addNodeForReporting(final CheckerResult<problemId> result, final Object... args) {
-      addNodeForReporting(result, Arrays.asList(args));
+      if (args != null) argumentsToReport.put(result, args);
    }
 
    /**
     * Reports all the nodes in {@code nodesToReport}
     */
    protected void report() {
-      //      for (final CheckerResult<problemId> checkerResult : nodesToReport) {
-      //         reportProblem(checkerResult.getProblemId().getId(), locationHook(checkerResult.getNode()), argsHook(checkerResult));
-      //      }
       nodesToReport.stream().forEach((checkerResult) -> {
          reportProblem(checkerResult.getProblemId().getId(), locationHook(checkerResult.getNode()), argsHook(checkerResult));
       });
@@ -108,7 +83,7 @@ public abstract class SimpleChecker<problemId extends IProblemId> extends Abstra
     * Per default this method returns the arguments for each result. These arguments are then used to report the problem.
     * Can be overridden.
     */
-   protected Object[] argsHook(final CheckerResult<problemId> result) {
+   protected Object[] argsHook(final VisitorReport<? extends IProblemId> result) {
       final List<Object> arguments = argumentsToReport.get(result);
       if (arguments != null) {
          return arguments.toArray();
@@ -123,8 +98,7 @@ public abstract class SimpleChecker<problemId extends IProblemId> extends Abstra
    protected IIndex getIndex() {
       try {
          return getModelCache().getIndex();
-      }
-      catch (final CoreException e) {
+      } catch (final CoreException e) {
          throw new ILTISException(e).rethrowUnchecked();
       }
    }
@@ -135,8 +109,7 @@ public abstract class SimpleChecker<problemId extends IProblemId> extends Abstra
    protected IASTTranslationUnit getAst() {
       try {
          return getModelCache().getAST();
-      }
-      catch (final CoreException e) {
+      } catch (final CoreException e) {
          throw new ILTISException(e).rethrowUnchecked();
       }
    }
@@ -147,7 +120,7 @@ public abstract class SimpleChecker<problemId extends IProblemId> extends Abstra
    protected ICProject getCProject() {
       return CProjectUtil.getCProject(getFile());
    }
-   
+
    @Override
    protected IProblemLocation getProblemLocation(IASTNode astNode) {
       IASTFileLocation astLocation = astNode.getFileLocation();
@@ -172,8 +145,8 @@ public abstract class SimpleChecker<problemId extends IProblemId> extends Abstra
       if (astNode instanceof IASTCompositeTypeSpecifier) {
          int start = astLocation.getNodeOffset();
          int end = start + astNode.toString().length();
-         return locFactory.createProblemLocation(getFile(),start, end, line);
-      } 
+         return locFactory.createProblemLocation(getFile(), start, end, line);
+      }
       int start = astLocation.getNodeOffset();
       int end = start + astLocation.getNodeLength();
       return locFactory.createProblemLocation(getFile(), start, end, line);

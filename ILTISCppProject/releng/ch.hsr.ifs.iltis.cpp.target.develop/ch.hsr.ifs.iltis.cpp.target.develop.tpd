@@ -1,0 +1,29 @@
+target "ILTIS CPP (Develop)" with source requirements
+
+location "http://download.eclipse.org/releases/photon" {
+	org.eclipse.equinox.launcher lazy
+	org.eclipse.ui.ide.application lazy
+}
+
+location "http://download.eclipse.org/tools/cdt/releases/9.5/" {
+	org.eclipse.cdt.sdk 9.5.1
+}
+
+location "http://download.eclipse.org/tools/orbit/downloads/drops/R20180606145124/repository/" {
+	org.mockito lazy
+}
+
+location "https://hudson.eclipse.org/cdt/job/cdt-9.5/lastSuccessfulBuild/artifact/releng/org.eclipse.cdt.testing.repo/target/repository/" {
+	org.eclipse.cdt.testing.feature.group [9.5.0,9.6.0)
+}
+
+location "https://www.cevelop.com/iltis-unstable" {
+	ch.hsr.ifs.iltis.core.core.feature.feature.group lazy
+	ch.hsr.ifs.iltis.testing.core.core.feature.feature.group lazy
+	ch.hsr.ifs.iltis.testing.cpp.feature.feature.group lazy
+}
+
+location "http://download.eclipse.org/collections/9.2.0/repository/" {
+	org.eclipse.collections.feature.feature.group lazy
+}
+
