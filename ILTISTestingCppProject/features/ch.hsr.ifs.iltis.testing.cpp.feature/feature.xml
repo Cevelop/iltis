@@ -107,7 +107,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
    </url>
 
    <requires>
-      <import plugin="ch.hsr.ifs.iltis.testing.core.core" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="ch.hsr.ifs.iltis.testing.core.core" version="1.1.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
