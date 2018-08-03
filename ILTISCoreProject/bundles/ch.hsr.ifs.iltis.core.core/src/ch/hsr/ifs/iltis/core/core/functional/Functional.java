@@ -663,6 +663,16 @@ public abstract class Functional {
       }
    }
 
+   public static <T1, R> R doIfNotNull(T1 first, Function<T1, R> fun, R defaultValue) {
+      if (first != null) return fun.apply(first);
+      return defaultValue;
+   }
+
+   public static <T1, T2, R> R doIfNotNull(T1 first, T2 second, Function2<T1, T2, R> fun, R defaultValue) {
+      if (first != null && second != null) return fun.apply(first, second);
+      return defaultValue;
+   }
+
    @SafeVarargs
    public static <T, E extends Throwable> void doForT(ThrowingConsumer<T, E> action, T... elements) throws E {
       for (T e : elements) {
