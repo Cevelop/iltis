@@ -17,5 +17,17 @@ import java.util.Comparator;
 @FunctionalInterface
 public interface Equals<T1, T2> {
 
+   /* Equality methods */
+   public static <T1,T2> boolean refEq(T1 l, T2 r) {
+      return l == r;
+   }
+
+   public static <T1,T2> boolean toStrEq(T1 l, T2 r) {
+      if (l == null && r == null) return true;
+      if (l == null || r == null) return false;
+      return l.toString().equals(r.toString());
+   }
+
+   /* Functional Interface */
    boolean equal(T1 l, T2 r);
 }
