@@ -31,7 +31,6 @@ public abstract class SimpleVisitor<ProblemId extends Enum<ProblemId> & IProblem
    protected final List<ArgType>              arguments;
    protected final ISimpleReporter<ProblemId> reporter;
 
-   
    public ISimpleReporter<ProblemId> getReporter() {
       return reporter;
    }
@@ -121,10 +120,8 @@ public abstract class SimpleVisitor<ProblemId extends Enum<ProblemId> & IProblem
     * @return If this visitor shall be enabled
     */
    public boolean isEnabled() {
-      if (reporter instanceof IChecker && CodanRuntime.getInstance() != null) {
-         Collection<? extends IProblemId> enabledProblemIds = getEnabledProblemIds();
-         return getProblemIds().stream().anyMatch(enabledProblemIds::contains);
-      }
+      if (reporter instanceof IChecker && CodanRuntime.getInstance() != null) { return getProblemIds().stream().anyMatch(
+            getEnabledProblemIds()::contains); }
       return true;
    }
 
