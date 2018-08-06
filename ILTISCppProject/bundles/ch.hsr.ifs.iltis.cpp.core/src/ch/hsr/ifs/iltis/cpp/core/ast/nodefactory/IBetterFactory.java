@@ -185,10 +185,10 @@ public interface IBetterFactory extends ICPPNodeFactory {
 
    /**
     * Creates a new binary expression while automatically grouping the operands if necessary.
-    * Examples:
     * 
     * <pre>
-    *  
+    * Examples: 
+    * 
     * [a + b] * [10] -> [(a + b)] * [10]
     * 
     * [a ? b : c] = [d] -> [(a ? b : c)] = [d]
@@ -206,8 +206,38 @@ public interface IBetterFactory extends ICPPNodeFactory {
     */
    IASTBinaryExpression newMagicPrecedenceBinaryExpression(int operator, IASTExpression operand1, IASTInitializerClause operand2);
 
+   /**
+    * Creates a new unary expression while automatically grouping the operands if necessary.
+    * 
+    * <pre>
+    * Example:
+    * 
+    * *[c++] -> *[(c++)]
+    * </pre>
+    * 
+    * @param unaryOperator
+    *        The operator (one of {@link IASTUnaryExpression}{@code .op_...})
+    * @param operand
+    *        The operand
+    * @return A new unary expression with correct grouping
+    */
    IASTUnaryExpression newMagicPrecedenceUnaryExpression(int unaryOperator, IASTExpression operand);
 
+   /**
+    * Creates a new conditional expression while automatically grouping the operands if necessary.
+    * 
+    * <pre>
+    * Examples: 
+    * 
+    * [a + b] * [10] -> [(a + b)] * [10]
+    * 
+    * [a] ? [b] : [c=d] -> 
+    * </pre>
+    * @param condition
+    * @param positive
+    * @param negative
+    * @return
+    */
    IASTConditionalExpression newMagicPrefedenceConditionalExpression(IASTExpression condition, IASTExpression positive, IASTExpression negative);
 
 }
