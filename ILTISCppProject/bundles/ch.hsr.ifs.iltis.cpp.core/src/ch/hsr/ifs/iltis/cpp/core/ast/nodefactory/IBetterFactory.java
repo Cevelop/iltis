@@ -19,6 +19,7 @@ import org.eclipse.cdt.core.dom.ast.IASTInitializer;
 import org.eclipse.cdt.core.dom.ast.IASTInitializerClause;
 import org.eclipse.cdt.core.dom.ast.IASTName;
 import org.eclipse.cdt.core.dom.ast.IASTNode;
+import org.eclipse.cdt.core.dom.ast.IASTParameterDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTStatement;
 import org.eclipse.cdt.core.dom.ast.IASTUnaryExpression;
 import org.eclipse.cdt.core.dom.ast.IBasicType.Kind;
@@ -104,9 +105,11 @@ public interface IBetterFactory extends ICPPNodeFactory {
 
    ICPPASTCompositeTypeSpecifier newCompositeTypeSpecifier(int key, String name);
 
-   ICPPASTFunctionDeclarator newFunctionDeclarator(String name);
-
    ICPPASTFunctionDeclarator newFunctionDeclarator();
+
+   ICPPASTFunctionDeclarator newFunctionDeclarator(String name, IASTParameterDeclaration... paramDeclarations);
+
+   ICPPASTFunctionDeclarator newFunctionDeclarator(IASTName name, IASTParameterDeclaration... paramDeclarations);
 
    ICPPASTConstructorChainInitializer newConstructorChainInitializer(String variableName);
 
@@ -177,5 +180,34 @@ public interface IBetterFactory extends ICPPNodeFactory {
    ICPPASTTypeId newIASTTypeId(ICPPASTNamedTypeSpecifier newNamedTypeSpecifier);
 
    IASTConditionalExpression newConditionalExpression(IASTExpression condition, IASTExpression positive, IASTExpression negative);
+
+   /* Magic Factory Methods */
+
+   /**
+    * Creates a new binary expression while automatically grouping the operands if necessary.
+    * Examples:
+    * 
+    * <pre>
+    *  
+    * [a + b] * [10] -> [(a + b)] * [10]
+    * 
+    * [a ? b : c] = [d] -> [(a ? b : c)] = [d]
+    * 
+    * [a * b] * [c] -> no additional grouping
+    * </pre>
+    * 
+    * @param operator
+    *        The operator (one of {@link IASTBinaryExpression}{@code .op_...})
+    * @param operand1
+    *        The left operand
+    * @param operand2
+    *        The right operand
+    * @return A new binary expression with correct grouping.
+    */
+   IASTBinaryExpression newMagicPrecedenceBinaryExpression(int operator, IASTExpression operand1, IASTInitializerClause operand2);
+
+   IASTUnaryExpression newMagicPrecedenceUnaryExpression(int unaryOperator, IASTExpression operand);
+
+   IASTConditionalExpression newMagicPrefedenceConditionalExpression(IASTExpression condition, IASTExpression positive, IASTExpression negative);
 
 }
