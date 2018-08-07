@@ -1,17 +1,17 @@
 package ch.hsr.ifs.iltis.cpp.core.includes;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import org.eclipse.cdt.core.dom.ast.IASTDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorIncludeStatement;
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorStatement;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
+import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.utility.ArrayIterate;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.text.edits.InsertEdit;
@@ -71,7 +71,7 @@ public class IncludeInsertionUtil {
    }
 
    private static List<IASTPreprocessorIncludeStatement> getLocalIncludeDirectives(final IASTTranslationUnit ast) {
-      return Arrays.stream(ast.getIncludeDirectives()).filter(IASTNode::isPartOfTranslationUnitFile).collect(Collectors.toList());
+      return ArrayIterate.select(ast.getIncludeDirectives(), IASTNode::isPartOfTranslationUnitFile);
    }
 
    /**
@@ -86,17 +86,30 @@ public class IncludeInsertionUtil {
     */
    public static void includeIfNotJetIncluded(final IASTTranslationUnit ast, final String headerName, final boolean isSystemInclude,
          final int textChangeSaveState) {
+      includeIfNotJetIncluded(ast, headerName, isSystemInclude, textChangeSaveState, new NullProgressMonitor());
+   }
 
-      if (!isAlreadyIncluded(getLocalIncludeDirectives(ast), headerName)) {
-         createIncludeIfNotJetIncluded(ast, headerName, isSystemInclude).ifPresent(change -> {
-            try {
-               change.setSaveMode(textChangeSaveState);
-               change.perform(new NullProgressMonitor());
-            } catch (CoreException e) {
-               e.printStackTrace();
-            }
-         });
-      }
+   /**
+    * Creates and performs a change which inserts an include into the passed
+    * {@link IASTTranslationUnit}. The include directive is only inserted, if there isn't already one for this header.
+    * 
+    * @param textChangeSaveState
+    *        Sets savestate of TextChange. Can be {@code TextFileChange.KEEP_SAVE_STATE}, {@code TextFileChange.FORCE_SAVE},
+    *        {@code TextFileChange.LEAVE_DIRTY}
+    *
+    * @see #createIncludeIfNotJetIncluded(IASTTranslationUnit)
+    */
+   public static void includeIfNotJetIncluded(final IASTTranslationUnit ast, final String headerName, final boolean isSystemInclude,
+         final int textChangeSaveState, final IProgressMonitor pm) {
+
+      createIncludeIfNotJetIncluded(ast, headerName, isSystemInclude).ifPresent(change -> {
+         try {
+            change.setSaveMode(textChangeSaveState);
+            change.perform(pm);
+         } catch (CoreException e) {
+            e.printStackTrace();
+         }
+      });
    }
 
    /**
@@ -112,13 +125,13 @@ public class IncludeInsertionUtil {
    public static Optional<TextFileChange> createIncludeIfNotJetIncluded(final IASTTranslationUnit ast, final String headerName,
          final boolean isSystemInclude) {
       final List<IASTPreprocessorIncludeStatement> includeStatements = getLocalIncludeDirectives(ast);
-      boolean systemIncludesExist = includeStatements.stream().anyMatch(IASTPreprocessorIncludeStatement::isSystemInclude);
-      boolean userIncludesExist = includeStatements.stream().anyMatch((stmt) -> !stmt.isSystemInclude());
-
-      IFile file = ast.getOriginatingTranslationUnit().getFile();
-
       if (!isAlreadyIncluded(includeStatements, headerName)) {
-         final Optional<IASTNode> lastNode = getNodeAfterWhichToInsertInclude(ast, includeStatements, isSystemInclude);
+         boolean systemIncludesExist = includeStatements.stream().anyMatch(IASTPreprocessorIncludeStatement::isSystemInclude);
+         boolean userIncludesExist = includeStatements.stream().anyMatch((stmt) -> !stmt.isSystemInclude());
+
+         IFile file = ast.getOriginatingTranslationUnit().getFile();
+
+         final Optional<? extends IASTNode> lastNode = getNodeAfterWhichToInsertInclude(ast, includeStatements, isSystemInclude);
          return Optional.ofNullable(createTextFileChange(file, createInsertEdit(lastNode, headerName, isSystemInclude, systemIncludesExist,
                userIncludesExist, FileUtil.getLineSeparator(file))));
       } else {
@@ -127,33 +140,24 @@ public class IncludeInsertionUtil {
 
    }
 
-   private static Optional<IASTNode> getNodeAfterWhichToInsertInclude(final IASTTranslationUnit ast,
+   private static Optional<? extends IASTNode> getNodeAfterWhichToInsertInclude(final IASTTranslationUnit ast,
          final List<IASTPreprocessorIncludeStatement> includeStatements, final boolean isSystemInclude) {
-      if (includeStatements.size() <= 0) { return findPositionForNewIncludeOfThisType(ast); }
-      Optional<IASTNode> lastIncludeStatementOfType = findLastIncludeStatementOfType(ast, includeStatements, isSystemInclude);
-      return lastIncludeStatementOfType.isPresent() ? lastIncludeStatementOfType : findPositionForNewIncludeOfThisType(ast);
+      if (includeStatements.size() <= 0) { return findNodeAfterWhichToInsertNewInclude(ast); }
+      Optional<? extends IASTNode> lastIncludeStatementOfType = findLastIncludeStatementOfType(ast, includeStatements, isSystemInclude);
+      return lastIncludeStatementOfType.isPresent() ? lastIncludeStatementOfType : findNodeAfterWhichToInsertNewInclude(ast);
    }
 
-   private static Optional<IASTNode> findLastIncludeStatementOfType(final IASTTranslationUnit ast,
+   private static Optional<? extends IASTNode> findLastIncludeStatementOfType(final IASTTranslationUnit ast,
          final List<IASTPreprocessorIncludeStatement> includeStatements, final boolean isSystemInclude) {
-      return Optional.ofNullable(includeStatements.stream().reduce(null, (prev, next) -> next.isSystemInclude() && !isSystemInclude ? prev : next));
+      return Lists.adapt(includeStatements).reduce((prev, next) -> next.isSystemInclude() && !isSystemInclude ? prev : next);
    }
 
-   private static Optional<IASTNode> findPositionForNewIncludeOfThisType(final IASTTranslationUnit ast) {
-      IASTDeclaration[] declarations = ast.getDeclarations(true);
-      int firstDeclaration = declarations.length > 0 ? declarations[0].getFileLocation().getNodeOffset() : -1;
-      IASTPreprocessorStatement[] pPSs = ast.getAllPreprocessorStatements();
-      IASTNode lastPPSBeforeFirstDeclaration = null;
-      if (pPSs.length > 0) {
-         for (IASTPreprocessorStatement current : pPSs) {
-            if (current.getFileLocation().getNodeOffset() < firstDeclaration && !(current instanceof IASTPreprocessorIncludeStatement)) {
-               lastPPSBeforeFirstDeclaration = current;
-            } else {
-               return Optional.ofNullable(lastPPSBeforeFirstDeclaration);
-            }
-         }
-      }
-      return Optional.ofNullable(lastPPSBeforeFirstDeclaration);
+   private static Optional<? extends IASTNode> findNodeAfterWhichToInsertNewInclude(final IASTTranslationUnit ast) {
+      int firstDeclarationOffset = ArrayIterate.take(ast.getDeclarations(true), 1).getFirstOptional().map(n -> n.getFileLocation().getNodeOffset())
+            .orElse(0);
+
+      return ArrayIterate.reject(ast.getAllPreprocessorStatements(), IASTPreprocessorStatement.class::isInstance).takeWhile(ppStmt -> ppStmt
+            .getFileLocation().getNodeOffset() < firstDeclarationOffset).getLastOptional();
    }
 
    /**
@@ -169,7 +173,7 @@ public class IncludeInsertionUtil {
       return includeStatements.stream().anyMatch((stmt) -> stmt.getName().toString().equals(header));
    }
 
-   private static InsertEdit createInsertEdit(final Optional<IASTNode> lastNode, final String includeName, final boolean isSystemInclude,
+   private static InsertEdit createInsertEdit(final Optional<? extends IASTNode> lastNode, final String includeName, final boolean isSystemInclude,
          final boolean systemIncludesExist, final boolean userIncludesExist, final String separator) {
       StringBuffer includeStmt = getIncludeStatement(includeName, isSystemInclude);
       if (((isSystemInclude && !systemIncludesExist) || (!isSystemInclude && !userIncludesExist)) && lastNode.isPresent()) {
@@ -186,7 +190,7 @@ public class IncludeInsertionUtil {
       return new InsertEdit(getInsertOffset(lastNode), includeStmt.toString());
    }
 
-   private static int getInsertOffset(final Optional<IASTNode> lastNode) {
+   private static int getInsertOffset(final Optional<? extends IASTNode> lastNode) {
       return lastNode.map(node -> node.getFileLocation().getNodeOffset() + node.getFileLocation().getNodeLength()).orElse(0);
    }
 

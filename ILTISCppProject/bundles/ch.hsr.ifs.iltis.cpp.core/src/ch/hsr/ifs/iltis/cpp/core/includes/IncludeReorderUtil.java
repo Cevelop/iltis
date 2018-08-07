@@ -7,6 +7,8 @@ import org.eclipse.cdt.core.dom.ast.IASTPreprocessorIncludeStatement;
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorStatement;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.impl.factory.Iterables;
+import org.eclipse.collections.impl.lazy.CompositeIterable;
 import org.eclipse.collections.impl.utility.ArrayIterate;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -31,14 +33,10 @@ public class IncludeReorderUtil {
    /**
     * Creates and performs a change reordering the includes in the passed
     * {@link IASTTranslationUnit}.
-    * 
-    * @param textChangeSaveState
-    *        Sets savestate of TextChange. Can be {@code TextFileChange.KEEP_SAVE_STATE}, {@code TextFileChange.FORCE_SAVE},
-    *        {@code TextFileChange.LEAVE_DIRTY}
     *
     */
-   public static void reorderIncludeStatement(final IASTTranslationUnit ast, final int textChangeSaveState) {
-      reorderIncludeStatement(ast, textChangeSaveState, new NullProgressMonitor());
+   public static void reorderIncludeStatements(final IASTTranslationUnit ast) {
+      reorderIncludeStatements(ast, TextFileChange.KEEP_SAVE_STATE, new NullProgressMonitor());
    }
 
    /**
@@ -50,7 +48,20 @@ public class IncludeReorderUtil {
     *        {@code TextFileChange.LEAVE_DIRTY}
     *
     */
-   public static void reorderIncludeStatement(final IASTTranslationUnit ast, final int textChangeSaveState, IProgressMonitor pm) {
+   public static void reorderIncludeStatements(final IASTTranslationUnit ast, final int textChangeSaveState) {
+      reorderIncludeStatements(ast, textChangeSaveState, new NullProgressMonitor());
+   }
+
+   /**
+    * Creates and performs a change reordering the includes in the passed
+    * {@link IASTTranslationUnit}.
+    * 
+    * @param textChangeSaveState
+    *        Sets savestate of TextChange. Can be {@code TextFileChange.KEEP_SAVE_STATE}, {@code TextFileChange.FORCE_SAVE},
+    *        {@code TextFileChange.LEAVE_DIRTY}
+    *
+    */
+   public static void reorderIncludeStatements(final IASTTranslationUnit ast, final int textChangeSaveState, IProgressMonitor pm) {
       createReorderIncludeStatements(ast).ifPresent(change -> {
          try {
             change.setSaveMode(textChangeSaveState);
@@ -68,9 +79,8 @@ public class IncludeReorderUtil {
     *        The ast translation unit
     * @return A TextFileChange to execute or an empty Optional.
     */
+   @SuppressWarnings("unchecked")
    public static Optional<TextFileChange> createReorderIncludeStatements(final IASTTranslationUnit ast) {
-
-      //TODO add check if reordering is needed.
 
       IASTPreprocessorIncludeStatement[] includeDirectives = ast.getIncludeDirectives();
       if (includeDirectives.length == 0) return Optional.empty();
@@ -81,22 +91,29 @@ public class IncludeReorderUtil {
       change.setSaveMode(TextFileChange.LEAVE_DIRTY);
       change.setEdit(new MultiTextEdit());
 
-      int insertOffset = findPositionToPutReorderedIncludes(ast).map(n -> n.getFileLocation().getNodeOffset()).orElse(0);
+      int insertOffset = findNodeBeforeIncludes(ast).map(n -> n.getFileLocation().getNodeOffset()).orElse(0);
 
       MutableList<IASTPreprocessorIncludeStatement> userIncludesSorted = ArrayIterate.reject(includeDirectives,
             IASTPreprocessorIncludeStatement::isSystemInclude).sortThis(IncludeReorderUtil::compareTo);
       MutableList<IASTPreprocessorIncludeStatement> systemIncludesSorted = ArrayIterate.select(includeDirectives,
             IASTPreprocessorIncludeStatement::isSystemInclude).sortThis(IncludeReorderUtil::compareTo);
 
+      /* Check if includes are already ordered */
+      if (CompositeIterable.with(userIncludesSorted, systemIncludesSorted).zip(Iterables.iList(includeDirectives)).allSatisfy(p -> p.getOne() == p
+            .getTwo())) return Optional.empty();
+
+      /* Move user includes in order to the destination */
       userIncludesSorted.forEach(it -> {
          MoveSourceEdit sourceEdit = new MoveSourceEdit(it.getFileLocation().getNodeOffset(), it.getFileLocation().getNodeLength() + 1);
          change.addEdit(sourceEdit);
          change.addEdit(new MoveTargetEdit(insertOffset, sourceEdit));
       });
 
+      /* Insert empty line if necessary */
       if (userIncludesSorted.size() > 0 && systemIncludesSorted.size() > 0) change.addEdit(new InsertEdit(insertOffset, FileUtil.getLineSeparator(
             file)));
 
+      /* Move system includes in order to the destination */
       systemIncludesSorted.forEach(it -> {
          MoveSourceEdit sourceEdit = new MoveSourceEdit(it.getFileLocation().getNodeOffset(), it.getFileLocation().getNodeLength() + 1);
          change.addEdit(sourceEdit);
@@ -110,7 +127,7 @@ public class IncludeReorderUtil {
       return l.getName().toString().compareTo(r.getName().toString());
    }
 
-   private static Optional<? extends IASTNode> findPositionToPutReorderedIncludes(final IASTTranslationUnit ast) {
+   private static Optional<? extends IASTNode> findNodeBeforeIncludes(final IASTTranslationUnit ast) {
       int firstDeclarationOffset = ArrayIterate.take(ast.getDeclarations(true), 1).getFirstOptional().map(n -> n.getFileLocation().getNodeOffset())
             .orElse(-1);
 
