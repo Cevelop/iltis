@@ -76,7 +76,7 @@ public class IncludeReorderUtil {
       change.setSaveMode(TextFileChange.LEAVE_DIRTY);
       change.setEdit(new MultiTextEdit());
 
-      int insertOffset = findPositionToPutReorderedIncludes(ast).map(n -> n.getFileLocation().getNodeOffset()).orElse(-1);
+      int insertOffset = findPositionToPutReorderedIncludes(ast).map(n -> n.getFileLocation().getNodeOffset()).orElse(0);
       ArrayIterate.select(includeDirectives, IASTPreprocessorIncludeStatement::isSystemInclude).sortThis(IncludeReorderUtil::compareTo)
             .reverseForEach(it -> {
                MoveSourceEdit sourceEdit = new MoveSourceEdit(it.getFileLocation().getNodeOffset(), it.getFileLocation().getNodeLength());
