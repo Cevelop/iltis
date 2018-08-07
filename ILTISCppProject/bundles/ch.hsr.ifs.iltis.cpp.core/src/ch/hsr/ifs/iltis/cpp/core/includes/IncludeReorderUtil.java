@@ -6,14 +6,19 @@ import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorIncludeStatement;
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorStatement;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
+import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.utility.ArrayIterate;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
+import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.MoveSourceEdit;
 import org.eclipse.text.edits.MoveTargetEdit;
 import org.eclipse.text.edits.MultiTextEdit;
+
+import ch.hsr.ifs.iltis.core.core.resources.FileUtil;
 
 
 /**
@@ -22,7 +27,6 @@ import org.eclipse.text.edits.MultiTextEdit;
  * @author tstauber
  */
 public class IncludeReorderUtil {
-
 
    /**
     * Creates and performs a change reordering the includes in the passed
@@ -36,7 +40,7 @@ public class IncludeReorderUtil {
    public static void reorderIncludeStatement(final IASTTranslationUnit ast, final int textChangeSaveState) {
       reorderIncludeStatement(ast, textChangeSaveState, new NullProgressMonitor());
    }
-   
+
    /**
     * Creates and performs a change reordering the includes in the passed
     * {@link IASTTranslationUnit}.
@@ -57,7 +61,6 @@ public class IncludeReorderUtil {
       });
    }
 
-
    /**
     * Reorders all includes in this translation unit and adds them where the first include would be placed in this document.
     * 
@@ -72,26 +75,33 @@ public class IncludeReorderUtil {
       IASTPreprocessorIncludeStatement[] includeDirectives = ast.getIncludeDirectives();
       if (includeDirectives.length == 0) return Optional.empty();
 
-      final TextFileChange change = new TextFileChange("Reorder Includes", ast.getOriginatingTranslationUnit().getFile());
+      IFile file = ast.getOriginatingTranslationUnit().getFile();
+
+      final TextFileChange change = new TextFileChange("Reorder Includes", file);
       change.setSaveMode(TextFileChange.LEAVE_DIRTY);
       change.setEdit(new MultiTextEdit());
 
       int insertOffset = findPositionToPutReorderedIncludes(ast).map(n -> n.getFileLocation().getNodeOffset()).orElse(0);
-      ArrayIterate.select(includeDirectives, IASTPreprocessorIncludeStatement::isSystemInclude).sortThis(IncludeReorderUtil::compareTo)
-            .reverseForEach(it -> {
-               MoveSourceEdit sourceEdit = new MoveSourceEdit(it.getFileLocation().getNodeOffset(), it.getFileLocation().getNodeLength());
-               change.addEdit(sourceEdit);
-               change.addEdit(new MoveTargetEdit(insertOffset, sourceEdit));
-            });
 
-      //TODO insert empty-line if there are system includes 
+      MutableList<IASTPreprocessorIncludeStatement> userIncludesSorted = ArrayIterate.reject(includeDirectives,
+            IASTPreprocessorIncludeStatement::isSystemInclude).sortThis(IncludeReorderUtil::compareTo);
+      MutableList<IASTPreprocessorIncludeStatement> systemIncludesSorted = ArrayIterate.select(includeDirectives,
+            IASTPreprocessorIncludeStatement::isSystemInclude).sortThis(IncludeReorderUtil::compareTo);
 
-      ArrayIterate.reject(includeDirectives, IASTPreprocessorIncludeStatement::isSystemInclude).sortThis(IncludeReorderUtil::compareTo)
-            .reverseForEach(it -> {
-               MoveSourceEdit sourceEdit = new MoveSourceEdit(it.getFileLocation().getNodeOffset(), it.getFileLocation().getNodeLength());
-               change.addEdit(sourceEdit);
-               change.addEdit(new MoveTargetEdit(insertOffset, sourceEdit));
-            });
+      userIncludesSorted.forEach(it -> {
+         MoveSourceEdit sourceEdit = new MoveSourceEdit(it.getFileLocation().getNodeOffset(), it.getFileLocation().getNodeLength() + 1);
+         change.addEdit(sourceEdit);
+         change.addEdit(new MoveTargetEdit(insertOffset, sourceEdit));
+      });
+
+      if (userIncludesSorted.size() > 0 && systemIncludesSorted.size() > 0) change.addEdit(new InsertEdit(insertOffset, FileUtil.getLineSeparator(
+            file)));
+
+      systemIncludesSorted.forEach(it -> {
+         MoveSourceEdit sourceEdit = new MoveSourceEdit(it.getFileLocation().getNodeOffset(), it.getFileLocation().getNodeLength() + 1);
+         change.addEdit(sourceEdit);
+         change.addEdit(new MoveTargetEdit(insertOffset, sourceEdit));
+      });
 
       return Optional.of(change);
    }
