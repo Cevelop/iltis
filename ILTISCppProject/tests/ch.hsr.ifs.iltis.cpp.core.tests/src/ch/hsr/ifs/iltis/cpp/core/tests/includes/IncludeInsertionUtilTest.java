@@ -2,11 +2,12 @@ package ch.hsr.ifs.iltis.cpp.core.tests.includes;
 
 import java.io.IOException;
 
-import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
-import org.eclipse.cdt.core.parser.ParserLanguage;
-import org.eclipse.cdt.core.parser.tests.ast2.AST2TestBase;
+import org.eclipse.cdt.codan.core.tests.CodanTestCase;
+import org.eclipse.cdt.core.model.CoreModel;
+import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.cdt.core.testplugin.util.TestSourceReader;
-import org.eclipse.cdt.internal.core.parser.ParserException;
+import org.eclipse.cdt.internal.core.model.ExternalTranslationUnit;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.osgi.framework.FrameworkUtil;
 
@@ -14,19 +15,45 @@ import ch.hsr.ifs.iltis.cpp.core.includes.IncludeInsertionUtil;
 
 
 @SuppressWarnings("restriction")
-public class IncludeInsertionUtilTest extends AST2TestBase {
+public class IncludeInsertionUtilTest extends CodanTestCase {
 
    @Override
-   protected CharSequence[] getContents(int sections) throws IOException {
-      return TestSourceReader.getContentsForTest(FrameworkUtil.getBundle(getClass()), "src", getClass(), getName(), sections);
+   public boolean isCpp() {
+      return true;
    }
 
-   private void executeActionAndAssertSameAST(String headerName, boolean isSystemInclude) throws IOException, ParserException {
+   @Override
+   protected StringBuilder[] getContents(int sections) {
+      try {
+         return TestSourceReader.getContentsForTest(FrameworkUtil.getBundle(getClass()), getSourcePrefix(), getClass(), getName(), sections);
+      } catch (IOException e) {
+         fail(e.getMessage());
+         return null;
+      }
+   }
+
+   private ITranslationUnit createTranslationUnit() {
+      assertNotNull("The cproject is null, did you load the code?", cproject);
+      assertNotNull("The currentIFile is null, did you load the code?", currentIFile);
+      ITranslationUnit tu = CoreModel.getDefault().createTranslationUnitFrom(cproject, currentIFile.getLocationURI());
+      if (tu instanceof ExternalTranslationUnit) {
+         ((ExternalTranslationUnit) tu).setResource(currentIFile);
+      }
+      return tu;
+   }
+
+   private ITranslationUnit createTranslationUnitFrom(CharSequence code) throws CoreException {
+      loadcode(code);
+      return createTranslationUnit();
+   }
+
+   private void executeActionAndAssertSameAST(String headerName, boolean isSystemInclude) throws CoreException {
       CharSequence[] sections = getContents(2);
-      IASTTranslationUnit first = parse(sections[0].toString(), ParserLanguage.CPP, false, false);
-      IncludeInsertionUtil.includeIfNotJetIncluded(first, headerName, isSystemInclude, TextFileChange.FORCE_SAVE);
-      IASTTranslationUnit second = parse(sections[1].toString(), ParserLanguage.CPP, false, false);
-      assertEquals(second.getRawSignature(), first.getRawSignature());
+      ITranslationUnit first = createTranslationUnitFrom(sections[0]);
+      IncludeInsertionUtil.includeIfNotJetIncluded(first.getAST(), headerName, isSystemInclude, TextFileChange.FORCE_SAVE);
+      ITranslationUnit result = createTranslationUnit();
+      ITranslationUnit second = createTranslationUnitFrom(sections[1]);
+      assertEquals(second.getAST().getRawSignature(), result.getAST().getRawSignature());
    }
 
    //#include <cstdint>
@@ -36,7 +63,7 @@ public class IncludeInsertionUtilTest extends AST2TestBase {
    //#include <cstdint>
    //
    //short foo {42};
-   public void testSystemIncludeExists() throws Exception {
+   public void testSystemIncludeExists() throws CoreException {
       executeActionAndAssertSameAST("cstdint", true);
    }
 
@@ -45,7 +72,7 @@ public class IncludeInsertionUtilTest extends AST2TestBase {
    //#include <algorithm>
    //
    //short foo {9001};
-   public void testSystemIncludeWasAdded() throws Exception {
+   public void testSystemIncludeWasAdded() throws CoreException {
       executeActionAndAssertSameAST("algorithm", true);
    }
 
@@ -61,7 +88,7 @@ public class IncludeInsertionUtilTest extends AST2TestBase {
    //#include <cstdint>
    //int main(){
    //}
-   public void testSystemIncludeWasAddedIntoExistingMixedIncludes() throws Exception {
+   public void testSystemIncludeWasAddedIntoExistingMixedIncludes() throws CoreException {
       executeActionAndAssertSameAST("cstdint", true);
    }
 
@@ -80,7 +107,7 @@ public class IncludeInsertionUtilTest extends AST2TestBase {
    //
    // int main(){
    //}
-   public void testUserIncludeAddedIntoExistingMixedIncludes() throws Exception {
+   public void testUserIncludeAddedIntoExistingMixedIncludes() throws CoreException {
       executeActionAndAssertSameAST("sigmund.h", false);
    }
 
@@ -136,7 +163,7 @@ public class IncludeInsertionUtilTest extends AST2TestBase {
    //    std::cout << "3: yes\n";
    //#endif
    //}
-   public void testIsIncludePlacedWithOtherPPStatementsPresent() throws Exception {
+   public void testIsIncludePlacedWithOtherPPStatementsPresent() throws CoreException {
       executeActionAndAssertSameAST("cstdint", true);
    }
 
@@ -159,194 +186,194 @@ public class IncludeInsertionUtilTest extends AST2TestBase {
    //;
    //
    //#endif /* GRANDPARENT_H */
-   public void testIsIncludePlacedWithNoOtherIncludesPresent() throws Exception {
+   public void testIsIncludePlacedWithNoOtherIncludesPresent() throws CoreException {
       executeActionAndAssertSameAST("cstdint", true);
    }
 
-   //   #ifndef GRANDPARENT_H
-   //   #define GRANDPARENT_H
+   //#ifndef GRANDPARENT_H
+   //#define GRANDPARENT_H
    //
-   //   struct foo {
-   //       int member;
-   //   };
+   //struct foo {
+   //    int member;
+   //};
    //
-   //   #endif /* GRANDPARENT_H */
+   //#endif /* GRANDPARENT_H */
 
-   //   #ifndef GRANDPARENT_H
-   //   #define GRANDPARENT_H
+   //#ifndef GRANDPARENT_H
+   //#define GRANDPARENT_H
    //
-   //   #include "bampf.h"
+   //#include "bampf.h"
    //
-   //   struct foo {
-   //       int member;
-   //   };
-   public void testIsUserIncludePlacedWithNoOtherIncludesPresent() throws Exception {
+   //struct foo {
+   //    int member;
+   //};
+   public void testIsUserIncludePlacedWithNoOtherIncludesPresent() throws CoreException {
       executeActionAndAssertSameAST("bampf.h", false);
    }
 
-   //   #ifndef GRANDPARENT_H
-   //   #define GRANDPARENT_H
+   //#ifndef GRANDPARENT_H
+   //#define GRANDPARENT_H
    //
-   //   #include "foo.h"
+   //#include "foo.h"
    //
-   //   struct foo {
-   //       int member;
-   //   };
+   //struct foo {
+   //    int member;
+   //};
    //
-   //   #endif /* GRANDPARENT_H */
+   //#endif /* GRANDPARENT_H */
 
-   //   #ifndef GRANDPARENT_H
-   //   #define GRANDPARENT_H
+   //#ifndef GRANDPARENT_H
+   //#define GRANDPARENT_H
    //
-   //   #include "foo.h"
+   //#include "foo.h"
    //
-   //   #include <cstdint>
+   //#include <cstdint>
    //
-   //   struct foo {
-   //       int member;
-   //   };
+   //struct foo {
+   //    int member;
+   //};
    //
-   //   #endif /* GRANDPARENT_H */
-   public void testIsSystemIncludeInsertedAtTheRightPositionWithOtherUserIncludes() throws Exception {
+   //#endif /* GRANDPARENT_H */
+   public void testIsSystemIncludeInsertedAtTheRightPositionWithOtherUserIncludes() throws CoreException {
       executeActionAndAssertSameAST("cstdint", true);
    }
 
-   //   #ifndef GRANDPARENT_H
-   //   #define GRANDPARENT_H
+   //#ifndef GRANDPARENT_H
+   //#define GRANDPARENT_H
    //
-   //   #include "foo.h"
+   //#include "foo.h"
    //
-   //   struct foo {
-   //       int member;
-   //   };
+   //struct foo {
+   //    int member;
+   //};
    //
-   //   #endif /* GRANDPARENT_H */
+   //#endif /* GRANDPARENT_H */
 
-   //   #ifndef GRANDPARENT_H
-   //   #define GRANDPARENT_H
+   //#ifndef GRANDPARENT_H
+   //#define GRANDPARENT_H
    //
-   //   #include "foo.h"
-   //   #include "bampf.h"
+   //#include "foo.h"
+   //#include "bampf.h"
    //
-   //   struct foo {
-   //       int member;
-   //   };
+   //struct foo {
+   //    int member;
+   //};
    //
-   //   #endif /* GRANDPARENT_H */
-   public void testIsUserIncludeInsertedAtTheRightPositionWithOtherUserIncludes() throws Exception {
+   //#endif /* GRANDPARENT_H */
+   public void testIsUserIncludeInsertedAtTheRightPositionWithOtherUserIncludes() throws CoreException {
       executeActionAndAssertSameAST("bampf.h", false);
    }
 
-   //   #ifndef GRANDPARENT_H
-   //   #define GRANDPARENT_H
+   //#ifndef GRANDPARENT_H
+   //#define GRANDPARENT_H
    //
-   //   #include <algorithm>
+   //#include <algorithm>
    //
-   //   struct foo {
-   //       int member;
-   //   };
+   //struct foo {
+   //    int member;
+   //};
    //
-   //   #endif /* GRANDPARENT_H */
+   //#endif /* GRANDPARENT_H */
 
-   //   #ifndef GRANDPARENT_H
-   //   #define GRANDPARENT_H
+   //#ifndef GRANDPARENT_H
+   //#define GRANDPARENT_H
    //
-   //   #include <algorithm>
-   //   #include <cstdint>
+   //#include <algorithm>
+   //#include <cstdint>
    //
-   //   struct foo {
-   //       int member;
-   //   };
+   //struct foo {
+   //    int member;
+   //};
    //
-   //   #endif /* GRANDPARENT_H */
-   public void testIsSystemIncludeInsertedAtTheRightPositionWithOtherSystemIncludes() throws Exception {
+   //#endif /* GRANDPARENT_H */
+   public void testIsSystemIncludeInsertedAtTheRightPositionWithOtherSystemIncludes() throws CoreException {
       executeActionAndAssertSameAST("cstdint", true);
    }
 
-   //   #ifndef GRANDPARENT_H
-   //   #define GRANDPARENT_H
+   //#ifndef GRANDPARENT_H
+   //#define GRANDPARENT_H
    //
-   //   #include <cstdint>
+   //#include <cstdint>
    //
-   //   struct foo {
-   //       int member;
-   //   };
+   //struct foo {
+   //    int member;
+   //};
    //
-   //   #endif /* GRANDPARENT_H */
+   //#endif /* GRANDPARENT_H */
 
-   //   #ifndef GRANDPARENT_H
-   //   #define GRANDPARENT_H
+   //#ifndef GRANDPARENT_H
+   //#define GRANDPARENT_H
    //
-   //   #include "bampf.h"
+   //#include "bampf.h"
    //
-   //   #include <cstdint>
+   //#include <cstdint>
    //
-   //   struct foo {
-   //       int member;
-   //   };
+   //struct foo {
+   //    int member;
+   //};
    //
-   //   #endif /* GRANDPARENT_H */
-   public void testIsUserIncludeInsertedAtTheRightPositionWithOtherSystemIncludes() throws Exception {
+   //#endif /* GRANDPARENT_H */
+   public void testIsUserIncludeInsertedAtTheRightPositionWithOtherSystemIncludes() throws CoreException {
       executeActionAndAssertSameAST("bampf.h", false);
    }
 
-   //   #ifndef GRANDPARENT_H
-   //   #define GRANDPARENT_H
+   //#ifndef GRANDPARENT_H
+   //#define GRANDPARENT_H
    //
-   //   #include "schnorpsl.h"
+   //#include "schnorpsl.h"
    //
-   //   #include <algorithm>
+   //#include <algorithm>
    //
-   //   struct foo {
-   //       int member;
-   //   };
+   //struct foo {
+   //    int member;
+   //};
    //
-   //   #endif /* GRANDPARENT_H */
+   //#endif /* GRANDPARENT_H */
 
-   //   #ifndef GRANDPARENT_H
-   //   #define GRANDPARENT_H
+   //#ifndef GRANDPARENT_H
+   //#define GRANDPARENT_H
    //
-   //   #include "schnorpsl.h"
+   //#include "schnorpsl.h"
    //
-   //   #include <algorithm>
-   //   #include <cstdint>
+   //#include <algorithm>
+   //#include <cstdint>
    //
-   //   struct foo {
-   //       int member;
-   //   };
+   //struct foo {
+   //    int member;
+   //};
    //
-   //   #endif /* GRANDPARENT_H */
-   public void testIsSystemIncludeInsertedAtTheRightPositionWithOtherSystemAndUserIncludes() throws Exception {
+   //#endif /* GRANDPARENT_H */
+   public void testIsSystemIncludeInsertedAtTheRightPositionWithOtherSystemAndUserIncludes() throws CoreException {
       executeActionAndAssertSameAST("cstdint", true);
    }
 
-   //   #ifndef GRANDPARENT_H
-   //   #define GRANDPARENT_H
+   //#ifndef GRANDPARENT_H
+   //#define GRANDPARENT_H
    //
-   //   #include "schnorpsl.h"
+   //#include "schnorpsl.h"
    //
-   //   #include <cstdint>
+   //#include <cstdint>
    //
-   //   struct foo {
-   //       int member;
-   //   };
+   //struct foo {
+   //    int member;
+   //};
    //
-   //   #endif /* GRANDPARENT_H */
+   //#endif /* GRANDPARENT_H */
 
-   //   #ifndef GRANDPARENT_H
-   //   #define GRANDPARENT_H
+   //#ifndef GRANDPARENT_H
+   //#define GRANDPARENT_H
    //
-   //   #include "schnorpsl.h"
-   //   #include "bampf.h"
+   //#include "schnorpsl.h"
+   //#include "bampf.h"
    //
-   //   #include <cstdint>
+   //#include <cstdint>
    //
-   //   struct foo {
-   //       int member;
-   //   };
+   //struct foo {
+   //    int member;
+   //};
    //
-   //   #endif /* GRANDPARENT_H */
-   public void testIsUserIncludeInsertedAtTheRightPositionWithOtherSystemAndUserIncludes() throws Exception {
+   //#endif /* GRANDPARENT_H */
+   public void testIsUserIncludeInsertedAtTheRightPositionWithOtherSystemAndUserIncludes() throws CoreException {
       executeActionAndAssertSameAST("bampf.h", false);
    }
 }

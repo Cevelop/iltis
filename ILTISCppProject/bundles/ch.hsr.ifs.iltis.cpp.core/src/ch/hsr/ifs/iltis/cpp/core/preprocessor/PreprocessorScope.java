@@ -15,6 +15,7 @@ import org.eclipse.cdt.core.dom.ast.IASTPreprocessorElseStatement;
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorEndifStatement;
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorIfStatement;
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorIfdefStatement;
+import org.eclipse.cdt.core.dom.ast.IASTPreprocessorIfndefStatement;
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorIncludeStatement;
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorStatement;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
@@ -44,7 +45,8 @@ public class PreprocessorScope {
       final MutableList<IASTPreprocessorStatement> statements = Lists.mutable.of(ast.getAllPreprocessorStatements());
       final MutableStack<PreprocessorScope> scopeStack = Stacks.mutable.of(new PreprocessorScope(null, null));
       for (IASTPreprocessorStatement stmt : statements) {
-         if (stmt instanceof IASTPreprocessorIfStatement || stmt instanceof IASTPreprocessorIfdefStatement) {
+         if (stmt instanceof IASTPreprocessorIfStatement || stmt instanceof IASTPreprocessorIfdefStatement ||
+             stmt instanceof IASTPreprocessorIfndefStatement) {
             PreprocessorScope newScope = new PreprocessorScope(scopeStack.peek(), stmt);
             scopeStack.peek().subScopes.add(newScope);
             scopeStack.push(newScope);
@@ -158,12 +160,12 @@ public class PreprocessorScope {
 
    public void forEachUp(Consumer<PreprocessorScope> task) {
       task.accept(this);
-      parent.forEachUp(task);
+      if (parent != null) parent.forEachUp(task);
    }
 
    public <T> void forEachUpWith(BiConsumer<PreprocessorScope, T> task, T with) {
       task.accept(this, with);
-      parent.forEachUpWith(task, with);
+      if (parent != null) parent.forEachUpWith(task, with);
    }
 
 }
