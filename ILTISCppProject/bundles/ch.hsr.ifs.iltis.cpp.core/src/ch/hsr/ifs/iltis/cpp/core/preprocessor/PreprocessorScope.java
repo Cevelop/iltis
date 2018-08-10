@@ -22,24 +22,26 @@ import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.stack.MutableStack;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Stacks;
+import org.eclipse.collections.impl.utility.ArrayIterate;
 
 import ch.hsr.ifs.iltis.core.core.functional.functions.Consumer;
 
 
 public class PreprocessorScope {
 
-   public final PreprocessorScope               parent;
-   public final IASTPreprocessorStatement       start;
-   public IASTPreprocessorStatement             end             = null;
-   public final List<IASTPreprocessorStatement> nonScopeContent = Lists.mutable.empty();
-   public final List<PreprocessorScope>         subScopes       = Lists.mutable.empty();
+   public PreprocessorScope                            parent;
+   public final IASTPreprocessorStatement              start;
+   public IASTPreprocessorStatement                    end             = null;
+   public final MutableList<IASTPreprocessorStatement> nonScopeContent = Lists.mutable.empty();
+   public final MutableList<PreprocessorScope>         subScopes       = Lists.mutable.empty();
 
    protected PreprocessorScope(PreprocessorScope parent, IASTPreprocessorStatement start) {
       this.parent = parent;
       this.start = start;
    }
 
-   public static PreprocessorScope createFrom(IASTPreprocessorStatement[] statements) {
+   public static PreprocessorScope createFrom(IASTTranslationUnit ast) {
+      final MutableList<IASTPreprocessorStatement> statements = Lists.mutable.of(ast.getAllPreprocessorStatements());
       final MutableStack<PreprocessorScope> scopeStack = Stacks.mutable.of(new PreprocessorScope(null, null));
       for (IASTPreprocessorStatement stmt : statements) {
          if (stmt instanceof IASTPreprocessorIfStatement || stmt instanceof IASTPreprocessorIfdefStatement) {
@@ -57,7 +59,18 @@ public class PreprocessorScope {
             scopeStack.peek().nonScopeContent.add(stmt);
          }
       }
-      return scopeStack.pop();
+      PreprocessorScope root = scopeStack.pop();
+      if (root.nonScopeContent.isEmpty()) {
+
+         if (root.subScopes.size() == 1 && ArrayIterate.allSatisfyWith(ast.getDeclarations(true), (d, rs) -> {
+            IASTFileLocation loc = d.getFileLocation();
+            return rs.subScopes.get(0).contains(loc.getNodeOffset(), loc.getNodeOffset() + loc.getNodeLength());
+         }, root)) {
+            root = root.subScopes.get(0);
+            root.parent = null;
+         }
+      }
+      return root;
    }
 
    public Optional<? extends IASTPreprocessorStatement> findStmtAfterWhichToAddInclude(String name, boolean isSystemInclude,

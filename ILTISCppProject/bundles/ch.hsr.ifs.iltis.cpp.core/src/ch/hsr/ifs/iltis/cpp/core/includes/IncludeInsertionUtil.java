@@ -39,8 +39,6 @@ public class IncludeInsertionUtil {
       return isSystemInclude ? getSystemIncludeStatement(includeName) : getUserIncludeStatement(includeName);
    }
 
-   //TODO add method for adding an include in a specific scope
-
    /**
     * Creates and performs a change which inserts an user include into the passed
     * {@link IASTTranslationUnit}. The include directive is only inserted, if there isn't already one for this header.
@@ -142,8 +140,6 @@ public class IncludeInsertionUtil {
 
       if (isAlreadyIncluded(scope, headerName)) return Optional.empty();
 
-      final Optional<? extends IASTPreprocessorStatement> previousStatement = scope.findStmtAfterWhichToAddInclude(headerName, isSystemInclude, ast);
-
       final IFile file = ast.getOriginatingTranslationUnit().getFile();
       final TextFileChange change = new TextFileChange("Add Include " + headerName, file);
       change.setSaveMode(TextFileChange.LEAVE_DIRTY);
@@ -155,6 +151,7 @@ public class IncludeInsertionUtil {
       includeStmt.append(lineSep);
 
       int offset = 0;
+      final Optional<? extends IASTPreprocessorStatement> previousStatement = scope.findStmtAfterWhichToAddInclude(headerName, isSystemInclude, ast);
 
       if (previousStatement.isPresent()) {
          final IASTPreprocessorStatement prevStmt = previousStatement.get();
