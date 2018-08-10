@@ -22,7 +22,7 @@ import ch.hsr.ifs.iltis.cpp.core.util.constants.CommonCPPConstants;
 
 /**
  * A utility class which provides static methods for adding includes.
- * 
+ *
  * @author tstauber
  */
 public class IncludeInsertionUtil {
@@ -74,7 +74,7 @@ public class IncludeInsertionUtil {
    /**
     * Creates and performs a change which inserts an include into the passed
     * {@link IASTTranslationUnit}. The include directive is only inserted, if there isn't already one for this header.
-    * 
+    *
     * @param textChangeSaveState
     *        Sets savestate of TextChange. Can be {@code TextFileChange.KEEP_SAVE_STATE}, {@code TextFileChange.FORCE_SAVE},
     *        {@code TextFileChange.LEAVE_DIRTY}
@@ -89,7 +89,7 @@ public class IncludeInsertionUtil {
    /**
     * Creates and performs a change which inserts an include into the passed
     * {@link IASTTranslationUnit}. The include directive is only inserted, if there isn't already one for this header.
-    * 
+    *
     * @param textChangeSaveState
     *        Sets savestate of TextChange. Can be {@code TextFileChange.KEEP_SAVE_STATE}, {@code TextFileChange.FORCE_SAVE},
     *        {@code TextFileChange.LEAVE_DIRTY}
@@ -99,51 +99,65 @@ public class IncludeInsertionUtil {
    public static void includeIfNotJetIncluded(final IASTTranslationUnit ast, final String headerName, final boolean isSystemInclude,
          final int textChangeSaveState, final IProgressMonitor pm) {
 
-      createIncludeIfNotJetIncluded(ast, headerName, isSystemInclude, PreprocessorScope.createFrom(ast.getAllPreprocessorStatements())).ifPresent(
-            change -> {
-               try {
-                  change.setSaveMode(textChangeSaveState);
-                  change.perform(pm);
-               } catch (CoreException e) {
-                  e.printStackTrace();
-               }
-            });
+      createIncludeIfNotJetIncluded(ast, headerName, isSystemInclude).ifPresent(change -> {
+         try {
+            change.setSaveMode(textChangeSaveState);
+            change.perform(pm);
+         } catch (final CoreException e) {
+            e.printStackTrace();
+         }
+      });
    }
 
    /**
     * Creates and returns a TextFileChange to insert an include into the passed translation unit. The caller must provide the include name and the
     * information if it is a system include or a user include.
-    * 
+    *
     * <pre>
     * An include name can be something like {@code vector} or {@code foo.h}
     * </pre>
-    * 
+    *
+    * @returns The {@link TextFileChange} or {@code null} if already included
+    */
+   public static Optional<TextFileChange> createIncludeIfNotJetIncluded(final IASTTranslationUnit ast, final String headerName,
+         final boolean isSystemInclude) {
+      return createIncludeInScopeIfNotJetIncluded(ast, headerName, isSystemInclude, PreprocessorScope.createFrom(ast.getAllPreprocessorStatements()));
+   }
+
+   /**
+    * Creates and returns a TextFileChange to insert an include into the passed translation unit. The caller must provide the include name and the
+    * information if it is a system include or a user include.
+    *
+    * <pre>
+    * An include name can be something like {@code vector} or {@code foo.h}
+    * </pre>
+    *
     * @param scope
     *        For better performance, the PreprocessorScope tree should be cached if multiple operations are executed.
     *
     * @returns The {@link TextFileChange} or {@code null} if already included
     */
-   public static Optional<TextFileChange> createIncludeIfNotJetIncluded(final IASTTranslationUnit ast, final String headerName,
-         final boolean isSystemInclude, PreprocessorScope scope) {
+   public static Optional<TextFileChange> createIncludeInScopeIfNotJetIncluded(final IASTTranslationUnit ast, final String headerName,
+         final boolean isSystemInclude, final PreprocessorScope scope) {
 
       if (isAlreadyIncluded(scope, headerName)) return Optional.empty();
 
-      Optional<? extends IASTPreprocessorStatement> previousStatement = scope.findStmtAfterWhichToAddInclude(headerName, isSystemInclude, ast);
+      final Optional<? extends IASTPreprocessorStatement> previousStatement = scope.findStmtAfterWhichToAddInclude(headerName, isSystemInclude, ast);
 
-      IFile file = ast.getOriginatingTranslationUnit().getFile();
+      final IFile file = ast.getOriginatingTranslationUnit().getFile();
       final TextFileChange change = new TextFileChange("Add Include " + headerName, file);
       change.setSaveMode(TextFileChange.LEAVE_DIRTY);
       change.setEdit(new MultiTextEdit());
 
-      String lineSep = FileUtil.getLineSeparator(file);
-      
-      StringBuffer includeStmt = getIncludeStatement(headerName, isSystemInclude);
+      final String lineSep = FileUtil.getLineSeparator(file);
+
+      final StringBuffer includeStmt = getIncludeStatement(headerName, isSystemInclude);
       includeStmt.append(lineSep);
-      
+
       int offset = 0;
 
       if (previousStatement.isPresent()) {
-         IASTPreprocessorStatement prevStmt = previousStatement.get();
+         final IASTPreprocessorStatement prevStmt = previousStatement.get();
          offset = PreprocessorStatementUtil.getOffsetToInsertAfter(previousStatement);
 
          if (prevStmt instanceof IASTPreprocessorIncludeStatement && ((IASTPreprocessorIncludeStatement) prevStmt)
@@ -151,11 +165,11 @@ public class IncludeInsertionUtil {
             includeStmt.insert(0, lineSep);
          }
 
-         Optional<IASTPreprocessorStatement> nextStatement = Lists.immutable.of(ast.getAllPreprocessorStatements()).dropWhile(s -> s != prevStmt)
-               .drop(1).getFirstOptional();
+         final Optional<IASTPreprocessorStatement> nextStatement = Lists.immutable.of(ast.getAllPreprocessorStatements()).dropWhile(
+               s -> s != prevStmt).drop(1).getFirstOptional();
 
          if (nextStatement.isPresent()) {
-            IASTPreprocessorStatement nextStmt = nextStatement.get();
+            final IASTPreprocessorStatement nextStmt = nextStatement.get();
 
             if (!(nextStmt instanceof IASTPreprocessorIncludeStatement && ((IASTPreprocessorIncludeStatement) nextStmt)
                   .isSystemInclude() == isSystemInclude)) {
