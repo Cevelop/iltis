@@ -4,8 +4,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.collections.impl.factory.primitive.CharLists;
+import org.eclipse.collections.impl.utility.internal.primitive.CharIterableIterate;
+
 import ch.hsr.ifs.iltis.core.core.functional.functions.Function;
-import ch.hsr.ifs.iltis.core.core.resources.StringUtil;
 
 
 /**
@@ -114,6 +116,10 @@ public abstract class StringUtil {
 
    public static boolean startsAndEndsWithQuotes(final CharSequence s) {
       return s.charAt(0) == '"' && s.charAt(s.length() - 1) == '"' || s.charAt(0) == '\'' && s.charAt(s.length() - 1) == '\'';
+   }
+
+   public static boolean containsOnlyWhitespace(char[] chars) {
+      return CharIterableIterate.allSatisfy(CharLists.immutable.of(chars), c -> Character.isWhitespace(c));
    }
 
 }
