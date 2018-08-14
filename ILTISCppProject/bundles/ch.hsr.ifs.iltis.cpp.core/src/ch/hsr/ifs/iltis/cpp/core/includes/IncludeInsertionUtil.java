@@ -8,7 +8,6 @@ import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.tuple.Tuples;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -18,7 +17,6 @@ import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.MultiTextEdit;
 
 import ch.hsr.ifs.iltis.core.core.resources.FileUtil;
-import ch.hsr.ifs.iltis.core.core.resources.StringUtil;
 import ch.hsr.ifs.iltis.cpp.core.ast.utilities.ITranslationUnitUtil;
 import ch.hsr.ifs.iltis.cpp.core.preprocessor.PreprocessorScope;
 import ch.hsr.ifs.iltis.cpp.core.preprocessor.PreprocessorStatementUtil;
@@ -184,7 +182,7 @@ public class IncludeInsertionUtil {
                if (((IASTPreprocessorIncludeStatement) prevStmt).isSystemInclude() != isSystemInclude) {
                   includeStmt.insert(0, lineSep);
                }
-               if (!isFollowedByAWhitespaceLine(prevStmt, linenoOffsetContentMap)) {
+               if (!ITranslationUnitUtil.isFollowedByAWhitespaceLine(prevStmt, linenoOffsetContentMap)) {
                   includeStmt.append(lineSep);
                }
             } else if (nextStmt instanceof IASTPreprocessorIncludeStatement) {
@@ -192,15 +190,15 @@ public class IncludeInsertionUtil {
                if (((IASTPreprocessorIncludeStatement) nextStmt).isSystemInclude() != isSystemInclude) {
                   includeStmt.append(lineSep);
                }
-               if (!isLeadByAWhitespaceLine(nextStmt, linenoOffsetContentMap)) {
+               if (!ITranslationUnitUtil.isLeadByAWhitespaceLine(nextStmt, linenoOffsetContentMap)) {
                   includeStmt.insert(0, lineSep);
                }
                offset = PreprocessorStatementUtil.getOffsetToInsertBefore(nextStatement);
             } else {
-               if (!isFollowedByAWhitespaceLine(prevStmt, linenoOffsetContentMap)) {
+               if (!ITranslationUnitUtil.isFollowedByAWhitespaceLine(prevStmt, linenoOffsetContentMap)) {
                   includeStmt.append(lineSep);
                }
-               if (!isLeadByAWhitespaceLine(nextStmt, linenoOffsetContentMap)) {
+               if (!ITranslationUnitUtil.isLeadByAWhitespaceLine(nextStmt, linenoOffsetContentMap)) {
                   includeStmt.insert(0, lineSep);
                }
             }
@@ -209,7 +207,7 @@ public class IncludeInsertionUtil {
                   .isSystemInclude() == isSystemInclude)) {
                includeStmt.insert(0, lineSep);
             }
-            if (lineNcontainsOnlyWhitespace(0, linenoOffsetContentMap)) {
+            if (ITranslationUnitUtil.lineNcontainsOnlyWhitespace(0, linenoOffsetContentMap)) {
                includeStmt.append(lineSep);
             }
          }
@@ -221,22 +219,6 @@ public class IncludeInsertionUtil {
       change.addEdit(new InsertEdit(offset, includeStmt.toString()));
 
       return Optional.of(change);
-   }
-
-   private static boolean isLeadByAWhitespaceLine(IASTPreprocessorStatement stmt, MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap) {
-      int prevLine = stmt.getFileLocation().getStartingLineNumber();
-      return lineNcontainsOnlyWhitespace(prevLine, linenoOffsetContentMap);
-   }
-
-   private static boolean isFollowedByAWhitespaceLine(IASTPreprocessorStatement stmt,
-         MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap) {
-      int nextLine = stmt.getFileLocation().getEndingLineNumber();
-      return lineNcontainsOnlyWhitespace(nextLine, linenoOffsetContentMap);
-   }
-
-   private static boolean lineNcontainsOnlyWhitespace(int lineNo, MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap) {
-      return StringUtil.containsOnlyWhitespace(linenoOffsetContentMap.getIfAbsent(lineNo, () -> Tuples.pair(0, "NOWHITESPACECHARS".toCharArray()))
-            .getTwo());
    }
 
    /**
