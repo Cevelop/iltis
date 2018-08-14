@@ -13,6 +13,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.collections.impl.lazy.ZipIterable;
+import org.eclipse.collections.impl.list.fixed.ArrayAdapter;
+
 import ch.hsr.ifs.iltis.core.core.data.AbstractPair;
 import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
 import ch.hsr.ifs.iltis.core.core.functional.Functional;
@@ -297,5 +300,31 @@ public abstract class CollectionUtil {
     */
    public static <E> boolean haveSameElementsInSameOrder(final Collection<E> c1, final Collection<E> c2) {
       return !Functional.zip(c1, c2).anyMatch((pair) -> !AbstractPair.allElementEquals(pair));
+   }
+
+   /**
+    * Used to check if two {@link Iterable}s contain the same elements in the same order
+    * 
+    * @param c1
+    *        The first Iterable
+    * @param c2
+    *        The second Iterable
+    * @return {@code true} iff both Iterables contain the same elements in the same order
+    */
+   public static <E> boolean haveSameElementsInSameOrder(final Iterable<E> c1, final Iterable<E> c2) {
+      return new ZipIterable<E, E>(c1, c2).allSatisfy(p -> p.getOne().equals(p.getTwo()));
+   }
+
+   /**
+    * Used to check if an Iterable and an Array contain the same elements in the same order
+    * 
+    * @param c1
+    *        The Iterable
+    * @param c2
+    *        The Array
+    * @return {@code true} iff Iterable and Array contain the same elements in the same order
+    */
+   public static <E> boolean haveSameElementsInSameOrder(final Iterable<E> c1, final E[] c2) {
+      return new ZipIterable<E, E>(c1, ArrayAdapter.adapt(c2)).allSatisfy(p -> p.getOne().equals(p.getTwo()));
    }
 }
