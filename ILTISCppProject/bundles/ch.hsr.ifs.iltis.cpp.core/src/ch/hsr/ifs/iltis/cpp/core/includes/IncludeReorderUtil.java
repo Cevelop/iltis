@@ -5,6 +5,8 @@ import java.util.Optional;
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorIncludeStatement;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Iterables;
 import org.eclipse.collections.impl.lazy.CompositeIterable;
 import org.eclipse.core.resources.IFile;
@@ -18,6 +20,7 @@ import org.eclipse.text.edits.MoveTargetEdit;
 import org.eclipse.text.edits.MultiTextEdit;
 
 import ch.hsr.ifs.iltis.core.core.resources.FileUtil;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.ITranslationUnitUtil;
 import ch.hsr.ifs.iltis.cpp.core.preprocessor.PreprocessorScope;
 import ch.hsr.ifs.iltis.cpp.core.preprocessor.PreprocessorStatementUtil;
 
@@ -61,7 +64,7 @@ public class IncludeReorderUtil {
     *
     */
    public static void reorderIncludeStatements(final IASTTranslationUnit ast, final int textChangeSaveState, IProgressMonitor pm) {
-      createReorderIncludeStatements(ast, PreprocessorScope.createFrom(ast.getAllPreprocessorStatements())).ifPresent(change -> {
+      createReorderIncludeStatements(ast, PreprocessorScope.createFrom(ast)).ifPresent(change -> {
          try {
             change.setSaveMode(textChangeSaveState);
             change.perform(pm);
@@ -88,17 +91,22 @@ public class IncludeReorderUtil {
       MultiTextEdit multiEdit = new MultiTextEdit();
       change.setEdit(multiEdit);
 
-      rootScope.forEachDownWith(IncludeReorderUtil::createMoveEdits, change);
+      MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap = ITranslationUnitUtil.createLinenoOffsetContentMap(ast
+            .getOriginatingTranslationUnit());
+
+      rootScope.forEachDownWith((s, c) -> IncludeReorderUtil.createMoveEdits(s, c, linenoOffsetContentMap), change);
 
       return multiEdit.hasChildren() ? Optional.of(change) : Optional.empty();
    }
 
    @SuppressWarnings("unchecked")
-   private static void createMoveEdits(PreprocessorScope scope, TextFileChange change) {
+   private static void createMoveEdits(PreprocessorScope scope, TextFileChange change,
+         MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap) {
       MutableList<IASTPreprocessorIncludeStatement> includeDirectives = scope.getIncludeDirectives();
       if (includeDirectives.isEmpty()) return;
 
-      int insertOffset = PreprocessorStatementUtil.getOffsetToInsertAfter(scope.findLastNonScopeStatementBeforeSubScopes());
+      int insertOffset = PreprocessorStatementUtil.getOffsetToInsertAfter(scope.findLastNonScopeNonIncludeStatementBeforeSubScopes(),
+            linenoOffsetContentMap);
 
       MutableList<IASTPreprocessorIncludeStatement> userIncludesSorted = includeDirectives.reject(IASTPreprocessorIncludeStatement::isSystemInclude)
             .sortThis(PreprocessorStatementUtil::compareIncludes);
@@ -130,13 +138,5 @@ public class IncludeReorderUtil {
          change.addEdit(new MoveTargetEdit(insertOffset, sourceEdit));
       });
    }
-
-   //   private static Optional<? extends IASTNode> findNodeAfterWhichToInsert(final IASTTranslationUnit ast) {
-   //      final int firstDeclarationOffset = ArrayIterate.take(ast.getDeclarations(true), 1).getFirstOptional().map(n -> n.getFileLocation()
-   //            .getNodeOffset()).orElse(-1);
-   //
-   //      return ArrayIterate.reject(ast.getAllPreprocessorStatements(), IASTPreprocessorStatement.class::isInstance).takeWhile(ppStmt -> ppStmt
-   //            .getFileLocation().getNodeOffset() < firstDeclarationOffset).getLastOptional();
-   //   }
 
 }

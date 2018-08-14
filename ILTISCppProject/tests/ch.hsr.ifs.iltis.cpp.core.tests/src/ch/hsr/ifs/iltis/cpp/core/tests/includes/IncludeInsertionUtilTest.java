@@ -83,9 +83,10 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
    //}
 
    //#include "foo.h"
+   //
+   //#include <cstdint>
    //#include <iostream>
    //#include <vector>
-   //#include <cstdint>
    //int main(){
    //}
    public void testSystemIncludeWasAddedIntoExistingMixedIncludes() throws CoreException {
@@ -105,7 +106,7 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
    //#include <vector>
    //#include <cstdint>
    //
-   // int main(){
+   //int main(){
    //}
    public void testUserIncludeAddedIntoExistingMixedIncludes() throws CoreException {
       executeActionAndAssertSameAST("sigmund.h", false);
@@ -137,10 +138,10 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
    //#endif
    //}
 
-   //  #define ABCD 2
+   //#define ABCD 2
    //
-   //  #include <iostream>
    //#include <cstdint>
+   //#include <iostream>
    // 
    //int main()
    //{
@@ -148,7 +149,7 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
    //#ifdef ABCD
    //    std::cout << "1: yes\n";
    //#else
-   //     std::cout << "1: no\n";
+   //    std::cout << "1: no\n";
    //#endif
    // 
    //#ifndef ABCD
@@ -183,7 +184,7 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
    //
    //struct foo {
    //    int member;
-   //;
+   //};
    //
    //#endif /* GRANDPARENT_H */
    public void testIsIncludePlacedWithNoOtherIncludesPresent() throws CoreException {
@@ -207,6 +208,8 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
    //struct foo {
    //    int member;
    //};
+   //
+   //#endif /* GRANDPARENT_H */
    public void testIsUserIncludePlacedWithNoOtherIncludesPresent() throws CoreException {
       executeActionAndAssertSameAST("bampf.h", false);
    }
@@ -252,8 +255,8 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
    //#ifndef GRANDPARENT_H
    //#define GRANDPARENT_H
    //
-   //#include "foo.h"
    //#include "bampf.h"
+   //#include "foo.h"
    //
    //struct foo {
    //    int member;
@@ -363,8 +366,8 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
    //#ifndef GRANDPARENT_H
    //#define GRANDPARENT_H
    //
-   //#include "schnorpsl.h"
    //#include "bampf.h"
+   //#include "schnorpsl.h"
    //
    //#include <cstdint>
    //

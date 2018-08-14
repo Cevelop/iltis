@@ -5,7 +5,10 @@ import java.util.Optional;
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorIncludeStatement;
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorStatement;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
+import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.tuple.Tuples;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -15,6 +18,8 @@ import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.MultiTextEdit;
 
 import ch.hsr.ifs.iltis.core.core.resources.FileUtil;
+import ch.hsr.ifs.iltis.core.core.resources.StringUtil;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.ITranslationUnitUtil;
 import ch.hsr.ifs.iltis.cpp.core.preprocessor.PreprocessorScope;
 import ch.hsr.ifs.iltis.cpp.core.preprocessor.PreprocessorStatementUtil;
 import ch.hsr.ifs.iltis.cpp.core.util.constants.CommonCPPConstants;
@@ -119,7 +124,7 @@ public class IncludeInsertionUtil {
     */
    public static Optional<TextFileChange> createIncludeIfNotJetIncluded(final IASTTranslationUnit ast, final String headerName,
          final boolean isSystemInclude) {
-      return createIncludeInScopeIfNotJetIncluded(ast, headerName, isSystemInclude, PreprocessorScope.createFrom(ast.getAllPreprocessorStatements()));
+      return createIncludeInScopeIfNotJetIncluded(ast, headerName, isSystemInclude, PreprocessorScope.createFrom(ast));
    }
 
    /**
@@ -141,6 +146,10 @@ public class IncludeInsertionUtil {
       if (isAlreadyIncluded(scope, headerName)) return Optional.empty();
 
       final IFile file = ast.getOriginatingTranslationUnit().getFile();
+
+      MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap = ITranslationUnitUtil.createLinenoOffsetContentMap(ast
+            .getOriginatingTranslationUnit());
+
       final TextFileChange change = new TextFileChange("Add Include " + headerName, file);
       change.setSaveMode(TextFileChange.LEAVE_DIRTY);
       change.setEdit(new MultiTextEdit());
@@ -151,16 +160,11 @@ public class IncludeInsertionUtil {
       includeStmt.append(lineSep);
 
       int offset = 0;
-      final Optional<? extends IASTPreprocessorStatement> previousStatement = scope.findStmtAfterWhichToAddInclude(headerName, isSystemInclude, ast);
+      final Optional<? extends IASTPreprocessorStatement> previousStatement = scope.findStmtAfterWhichToAddInclude(headerName, isSystemInclude);
 
       if (previousStatement.isPresent()) {
          final IASTPreprocessorStatement prevStmt = previousStatement.get();
-         offset = PreprocessorStatementUtil.getOffsetToInsertAfter(previousStatement);
-
-         if (prevStmt instanceof IASTPreprocessorIncludeStatement && ((IASTPreprocessorIncludeStatement) prevStmt)
-               .isSystemInclude() != isSystemInclude) {
-            includeStmt.insert(0, lineSep);
-         }
+         offset = PreprocessorStatementUtil.getOffsetToInsertAfter(previousStatement, linenoOffsetContentMap);
 
          final Optional<IASTPreprocessorStatement> nextStatement = Lists.immutable.of(ast.getAllPreprocessorStatements()).dropWhile(
                s -> s != prevStmt).drop(1).getFirstOptional();
@@ -168,8 +172,44 @@ public class IncludeInsertionUtil {
          if (nextStatement.isPresent()) {
             final IASTPreprocessorStatement nextStmt = nextStatement.get();
 
-            if (!(nextStmt instanceof IASTPreprocessorIncludeStatement && ((IASTPreprocessorIncludeStatement) nextStmt)
+            if (prevStmt instanceof IASTPreprocessorIncludeStatement && nextStmt instanceof IASTPreprocessorIncludeStatement) {
+               /* inbetween two includes */
+               if (((IASTPreprocessorIncludeStatement) prevStmt).isSystemInclude() != isSystemInclude) {
+                  includeStmt.insert(0, lineSep);
+               }
+               if (((IASTPreprocessorIncludeStatement) nextStmt).isSystemInclude() != isSystemInclude) {
+                  includeStmt.append(lineSep);
+               }
+            } else if (prevStmt instanceof IASTPreprocessorIncludeStatement) {
+               if (((IASTPreprocessorIncludeStatement) prevStmt).isSystemInclude() != isSystemInclude) {
+                  includeStmt.insert(0, lineSep);
+               }
+               if (!isFollowedByAWhitespaceLine(prevStmt, linenoOffsetContentMap)) {
+                  includeStmt.append(lineSep);
+               }
+            } else if (nextStmt instanceof IASTPreprocessorIncludeStatement) {
+               /* use this stmt to insert */
+               if (((IASTPreprocessorIncludeStatement) nextStmt).isSystemInclude() != isSystemInclude) {
+                  includeStmt.append(lineSep);
+               }
+               if (!isLeadByAWhitespaceLine(nextStmt, linenoOffsetContentMap)) {
+                  includeStmt.insert(0, lineSep);
+               }
+               offset = PreprocessorStatementUtil.getOffsetToInsertBefore(nextStatement);
+            } else {
+               if (!isFollowedByAWhitespaceLine(prevStmt, linenoOffsetContentMap)) {
+                  includeStmt.append(lineSep);
+               }
+               if (!isLeadByAWhitespaceLine(nextStmt, linenoOffsetContentMap)) {
+                  includeStmt.insert(0, lineSep);
+               }
+            }
+         } else {
+            if (!(prevStmt instanceof IASTPreprocessorIncludeStatement && ((IASTPreprocessorIncludeStatement) prevStmt)
                   .isSystemInclude() == isSystemInclude)) {
+               includeStmt.insert(0, lineSep);
+            }
+            if (lineNcontainsOnlyWhitespace(0, linenoOffsetContentMap)) {
                includeStmt.append(lineSep);
             }
          }
@@ -181,6 +221,22 @@ public class IncludeInsertionUtil {
       change.addEdit(new InsertEdit(offset, includeStmt.toString()));
 
       return Optional.of(change);
+   }
+
+   private static boolean isLeadByAWhitespaceLine(IASTPreprocessorStatement stmt, MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap) {
+      int prevLine = stmt.getFileLocation().getStartingLineNumber();
+      return lineNcontainsOnlyWhitespace(prevLine, linenoOffsetContentMap);
+   }
+
+   private static boolean isFollowedByAWhitespaceLine(IASTPreprocessorStatement stmt,
+         MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap) {
+      int nextLine = stmt.getFileLocation().getEndingLineNumber();
+      return lineNcontainsOnlyWhitespace(nextLine, linenoOffsetContentMap);
+   }
+
+   private static boolean lineNcontainsOnlyWhitespace(int lineNo, MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap) {
+      return StringUtil.containsOnlyWhitespace(linenoOffsetContentMap.getIfAbsent(lineNo, () -> Tuples.pair(0, "NOWHITESPACECHARS".toCharArray()))
+            .getTwo());
    }
 
    /**

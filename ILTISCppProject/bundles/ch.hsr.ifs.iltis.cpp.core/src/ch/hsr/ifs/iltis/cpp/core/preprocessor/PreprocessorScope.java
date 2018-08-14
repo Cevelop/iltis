@@ -2,7 +2,6 @@ package ch.hsr.ifs.iltis.cpp.core.preprocessor;
 
 import static ch.hsr.ifs.iltis.cpp.core.preprocessor.PreprocessorStatementUtil.compareIncludes;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
@@ -63,7 +62,6 @@ public class PreprocessorScope {
       }
       PreprocessorScope root = scopeStack.pop();
       if (root.nonScopeContent.isEmpty()) {
-
          if (root.subScopes.size() == 1 && ArrayIterate.allSatisfyWith(ast.getDeclarations(true), (d, rs) -> {
             IASTFileLocation loc = d.getFileLocation();
             return rs.subScopes.get(0).contains(loc.getNodeOffset(), loc.getNodeOffset() + loc.getNodeLength());
@@ -75,15 +73,13 @@ public class PreprocessorScope {
       return root;
    }
 
-   public Optional<? extends IASTPreprocessorStatement> findStmtAfterWhichToAddInclude(String name, boolean isSystemInclude,
-         IASTTranslationUnit ast) {
-      MutableList<IASTPreprocessorIncludeStatement> includeStatements = getIncludeDirectives();
+   public Optional<? extends IASTPreprocessorStatement> findStmtAfterWhichToAddInclude(String name, boolean isSystemInclude) {
+      MutableList<? extends IASTPreprocessorIncludeStatement> includeStatements = getIncludeDirectives();
       if (!includeStatements.isEmpty()) {
-         return includeStatements.reduce((last, current) -> compareIncludes(current, name, isSystemInclude) >= 0 ? last : current);
-      } else {
-         /* has no includes */
-         return findLastNonScopeStatementBeforeSubScopes();
+         IASTPreprocessorStatement stmt = includeStatements.toReversed().detect(st -> compareIncludes(st, name, isSystemInclude) < 0);
+         if (stmt != null)  return Optional.of(stmt);
       }
+      return findLastNonScopeNonIncludeStatementBeforeSubScopes();
    }
 
    //TODO needs to treat only local nodes??
@@ -91,11 +87,12 @@ public class PreprocessorScope {
       return Lists.adapt(nonScopeContent).selectInstancesOf(IASTPreprocessorIncludeStatement.class);
    }
 
-   public Optional<IASTPreprocessorStatement> findLastNonScopeStatementBeforeSubScopes() {
-      if (nonScopeContent.isEmpty()) {
+   public Optional<IASTPreprocessorStatement> findLastNonScopeNonIncludeStatementBeforeSubScopes() {
+      MutableList<IASTPreprocessorStatement> nonIcludeStmts = nonScopeContent.select(s -> !(s instanceof IASTPreprocessorIncludeStatement));
+      if (nonIcludeStmts.isEmpty()) {
          return Optional.ofNullable(start);
       } else {
-         return Lists.adapt(nonScopeContent).select(s -> {
+         return Lists.adapt(nonIcludeStmts).select(s -> {
             IASTFileLocation loc = s.getFileLocation();
             return Lists.adapt(subScopes).collect(sc -> sc.start).noneSatisfyWith((scope, endOffset) -> scope.getFileLocation()
                   .getNodeOffset() < endOffset, loc.getNodeOffset() + loc.getNodeLength());
