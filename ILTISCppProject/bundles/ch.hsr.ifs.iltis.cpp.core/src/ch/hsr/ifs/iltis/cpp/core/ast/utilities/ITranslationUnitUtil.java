@@ -1,0 +1,123 @@
+package ch.hsr.ifs.iltis.cpp.core.ast.utilities;
+
+import java.util.Optional;
+
+import org.eclipse.cdt.core.dom.ast.IASTNode;
+import org.eclipse.cdt.core.model.ITranslationUnit;
+import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.api.tuple.Pair;
+import org.eclipse.collections.impl.factory.Maps;
+import org.eclipse.collections.impl.tuple.Tuples;
+
+import ch.hsr.ifs.iltis.core.core.resources.StringUtil;
+
+
+public class ITranslationUnitUtil {
+
+   /**
+    * Crates a map indexed by line number, containing pairs of line-start-offset and line-content.
+    * 
+    * @param tu
+    *        The translation unit to extract the content from
+    * @return The created map
+    */
+   public static MutableMap<Integer, Pair<Integer, char[]>> createLinenoOffsetContentMap(final ITranslationUnit tu) {
+      char[] contents = tu.getContents();
+      MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap = Maps.mutable.empty();
+      int lastOffset = 0;
+      int lineCounter = 0;
+      for (int currentOffset = 0; currentOffset < contents.length; currentOffset++) {
+         if (contents[currentOffset] == '\n') {
+            char[] line = new char[currentOffset + 1 - lastOffset];
+            System.arraycopy(contents, lastOffset, line, 0, currentOffset + 1 - lastOffset);
+            linenoOffsetContentMap.put(lineCounter++, Tuples.pair(lastOffset, line));
+            lastOffset = currentOffset + 1;
+         }
+      }
+      return linenoOffsetContentMap;
+   }
+
+   /**
+    * Detects if a line is following a line containing only whitespace
+    * 
+    * @param node
+    *        The node to take the start-line from
+    * @param linenoOffsetContentMap
+    *        The map used for content mapping ({@link #createLinenoOffsetContentMap(ITranslationUnit)})
+    * @return {@code true} iff the line before the line on which the node starts consists only of whitespace.
+    */
+   public static boolean isLeadByAWhitespaceLine(IASTNode node, MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap) {
+      return ITranslationUnitUtil.lineNcontainsOnlyWhitespace(node.getFileLocation().getStartingLineNumber(), linenoOffsetContentMap);
+   }
+
+   /**
+    * Detects if a line is followed by a line containing only whitespace
+    * 
+    * @param node
+    *        The node to take the end-line from
+    * @param linenoOffsetContentMap
+    *        The map used for content mapping ({@link #createLinenoOffsetContentMap(ITranslationUnit)})
+    * @return {@code true} iff the line after the line on which the node ends consists only of whitespace.
+    */
+   public static boolean isFollowedByAWhitespaceLine(IASTNode node, MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap) {
+      return ITranslationUnitUtil.lineNcontainsOnlyWhitespace(node.getFileLocation().getEndingLineNumber(), linenoOffsetContentMap);
+   }
+
+   /**
+    * Detects if line X consists of only whitespace
+    * 
+    * @param lineNo
+    *        The line number to test
+    * @param linenoOffsetContentMap
+    *        The map used for content mapping ({@link #createLinenoOffsetContentMap(ITranslationUnit)})
+    * @return {@code true} iff the line consists only of whitespace.
+    */
+   public static boolean lineNcontainsOnlyWhitespace(int lineNo, MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap) {
+      if (linenoOffsetContentMap.containsKey(lineNo)) {
+         return StringUtil.containsOnlyWhitespace(linenoOffsetContentMap.get(lineNo).getTwo());
+      } else {
+         return false;
+      }
+   }
+
+   public static Optional<? extends Pair<Integer, Integer>> getOffsetAndLenghtOfLine(int lineNo,
+         MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap) {
+      if (linenoOffsetContentMap.containsKey(lineNo)) {
+         Pair<Integer, char[]> pair = linenoOffsetContentMap.get(lineNo);
+         return Optional.of(Tuples.twin(pair.getOne(), pair.getTwo().length));
+      } else {
+         return Optional.empty();
+      }
+   }
+
+   public static int getLineNo(int offset, MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap) {
+      Optional<Pair<Integer, Pair<Integer, char[]>>> reduce = linenoOffsetContentMap.keyValuesView().reduce((last, curr) -> curr.getTwo()
+            .getOne() <= offset ? last : curr);
+      if (reduce.isPresent()) {
+         return reduce.get().getOne();
+      } else {
+         return 0;
+      }
+   }
+
+   public static Optional<? extends Pair<Integer, Integer>> getOffsetAndLenghtOfLine(IASTNode node,
+         MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap) {
+      return getOffsetAndLenghtOfLine(node.getFileLocation().getStartingLineNumber(), linenoOffsetContentMap);
+   }
+
+   public static int getOffsetOfPreviousLine(IASTNode node, MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap) {
+      return getOffsetOfNextLine(node.getFileLocation().getStartingLineNumber(), linenoOffsetContentMap);
+   }
+
+   public static int getOffsetOfNextLine(IASTNode node, MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap) {
+      return getOffsetOfNextLine(node.getFileLocation().getEndingLineNumber(), linenoOffsetContentMap);
+   }
+
+   public static int getOffsetOfNextLine(int lineNo, MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap) {
+      if (linenoOffsetContentMap.containsKey(lineNo)) {
+         return linenoOffsetContentMap.get(lineNo).getOne();
+      } else {
+         return -1;
+      }
+   }
+}
