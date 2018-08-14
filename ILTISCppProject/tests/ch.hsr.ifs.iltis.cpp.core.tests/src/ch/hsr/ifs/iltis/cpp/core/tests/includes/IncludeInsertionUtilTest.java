@@ -379,4 +379,5 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
    public void testIsUserIncludeInsertedAtTheRightPositionWithOtherSystemAndUserIncludes() throws CoreException {
       executeActionAndAssertSameAST("bampf.h", false);
    }
+  
 }
