@@ -18,3 +18,7 @@ location "http://download.eclipse.org/releases/photon" {
 location "https://cevelop.com/iltis-unstable" {
 	ch.hsr.ifs.iltis.testing.core.core.feature.feature.group lazy
 }
+
+location "http://download.eclipse.org/collections/9.2.0/repository/" {
+	org.eclipse.collections.feature.feature.group
+}
