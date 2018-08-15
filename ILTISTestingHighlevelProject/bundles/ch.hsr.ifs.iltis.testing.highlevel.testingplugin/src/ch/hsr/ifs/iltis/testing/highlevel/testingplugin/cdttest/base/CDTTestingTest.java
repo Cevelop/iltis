@@ -51,7 +51,12 @@ public abstract class CDTTestingTest extends RTSSourceFileTest {
       assertTrue(NLS.bind("No checker for problem id [{0}] found.", activeProblemId.getId()), checkerEnabled);
    }
 
-   private void enableCodanProblem(final CodanProblem codanProblem) {
+   /**
+    * Enable the specified codan problem.
+    * 
+    * @param codanProblem The codan problem to be enabled.
+    */
+   protected void enableCodanProblem(final CodanProblem codanProblem) {
       final IProblemPreference preference = codanProblem.getPreference();
       if (preference instanceof RootProblemPreference) {
          final RootProblemPreference rootProblemPreference = (RootProblemPreference) preference;

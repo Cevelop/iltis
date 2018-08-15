@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="ch.hsr.ifs.iltis.testing.highlevel.testingplugin" version="2">
+    <resource path="src/ch/hsr/ifs/iltis/testing/highlevel/testingplugin/cdttest/base/CDTTestingTest.java" type="ch.hsr.ifs.iltis.testing.highlevel.testingplugin.cdttest.base.CDTTestingTest">
+        <filter id="643846161">
+            <message_arguments>
+                <message_argument value="CodanProblem"/>
+                <message_argument value="CDTTestingTest"/>
+                <message_argument value="enableCodanProblem(CodanProblem)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>
