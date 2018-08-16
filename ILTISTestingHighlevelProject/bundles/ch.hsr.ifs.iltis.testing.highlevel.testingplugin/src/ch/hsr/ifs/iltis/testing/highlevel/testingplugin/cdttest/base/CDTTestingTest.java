@@ -12,11 +12,12 @@ import org.eclipse.cdt.codan.core.model.IProblemReporter;
 import org.eclipse.cdt.codan.core.param.IProblemPreference;
 import org.eclipse.cdt.codan.core.param.RootProblemPreference;
 import org.eclipse.cdt.codan.internal.core.model.CodanProblem;
+import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.osgi.util.NLS;
 
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
 
@@ -27,20 +28,34 @@ public abstract class CDTTestingTest extends RTSSourceFileTest {
    protected boolean checkerEnabled = false;
    protected boolean codanRun       = false;
 
+   /**
+    * Overload this function if you want to enable the checker for a single problem id.
+    * For multiple problem ids use {@link #getProblemIds()}.
+    */
    protected IProblemId getProblemId() {
-      fail("Checker can not be enabled without a problem id. Overload getProblemId() propperly.");
+      fail("Checker can not be enabled without a problem id. Overload either getProblemId() or getProblemIds() propperly.");
       return null;
    }
 
    /**
-    * Call to enable only the checker for the problem id provided in {@link #getProblemId()}
+    * Overload this function if you want to enable multiple CodanProblems in the checker.
+    *
+    * This will call {@link #getProblemId()} as a default, so if there's only a single
+    * problem, you can simply overload the other function instead.
+    */
+   protected MutableList<IProblemId> getProblemIds() {
+      return Lists.mutable.of(getProblemId());
+   }
+
+   /**
+    * Call to enable only the checker for the problem ids provided in {@link #getProblemIds()}
     */
    protected void enableAndConfigureChecker() {
-      IProblemId activeProblemId = getProblemId();
+      MutableList<IProblemId> activeProblemIds = getProblemIds();
       final IProblemProfile profile = CodanRuntime.getInstance().getCheckersRegistry().getResourceProfile(getCurrentProject());
       Stream.of(profile.getProblems()).forEach(problem -> {
          final CodanProblem codanProblem = (CodanProblem) problem;
-         if (codanProblem.getId().equals(activeProblemId.getId())) {
+         if (activeProblemIds.anySatisfy(id -> id.getId().equals(codanProblem.getId()))) {
             enableCodanProblem(codanProblem);
             checkerEnabled = true;
          } else {
@@ -48,13 +63,14 @@ public abstract class CDTTestingTest extends RTSSourceFileTest {
          }
       });
       CodanRuntime.getInstance().getCheckersRegistry().updateProfile(getCurrentProject(), profile);
-      assertTrue(NLS.bind("No checker for problem id [{0}] found.", activeProblemId.getId()), checkerEnabled);
+      assertTrue("No checker for any problem id found.", checkerEnabled);
    }
 
    /**
     * Enable the specified codan problem.
     * 
-    * @param codanProblem The codan problem to be enabled.
+    * @param codanProblem
+    *        The codan problem to be enabled.
     */
    protected void enableCodanProblem(final CodanProblem codanProblem) {
       final IProblemPreference preference = codanProblem.getPreference();
