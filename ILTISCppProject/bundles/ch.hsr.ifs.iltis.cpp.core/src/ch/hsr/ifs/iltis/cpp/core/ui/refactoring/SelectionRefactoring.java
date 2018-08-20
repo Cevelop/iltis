@@ -1,11 +1,7 @@
 package ch.hsr.ifs.iltis.cpp.core.ui.refactoring;
 
-import java.util.Optional;
-
 import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.model.ICElement;
-import org.eclipse.cdt.core.model.ICProject;
-import org.eclipse.jface.text.ITextSelection;
 
 import ch.hsr.ifs.iltis.cpp.core.wrappers.CRefactoring;
 
@@ -15,20 +11,21 @@ import ch.hsr.ifs.iltis.cpp.core.wrappers.CRefactoring;
  * 
  * @author tstauber
  */
-public abstract class SelectionRefactoring extends CRefactoring {
+public abstract class SelectionRefactoring<T extends MarkerInfo<T>> extends CRefactoring {
 
-   protected final IRefactoringInfo info;
+   protected final T info;
 
-   public SelectionRefactoring(final ICElement element, final Optional<ITextSelection> selection, final ICProject project,
-                               final IRefactoringInfo info) {
-      super(element, selection, project);
+   protected SelectionRefactoring(final ICElement element, final T info) {
+      super(element, info.getSelection(), element.getCProject());
       this.info = info;
    }
 
    /**
     * @return The info for this refactoring
     */
-   public abstract IRefactoringInfo getRefactoringInfo();
+   public T getRefactoringInfo() {
+      return info;
+   }
 
    /**
     * Checks if this refactoring is configured to use selection and if this is the case, if the node is inside the selection.
@@ -38,11 +35,8 @@ public abstract class SelectionRefactoring extends CRefactoring {
     * @return true if no selection is used, or if the node is in the selection.
     */
    protected boolean isInSelection(final IASTNode node) {
-      if (selectedRegion.getLength() > 0 && getRefactoringInfo().useSelection()) {
-         return isInSelectionHook(node);
-      } else {
-         return true;
-      }
+      if (selectedRegion.getLength() > 0 && info.usesSelection()) { return isInSelectionHook(node); }
+      return true;
    }
 
    /**

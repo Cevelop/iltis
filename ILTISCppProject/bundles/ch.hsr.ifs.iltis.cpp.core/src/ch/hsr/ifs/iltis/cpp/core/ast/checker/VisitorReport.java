@@ -14,7 +14,7 @@ import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
  * @param <ProblemId>
  *        A class which implements IProblemId (It is recommended to use an enum for this)
  */
-public class VisitorReport<ProblemId extends IProblemId> extends AbstractPair<ProblemId, IASTNode> {
+public class VisitorReport<ProblemId extends IProblemId<ProblemId>> extends AbstractPair<ProblemId, IASTNode> {
 
    public VisitorReport(final ProblemId first, final IASTNode second) {
       super(first, second);

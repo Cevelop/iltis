@@ -2,8 +2,6 @@ package ch.hsr.ifs.iltis.cpp.core.wrappers;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Map;
-import java.util.Optional;
 
 import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.model.CoreModelUtil;
@@ -17,13 +15,11 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.text.ITextSelection;
-import org.eclipse.jface.text.TextSelection;
 import org.eclipse.ltk.core.refactoring.RefactoringDescriptor;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 
-import ch.hsr.ifs.iltis.cpp.core.wrappers.CRefactoring;
-import ch.hsr.ifs.iltis.cpp.core.wrappers.CRefactoringContext;
+import ch.hsr.ifs.iltis.core.core.ids.IRefactoringId;
+import ch.hsr.ifs.iltis.cpp.core.ui.refactoring.MarkerInfo;
 
 
 /**
@@ -34,19 +30,13 @@ import ch.hsr.ifs.iltis.cpp.core.wrappers.CRefactoringContext;
  *
  */
 @SuppressWarnings("restriction")
-public abstract class CRefactoringDescriptor extends RefactoringDescriptor {
+public abstract class CRefactoringDescriptor<R extends IRefactoringId<R>, T extends MarkerInfo<T>> extends RefactoringDescriptor {
 
-   public static final String    FILE_NAME = "fileName";  //$NON-NLS-1$
-   public static final String    SELECTION = "selection"; //$NON-NLS-1$
-   protected Map<String, String> arguments;
+   protected T info;
 
-   public CRefactoringDescriptor(String id, String project, String description, String comment, int flags, Map<String, String> arguments) {
-      super(id, project, description, comment, flags);
-      this.arguments = arguments;
-   }
-
-   public Map<String, String> getParameterMap() {
-      return arguments;
+   public CRefactoringDescriptor(R id, String project, String description, String comment, int flags, T info) {
+      super(id.getId(), project, description, comment, flags);
+      this.info = info;
    }
 
    @Override
@@ -57,19 +47,6 @@ public abstract class CRefactoringDescriptor extends RefactoringDescriptor {
       CRefactoring refactoring = createRefactoring(status);
       if (refactoring == null) return null;
       return new CRefactoringContext(refactoring);
-   }
-
-   protected Optional<ITextSelection> getSelection() throws CoreException {
-      ITextSelection selection;
-      String selectStrings[] = arguments.get(SELECTION).split(","); //$NON-NLS-1$
-      if (selectStrings.length >= 2) {
-         int offset = Integer.parseInt(selectStrings[0]);
-         int length = Integer.parseInt(selectStrings[1]);
-         selection = new TextSelection(offset, length);
-      } else {
-         throw new CoreException(new Status(IStatus.ERROR, CUIPlugin.PLUGIN_ID, "Illegal selection."));
-      }
-      return Optional.ofNullable(selection);
    }
 
    protected ICProject getCProject() throws CoreException {
@@ -83,8 +60,7 @@ public abstract class CRefactoringDescriptor extends RefactoringDescriptor {
 
    protected IFile getFile() throws CoreException {
       try {
-         String filename = arguments.get(FILE_NAME);
-         return ResourceLookup.selectFileForLocationURI(new URI(filename), ResourcesPlugin.getWorkspace().getRoot().getProject(getProject()));
+         return ResourceLookup.selectFileForLocationURI(new URI(info.fileName), ResourcesPlugin.getWorkspace().getRoot().getProject(getProject()));
       } catch (URISyntaxException e) {
          throw new CoreException(new Status(IStatus.ERROR, CUIPlugin.PLUGIN_ID, e.getMessage(), e));
       }
@@ -92,8 +68,7 @@ public abstract class CRefactoringDescriptor extends RefactoringDescriptor {
 
    protected ITranslationUnit getTranslationUnit() throws CoreException {
       try {
-         String filename = arguments.get(FILE_NAME);
-         return CoreModelUtil.findTranslationUnitForLocation(new URI(filename), getCProject());
+         return CoreModelUtil.findTranslationUnitForLocation(new URI(info.fileName), getCProject());
       } catch (URISyntaxException e) {
          throw new CoreException(new Status(IStatus.ERROR, CUIPlugin.PLUGIN_ID, e.getMessage(), e));
       }

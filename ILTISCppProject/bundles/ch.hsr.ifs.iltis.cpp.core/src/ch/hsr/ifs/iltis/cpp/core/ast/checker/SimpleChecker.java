@@ -33,12 +33,13 @@ import ch.hsr.ifs.iltis.cpp.core.wrappers.AbstractIndexAstChecker;
  * @param <ProblemId>
  *        A class which implements IProblemId (It is recommended to use an enum for this)
  */
-public abstract class SimpleChecker<ProblemId extends IProblemId> extends AbstractIndexAstChecker implements IChecker, ISimpleReporter<ProblemId> {
+public abstract class SimpleChecker<ProblemId extends IProblemId<ProblemId>> extends AbstractIndexAstChecker implements IChecker,
+      ISimpleReporter<ProblemId> {
 
    protected SimpleVisitor<?, ?> visitor = createVisitor();
 
-   protected final List<VisitorReport<? extends IProblemId>>                  nodesToReport     = new ArrayList<>();
-   protected final HashMap<VisitorReport<? extends IProblemId>, List<Object>> argumentsToReport = new HashMap<>();
+   protected final List<VisitorReport<ProblemId>>                  nodesToReport     = new ArrayList<>();
+   protected final HashMap<VisitorReport<ProblemId>, List<Object>> argumentsToReport = new HashMap<>();
 
    @Override
    public void processAst(final IASTTranslationUnit ast) {
@@ -83,7 +84,7 @@ public abstract class SimpleChecker<ProblemId extends IProblemId> extends Abstra
     * Per default this method returns the arguments for each result. These arguments are then used to report the problem.
     * Can be overridden.
     */
-   protected Object[] argsHook(final VisitorReport<? extends IProblemId> result) {
+   protected Object[] argsHook(final VisitorReport<? extends IProblemId<ProblemId>> result) {
       final List<Object> arguments = argumentsToReport.get(result);
       if (arguments != null) {
          return arguments.toArray();

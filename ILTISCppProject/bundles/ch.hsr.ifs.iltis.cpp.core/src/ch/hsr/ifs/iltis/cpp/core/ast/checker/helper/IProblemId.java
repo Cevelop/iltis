@@ -1,6 +1,6 @@
 package ch.hsr.ifs.iltis.cpp.core.ast.checker.helper;
 
-import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
+import ch.hsr.ifs.iltis.core.core.ids.IId;
 
 
 /**
@@ -9,14 +9,7 @@ import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
  *
  * @author tstauber
  */
-public interface IProblemId {
-
-   /**
-    * Returns the id as String
-    *
-    * @return
-    */
-   public String getId();
+public interface IProblemId<T extends IId<T>> extends IId<T> {
 
    /**
     * By default this creates a new IProblemId. This method must be overridden for enums which extend IProblemId.
@@ -25,26 +18,14 @@ public interface IProblemId {
     *        The id
     * @return An IProblemId holding the id of the problem. If an enum constant for this id exists, this method must return said enum constant.
     */
-   public static IProblemId wrap(String id) {
-      return new IProblemId() {
+   static IProblemId<ProblemIdWrapper> wrap(String id) {
+      return new ProblemIdWrapper(id);
+   }
 
-         @Override
-         public String getId() {
-            return id;
-         }
+   class ProblemIdWrapper extends IIdWrapper<ProblemIdWrapper> implements IProblemId<ProblemIdWrapper> {
 
-         @Override
-         public int hashCode() {
-            return getId().hashCode();
-         }
-
-         @Override
-         public boolean equals(Object obj) {
-            if (obj instanceof IProblemId) { return getId().equals(((IProblemId) obj).getId()); }
-            if (obj instanceof String) { throw new ILTISException("Tried to compare IProblemId and String, please wrap the string first")
-                  .rethrowUnchecked(); }
-            return false;
-         }
-      };
+      protected ProblemIdWrapper(String id) {
+         super(id);
+      }
    }
 }

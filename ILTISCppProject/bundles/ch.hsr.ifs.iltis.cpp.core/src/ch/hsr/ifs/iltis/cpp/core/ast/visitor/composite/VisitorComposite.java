@@ -42,7 +42,6 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTVirtSpecifier;
 
 import ch.hsr.ifs.iltis.core.core.functional.functions.Function2;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
-import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.ISimpleReporter;
 import ch.hsr.ifs.iltis.cpp.core.ast.visitor.SimpleVisitor;
 
 
@@ -51,8 +50,7 @@ import ch.hsr.ifs.iltis.cpp.core.ast.visitor.SimpleVisitor;
  * @author tstauber, P. Bertschi, A. Deicha
  *
  */
-public class VisitorComposite<ProblemId extends Enum<ProblemId> & IProblemId, Reporter extends ISimpleReporter<ProblemId>, ArgType> extends
-      SimpleVisitor<ProblemId, ArgType> {
+public class VisitorComposite<ProblemId extends IProblemId<ProblemId>, ArgType> extends SimpleVisitor<ProblemId, ArgType> {
 
    private final List<SimpleVisitor<?, ArgType>>                          visitors;
    private final List<SimpleVisitor<?, ArgType>>                          visitorsThatAborted;
@@ -247,7 +245,7 @@ public class VisitorComposite<ProblemId extends Enum<ProblemId> & IProblemId, Re
    }
 
    @Override
-   public Set<? extends IProblemId> getProblemIds() {
+   public Set<? extends IProblemId<?>> getProblemIds() {
       return visitors.stream().flatMap(visitor -> visitor.getProblemIds().stream()).collect(Collectors.toSet());
    }
 

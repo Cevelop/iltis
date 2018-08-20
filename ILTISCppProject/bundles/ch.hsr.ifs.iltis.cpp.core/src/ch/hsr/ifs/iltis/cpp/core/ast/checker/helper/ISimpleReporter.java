@@ -8,7 +8,7 @@ import org.eclipse.cdt.core.dom.ast.IASTNode;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.VisitorReport;
 
 
-public interface ISimpleReporter<ProblemId extends IProblemId> {
+public interface ISimpleReporter<ProblemId extends IProblemId<ProblemId>> {
 
    /**
     * Adds {@code node} to the list of nodes that will be reported

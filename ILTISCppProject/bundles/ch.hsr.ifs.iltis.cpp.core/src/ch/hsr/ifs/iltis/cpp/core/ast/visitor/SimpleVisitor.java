@@ -26,7 +26,7 @@ import ch.hsr.ifs.iltis.cpp.core.wrappers.CRefactoring;
  * @param <ProblemId>
  *        An enum which implements IProblemId
  */
-public abstract class SimpleVisitor<ProblemId extends Enum<ProblemId> & IProblemId, ArgType> extends ASTVisitor {
+public abstract class SimpleVisitor<ProblemId extends IProblemId<ProblemId>, ArgType> extends ASTVisitor {
 
    protected final List<ArgType>              arguments;
    protected final ISimpleReporter<ProblemId> reporter;
@@ -99,7 +99,7 @@ public abstract class SimpleVisitor<ProblemId extends Enum<ProblemId> & IProblem
    /**
     * @return The problem Id's for this visitor. This must not be empty or null.
     */
-   public abstract Set<? extends IProblemId> getProblemIds();
+   public abstract Set<? extends IProblemId<?>> getProblemIds();
 
    public void enterCompositeSkipMode() {
       isInCompositeSkipMode = true;
@@ -125,7 +125,7 @@ public abstract class SimpleVisitor<ProblemId extends Enum<ProblemId> & IProblem
       return true;
    }
 
-   private Set<? extends IProblemId> getEnabledProblemIds() {
+   private Set<? extends IProblemId<?>> getEnabledProblemIds() {
       Set<String> codanProblems = CodanRuntime.getInstance().getCheckersRegistry().getRefProblems((IChecker) reporter).parallelStream().filter(
             IProblem::isEnabled).map(IProblem::getId).collect(Collectors.toSet());
       return getProblemIds().stream().filter(ipid -> codanProblems.contains(ipid.getId())).collect(Collectors.toSet());

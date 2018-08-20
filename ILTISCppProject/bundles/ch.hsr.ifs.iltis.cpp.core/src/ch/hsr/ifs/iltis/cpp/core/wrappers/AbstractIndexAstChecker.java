@@ -31,7 +31,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.OperationCanceledException;
 
 import ch.hsr.ifs.iltis.core.core.ILTIS;
-import ch.hsr.ifs.iltis.cpp.core.wrappers.CxxModelsCache;
+import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
+import ch.hsr.ifs.iltis.cpp.core.ui.refactoring.IInfo;
 
 
 /**
@@ -124,11 +125,34 @@ public abstract class AbstractIndexAstChecker extends AbstractCheckerWithProblem
       return true;
    }
 
+   public void reportProblem(IProblemId<?> id, IASTNode astNode, IInfo info) {
+      IProblemLocation loc = getProblemLocation(astNode);
+      if (loc != null) reportProblem(id.getId(), loc, info.toUnifiedMapArray());
+   }
+
+   public void reportProblem(IProblem problem, IASTNode astNode, IInfo info) {
+      IProblemLocation loc = getProblemLocation(astNode);
+      if (loc != null) reportProblem(problem, loc, info.toUnifiedMapArray());
+   }
+
+   /**
+    * @deprecated Use {@link #reportProblem(IProblemId, IASTNode, IInfo)}.
+    */
+   public void reportProblem(IProblemId<?> id, IASTNode astNode, Object... args) {
+      reportProblem(id.getId(), astNode, args);
+   }
+
+   /**
+    * @deprecated Use {@link #reportProblem(IProblemId, IASTNode, IInfo)}.
+    */
    public void reportProblem(String id, IASTNode astNode, Object... args) {
       IProblemLocation loc = getProblemLocation(astNode);
       if (loc != null) reportProblem(id, loc, args);
    }
 
+   /**
+    * @deprecated Use {@link #reportProblem(IProblem, IASTNode, IInfo)}
+    */
    public void reportProblem(IProblem problem, IASTNode astNode, Object... args) {
       IProblemLocation loc = getProblemLocation(astNode);
       if (loc != null) reportProblem(problem, loc, args);
