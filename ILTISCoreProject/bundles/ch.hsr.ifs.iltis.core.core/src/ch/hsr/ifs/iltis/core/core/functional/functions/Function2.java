@@ -1,8 +1,5 @@
 package ch.hsr.ifs.iltis.core.core.functional.functions;
 
-import java.util.function.Function;
-
-
 /**
  * Like a {@linkplain Function}, but takes two parameters of different types
  * 

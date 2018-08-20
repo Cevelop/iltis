@@ -13,7 +13,8 @@ Require-Bundle: org.eclipse.ui.workbench,
  org.eclipse.core.runtime,
  org.eclipse.emf.common.ui,
  ch.hsr.ifs.iltis.core.kotlin;visibility:=reexport,
- org.eclipse.collections
+ org.eclipse.collections,
+ org.eclipse.cdt.codan.core
 Export-Package: ch.hsr.ifs.iltis.core.core,
  ch.hsr.ifs.iltis.core.core.arrays,
  ch.hsr.ifs.iltis.core.core.collections,
@@ -21,8 +22,10 @@ Export-Package: ch.hsr.ifs.iltis.core.core,
  ch.hsr.ifs.iltis.core.core.exception,
  ch.hsr.ifs.iltis.core.core.functional,
  ch.hsr.ifs.iltis.core.core.functional.functions,
+ ch.hsr.ifs.iltis.core.core.ids,
  ch.hsr.ifs.iltis.core.core.preferences,
  ch.hsr.ifs.iltis.core.core.preferences.fieldeditor,
  ch.hsr.ifs.iltis.core.core.reflection,
  ch.hsr.ifs.iltis.core.core.resources,
- ch.hsr.ifs.iltis.core.core.ui.examples
+ ch.hsr.ifs.iltis.core.core.ui.examples,
+ ch.hsr.ifs.iltis.core.ltk.refactoring

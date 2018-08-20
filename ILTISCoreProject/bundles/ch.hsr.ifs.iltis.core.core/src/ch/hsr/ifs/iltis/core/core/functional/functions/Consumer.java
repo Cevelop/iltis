@@ -1,7 +1,7 @@
 package ch.hsr.ifs.iltis.core.core.functional.functions;
 
 /**
- * Like a {@linkplain Consumer}, but curryable
+ * Like a {@linkplain java.util.function.Consumer}, but curryable
  * 
  * @author tstauber
  * 
