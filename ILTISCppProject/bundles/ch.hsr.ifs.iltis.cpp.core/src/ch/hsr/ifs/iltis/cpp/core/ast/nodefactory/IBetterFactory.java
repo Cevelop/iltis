@@ -20,9 +20,11 @@ import org.eclipse.cdt.core.dom.ast.IASTInitializerClause;
 import org.eclipse.cdt.core.dom.ast.IASTName;
 import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.dom.ast.IASTParameterDeclaration;
+import org.eclipse.cdt.core.dom.ast.IASTSimpleDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTStatement;
 import org.eclipse.cdt.core.dom.ast.IASTUnaryExpression;
 import org.eclipse.cdt.core.dom.ast.IBasicType.Kind;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTBinaryExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTCompositeTypeSpecifier;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTConstructorChainInitializer;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTDeclarator;
@@ -30,6 +32,7 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTFieldReference;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTFunctionCallExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTFunctionDeclarator;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTInitializerList;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTLambdaExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTLiteralExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTName;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTNamedTypeSpecifier;
@@ -38,9 +41,15 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTQualifiedName;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTSimpleDeclSpecifier;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTSimpleTypeTemplateParameter;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateDeclaration;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateId;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateParameter;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTypeId;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTUnaryExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPNodeFactory;
+
+import ch.hsr.ifs.iltis.core.core.functional.functions.Consumer;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.CPPBinaryOperator;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.CPPUnaryOperator;
 
 
 public interface IBetterFactory extends ICPPNodeFactory {
@@ -81,11 +90,9 @@ public interface IBetterFactory extends ICPPNodeFactory {
 
    ICPPASTFunctionCallExpression newFunctionCallExpression(IASTExpression idExpr, IASTExpression... arguments);
 
-   ICPPASTFunctionCallExpression newFunctionCallExpression(String functionName, IASTExpression... arguments);
+   IASTExpressionStatement newFunctionCallStatement(IASTExpression idExpr, IASTInitializerClause... arguments);
 
-   IASTExpressionStatement newFunctionCallStatement(IASTExpression idExpr, IASTExpression... arguments);
-
-   IASTExpressionStatement newFunctionCallStatement(String functionName, IASTExpression... arguments);
+   IASTExpressionStatement newFunctionCallStatement(String functionName, IASTInitializerClause... arguments);
 
    ICPPASTLiteralExpression newIntegerLiteral(int n);
 
@@ -181,6 +188,32 @@ public interface IBetterFactory extends ICPPNodeFactory {
 
    IASTConditionalExpression newConditionalExpression(IASTExpression condition, IASTExpression positive, IASTExpression negative);
 
+   /* Create Also Factory Methods */
+
+   IASTCompoundStatement newCompoundStatement(Consumer<IASTCompoundStatement> also);
+
+   IASTDeclarationStatement newDeclarationStatement(Consumer<IASTDeclarationStatement> also);
+
+   ICPPASTDeclarator newDeclarator(IASTName name, Consumer<ICPPASTDeclarator> also);
+
+   ICPPASTFunctionCallExpression newFunctionCallExpression(Consumer<ICPPASTFunctionCallExpression> also);
+
+   ICPPASTFunctionDeclarator newFunctionDeclarator(Consumer<ICPPASTFunctionDeclarator> also);
+
+   ICPPASTLambdaExpression newLambdaExpression(Consumer<ICPPASTLambdaExpression> also);
+
+   IASTSimpleDeclaration newSimpleDeclaration(Consumer<IASTSimpleDeclaration> also);
+
+   ICPPASTTemplateId newTemplateId(IASTName name, Consumer<ICPPASTTemplateId> also);
+
+   /* Enum Operator Factory Methods */
+
+   ICPPASTUnaryExpression newUnaryExpression(CPPUnaryOperator operator, IASTExpression operand);
+
+   ICPPASTBinaryExpression newBinaryExpression(CPPBinaryOperator op, IASTExpression expr1, IASTExpression expr2);
+
+   ICPPASTBinaryExpression newBinaryExpression(CPPBinaryOperator op, IASTExpression expr1, IASTInitializerClause expr2);
+
    /* Magic Factory Methods */
 
    /**
@@ -204,7 +237,7 @@ public interface IBetterFactory extends ICPPNodeFactory {
     *        The right operand
     * @return A new binary expression with correct grouping.
     */
-   IASTBinaryExpression newMagicPrecedenceBinaryExpression(int operator, IASTExpression operand1, IASTInitializerClause operand2);
+   IASTBinaryExpression newMagicPrecedenceBinaryExpression(CPPBinaryOperator operator, IASTExpression operand1, IASTInitializerClause operand2);
 
    /**
     * Creates a new unary expression while automatically grouping the operands if necessary.
@@ -215,13 +248,13 @@ public interface IBetterFactory extends ICPPNodeFactory {
     * *[c++] -> *[(c++)]
     * </pre>
     * 
-    * @param unaryOperator
+    * @param operator
     *        The operator (one of {@link IASTUnaryExpression}{@code .op_...})
     * @param operand
     *        The operand
     * @return A new unary expression with correct grouping
     */
-   IASTUnaryExpression newMagicPrecedenceUnaryExpression(int unaryOperator, IASTExpression operand);
+   IASTUnaryExpression newMagicPrecedenceUnaryExpression(CPPUnaryOperator operator, IASTExpression operand);
 
    /**
     * Creates a new conditional expression while automatically grouping the operands if necessary.
@@ -231,8 +264,9 @@ public interface IBetterFactory extends ICPPNodeFactory {
     * 
     * [a + b] * [10] -> [(a + b)] * [10]
     * 
-    * [a] ? [b] : [c=d] -> 
+    * [a] ? [b] : [c=d] ->
     * </pre>
+    * 
     * @param condition
     * @param positive
     * @param negative

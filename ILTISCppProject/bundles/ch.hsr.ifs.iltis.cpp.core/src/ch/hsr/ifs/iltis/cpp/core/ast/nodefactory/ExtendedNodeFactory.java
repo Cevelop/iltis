@@ -2,8 +2,8 @@ package ch.hsr.ifs.iltis.cpp.core.ast.nodefactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
-import org.eclipse.cdt.core.dom.ast.IASTArraySubscriptExpression;
 import org.eclipse.cdt.core.dom.ast.IASTBinaryExpression;
 import org.eclipse.cdt.core.dom.ast.IASTCompoundStatement;
 import org.eclipse.cdt.core.dom.ast.IASTConditionalExpression;
@@ -13,7 +13,6 @@ import org.eclipse.cdt.core.dom.ast.IASTDeclarationStatement;
 import org.eclipse.cdt.core.dom.ast.IASTDeclarator;
 import org.eclipse.cdt.core.dom.ast.IASTEqualsInitializer;
 import org.eclipse.cdt.core.dom.ast.IASTExpression;
-import org.eclipse.cdt.core.dom.ast.IASTExpressionList;
 import org.eclipse.cdt.core.dom.ast.IASTExpressionStatement;
 import org.eclipse.cdt.core.dom.ast.IASTFieldReference;
 import org.eclipse.cdt.core.dom.ast.IASTFunctionCallExpression;
@@ -29,9 +28,9 @@ import org.eclipse.cdt.core.dom.ast.IASTParameterDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTSimpleDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTStatement;
 import org.eclipse.cdt.core.dom.ast.IASTTypeId;
-import org.eclipse.cdt.core.dom.ast.IASTTypeIdExpression;
 import org.eclipse.cdt.core.dom.ast.IASTUnaryExpression;
 import org.eclipse.cdt.core.dom.ast.IBasicType.Kind;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTBinaryExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTCompositeTypeSpecifier;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTConstructorChainInitializer;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTConstructorInitializer;
@@ -40,6 +39,7 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTFieldReference;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTFunctionCallExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTFunctionDeclarator;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTInitializerList;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTLambdaExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTLiteralExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTName;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTNamedTypeSpecifier;
@@ -51,12 +51,18 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateDeclaration;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateId;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateParameter;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTypeId;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTUnaryExpression;
+import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTDeclarationStatement;
+import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTFunctionCallExpression;
+import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTSimpleDeclaration;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTSimpleTypeTemplateParameter;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPNodeFactory;
 
 import ch.hsr.ifs.iltis.core.core.collections.CollectionUtil;
-import ch.hsr.ifs.iltis.cpp.core.ast.utilities.ExpressionAssociativityUtil;
-import ch.hsr.ifs.iltis.cpp.core.ast.utilities.ExpressionPrecedenceUtil;
+import ch.hsr.ifs.iltis.core.core.functional.functions.Consumer;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.CPPBinaryOperator;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.CPPOtherOperators;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.CPPUnaryOperator;
 import ch.hsr.ifs.iltis.cpp.core.util.constants.CommonCPPConstants;
 
 
@@ -198,28 +204,22 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
    }
 
    @Override
-   public ICPPASTFunctionCallExpression newFunctionCallExpression(final IASTExpression idExpr, final IASTExpression arg) {
-      final IASTExpression args[] = new IASTExpression[] { arg };
-      return newFunctionCallExpression(idExpr, args);
-   }
-
-   @Override
    public ICPPASTFunctionCallExpression newFunctionCallExpression(final IASTExpression idExpr, final IASTExpression... arguments) {
       return super.newFunctionCallExpression(idExpr, arguments);
    }
 
    @Override
-   public ICPPASTFunctionCallExpression newFunctionCallExpression(final String functionName, final IASTExpression... arguments) {
+   public ICPPASTFunctionCallExpression newFunctionCallExpression(final String functionName, final IASTInitializerClause... arguments) {
       return newFunctionCallExpression(newIdExpression(functionName), arguments);
    }
 
    @Override
-   public IASTExpressionStatement newFunctionCallStatement(final IASTExpression idExpr, final IASTExpression... arguments) {
+   public IASTExpressionStatement newFunctionCallStatement(final IASTExpression idExpr, final IASTInitializerClause... arguments) {
       return newExpressionStatement(newFunctionCallExpression(idExpr, arguments));
    }
 
    @Override
-   public IASTExpressionStatement newFunctionCallStatement(final String functionName, final IASTExpression... arguments) {
+   public IASTExpressionStatement newFunctionCallStatement(final String functionName, final IASTInitializerClause... arguments) {
       return newFunctionCallStatement(newIdExpression(functionName), arguments);
    }
 
@@ -389,12 +389,6 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
    }
 
    @Override
-   public IASTFunctionCallExpression newFunctionCallExpression(String functionName, IASTInitializerClause... args) {
-      final IASTIdExpression function = newIdExpression(functionName);
-      return newFunctionCallExpression(function, args);
-   }
-
-   @Override
    public IASTFunctionCallExpression newMemberFunctionCallExpression(IASTName objectName, String methodName, IASTInitializerClause... args) {
       final IASTFieldReference fieldReference = newFieldReference(newName(methodName), newIdExpression(objectName.copy()));
       return newFunctionCallExpression(fieldReference, args);
@@ -501,161 +495,110 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
       return super.newConditionalExpession(condition, positive, negative);
    }
 
+   /* Create Also Factory Methods */
+
+   @Override
+   public IASTCompoundStatement newCompoundStatement(Consumer<IASTCompoundStatement> also) {
+      return createAlso(this::newCompoundStatement, also);
+   }
+
+   @Override
+   public IASTDeclarationStatement newDeclarationStatement(Consumer<IASTDeclarationStatement> also) {
+      return createAlso(CPPASTDeclarationStatement::new, also);
+   }
+
+   @Override
+   public ICPPASTDeclarator newDeclarator(IASTName name, Consumer<ICPPASTDeclarator> also) {
+      return createAlso(() -> newDeclarator(name), also);
+   }
+
+   @Override
+   public ICPPASTFunctionCallExpression newFunctionCallExpression(Consumer<ICPPASTFunctionCallExpression> also) {
+      return createAlso(CPPASTFunctionCallExpression::new, also);
+   }
+
+   @Override
+   public ICPPASTFunctionDeclarator newFunctionDeclarator(Consumer<ICPPASTFunctionDeclarator> also) {
+      return createAlso(this::newFunctionDeclarator, also);
+   }
+
+   @Override
+   public ICPPASTLambdaExpression newLambdaExpression(Consumer<ICPPASTLambdaExpression> also) {
+      return createAlso(this::newLambdaExpression, also);
+   }
+
+   @Override
+   public IASTSimpleDeclaration newSimpleDeclaration(Consumer<IASTSimpleDeclaration> also) {
+      return createAlso(CPPASTSimpleDeclaration::new, also);
+   }
+
+   @Override
+   public ICPPASTTemplateId newTemplateId(IASTName name, Consumer<ICPPASTTemplateId> also) {
+      return createAlso(() -> newTemplateId(name), also);
+   }
+
+   private <T> T createAlso(Supplier<T> creator, Consumer<T> also) {
+      final T t = creator.get();
+      also.accept(t);
+      return t;
+   }
+
+   /* Enum Operator Factory Methods */
+
+   @Override
+   public ICPPASTUnaryExpression newUnaryExpression(CPPUnaryOperator operator, IASTExpression operand) {
+      return newUnaryExpression(operator.getCDTOperator(), operand);
+   }
+
+   @Override
+   public ICPPASTBinaryExpression newBinaryExpression(CPPBinaryOperator op, IASTExpression expr1, IASTExpression expr2) {
+      return newBinaryExpression(op.getCDTOperator(), expr1, expr2);
+   }
+
+   @Override
+   public ICPPASTBinaryExpression newBinaryExpression(CPPBinaryOperator op, IASTExpression expr1, IASTInitializerClause expr2) {
+      return newBinaryExpression(op.getCDTOperator(), expr1, expr2);
+   }
+
    /* Magic Factory Methods */
 
-   public IASTBinaryExpression newMagicPrecedenceBinaryExpression(int binaryOperator, IASTExpression operand1, IASTInitializerClause operand2) {
-      if (biExprNeedsGrouping(binaryOperator, ExprOperandPos.LHS, operand1) && biExprNeedsGrouping(binaryOperator, ExprOperandPos.RHS, operand2)) {
+   public IASTUnaryExpression newMagicPrecedenceUnaryExpression(CPPUnaryOperator op, IASTExpression operand) {
+      if (op.operandNeedsWraping(operand)) {
+         return newUnaryExpression(op, newUnaryExpression(IASTUnaryExpression.op_bracketedPrimary, operand));
+      } else {
+         return newUnaryExpression(op, operand);
+      }
+   }
+
+   public IASTBinaryExpression newMagicPrecedenceBinaryExpression(CPPBinaryOperator binaryOperator, IASTExpression operand1,
+         IASTInitializerClause operand2) {
+      boolean leftOperandNeedsWraping = binaryOperator.leftOperandNeedsWraping(operand1);
+      boolean rightOperandNeedsWraping = binaryOperator.rightOperandNeedsWraping(operand2);
+      if (leftOperandNeedsWraping && rightOperandNeedsWraping) {
          return newBinaryExpression(binaryOperator, newBracketedExpression(operand1), newBracketedExpression((IASTExpression) operand2));
-      } else if (biExprNeedsGrouping(binaryOperator, ExprOperandPos.LHS, operand1)) {
+      } else if (leftOperandNeedsWraping) {
          return newBinaryExpression(binaryOperator, newBracketedExpression(operand1), operand2);
-      } else if (biExprNeedsGrouping(binaryOperator, ExprOperandPos.RHS, operand2)) {
+      } else if (rightOperandNeedsWraping) {
          return newBinaryExpression(binaryOperator, operand1, newBracketedExpression((IASTExpression) operand2));
       } else {
          return newBinaryExpression(binaryOperator, operand1, operand2);
       }
    }
 
-   public IASTUnaryExpression newMagicPrecedenceUnaryExpression(int unaryOperator, IASTExpression operand) {
-      if (unExprNeedsGrouping(unaryOperator, operand)) {
-         return newUnaryExpression(unaryOperator, newUnaryExpression(IASTUnaryExpression.op_bracketedPrimary, operand));
-      } else {
-         return newUnaryExpression(unaryOperator, operand);
-      }
-   }
-
    public IASTConditionalExpression newMagicPrefedenceConditionalExpression(IASTExpression condition, IASTExpression positive,
          IASTExpression negative) {
-      if (condExprNeedsGrouping(condition, ExprOperandPos.LHS) && condExprNeedsGrouping(negative, ExprOperandPos.RHS)) {
+      boolean conditionNeedsWraping = CPPOtherOperators.CONDITIONAL.conditionalOperandNeedsWraping(condition);
+      boolean negativeNeedsWraping = CPPOtherOperators.CONDITIONAL.elseOperandNeedsWraping(negative);
+      if (conditionNeedsWraping && negativeNeedsWraping) {
          return newConditionalExpression(newUnaryExpression(IASTUnaryExpression.op_bracketedPrimary, condition), positive, newUnaryExpression(
                IASTUnaryExpression.op_bracketedPrimary, negative));
-      } else if (condExprNeedsGrouping(condition, ExprOperandPos.LHS)) {
+      } else if (conditionNeedsWraping) {
          return newConditionalExpression(newUnaryExpression(IASTUnaryExpression.op_bracketedPrimary, condition), positive, negative);
-      } else if (condExprNeedsGrouping(negative, ExprOperandPos.RHS)) {
+      } else if (negativeNeedsWraping) {
          return newConditionalExpression(condition, positive, newUnaryExpression(IASTUnaryExpression.op_bracketedPrimary, negative));
       } else {
          return newConditionalExpession(condition, positive, negative);
       }
-   }
-
-   private boolean condExprNeedsGrouping(IASTExpression operand, ExprOperandPos operandPos) {
-      if (operand instanceof IASTExpressionList) return ExpressionPrecedenceUtil.getConditionalOpPrecedence() > ExpressionPrecedenceUtil
-            .getCommaOpPrecedence();
-      if (operand instanceof IASTArraySubscriptExpression) return ExpressionPrecedenceUtil.getConditionalOpPrecedence() > ExpressionPrecedenceUtil
-            .getArraySubscriptOpPrecedence();
-      if (operand instanceof IASTTypeIdExpression) return ExpressionPrecedenceUtil.getConditionalOpPrecedence() > ExpressionPrecedenceUtil
-            .getTypeIdOpPrecedence();
-      if (operand instanceof IASTUnaryExpression) return ExpressionPrecedenceUtil.getConditionalOpPrecedence() > ExpressionPrecedenceUtil
-            .getUnaryOpPrecedence(((IASTUnaryExpression) operand).getOperator());
-      if (operand instanceof IASTBinaryExpression) {
-         int p = ExpressionPrecedenceUtil.getConditionalOpPrecedence() - ExpressionPrecedenceUtil.getBinaryOpPrecedence(
-               ((IASTBinaryExpression) operand).getOperator());
-         if (p > 0) {
-            return true;
-         } else if (p < 0) {
-            return false;
-         } else {
-            switch (operandPos) {
-            case LHS:
-               return true; /* Example [w = x] ? [y : z] the operand needs grouping */
-            case RHS:
-               return false; /* Example [w ? x] : [y += z] the operand does not need grouping */
-            }
-         }
-      }
-      if (operand instanceof IASTConditionalExpression) {
-         switch (operandPos) {
-         case LHS:
-            return true; /* Example [u ? v : w] ? [y : z] the operand needs grouping */
-         case RHS:
-            return false; /* Example [u ? v] : [w ? y : z] the operand does not need grouping */
-         }
-      }
-      return true;
-   }
-
-   private boolean unExprNeedsGrouping(int unaryOperator, IASTExpression operand) {
-      if (operand instanceof IASTBinaryExpression) return ExpressionPrecedenceUtil.getUnaryOpPrecedence(unaryOperator) > ExpressionPrecedenceUtil
-            .getBinaryOpPrecedence(((IASTBinaryExpression) operand).getOperator());
-      if (operand instanceof IASTUnaryExpression) return ExpressionPrecedenceUtil.getUnaryOpPrecedence(unaryOperator) > ExpressionPrecedenceUtil
-            .getUnaryOpPrecedence(((IASTUnaryExpression) operand).getOperator());
-      if (operand instanceof IASTExpressionList) return ExpressionPrecedenceUtil.getUnaryOpPrecedence(unaryOperator) > ExpressionPrecedenceUtil
-            .getCommaOpPrecedence();
-      if (operand instanceof IASTConditionalExpression) return ExpressionPrecedenceUtil.getUnaryOpPrecedence(unaryOperator) > ExpressionPrecedenceUtil
-            .getConditionalOpPrecedence();
-      if (operand instanceof IASTArraySubscriptExpression) return ExpressionPrecedenceUtil.getUnaryOpPrecedence(
-            unaryOperator) > ExpressionPrecedenceUtil.getArraySubscriptOpPrecedence();
-      if (operand instanceof IASTTypeIdExpression) return ExpressionPrecedenceUtil.getUnaryOpPrecedence(unaryOperator) > ExpressionPrecedenceUtil
-            .getTypeIdOpPrecedence();
-      return true;
-   }
-
-   private boolean biExprNeedsGrouping(int binaryOperator, ExprOperandPos operandPos, IASTInitializerClause operand) {
-      if (operand instanceof IASTInitializerList) return false;
-      if (operand instanceof IASTExpressionList) return ExpressionPrecedenceUtil.getBinaryOpPrecedence(binaryOperator) > ExpressionPrecedenceUtil
-            .getCommaOpPrecedence();
-      if (operand instanceof IASTArraySubscriptExpression) return ExpressionPrecedenceUtil.getBinaryOpPrecedence(
-            binaryOperator) > ExpressionPrecedenceUtil.getArraySubscriptOpPrecedence();
-      if (operand instanceof IASTTypeIdExpression) return ExpressionPrecedenceUtil.getBinaryOpPrecedence(binaryOperator) > ExpressionPrecedenceUtil
-            .getTypeIdOpPrecedence();
-      if (operand instanceof IASTUnaryExpression) return ExpressionPrecedenceUtil.getBinaryOpPrecedence(binaryOperator) > ExpressionPrecedenceUtil
-            .getUnaryOpPrecedence(((IASTUnaryExpression) operand).getOperator());
-      if (operand instanceof IASTBinaryExpression) {
-         int p = ExpressionPrecedenceUtil.getBinaryOpPrecedence(binaryOperator) - ExpressionPrecedenceUtil.getBinaryOpPrecedence(
-               ((IASTBinaryExpression) operand).getOperator());
-         if (p > 0) {
-            return true; /* Example [x + y] * [z] or [x] * [y + z] the operand needs grouping */
-         } else if (p < 0) {
-            return false; /* Example [x * y] + [z] or [x] = [y + z] the operand does not need grouping */
-         } else {
-            switch (operandPos) {
-            case LHS:
-               /* Not simplified for better readability */
-               switch (ExpressionAssociativityUtil.getBinaryOperatorAssociativity(binaryOperator)) {
-               case MATHEMATICAL:
-                  return false; /* Example [x * y] * [z] or [x + y] + [z] the operand does not need grouping */
-               case NOTATIONAL_LEFT:
-                  return false; /* Example [x / y] / [z] or [x - y] - [z] the operand does not need grouping */
-               case NOTATIONAL_RIGHT:
-                  return true; /* Example [x = y] = [z] or [x = y] += [z] the operand needs grouping */
-               case NOTATIONAL_NONE:
-                  throw new IllegalStateException("");
-               }
-            case RHS:
-               switch (ExpressionAssociativityUtil.getBinaryOperatorAssociativity(binaryOperator)) {
-               case MATHEMATICAL:
-                  return false; /* Example [x] * [y * z] or [x] + [y + z] the operand does not need grouping */
-               case NOTATIONAL_LEFT:
-                  return true; /* Example [x] / [y * z] or [x] - [y - z] the operand needs grouping */
-               case NOTATIONAL_RIGHT:
-                  return false; /* Example [x] = [y = z] the operand does not need grouping */
-               case NOTATIONAL_NONE:
-                  throw new IllegalStateException("");
-               }
-            }
-         }
-      }
-      if (operand instanceof IASTConditionalExpression) {
-         int p = ExpressionPrecedenceUtil.getBinaryOpPrecedence(binaryOperator) - ExpressionPrecedenceUtil.getConditionalOpPrecedence();
-         if (p > 0) {
-            return true;
-         } else if (p < 0) {
-            return false;
-         } else {
-            switch (operandPos) {
-            case LHS:
-               /* All operators of same precedence are NOTATIONAL_RIGHT */
-               return true; /* Example [w ? x : y] = [z] the operand needs grouping */
-            case RHS:
-               /* All operators of same precedence are NOTATIONAL_RIGHT */
-               return false; /* Example [w] = [x ? y : z] the operand does not need grouping */
-            }
-         }
-      }
-      return true;
-   }
-
-   private enum ExprOperandPos {
-      LHS, RHS;
    }
 
 }
