@@ -18,8 +18,8 @@ public class MyCodanChecker extends AbstractIndexAstChecker {
    /**
     * Note that this is/must be the same problem-id as defined in plugin.xml
     */
-   public enum MyProblemId implements IProblemId {
-      EXAMPLE_ID("ch.hsr.ifs.myCodanProblemId");
+   public enum MyProblemId implements IProblemId<MyProblemId> {
+   EXAMPLE_ID("ch.hsr.ifs.myCodanProblemId");
 
       String id;
 
@@ -29,6 +29,23 @@ public class MyCodanChecker extends AbstractIndexAstChecker {
 
       @Override
       public String getId() {
+         return id;
+      }
+
+      public static MyProblemId of(String string) {
+         for (final MyProblemId problemId : values()) {
+            if (problemId.getId().equals(string)) { return problemId; }
+         }
+         throw new IllegalArgumentException("Illegal MyProblemId: " + string);
+      }
+
+      @Override
+      public MyProblemId unstringify(String string) {
+         return of(string);
+      }
+
+      @Override
+      public String stringify() {
          return id;
       }
 
@@ -47,7 +64,7 @@ public class MyCodanChecker extends AbstractIndexAstChecker {
          IASTFunctionDefinition functionDecl = (IASTFunctionDefinition) firstDecl;
          name = functionDecl.getDeclarator().getName().getRawSignature();
       }
-      reportProblem(MyProblemId.EXAMPLE_ID.getId(), firstDecl, name); // note that the name-string is inserted into the
+      reportProblem(MyProblemId.EXAMPLE_ID, firstDecl, name); // note that the name-string is inserted into the
       // "messagePattern" by replacing the "{0}" of the pattern.
    }
 }

@@ -32,7 +32,7 @@ public abstract class CDTTestingTest extends RTSSourceFileTest {
     * Overload this function if you want to enable the checker for a single problem id.
     * For multiple problem ids use {@link #getProblemIds()}.
     */
-   protected IProblemId getProblemId() {
+   protected IProblemId<?> getProblemId() {
       fail("Checker can not be enabled without a problem id. Overload either getProblemId() or getProblemIds() propperly.");
       return null;
    }
@@ -43,7 +43,7 @@ public abstract class CDTTestingTest extends RTSSourceFileTest {
     * This will call {@link #getProblemId()} as a default, so if there's only a single
     * problem, you can simply overload the other function instead.
     */
-   protected MutableList<IProblemId> getProblemIds() {
+   protected MutableList<IProblemId<?>> getProblemIds() {
       return Lists.mutable.of(getProblemId());
    }
 
@@ -51,11 +51,11 @@ public abstract class CDTTestingTest extends RTSSourceFileTest {
     * Call to enable only the checker for the problem ids provided in {@link #getProblemIds()}
     */
    protected void enableAndConfigureChecker() {
-      MutableList<IProblemId> activeProblemIds = getProblemIds();
+      MutableList<IProblemId<?>> activeProblemIds = getProblemIds();
       final IProblemProfile profile = CodanRuntime.getInstance().getCheckersRegistry().getResourceProfile(getCurrentProject());
       Stream.of(profile.getProblems()).forEach(problem -> {
          final CodanProblem codanProblem = (CodanProblem) problem;
-         if (activeProblemIds.anySatisfy(id -> id.getId().equals(codanProblem.getId()))) {
+         if (activeProblemIds.anySatisfy(id -> id.equals(codanProblem))) {
             enableCodanProblem(codanProblem);
             checkerEnabled = true;
          } else {
@@ -82,6 +82,7 @@ public abstract class CDTTestingTest extends RTSSourceFileTest {
       codanProblem.setEnabled(true);
    }
 
+   @SuppressWarnings("unused")
    protected void problemPreferenceSetup(final RootProblemPreference preference) {}
 
    /**
