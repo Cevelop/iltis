@@ -7,6 +7,7 @@ import org.eclipse.cdt.core.model.ICElement;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.window.IShellProvider;
 
+import ch.hsr.ifs.iltis.cpp.core.resources.info.MarkerInfo;
 import ch.hsr.ifs.iltis.cpp.core.wrappers.RefactoringRunner;
 
 

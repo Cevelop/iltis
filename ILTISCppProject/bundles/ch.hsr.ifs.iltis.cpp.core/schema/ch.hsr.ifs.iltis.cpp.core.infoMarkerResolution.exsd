@@ -3,10 +3,10 @@
 <schema targetNamespace="ch.hsr.ifs.iltis.cpp.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="ch.hsr.ifs.iltis.cpp.core" id="labeledMarkerResolution" name="Labeled Marker Resolution"/>
+         <meta.schema plugin="ch.hsr.ifs.iltis.cpp.core" id="infoMarkerResolution" name="Info Marker Resolution"/>
       </appinfo>
       <documentation>
-         Like a classic Marker Resolution, but allows to define the content on the label in the extension definiton.
+         Like a classic Marker Resolution, but allows to use a MarkerInfo generated from the IMarker.
       </documentation>
    </annotation>
 
@@ -60,7 +60,7 @@
                   Class that implements ILabeledMarkerResolution and provides a fix for the given problems
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":com.cevelop.iltis.cpp.codan.marker.ILabeledMarkerResolution"/>
+                  <meta.attribute kind="java" basedOn=":ch.hsr.ifs.iltis.cpp.core.codan.marker.IInfoMarkerResolution"/>
                </appinfo>
             </annotation>
          </attribute>
@@ -74,10 +74,20 @@
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="labelText" type="string">
+         <attribute name="infoClass" type="string" use="required">
             <annotation>
                <documentation>
-                  The label to show for this resolution
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="ch.hsr.ifs.iltis.cpp.core.ui.refactoring.MarkerInfo:"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="messagePattern" type="string">
+            <annotation>
+               <documentation>
+                  
                </documentation>
                <appinfo>
                   <meta.attribute translatable="true"/>

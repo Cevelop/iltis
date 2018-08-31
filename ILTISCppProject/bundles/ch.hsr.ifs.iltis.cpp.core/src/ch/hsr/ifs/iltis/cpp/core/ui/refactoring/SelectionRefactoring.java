@@ -3,6 +3,7 @@ package ch.hsr.ifs.iltis.cpp.core.ui.refactoring;
 import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.model.ICElement;
 
+import ch.hsr.ifs.iltis.cpp.core.resources.info.MarkerInfo;
 import ch.hsr.ifs.iltis.cpp.core.wrappers.CRefactoring;
 
 

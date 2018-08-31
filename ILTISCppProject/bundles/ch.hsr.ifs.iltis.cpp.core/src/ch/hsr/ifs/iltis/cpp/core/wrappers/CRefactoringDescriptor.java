@@ -19,7 +19,7 @@ import org.eclipse.ltk.core.refactoring.RefactoringDescriptor;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 
 import ch.hsr.ifs.iltis.core.core.ids.IRefactoringId;
-import ch.hsr.ifs.iltis.cpp.core.ui.refactoring.MarkerInfo;
+import ch.hsr.ifs.iltis.cpp.core.resources.info.MarkerInfo;
 
 
 /**

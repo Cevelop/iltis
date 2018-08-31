@@ -32,7 +32,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 
 import ch.hsr.ifs.iltis.core.core.ILTIS;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
-import ch.hsr.ifs.iltis.cpp.core.ui.refactoring.IInfo;
+import ch.hsr.ifs.iltis.cpp.core.resources.info.IInfo;
 
 
 /**
@@ -125,12 +125,12 @@ public abstract class AbstractIndexAstChecker extends AbstractCheckerWithProblem
       return true;
    }
 
-   public void reportProblem(IProblemId<?> id, IASTNode astNode, IInfo info) {
+   public void reportProblem(IProblemId<?> id, IASTNode astNode, IInfo<?> info) {
       IProblemLocation loc = getProblemLocation(astNode);
       if (loc != null) reportProblem(id.getId(), loc, info.toUnifiedMapArray());
    }
 
-   public void reportProblem(IProblem problem, IASTNode astNode, IInfo info) {
+   public void reportProblem(IProblem problem, IASTNode astNode, IInfo<?> info) {
       IProblemLocation loc = getProblemLocation(astNode);
       if (loc != null) reportProblem(problem, loc, info.toUnifiedMapArray());
    }

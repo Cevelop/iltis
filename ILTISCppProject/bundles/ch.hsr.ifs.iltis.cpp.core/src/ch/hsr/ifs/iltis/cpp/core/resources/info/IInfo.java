@@ -1,31 +1,35 @@
-package ch.hsr.ifs.iltis.cpp.core.ui.refactoring;
+package ch.hsr.ifs.iltis.cpp.core.resources.info;
 
 import java.util.Map;
 import java.util.function.Supplier;
 
+import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.impl.factory.Maps;
 import org.eclipse.collections.impl.utility.ArrayIterate;
+import org.eclipse.core.runtime.Platform;
+import org.osgi.framework.FrameworkUtil;
 
 import ch.hsr.ifs.iltis.core.core.collections.UnifiedMarkerArgumentMap;
 import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
+import ch.hsr.ifs.iltis.core.core.object.ICopyable;
 import ch.hsr.ifs.iltis.core.ltk.refactoring.IStringifyable;
 import ch.hsr.ifs.iltis.core.ltk.refactoring.InfoArgument;
 
 
-public interface IInfo {
+public interface IInfo<T extends IInfo<T>> extends ICopyable<T> {
 
    default Map<String, String> toMap() {
       return ArrayIterate.select(getClass().getFields(), f -> f.getAnnotation(InfoArgument.class) != null).toMap(f -> f.getName(), f -> {
          try {
-            // TODO Check allowed types.
             return IStringifyable.class.isAssignableFrom(f.getType()) ? ((IStringifyable<?>) f.get(this)).stringify() : String.valueOf(f.get(this));
          } catch (IllegalArgumentException | IllegalAccessException e) {
-            ILTISException.wrap(e).rethrowUnchecked();
+            throw ILTISException.wrap(e).rethrowUnchecked();
          }
-         return null;
       });
    }
 
-   static <R extends IInfo> R fromMap(Supplier<R> constructor, Map<String, String> map) {
+   static <R extends IInfo<R>> R fromMap(Supplier<R> constructor, Map<String, String> map) {
       R info = constructor.get();
       InfoConverter.fillFields(info, map);
       return info;
@@ -35,7 +39,7 @@ public interface IInfo {
       return new UnifiedMarkerArgumentMap(toMap()).toArray();
    }
 
-   static <R extends IInfo> R fromUnifiedMapArray(Supplier<R> constructor, Object[] objects) {
+   static <R extends IInfo<R>> R fromUnifiedMapArray(Supplier<R> constructor, Object[] objects) {
       R info = constructor.get();
       InfoConverter.fillFields(info, new UnifiedMarkerArgumentMap(objects));
       return info;
@@ -46,7 +50,11 @@ public interface IInfo {
 
 class InfoConverter {
 
-   static <R extends IInfo, T> void fillFields(R info, Map<String, T> map) {
+   private static final String INFO_DATA_PREFIX    = "%%%";
+   private static final String INFO_DATA_SEPARATOR = "@@@";
+   private static final String INFO_TYPE_SEPARATOR = "###";
+
+   static <R extends IInfo<R>, T> void fillFields(R info, Map<String, T> map) {
       ArrayIterate.select(info.getClass().getFields(), f -> f.getAnnotation(InfoArgument.class) != null).forEach(f -> {
          try {
             String fieldName = f.getName();
@@ -61,6 +69,39 @@ class InfoConverter {
             ILTISException.wrap(e).rethrowUnchecked();
          }
       });
+      if (info instanceof CompositeMarkerInfo) {
+         ((CompositeMarkerInfo) info).loadInfos(createInfos(map).collectIf(i -> i instanceof MarkerInfo, i -> (MarkerInfo<?>) i));
+      }
+   }
+
+   static Map<String, String> convert(MutableList<? extends IInfo<?>> infos) {
+      return infos.toMap(InfoConverter::generateInfoKey, InfoConverter::generateInfoDataString);
+   }
+
+   private static String generateInfoKey(IInfo<?> info) {
+      // TODO: Cleanup
+      String name = info.getClass().getName();
+      String symbolicName = FrameworkUtil.getBundle(info.getClass()).getSymbolicName();
+      return INFO_DATA_PREFIX + symbolicName + INFO_TYPE_SEPARATOR + name;
+   }
+
+   private static String generateInfoDataString(IInfo<?> info) {
+      return Maps.adapt(info.toMap()).keyValuesView().collect(p -> String.join(INFO_DATA_SEPARATOR, p.getOne(), p.getTwo())).makeString(
+            INFO_DATA_SEPARATOR);
+   }
+
+   @SuppressWarnings("unchecked")
+   private static <R extends IInfo<R>, T> MutableList<R> createInfos(Map<String, T> data) {
+      MutableMap<String, String> infosData = Maps.adapt(data).keyValuesView().partition(p -> p.getOne().startsWith(INFO_DATA_PREFIX)).getSelected()
+            .toMap(p -> p.getOne().substring(INFO_DATA_PREFIX.length()), p -> (String) p.getTwo());
+      return infosData.keyValuesView().collect(p -> IInfo.fromUnifiedMapArray(() -> {
+         try {
+            String[] infoElement = p.getOne().split(INFO_TYPE_SEPARATOR);
+            return (R) Platform.getBundle(infoElement[0]).loadClass(infoElement[1]).newInstance();
+         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+            throw ILTISException.wrap(e).rethrowUnchecked();
+         }
+      }, p.getTwo().split(INFO_DATA_SEPARATOR))).toList();
    }
 
    @SuppressWarnings("unchecked")

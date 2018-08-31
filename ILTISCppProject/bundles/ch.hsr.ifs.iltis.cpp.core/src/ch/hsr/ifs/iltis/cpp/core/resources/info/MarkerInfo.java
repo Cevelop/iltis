@@ -1,4 +1,4 @@
-package ch.hsr.ifs.iltis.cpp.core.ui.refactoring;
+package ch.hsr.ifs.iltis.cpp.core.resources.info;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -14,7 +14,14 @@ import ch.hsr.ifs.iltis.core.core.functional.functions.Consumer;
 import ch.hsr.ifs.iltis.core.ltk.refactoring.InfoArgument;
 
 
-public abstract class MarkerInfo<T extends MarkerInfo<T>> implements IInfo {
+/**
+ * TODO
+ * 
+ * @author void
+ *
+ * @param <T>
+ */
+public abstract class MarkerInfo<T extends MarkerInfo<T>> implements IInfo<T> {
 
    public static final String  FILENAME_DEFAULT      = "";
    public static final int     SEVERITY_DEFAULT      = IMarker.SEVERITY_INFO;
@@ -50,6 +57,22 @@ public abstract class MarkerInfo<T extends MarkerInfo<T>> implements IInfo {
    public boolean userEditable = USER_EDITABLE_DEFAULT;
    @InfoArgument
    public String  sourceId     = SOURCE_ID_DEFAULT;
+
+   protected MarkerInfo() {};
+
+   protected MarkerInfo(T info) {
+      fileName = info.fileName;
+      severity = info.severity;
+      message = info.message;
+      location = info.location;
+      priority = info.priority;
+      done = info.done;
+      charStart = info.charStart;
+      charEnd = info.charEnd;
+      lineNumber = info.lineNumber;
+      userEditable = info.userEditable;
+      sourceId = info.sourceId;
+   }
 
    public boolean usesSelection() {
       return charStart > -1 && charEnd > -1;
