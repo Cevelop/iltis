@@ -1,4 +1,4 @@
-target "ILTIS-CORE for Eclipse Oxygen" with source requirements
+target "ILTIS-CORE for Eclipse Photon" with source requirements
 
 location "http://download.eclipse.org/releases/photon" {
 	org.eclipse.emf.common.ui.feature.group lazy
@@ -15,6 +15,10 @@ location "http://download.eclipse.org/releases/photon" {
 	org.junit.vintage.engine lazy
 }
 
-location "https://cevelop.com/iltis"{
-	ch.hsr.ifs.iltis.testing.core.core.feature.feature.group 1.1.1
+//location "https://cevelop.com/iltis"{
+//	ch.hsr.ifs.iltis.testing.core.core.feature.feature.group 1.1.1
+//}
+
+location "http://download.eclipse.org/collections/9.2.0/repository/" {
+	org.eclipse.collections.feature.feature.group 9.2.0
 }
