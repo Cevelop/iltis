@@ -15,8 +15,12 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchSite;
 
 import ch.hsr.ifs.iltis.core.core.functional.OptionalUtil;
+import ch.hsr.ifs.iltis.cpp.core.ui.refactoring.WizardRefactoringStarterMenuHandler;
 
 
+/**
+* @deprecated Use {@link WizardRefactoringStarterMenuHandler} instead
+*/
 @SuppressWarnings("restriction")
 public abstract class RefactoringAction extends Action {
 

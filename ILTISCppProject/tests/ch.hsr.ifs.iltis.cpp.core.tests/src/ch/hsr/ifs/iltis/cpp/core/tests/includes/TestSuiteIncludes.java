@@ -9,6 +9,7 @@ import org.junit.runners.Suite.SuiteClasses;
 //@formatter:off
 @SuiteClasses({
    IncludeInsertionUtilTest.class,
+   IncludeReorderUtilTest.class,
 })
 public class TestSuiteIncludes {
 

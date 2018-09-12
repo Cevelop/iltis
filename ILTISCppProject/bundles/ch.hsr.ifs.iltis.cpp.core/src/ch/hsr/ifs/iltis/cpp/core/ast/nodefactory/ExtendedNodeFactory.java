@@ -2,6 +2,7 @@ package ch.hsr.ifs.iltis.cpp.core.ast.nodefactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.eclipse.cdt.core.dom.ast.IASTBinaryExpression;
 import org.eclipse.cdt.core.dom.ast.IASTCompoundStatement;
@@ -23,11 +24,13 @@ import org.eclipse.cdt.core.dom.ast.IASTInitializerList;
 import org.eclipse.cdt.core.dom.ast.IASTLiteralExpression;
 import org.eclipse.cdt.core.dom.ast.IASTName;
 import org.eclipse.cdt.core.dom.ast.IASTNode;
+import org.eclipse.cdt.core.dom.ast.IASTParameterDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTSimpleDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTStatement;
 import org.eclipse.cdt.core.dom.ast.IASTTypeId;
 import org.eclipse.cdt.core.dom.ast.IASTUnaryExpression;
 import org.eclipse.cdt.core.dom.ast.IBasicType.Kind;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTBinaryExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTCompositeTypeSpecifier;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTConstructorChainInitializer;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTConstructorInitializer;
@@ -36,6 +39,7 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTFieldReference;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTFunctionCallExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTFunctionDeclarator;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTInitializerList;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTLambdaExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTLiteralExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTName;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTNamedTypeSpecifier;
@@ -47,10 +51,18 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateDeclaration;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateId;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateParameter;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTypeId;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTUnaryExpression;
+import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTDeclarationStatement;
+import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTFunctionCallExpression;
+import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTSimpleDeclaration;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTSimpleTypeTemplateParameter;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPNodeFactory;
 
 import ch.hsr.ifs.iltis.core.core.collections.CollectionUtil;
+import ch.hsr.ifs.iltis.core.core.functional.functions.Consumer;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.CPPBinaryOperator;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.CPPOtherOperators;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.CPPUnaryOperator;
 import ch.hsr.ifs.iltis.cpp.core.util.constants.CommonCPPConstants;
 
 
@@ -192,28 +204,22 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
    }
 
    @Override
-   public ICPPASTFunctionCallExpression newFunctionCallExpression(final IASTExpression idExpr, final IASTExpression arg) {
-      final IASTExpression args[] = new IASTExpression[] { arg };
-      return newFunctionCallExpression(idExpr, args);
-   }
-
-   @Override
    public ICPPASTFunctionCallExpression newFunctionCallExpression(final IASTExpression idExpr, final IASTExpression... arguments) {
       return super.newFunctionCallExpression(idExpr, arguments);
    }
 
    @Override
-   public ICPPASTFunctionCallExpression newFunctionCallExpression(final String functionName, final IASTExpression... arguments) {
+   public ICPPASTFunctionCallExpression newFunctionCallExpression(final String functionName, final IASTInitializerClause... arguments) {
       return newFunctionCallExpression(newIdExpression(functionName), arguments);
    }
 
    @Override
-   public IASTExpressionStatement newFunctionCallStatement(final IASTExpression idExpr, final IASTExpression... arguments) {
+   public IASTExpressionStatement newFunctionCallStatement(final IASTExpression idExpr, final IASTInitializerClause... arguments) {
       return newExpressionStatement(newFunctionCallExpression(idExpr, arguments));
    }
 
    @Override
-   public IASTExpressionStatement newFunctionCallStatement(final String functionName, final IASTExpression... arguments) {
+   public IASTExpressionStatement newFunctionCallStatement(final String functionName, final IASTInitializerClause... arguments) {
       return newFunctionCallStatement(newIdExpression(functionName), arguments);
    }
 
@@ -311,13 +317,22 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
    }
 
    @Override
-   public ICPPASTFunctionDeclarator newFunctionDeclarator(final String name) {
-      return newFunctionDeclarator(newName(name));
+   public ICPPASTFunctionDeclarator newFunctionDeclarator() {
+      return super.newFunctionDeclarator(null);
    }
 
    @Override
-   public ICPPASTFunctionDeclarator newFunctionDeclarator() {
-      return super.newFunctionDeclarator(null);
+   public ICPPASTFunctionDeclarator newFunctionDeclarator(final String name, final IASTParameterDeclaration... paramDeclarations) {
+      return newFunctionDeclarator(newName(name), paramDeclarations);
+   }
+
+   @Override
+   public ICPPASTFunctionDeclarator newFunctionDeclarator(final IASTName name, final IASTParameterDeclaration... paramDeclarations) {
+      ICPPASTFunctionDeclarator declarator = newFunctionDeclarator(name);
+      for (IASTParameterDeclaration paramDecl : paramDeclarations) {
+         declarator.addParameterDeclaration(paramDecl);
+      }
+      return declarator;
    }
 
    @Override
@@ -371,12 +386,6 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
    @Override
    public ICPPASTTypeId newTypeId(final IASTDeclSpecifier declSpecifier) {
       return newTypeId(declSpecifier, newDeclarator(""));
-   }
-
-   @Override
-   public IASTFunctionCallExpression newFunctionCallExpression(String functionName, IASTInitializerClause... args) {
-      final IASTIdExpression function = newIdExpression(functionName);
-      return newFunctionCallExpression(function, args);
    }
 
    @Override
@@ -484,6 +493,112 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
    @Override
    public IASTConditionalExpression newConditionalExpression(IASTExpression condition, IASTExpression positive, IASTExpression negative) {
       return super.newConditionalExpession(condition, positive, negative);
+   }
+
+   /* Create Also Factory Methods */
+
+   @Override
+   public IASTCompoundStatement newCompoundStatement(Consumer<IASTCompoundStatement> also) {
+      return createAlso(this::newCompoundStatement, also);
+   }
+
+   @Override
+   public IASTDeclarationStatement newDeclarationStatement(Consumer<IASTDeclarationStatement> also) {
+      return createAlso(CPPASTDeclarationStatement::new, also);
+   }
+
+   @Override
+   public ICPPASTDeclarator newDeclarator(IASTName name, Consumer<ICPPASTDeclarator> also) {
+      return createAlso(() -> newDeclarator(name), also);
+   }
+
+   @Override
+   public ICPPASTFunctionCallExpression newFunctionCallExpression(Consumer<ICPPASTFunctionCallExpression> also) {
+      return createAlso(CPPASTFunctionCallExpression::new, also);
+   }
+
+   @Override
+   public ICPPASTFunctionDeclarator newFunctionDeclarator(Consumer<ICPPASTFunctionDeclarator> also) {
+      return createAlso(this::newFunctionDeclarator, also);
+   }
+
+   @Override
+   public ICPPASTLambdaExpression newLambdaExpression(Consumer<ICPPASTLambdaExpression> also) {
+      return createAlso(this::newLambdaExpression, also);
+   }
+
+   @Override
+   public IASTSimpleDeclaration newSimpleDeclaration(Consumer<IASTSimpleDeclaration> also) {
+      return createAlso(CPPASTSimpleDeclaration::new, also);
+   }
+
+   @Override
+   public ICPPASTTemplateId newTemplateId(IASTName name, Consumer<ICPPASTTemplateId> also) {
+      return createAlso(() -> newTemplateId(name), also);
+   }
+
+   private <T> T createAlso(Supplier<T> creator, Consumer<T> also) {
+      final T t = creator.get();
+      also.accept(t);
+      return t;
+   }
+
+   /* Enum Operator Factory Methods */
+
+   @Override
+   public ICPPASTUnaryExpression newUnaryExpression(CPPUnaryOperator operator, IASTExpression operand) {
+      return newUnaryExpression(operator.getCDTOperator(), operand);
+   }
+
+   @Override
+   public ICPPASTBinaryExpression newBinaryExpression(CPPBinaryOperator op, IASTExpression expr1, IASTExpression expr2) {
+      return newBinaryExpression(op.getCDTOperator(), expr1, expr2);
+   }
+
+   @Override
+   public ICPPASTBinaryExpression newBinaryExpression(CPPBinaryOperator op, IASTExpression expr1, IASTInitializerClause expr2) {
+      return newBinaryExpression(op.getCDTOperator(), expr1, expr2);
+   }
+
+   /* Magic Factory Methods */
+
+   public IASTUnaryExpression newMagicPrecedenceUnaryExpression(CPPUnaryOperator op, IASTExpression operand) {
+      if (op.operandNeedsWraping(operand)) {
+         return newUnaryExpression(op, newUnaryExpression(IASTUnaryExpression.op_bracketedPrimary, operand));
+      } else {
+         return newUnaryExpression(op, operand);
+      }
+   }
+
+   public IASTBinaryExpression newMagicPrecedenceBinaryExpression(CPPBinaryOperator binaryOperator, IASTExpression operand1,
+         IASTInitializerClause operand2) {
+      boolean leftOperandNeedsWraping = binaryOperator.leftOperandNeedsWraping(operand1);
+      boolean rightOperandNeedsWraping = binaryOperator.rightOperandNeedsWraping(operand2);
+      if (leftOperandNeedsWraping && rightOperandNeedsWraping) {
+         return newBinaryExpression(binaryOperator, newBracketedExpression(operand1), newBracketedExpression((IASTExpression) operand2));
+      } else if (leftOperandNeedsWraping) {
+         return newBinaryExpression(binaryOperator, newBracketedExpression(operand1), operand2);
+      } else if (rightOperandNeedsWraping) {
+         return newBinaryExpression(binaryOperator, operand1, newBracketedExpression((IASTExpression) operand2));
+      } else {
+         return newBinaryExpression(binaryOperator, operand1, operand2);
+      }
+   }
+
+   public IASTConditionalExpression newMagicPrefedenceConditionalExpression(IASTExpression condition, IASTExpression positive,
+         IASTExpression negative) {
+      boolean conditionNeedsWraping = CPPOtherOperators.CONDITIONAL.conditionalOperandNeedsWraping(condition);
+      boolean negativeNeedsWraping = CPPOtherOperators.CONDITIONAL.elseOperandNeedsWraping(negative);
+      if (conditionNeedsWraping && negativeNeedsWraping) {
+         return newConditionalExpression(newUnaryExpression(IASTUnaryExpression.op_bracketedPrimary, condition), positive, newUnaryExpression(
+               IASTUnaryExpression.op_bracketedPrimary, negative));
+      } else if (conditionNeedsWraping) {
+         return newConditionalExpression(newUnaryExpression(IASTUnaryExpression.op_bracketedPrimary, condition), positive, negative);
+      } else if (negativeNeedsWraping) {
+         return newConditionalExpression(condition, positive, newUnaryExpression(IASTUnaryExpression.op_bracketedPrimary, negative));
+      } else {
+         return newConditionalExpession(condition, positive, negative);
+      }
    }
 
 }

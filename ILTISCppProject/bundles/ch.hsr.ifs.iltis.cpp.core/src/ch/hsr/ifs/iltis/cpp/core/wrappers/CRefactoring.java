@@ -342,6 +342,10 @@ public abstract class CRefactoring extends Refactoring {
       return project;
    }
 
+   public CRefactoringContext getRefactoringContext() {
+      return refactoringContext;
+   }
+
    /**
     * Convenience method to get the {@code IProject} associated with this refactorings {@code ICProject}
     */

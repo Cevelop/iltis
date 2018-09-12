@@ -14,7 +14,7 @@ public enum CPPVersion {
    private String versionString;
    private String compilerVersionString;
    // java does not know enum aliases x.x
-   public static final CPPVersion DEFAULT = CPP_14;
+   public static final CPPVersion DEFAULT = CPP_17;
 
    private CPPVersion(String versionString, String compilerVersionString) {
       this.versionString = versionString;
