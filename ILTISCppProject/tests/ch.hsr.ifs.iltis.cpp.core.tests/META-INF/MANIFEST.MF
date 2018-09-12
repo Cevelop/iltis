@@ -18,7 +18,7 @@ Require-Bundle:
  org.eclipse.cdt.codan.core.tests,
  org.eclipse.cdt.codan.ui,
  org.eclipse.cdt.codan.ui.cxx
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 1.1.1.qualifier
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: ch.hsr.ifs.iltis.cpp.core.tests;singleton:=true
 Bundle-ClassPath: .
