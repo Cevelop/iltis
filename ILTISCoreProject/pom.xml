@@ -15,4 +15,5 @@
         <module>releng</module>
         <module>features</module>
     </modules>
+<version>1.1.2-SNAPSHOT</version>
 </project>

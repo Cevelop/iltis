@@ -657,16 +657,97 @@ public abstract class Functional {
    }
 
    @SafeVarargs
+   /**
+    * Executes the action for every element passed.
+    * 
+    * @param action
+    *        The action to execute
+    * @param elements
+    *        The element to execute the action with
+    */
    public static <T> void doFor(Consumer<T> action, T... elements) {
       for (T e : elements) {
          action.accept(e);
       }
    }
 
+   /**
+    * Passed each of the elements to the consumer. The consumer can throw!
+    * 
+    * @param action
+    *        The consumer to execute
+    * @param elements
+    *        The elements to pass to the action
+    * @throws E
+    *         The exception type thrown by the action
+    */
    @SafeVarargs
    public static <T, E extends Throwable> void doForT(ThrowingConsumer<T, E> action, T... elements) throws E {
       for (T e : elements) {
          action.accept(e);
       }
+   }
+
+   /**
+    * If the passed argument is not null, it will be used to execute the function.
+    * 
+    * @param arg
+    *        The argument (might be null)
+    * @param fun
+    *        The function (will only be executed if arg is not null)
+    * @param defaultValue
+    *        The default value to return iff arg was null
+    * @return The result of the function, or the defaultValue if arg was null.
+    */
+   public static <T1, R> R doIfNotNull(T1 arg, Function<T1, R> fun, R defaultValue) {
+      return arg != null ? fun.apply(arg) : defaultValue;
+   }
+
+   /**
+    * If the passed arguments are not null, they will be used to execute the function.
+    * 
+    * @param arg1
+    *        The first argument (might be null)
+    * @param arg2
+    *        The second argument (might be null)
+    * @param fun
+    *        The function (will only be executed if both arguments are not null)
+    * @param defaultValue
+    *        The default value to return iff at least one of arg1 or arg2 was null
+    * @return The result of the function, or the defaultValue if at least one of arg1 or arg2 was null.
+    */
+   public static <T1, T2, R> R doIfNotNull(T1 arg1, T2 arg2, Function2<T1, T2, R> fun, R defaultValue) {
+      return (arg1 != null && arg2 != null) ? fun.apply(arg1, arg2) : defaultValue;
+   }
+
+   /**
+    * Allows to execute a lambda which takes the object as parameter.
+    * 
+    * @param object
+    *        The object to execute
+    * @param also
+    *        The action to execute with the object
+    * @return The object
+    */
+   public static <T> T also(T object, Consumer<T> also) {
+      also.accept(object);
+      return object;
+   }
+
+   /**
+    * Allows to execute the creator and executes a lambda on the result.
+    * 
+    * This method is equivalent to {@link #also(Object, Consumer)} using {@code creator.get()} as object.
+    * 
+    * @param creator
+    *        The creator to create the object with.
+    * @param also
+    *        The action to execute with the object
+    * @return The object created using the creator.
+    */
+   public static <T> T also(Supplier<T> creator, Consumer<T> also) {
+      T object = creator.get();
+      also.accept(object);
+      return object;
    }
 }
