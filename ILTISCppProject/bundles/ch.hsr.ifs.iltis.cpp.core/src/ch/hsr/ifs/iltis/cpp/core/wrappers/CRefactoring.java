@@ -111,6 +111,10 @@ public abstract class CRefactoring extends Refactoring {
       this.refactoringContext = refactoringContext;
    }
 
+   public CRefactoringContext getContext() {
+      return this.refactoringContext;
+   }
+
    @Override
    public RefactoringStatus checkFinalConditions(IProgressMonitor pm) throws CoreException, OperationCanceledException {
       SubMonitor progress = SubMonitor.convert(pm, "Checking preconditions...", 12);
