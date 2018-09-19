@@ -27,8 +27,8 @@ public class RTSFileParser {
    public static final String SELECTION_CLOSE = "/*$";
    public static final String SELECTION_OPEN  = "$*/";
 
-   public static final String SELECTION_START_TAG_REGEX = "(.*?)(/\\*\\$)(.*?)(\\*/)(.*)";
-   public static final String SELECTION_END_TAG_REGEX   = "(.*?)(/\\*)(.*?)(\\$\\*/)(.*)";
+   public static final String SELECTION_START_TAG_REGEX = "(?<before>.*?)(?<opening>/\\*\\$)(?<content>.*?)(?<closing>\\*/)(?<after>.*)";
+   public static final String SELECTION_END_TAG_REGEX   = "(?<before>.*?)(?<opening>/\\*)(?<content>.*?)(?<closing>\\$\\*/)(?<after>.*)";
 
    public static ArrayList<RTSTest> parse(final BufferedReader inputReader) throws Exception {
       final Matcher BEGIN_OF_SELECTION_MATCHER = Pattern.compile(SELECTION_START_TAG_REGEX).matcher("");
@@ -114,15 +114,15 @@ public class RTSFileParser {
                }
             } else if (BEGIN_OF_SELECTION_MATCHER.reset(line).find()) {
                /* Opening tag on this line */
-               currentFile.setSelectionStartRelativeToNextLine(BEGIN_OF_SELECTION_MATCHER.start(2));
-               line = BEGIN_OF_SELECTION_MATCHER.group(1) + BEGIN_OF_SELECTION_MATCHER.group(5);
-               if (BEGIN_OF_SELECTION_MATCHER.group(3).endsWith("$")) {
+               currentFile.setSelectionStartRelativeToNextLine(BEGIN_OF_SELECTION_MATCHER.start("opening"));
+               line = BEGIN_OF_SELECTION_MATCHER.group("before") + BEGIN_OF_SELECTION_MATCHER.group("after");
+               if (BEGIN_OF_SELECTION_MATCHER.group("content").endsWith("$")) {
                   /* Tag is opening and closing */
-                  currentFile.setSelectionEndRelativeToNextLine(BEGIN_OF_SELECTION_MATCHER.start(2));
+                  currentFile.setSelectionEndRelativeToNextLine(BEGIN_OF_SELECTION_MATCHER.start("opening"));
                } else if (END_OF_SELECTION_MATCHER.reset(line).find()) {
                   /* Closing tag on this line */
-                  currentFile.setSelectionEndRelativeToNextLine(END_OF_SELECTION_MATCHER.start(2));
-                  line = END_OF_SELECTION_MATCHER.group(1) + END_OF_SELECTION_MATCHER.group(5);
+                  currentFile.setSelectionEndRelativeToNextLine(END_OF_SELECTION_MATCHER.start("opening"));
+                  line = END_OF_SELECTION_MATCHER.group("before") + END_OF_SELECTION_MATCHER.group("after");
                } else {
                   /* Closing tag must be on another line */
                   matcherState = MatcherState.IN_FILE_SELECTION;
@@ -169,8 +169,8 @@ public class RTSFileParser {
                matcherState = MatcherState.FAIL_STATE;
                failMSG = String.format(FAIL_SELECTION_NOT_CLOSED, currentFile.getName(), currentTest.getName());
             } else if (END_OF_SELECTION_MATCHER.reset(line).find()) {
-               line = END_OF_SELECTION_MATCHER.group(1) + END_OF_SELECTION_MATCHER.group(5);
-               currentFile.setSelectionEndRelativeToNextLine(END_OF_SELECTION_MATCHER.start(2));
+               line = END_OF_SELECTION_MATCHER.group("before") + END_OF_SELECTION_MATCHER.group("after");
+               currentFile.setSelectionEndRelativeToNextLine(END_OF_SELECTION_MATCHER.start("opening"));
                matcherState = MatcherState.IN_FILE_WITH_SELECTION;
             }
             currentFile.appendLineToSource(line);
