@@ -12,10 +12,13 @@ import org.osgi.framework.BundleContext;
 
 import name.graf.emanuel.testfileeditor.ui.support.editor.PartitionScanner;
 
+import org.osgi.framework.Constants;
+
 
 public class Activator extends AbstractUIPlugin {
 
    public static final String    PLUGIN_ID              = "name.graf.emanuel.testfileeditor";
+   public static String          PLUGIN_NAME;
    public static final String    TEST_FILE_PARTITIONING = "__test_file_partitioning";
    private static Activator      plugin;
    private PartitionScanner      scanner;
@@ -29,6 +32,7 @@ public class Activator extends AbstractUIPlugin {
    @Override
    public void start(final BundleContext context) throws Exception {
       super.start(context);
+      PLUGIN_NAME = getBundle().getHeaders().get(Constants.BUNDLE_NAME);
    }
 
    @Override

@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.BadLocationException;
@@ -20,15 +21,19 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.MarkerUtilities;
 
 import name.graf.emanuel.testfileeditor.Activator;
+import name.graf.emanuel.testfileeditor.helpers.IdHelper;
 import name.graf.emanuel.testfileeditor.model.node.Class;
 import name.graf.emanuel.testfileeditor.model.node.Expected;
 import name.graf.emanuel.testfileeditor.model.node.File;
 import name.graf.emanuel.testfileeditor.model.node.Language;
 import name.graf.emanuel.testfileeditor.model.node.Selection;
 import name.graf.emanuel.testfileeditor.model.node.Test;
+import name.graf.emanuel.testfileeditor.preferences.PropAndPrefHelper;
 
 
 public class TestFile extends Observable {
+
+   private static final PropAndPrefHelper PROP_AND_PREF_HELPER = PropAndPrefHelper.getInstance();
 
    private static final String CONFIG_FILE_STRING       = ".config";
    private static final String MARKER_LINES_STRING      = "markerLines=";
@@ -43,6 +48,7 @@ public class TestFile extends Observable {
    private final Set<Problem>      fProblems;
    private final IDocumentProvider fProvider;
    private FileEditorInput         fInput;
+   private final IProject          fProject;
 
    public static final String PARTITION_TEST_CLASS     = "__rts_class";
    public static final String PARTITION_TEST_COMMENT   = "__rts_comment";
@@ -70,6 +76,7 @@ public class TestFile extends Observable {
       fName = input.getName();
       fTests = new HashSet<>();
       fProblems = new HashSet<>();
+      fProject = input.getFile().getProject();
       setupPositionCategories();
    }
 
@@ -289,6 +296,8 @@ public class TestFile extends Observable {
       ParseState currentState = ParseState.INIT;
       int currentSelectionStart = 0;
 
+      boolean prefCheckTestNames = PROP_AND_PREF_HELPER.getBoolean(IdHelper.P_CREATE_WARNING_ON_BAD_TEST_NAME, fProject);
+
       for (int currentLine = 0; currentLine < NOF_LINES; ++currentLine) {
          final int lineOffset = document.getLineOffset(currentLine);
          final int lineLength = document.getLineLength(currentLine);
@@ -308,7 +317,7 @@ public class TestFile extends Observable {
                }
                previousTest = currentTest;
 
-               if (isSnakeCase(currentTest.getName())) {
+               if (prefCheckTestNames && isSnakeCase(currentTest.getName())) {
                   final Problem snakeCaseName = new SnakeCaseName(currentTest.getName(), currentLine + 1, headPos_TEST);
                   reportProblem(snakeCaseName, MARKER_ID_SNAKE_CASE_NAME);
                   fProblems.add(snakeCaseName);
