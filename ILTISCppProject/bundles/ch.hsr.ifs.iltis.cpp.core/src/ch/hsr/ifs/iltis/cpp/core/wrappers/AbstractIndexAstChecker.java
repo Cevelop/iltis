@@ -179,7 +179,7 @@ public abstract class AbstractIndexAstChecker extends AbstractCheckerWithProblem
 
    protected IProblemLocation getProblemLocation(IASTNode astNode) {
       IASTFileLocation astLocation = astNode.getFileLocation();
-      return getProblemLocation(astNode, astLocation);
+      return astLocation == null ? null : getProblemLocation(astNode, astLocation);
    }
 
    private IProblemLocation getProblemLocation(IASTNode astNode, IASTFileLocation astLocation) {
