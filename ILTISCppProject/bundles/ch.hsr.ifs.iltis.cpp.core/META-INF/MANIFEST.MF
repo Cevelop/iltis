@@ -63,6 +63,7 @@ Export-Package: ch.hsr.ifs.iltis.cpp.core.ast;uses:="org.eclipse.cdt.core.dom.as
    org.eclipse.osgi.util,
    org.eclipse.core.resources,
    org.eclipse.cdt.codan.ui",
+ ch.hsr.ifs.iltis.cpp.core.ids,
  ch.hsr.ifs.iltis.cpp.core.includes;uses:="org.eclipse.core.runtime,ch.hsr.ifs.iltis.cpp.core.preprocessor,org.eclipse.cdt.core.dom.ast",
  ch.hsr.ifs.iltis.cpp.core.preferences;
   uses:="org.eclipse.ui,
