@@ -80,6 +80,7 @@ Export-Package: ch.hsr.ifs.iltis.cpp.core.ast;uses:="org.eclipse.cdt.core.dom.as
    org.eclipse.cdt.core.model,
    org.eclipse.core.resources",
  ch.hsr.ifs.iltis.cpp.core.resources.info,
+ ch.hsr.ifs.iltis.cpp.core.ui.jface,
  ch.hsr.ifs.iltis.cpp.core.ui.refactoring;uses:="org.eclipse.cdt.core.dom.ast,org.eclipse.cdt.core.model,ch.hsr.ifs.iltis.cpp.core.wrappers",
  ch.hsr.ifs.iltis.cpp.core.util.constants,
  ch.hsr.ifs.iltis.cpp.core.wrappers;
