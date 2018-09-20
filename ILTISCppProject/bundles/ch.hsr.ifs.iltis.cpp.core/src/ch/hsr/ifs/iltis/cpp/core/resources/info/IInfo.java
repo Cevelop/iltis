@@ -10,11 +10,11 @@ import org.eclipse.collections.impl.utility.ArrayIterate;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.FrameworkUtil;
 
-import ch.hsr.ifs.iltis.core.core.collections.UnifiedMarkerArgumentMap;
 import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
 import ch.hsr.ifs.iltis.core.core.object.ICopyable;
 import ch.hsr.ifs.iltis.core.ltk.refactoring.IStringifyable;
 import ch.hsr.ifs.iltis.core.ltk.refactoring.InfoArgument;
+import ch.hsr.ifs.iltis.cpp.core.collections.UnifiedMarkerArgumentMap;
 
 
 public interface IInfo<T extends IInfo<T>> extends ICopyable<T> {

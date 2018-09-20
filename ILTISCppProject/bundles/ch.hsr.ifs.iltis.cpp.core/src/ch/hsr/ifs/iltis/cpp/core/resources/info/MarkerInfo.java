@@ -8,10 +8,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextSelection;
 
-import ch.hsr.ifs.iltis.core.core.collections.UnifiedMarkerArgumentMap;
 import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
 import ch.hsr.ifs.iltis.core.core.functional.functions.Consumer;
 import ch.hsr.ifs.iltis.core.ltk.refactoring.InfoArgument;
+import ch.hsr.ifs.iltis.cpp.core.collections.UnifiedMarkerArgumentMap;
 
 
 /**

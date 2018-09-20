@@ -1,6 +1,6 @@
 package ch.hsr.ifs.iltis.cpp.core.ast.checker.helper;
 
-import ch.hsr.ifs.iltis.core.core.ids.IId;
+import ch.hsr.ifs.iltis.cpp.core.ids.IId;
 
 
 /**

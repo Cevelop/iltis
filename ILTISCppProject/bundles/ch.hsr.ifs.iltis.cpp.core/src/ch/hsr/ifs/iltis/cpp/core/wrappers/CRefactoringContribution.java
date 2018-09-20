@@ -7,7 +7,7 @@ import org.eclipse.ltk.core.refactoring.RefactoringContribution;
 import org.eclipse.ltk.core.refactoring.RefactoringDescriptor;
 
 import ch.hsr.ifs.iltis.core.core.functional.functions.Function;
-import ch.hsr.ifs.iltis.core.core.ids.IRefactoringId;
+import ch.hsr.ifs.iltis.cpp.core.ids.IRefactoringId;
 
 
 /**
