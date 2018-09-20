@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 
 /**
- * Like a {@linkplain Function}, but curryable
+ * Like a {@linkplain java.util.function.Function}, but curryable
  * 
  * @author tstauber
  * 
