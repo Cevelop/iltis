@@ -1,7 +1,16 @@
 package ch.hsr.ifs.iltis.core.core.exception;
 
+import java.util.function.Supplier;
+
 import ch.hsr.ifs.iltis.core.core.exception.ExceptionFactory;
 import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
+import ch.hsr.ifs.iltis.core.core.functional.functions.Consumer;
+import ch.hsr.ifs.iltis.core.core.functional.functions.Function;
+import ch.hsr.ifs.iltis.core.core.functional.functions.ThrowingConsumer;
+import ch.hsr.ifs.iltis.core.core.functional.functions.ThrowingFunction;
+import ch.hsr.ifs.iltis.core.core.functional.functions.ThrowingRunnable;
+import ch.hsr.ifs.iltis.core.core.functional.functions.ThrowingSupplier;
+
 
 /**
  * A specialized exception which can wrap other exceptions and rethrow them or itself as an unchecked exception.
@@ -14,6 +23,74 @@ public class ILTISException extends RuntimeException {
    public static ExceptionFactory Unless           = new ExceptionFactory(ILTISException::new);
    protected static final long    serialVersionUID = 0x1000000;
    private Exception              originalException;
+
+   /**
+    * Changes lambda to non-throwing
+    * 
+    * @param functionalInterface
+    *        The lambda
+    * @return The same lambda but all exceptions are thrown unchecked
+    */
+   public static <R, E extends Exception> Supplier<R> sterilize(ThrowingSupplier<R, E> functionalInterface) {
+      return () -> {
+         try {
+            return functionalInterface.get();
+         } catch (Exception e) {
+            throw ILTISException.wrap(e).rethrowUnchecked();
+         }
+      };
+   }
+
+   /**
+    * Changes lambda to non-throwing
+    * 
+    * @param functionalInterface
+    *        The lambda
+    * @return The same lambda but all exceptions are thrown unchecked
+    */
+   public static <R, E extends Exception> Consumer<R> sterilize(ThrowingConsumer<R, E> functionalInterface) {
+      return (r) -> {
+         try {
+            functionalInterface.accept(r);
+         } catch (Exception e) {
+            throw ILTISException.wrap(e).rethrowUnchecked();
+         }
+      };
+   }
+
+   /**
+    * Changes lambda to non-throwing
+    * 
+    * @param functionalInterface
+    *        The lambda
+    * @return The same lambda but all exceptions are thrown unchecked
+    */
+   public static <E extends Exception> Runnable sterilize(ThrowingRunnable<E> functionalInterface) {
+      return () -> {
+         try {
+            functionalInterface.run();
+         } catch (Exception ex) {
+            throw ILTISException.wrap(ex).rethrowUnchecked();
+         }
+      };
+   }
+
+   /**
+    * Changes lambda to non-throwing
+    * 
+    * @param functionalInterface
+    *        The lambda
+    * @return The same lambda but all exceptions are thrown unchecked
+    */
+   public static <T, R, E extends Exception> Function<T, R> sterilize(ThrowingFunction<T, R, E> functionalInterface) {
+      return (t) -> {
+         try {
+            return functionalInterface.apply(t);
+         } catch (Exception e) {
+            throw ILTISException.wrap(e).rethrowUnchecked();
+         }
+      };
+   }
 
    /**
     * Creates a new {@code ILTISException} containing a message
