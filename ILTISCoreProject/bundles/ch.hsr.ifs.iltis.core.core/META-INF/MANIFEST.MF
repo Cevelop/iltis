@@ -36,5 +36,4 @@ Export-Package: ch.hsr.ifs.iltis.core.core;uses:="org.osgi.framework,org.eclipse
  ch.hsr.ifs.iltis.core.core.reflection,
  ch.hsr.ifs.iltis.core.core.resources;uses:="org.eclipse.core.runtime,org.eclipse.core.resources,ch.hsr.ifs.iltis.core.core.functional.functions",
  ch.hsr.ifs.iltis.core.core.ui.examples;uses:="org.eclipse.core.runtime,org.eclipse.core.resources,org.eclipse.emf.common.ui.wizard",
- ch.hsr.ifs.iltis.core.core.ui.jface;uses:="org.eclipse.jface.text",
- ch.hsr.ifs.iltis.core.ltk.refactoring
+ ch.hsr.ifs.iltis.core.core.ui.jface;uses:="org.eclipse.jface.text"
