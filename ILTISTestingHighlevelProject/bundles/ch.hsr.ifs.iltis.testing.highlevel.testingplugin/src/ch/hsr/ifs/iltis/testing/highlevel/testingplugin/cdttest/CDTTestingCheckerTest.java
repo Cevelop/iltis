@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.cdt.codan.core.model.IProblemReporter;
+import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.osgi.util.NLS;
@@ -100,7 +101,7 @@ public abstract class CDTTestingCheckerTest extends CDTTestingTest {
    }
 
    public void assertMarkerMessages(final String expectedMarkerId, final List<String> expectedMarkerMessages) throws CoreException {
-      assertMarkerAttributes(IMarker.MESSAGE, "Marker-message '{0}' not present in given marker message list", findMarkers(expectedMarkerId),
+      assertMarkerAttributes(IMarker.MESSAGE, "Marker-message {0} not present in given marker message list", findMarkers(expectedMarkerId),
             expectedMarkerMessages);
    }
 
@@ -130,8 +131,8 @@ public abstract class CDTTestingCheckerTest extends CDTTestingTest {
    }
 
    public void assertMarkerLines(final String expectedMarkerId, final List<Integer> expectedMarkerLines) throws CoreException {
-      assertMarkerAttributes(IMarker.LINE_NUMBER, "Marker-line '{0}' not present in given marker lines list", findMarkers(expectedMarkerId),
-            expectedMarkerLines.stream().map(String::valueOf).collect(Collectors.toList()));
+      assertMarkerAttributes(IMarker.LINE_NUMBER, "Marker-line {0} not present in given marker lines list", findMarkers(expectedMarkerId), Lists
+            .adapt(expectedMarkerLines).collect(String::valueOf));
    }
 
    /* vv ASSERTION INTERNALS vv */

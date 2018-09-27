@@ -11,7 +11,7 @@ import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.example.examplecodantest
 public class ExampleCodanCheckerTest extends CDTTestingCheckerTest {
 
    @Override
-   protected IProblemId getProblemId() {
+   protected IProblemId<?> getProblemId() {
       return MyProblemId.EXAMPLE_ID;
    }
 

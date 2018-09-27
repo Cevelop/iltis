@@ -14,7 +14,7 @@ import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.example.examplecodantest
 public class ExampleCodanQuickFixTestWithPreferences extends CDTTestingQuickfixTestWithPreferences {
 
    @Override
-   protected IProblemId getProblemId() {
+   protected IProblemId<?> getProblemId() {
       return MyProblemId.EXAMPLE_ID;
    }
 

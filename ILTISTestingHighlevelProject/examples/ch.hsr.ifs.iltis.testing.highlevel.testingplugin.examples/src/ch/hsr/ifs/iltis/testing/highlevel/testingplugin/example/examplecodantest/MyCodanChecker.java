@@ -64,7 +64,7 @@ public class MyCodanChecker extends AbstractIndexAstChecker {
          IASTFunctionDefinition functionDecl = (IASTFunctionDefinition) firstDecl;
          name = functionDecl.getDeclarator().getName().getRawSignature();
       }
-      reportProblem(MyProblemId.EXAMPLE_ID, firstDecl, name); // note that the name-string is inserted into the
+      reportProblem(MyProblemId.EXAMPLE_ID, firstDecl, new ExampleInfo(name)); // note that the name-string is inserted into the
       // "messagePattern" by replacing the "{0}" of the pattern.
    }
 }
