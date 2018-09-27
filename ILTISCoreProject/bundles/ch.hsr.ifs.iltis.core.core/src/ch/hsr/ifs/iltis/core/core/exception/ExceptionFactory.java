@@ -30,6 +30,7 @@ public class ExceptionFactory {
     * @param actual
     *        The actual value
     */
+   @SuppressWarnings("unlikely-arg-type")
    public <T1, T2> void isEqual(final String msg, final T1 expected, final T2 actual) {
       if (!expected.equals(actual)) {
          throwWith(msg);
@@ -46,6 +47,7 @@ public class ExceptionFactory {
     * @param actual
     *        The actual value
     */
+   @SuppressWarnings("unlikely-arg-type")
    public <T1, T2> void isUnEqual(final String msg, final T1 expected, final T2 actual) {
       if (expected.equals(actual)) {
          throwWith(msg);
