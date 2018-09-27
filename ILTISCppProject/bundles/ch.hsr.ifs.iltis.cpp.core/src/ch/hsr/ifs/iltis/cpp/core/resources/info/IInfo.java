@@ -12,8 +12,8 @@ import org.osgi.framework.FrameworkUtil;
 
 import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
 import ch.hsr.ifs.iltis.core.core.object.ICopyable;
-import ch.hsr.ifs.iltis.core.ltk.refactoring.IStringifyable;
-import ch.hsr.ifs.iltis.core.ltk.refactoring.InfoArgument;
+import ch.hsr.ifs.iltis.cpp.core.resources.info.annotations.InfoArgument;
+import ch.hsr.ifs.iltis.cpp.core.resources.info.annotations.MessageInfoArgument;
 import ch.hsr.ifs.iltis.cpp.core.collections.UnifiedMarkerArgumentMap;
 
 

@@ -3,7 +3,7 @@ package ch.hsr.ifs.iltis.cpp.core.ids;
 import org.eclipse.cdt.codan.core.model.IProblem;
 
 import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
-import ch.hsr.ifs.iltis.core.ltk.refactoring.IStringifyable;
+import ch.hsr.ifs.iltis.cpp.core.resources.info.IStringifyable;
 
 
 /**
