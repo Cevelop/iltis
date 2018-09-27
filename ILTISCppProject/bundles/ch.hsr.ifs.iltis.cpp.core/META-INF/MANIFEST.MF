@@ -86,6 +86,7 @@ Export-Package: ch.hsr.ifs.iltis.cpp.core.ast;uses:="org.eclipse.cdt.core.dom.as
    org.eclipse.collections.api.list,
    ch.hsr.ifs.iltis.core.core.object,
    ch.hsr.ifs.iltis.core.core.functional.functions",
+ ch.hsr.ifs.iltis.cpp.core.resources.info.annotations,
  ch.hsr.ifs.iltis.cpp.core.ui.jface;uses:="org.eclipse.jface.text,org.eclipse.core.resources,ch.hsr.ifs.iltis.core.core.ui.jface",
  ch.hsr.ifs.iltis.cpp.core.ui.refactoring;
   uses:="org.eclipse.jface.window,

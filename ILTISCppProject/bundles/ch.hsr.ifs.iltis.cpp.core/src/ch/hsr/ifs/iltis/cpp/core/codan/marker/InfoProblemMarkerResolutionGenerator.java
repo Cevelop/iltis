@@ -62,7 +62,7 @@ public class InfoProblemMarkerResolutionGenerator implements IMarkerResolutionGe
    private static synchronized void readExtensions(final IMarker marker) {
       final IExtensionPoint ep = Platform.getExtensionRegistry().getExtensionPoint(FrameworkUtil.getBundle(InfoProblemMarkerResolutionGenerator.class)
             .getSymbolicName(), EXTENSION_POINT_NAME);
-      if (ep == null) { return; }
+      if (ep == null) return;
       try {
          // process categories
          for (final IConfigurationElement configurationElement : ep.getConfigurationElements()) {
@@ -86,21 +86,11 @@ public class InfoProblemMarkerResolutionGenerator implements IMarkerResolutionGe
             ILTIS.log(NLS.bind(Messages.PMRG_NotDefined, EXTENSION_POINT_NAME));
             return;
          }
-         IInfoMarkerResolution res;
-         try {
-            res = (IInfoMarkerResolution) configurationElement.createExecutableExtension(RESOLUTION_CLASS_PROPERTY);//$NON-NLS-1$
-            MarkerInfo<?> info = MarkerInfo.fromCodanProblemMarker(() -> {
-               try {
-                  return ((MarkerInfo) configurationElement.createExecutableExtension(INFO_CLASS_PROPERTY)); //$NON-NLS-1$
-               } catch (CoreException e) {
-                  throw ILTISException.wrap(e).rethrowUnchecked();
-               }
-            }, marker);
-            res.configure(info);
-         } catch (final CoreException e) {
-            ILTIS.log(e);
-            return;
-         }
+         IInfoMarkerResolution res = getValidMarkerResolutionInstance(configurationElement);
+         MarkerInfo<?> info = MarkerInfo.fromCodanProblemMarker(ILTISException.sterilize(() -> ((MarkerInfo) configurationElement
+               .createExecutableExtension(INFO_CLASS_PROPERTY))), marker);
+         res.configure(info);
+
          if (messagePattern != null) {
             try {
                Pattern.compile(messagePattern);
@@ -110,6 +100,19 @@ public class InfoProblemMarkerResolutionGenerator implements IMarkerResolutionGe
             }
          }
          addResolution(marker, res, messagePattern);
+      }
+   }
+
+   @SuppressWarnings("rawtypes")
+   private static IInfoMarkerResolution getValidMarkerResolutionInstance(final IConfigurationElement configurationElement) {
+      try {
+         Object markerResolution = configurationElement.createExecutableExtension(RESOLUTION_CLASS_PROPERTY);
+         if (!(markerResolution instanceof IInfoMarkerResolution)) throw new IllegalStateException("The class " + markerResolution.getClass()
+               .getSimpleName() + " does not implement IInfoMarkerResolution!");
+         return (IInfoMarkerResolution) markerResolution;
+      } catch (final CoreException e) {
+         ILTIS.log(e);
+         return null;
       }
    }
 

@@ -72,32 +72,65 @@ public abstract class WizardRefactoringStarterMenuHandler<WizardType extends Ref
    public Object execute(ExecutionEvent event) throws ExecutionException {
       Shell parent = HandlerUtil.getActiveShell(event);
 
-      RefactoringSaveHelper saveHelper = new RefactoringSaveHelper(saveMode.saveModeConstant);
-      if (!saveHelper.saveEditors(parent)) return null;
-
       IEditorPart editor = HandlerUtil.getActiveEditor(event);
       if (editor == null || !(editor instanceof ICEditor) || !(editor instanceof ITranslationUnitHolder)) return null;
 
       ITranslationUnit tu = ((ITranslationUnitHolder) editor).getTranslationUnit();
 
-      if (tu != null && tu instanceof IWorkingCopy) {
-         RefactoringType refactoring = getRefactoring((IWorkingCopy) tu, OptionalUtil.of(((ITextEditor) editor).getSelectionProvider()).map(
-               ISelectionProvider::getSelection).mapAs(ITextSelection.class).get());
+      if (tu == null || !(tu instanceof IWorkingCopy)) return null;
 
-         if (refactoring.getContext() == null) getRefactoringContext(refactoring);
+      return execute(parent, (IWorkingCopy) tu, OptionalUtil.of(((ITextEditor) editor).getSelectionProvider()).map(ISelectionProvider::getSelection)
+            .mapAs(ITextSelection.class).get());
+   }
 
-         try {
-            final int result = getRefactoringOpenOperation(getRefactoringWizard(refactoring)).run(parent, refactoring.getName());
-            switch (result) {
-            case IDialogConstants.CANCEL_ID:
-            case RefactoringWizardOpenOperation.INITIAL_CONDITION_CHECKING_FAILED:
-               ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
-            }
-         } catch (InterruptedException | CoreException e) {
-            e.printStackTrace();
+   /**
+    * Executes the handler.
+    * 
+    * @param shell
+    *        The current shell
+    * @param wc
+    *        The working copy of the translation unit
+    * @param selection
+    *        The selection for which to run the handler
+    * @return the result of the execution. Reserved for future use, must be null.
+    */
+   public Object execute(Shell shell, IWorkingCopy wc, Optional<ITextSelection> selection) {
+      RefactoringType refactoring = getRefactoring((IWorkingCopy) wc, selection);
+
+      if (refactoring.getContext() == null) getRefactoringContext(refactoring);
+
+      if (!new RefactoringSaveHelper(saveMode.saveModeConstant).saveEditors(shell)) return null;
+
+      try {
+         final int result = getRefactoringOpenOperation(getRefactoringWizard(refactoring)).run(shell, refactoring.getName());
+         switch (result) {
+         case IDialogConstants.CANCEL_ID:
+         case RefactoringWizardOpenOperation.INITIAL_CONDITION_CHECKING_FAILED:
+            ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
          }
+      } catch (InterruptedException | CoreException e) {
+         e.printStackTrace();
       }
       return null;
+   }
+
+   /**
+    * Executes the handler, it extracts the translation unit and the current selection from the editor passed as an argument.
+    * 
+    * @param editor
+    *        The editor for which to run the refactoring
+    * @return the result of the execution. Reserved for future use, must be null.
+    */
+   public Object execute(IEditorPart editor) {
+      if (editor == null || !(editor instanceof ICEditor) || !(editor instanceof ITranslationUnitHolder)) return null;
+      Shell parent = editor.getSite().getShell();
+
+      ITranslationUnit tu = ((ITranslationUnitHolder) editor).getTranslationUnit();
+
+      if (tu == null || !(tu instanceof IWorkingCopy)) return null;
+
+      return execute(parent, (IWorkingCopy) tu, OptionalUtil.of(((ITextEditor) editor).getSelectionProvider()).map(ISelectionProvider::getSelection)
+            .mapAs(ITextSelection.class).get());
    }
 
    /**

@@ -22,6 +22,7 @@ import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.ISimpleReporter;
 import ch.hsr.ifs.iltis.cpp.core.ast.visitor.SimpleVisitor;
 import ch.hsr.ifs.iltis.cpp.core.resources.CProjectUtil;
+import ch.hsr.ifs.iltis.cpp.core.resources.info.MarkerInfo;
 import ch.hsr.ifs.iltis.cpp.core.wrappers.AbstractIndexAstChecker;
 
 
@@ -33,13 +34,14 @@ import ch.hsr.ifs.iltis.cpp.core.wrappers.AbstractIndexAstChecker;
  * @param <ProblemId>
  *        A class which implements IProblemId (It is recommended to use an enum for this)
  */
-public abstract class SimpleChecker<ProblemId extends IProblemId<ProblemId>> extends AbstractIndexAstChecker implements IChecker,
-      ISimpleReporter<ProblemId> {
+public abstract class SimpleChecker<ProblemId extends IProblemId<ProblemId>> extends
+      AbstractIndexAstChecker implements IChecker, ISimpleReporter<ProblemId> {
 
    protected SimpleVisitor<?, ?> visitor = createVisitor();
 
-   protected final List<VisitorReport<ProblemId>>                  nodesToReport     = new ArrayList<>();
-   protected final HashMap<VisitorReport<ProblemId>, List<Object>> argumentsToReport = new HashMap<>();
+   protected final List<VisitorReport<ProblemId>> nodesToReport = new ArrayList<>();
+
+   protected final HashMap<VisitorReport<ProblemId>, MarkerInfo<?>> infosToReport = new HashMap<>();
 
    @Override
    public void processAst(final IASTTranslationUnit ast) {
@@ -57,9 +59,9 @@ public abstract class SimpleChecker<ProblemId extends IProblemId<ProblemId>> ext
    protected abstract SimpleVisitor<?, ?> createVisitor();
 
    @Override
-   public void addNodeForReporting(final VisitorReport<ProblemId> result, final List<Object> args) {
+   public void addNodeForReporting(final VisitorReport<ProblemId> result, final MarkerInfo<?> info) {
       nodesToReport.add(result);
-      if (args != null) argumentsToReport.put(result, args);
+      if (info != null) infosToReport.put(result, info);
    }
 
    /**
@@ -67,7 +69,7 @@ public abstract class SimpleChecker<ProblemId extends IProblemId<ProblemId>> ext
     */
    protected void report() {
       nodesToReport.stream().forEach((checkerResult) -> {
-         reportProblem(checkerResult.getProblemId().getId(), locationHook(checkerResult.getNode()), argsHook(checkerResult));
+         reportProblem(checkerResult.getProblemId(), locationHook(checkerResult.getNode()), infoHook(checkerResult));
       });
       nodesToReport.clear();
    }
@@ -84,13 +86,8 @@ public abstract class SimpleChecker<ProblemId extends IProblemId<ProblemId>> ext
     * Per default this method returns the arguments for each result. These arguments are then used to report the problem.
     * Can be overridden.
     */
-   protected Object[] argsHook(final VisitorReport<? extends IProblemId<ProblemId>> result) {
-      final List<Object> arguments = argumentsToReport.get(result);
-      if (arguments != null) {
-         return arguments.toArray();
-      } else {
-         return null;
-      }
+   protected MarkerInfo<?> infoHook(final VisitorReport<? extends IProblemId<ProblemId>> result) {
+      return infosToReport.getOrDefault(result, null);
    }
 
    /**

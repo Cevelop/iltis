@@ -5,36 +5,18 @@ import java.util.Map;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
+import ch.hsr.ifs.iltis.cpp.core.resources.info.annotations.NonPersistentCopyArgument;
+
 
 public final class CompositeMarkerInfo extends MarkerInfo<CompositeMarkerInfo> {
 
+   @NonPersistentCopyArgument
    public MutableList<MarkerInfo<?>> infos = Lists.mutable.empty();
-
-   public CompositeMarkerInfo() {}
-
-   /**
-    * Copy constructor.
-    * <p>
-    * This constructor does not add a CompositeInfo but
-    * instead creates a copy of it.
-    * 
-    * @param info
-    *        The CompositieInfo to be copied from.
-    */
-   public CompositeMarkerInfo(CompositeMarkerInfo info) {
-      super(info);
-      infos = info.infos.clone();
-   }
-
-   @Override
-   public CompositeMarkerInfo copy() {
-      return new CompositeMarkerInfo(this);
-   }
 
    @Override
    public Map<String, String> toMap() {
       Map<String, String> markerInfoData = super.toMap();
-      markerInfoData.putAll(InfoConverter.convert(infos.toList()));
+      markerInfoData.putAll(InfoConverter.convert(infos));
       return markerInfoData;
    }
 

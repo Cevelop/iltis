@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import ch.hsr.ifs.iltis.core.core.ILTIS;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
 import ch.hsr.ifs.iltis.cpp.core.resources.info.IInfo;
+import ch.hsr.ifs.iltis.cpp.core.resources.info.MarkerInfo;
 
 
 /**
@@ -125,27 +126,46 @@ public abstract class AbstractIndexAstChecker extends AbstractCheckerWithProblem
       return true;
    }
 
-   public void reportProblem(IProblemId<?> id, IASTNode astNode, IInfo<?> info) {
+   public void reportProblem(IProblemId<?> id, IASTNode astNode, MarkerInfo<?> info) {
       IProblemLocation loc = getProblemLocation(astNode);
-      if (loc != null) reportProblem(id.getId(), loc, info.toUnifiedMapArray());
+      if (loc != null) reportProblem(id.getId(), loc, info.toCodanProblemArgsArray());
    }
 
-   public void reportProblem(IProblem problem, IASTNode astNode, IInfo<?> info) {
+   public void reportProblem(IProblem problem, IASTNode astNode, MarkerInfo<?> info) {
       IProblemLocation loc = getProblemLocation(astNode);
-      if (loc != null) reportProblem(problem, loc, info.toUnifiedMapArray());
+      if (loc != null) reportProblem(problem, loc, info.toCodanProblemArgsArray());
+   }
+
+   public void reportProblem(IProblemId<?> id, IASTNode astNode) {
+      reportProblem(id.getId(), astNode);
+   }
+
+   public void reportProblem(IProblemId<?> problemId, IProblemLocation loc) {
+      reportProblem(problemId.getId(), loc);
+   }
+
+   public void reportProblem(IProblemId<?> problemId, IProblemLocation loc, MarkerInfo<?> info) {
+      reportProblem(problemId.getId(), loc, info.toCodanProblemArgsArray());
    }
 
    /**
     * @deprecated Use {@link #reportProblem(IProblemId, IASTNode, IInfo)}.
     */
-   public void reportProblem(IProblemId<?> id, IASTNode astNode, Object... args) {
+   public final void reportProblem(String problemId, IProblemLocation loc, Object... args) {
+      reportProblem(getProblemById(problemId, loc.getFile()), loc, args);
+   }
+
+   /**
+    * @deprecated Use {@link #reportProblem(IProblemId, IASTNode, IInfo)}.
+    */
+   public final void reportProblem(IProblemId<?> id, IASTNode astNode, Object... args) {
       reportProblem(id.getId(), astNode, args);
    }
 
    /**
     * @deprecated Use {@link #reportProblem(IProblemId, IASTNode, IInfo)}.
     */
-   public void reportProblem(String id, IASTNode astNode, Object... args) {
+   public final void reportProblem(String id, IASTNode astNode, Object... args) {
       IProblemLocation loc = getProblemLocation(astNode);
       if (loc != null) reportProblem(id, loc, args);
    }
@@ -153,7 +173,7 @@ public abstract class AbstractIndexAstChecker extends AbstractCheckerWithProblem
    /**
     * @deprecated Use {@link #reportProblem(IProblem, IASTNode, IInfo)}
     */
-   public void reportProblem(IProblem problem, IASTNode astNode, Object... args) {
+   public final void reportProblem(IProblem problem, IASTNode astNode, Object... args) {
       IProblemLocation loc = getProblemLocation(astNode);
       if (loc != null) reportProblem(problem, loc, args);
    }
