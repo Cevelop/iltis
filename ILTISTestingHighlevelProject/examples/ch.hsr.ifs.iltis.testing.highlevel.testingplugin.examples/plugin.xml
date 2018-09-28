@@ -34,8 +34,9 @@
   			 id="ch.hsr.ifs.iltis.testing.highlevel.markerResolution"
          	 name="%extensionMarkerResolution.name">
       <resolution class="ch.hsr.ifs.iltis.testing.highlevel.testingplugin.example.examplecodantest.MyQuickFix" 
-      			  infoClass="ch.hsr.ifs.iltis.testing.highlevel.testingplugin.example.examplecodantest.ExampleInfo"
-      			  problemId="ch.hsr.ifs.myCodanProblemId"/>
+      			  problemId="ch.hsr.ifs.myCodanProblemId">
+      			  <info class="ch.hsr.ifs.iltis.testing.highlevel.testingplugin.example.examplecodantest.ExampleInfo"/>
+      </resolution>
    </extension>
    
 </plugin>
