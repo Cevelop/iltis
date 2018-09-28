@@ -54,6 +54,9 @@
          </documentation>
       </annotation>
       <complexType>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="info"/>
+         </sequence>
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
@@ -74,16 +77,6 @@
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="infoClass" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-               <appinfo>
-                  <meta.attribute kind="java" basedOn="ch.hsr.ifs.iltis.cpp.core.ui.refactoring.MarkerInfo:"/>
-               </appinfo>
-            </annotation>
-         </attribute>
          <attribute name="messagePattern" type="string">
             <annotation>
                <documentation>
@@ -91,6 +84,21 @@
                </documentation>
                <appinfo>
                   <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="info">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The class representing the MarkerInfo of this resolution
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="ch.hsr.ifs.iltis.cpp.core.ui.refactoring.MarkerInfo:"/>
                </appinfo>
             </annotation>
          </attribute>

@@ -8,6 +8,7 @@ import org.eclipse.cdt.codan.ui.ICodanMarkerResolution;
 import org.eclipse.collections.api.collection.MutableCollection;
 import org.eclipse.collections.api.multimap.MutableMultimap;
 import org.eclipse.collections.impl.factory.Multimaps;
+import org.eclipse.collections.impl.utility.ArrayIterate;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -21,6 +22,7 @@ import org.osgi.framework.FrameworkUtil;
 
 import ch.hsr.ifs.iltis.core.core.ILTIS;
 import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
+import ch.hsr.ifs.iltis.cpp.core.resources.info.CompositeMarkerInfo;
 import ch.hsr.ifs.iltis.cpp.core.resources.info.MarkerInfo;
 
 
@@ -37,7 +39,8 @@ public class InfoProblemMarkerResolutionGenerator implements IMarkerResolutionGe
    private static final String PROBLEM_ID_ATTRIBUTE      = "problemId";
    private static final String MESSAGE_PATTERN_ATTRIBUTE = "messagePattern";
    private static final String RESOLUTION_CLASS_PROPERTY = "class";
-   private static final String INFO_CLASS_PROPERTY       = "infoClass";
+   private static final String INFO_CLASS_PROPERTY       = "class";
+   private static final String INFO_ELEMENT_NAME         = "info";
 
    private static final MutableMultimap<IMarker, IMarkerResolution> resolutions = Multimaps.mutable.list.empty();
 
@@ -60,47 +63,52 @@ public class InfoProblemMarkerResolutionGenerator implements IMarkerResolutionGe
    }
 
    private static synchronized void readExtensions(final IMarker marker) {
-      final IExtensionPoint ep = Platform.getExtensionRegistry().getExtensionPoint(FrameworkUtil.getBundle(InfoProblemMarkerResolutionGenerator.class)
-            .getSymbolicName(), EXTENSION_POINT_NAME);
-      if (ep == null) return;
-      try {
-         // process categories
-         for (final IConfigurationElement configurationElement : ep.getConfigurationElements()) {
-            processResolution(configurationElement, marker);
-         }
-      } catch (Throwable e) {
-         e.printStackTrace();
+      final IExtensionPoint infoMarkerResolutionEP = Platform.getExtensionRegistry().getExtensionPoint(FrameworkUtil.getBundle(
+            InfoProblemMarkerResolutionGenerator.class).getSymbolicName(), EXTENSION_POINT_NAME);
+      if (infoMarkerResolutionEP == null) return;
+
+      for (final IConfigurationElement resolutionElement : infoMarkerResolutionEP.getConfigurationElements()) {
+         if (RESOLUTION_ELEMEMT_NAME.equals(resolutionElement.getName())) processResolution(resolutionElement, marker);
       }
    }
 
    /**
-    * @param configurationElement
+    * @param resolutionElement
     */
    @SuppressWarnings({ "rawtypes", "unchecked" })
-   private static void processResolution(final IConfigurationElement configurationElement, final IMarker marker) {
-      if (RESOLUTION_ELEMEMT_NAME.equals(configurationElement.getName())) { //$NON-NLS-1$
-         final String id = configurationElement.getAttribute(PROBLEM_ID_ATTRIBUTE); //$NON-NLS-1$
-         if (!isApplicable(marker, id)) return;
-         final String messagePattern = configurationElement.getAttribute(MESSAGE_PATTERN_ATTRIBUTE); //$NON-NLS-1$
-         if (id == null && messagePattern == null) {
-            ILTIS.log(NLS.bind(Messages.PMRG_NotDefined, EXTENSION_POINT_NAME));
+   private static void processResolution(final IConfigurationElement resolutionElement, final IMarker marker) {
+      final String id = resolutionElement.getAttribute(PROBLEM_ID_ATTRIBUTE);
+      if (id == null || !isApplicable(marker, id)) return;
+      final String messagePattern = resolutionElement.getAttribute(MESSAGE_PATTERN_ATTRIBUTE);
+      if (messagePattern == null) {
+         ILTIS.log(NLS.bind(Messages.PMRG_NotDefined, EXTENSION_POINT_NAME));
+         return;
+      }
+      IConfigurationElement[] infoElements = resolutionElement.getChildren(INFO_ELEMENT_NAME);
+
+      IInfoMarkerResolution res = getValidMarkerResolutionInstance(resolutionElement);
+      MarkerInfo<?> info = infoElements.length > 1 ? createCompositeMarkerInfo(marker, infoElements) : createMarkerInfo(marker, infoElements[0]);
+      res.configure(info);
+
+      if (messagePattern != null) {
+         try {
+            Pattern.compile(messagePattern);
+         } catch (final Exception e) {
+            ILTIS.log(NLS.bind(Messages.PMRG_Invalid, EXTENSION_POINT_NAME, e.getMessage()));
             return;
          }
-         IInfoMarkerResolution res = getValidMarkerResolutionInstance(configurationElement);
-         MarkerInfo<?> info = MarkerInfo.fromCodanProblemMarker(ILTISException.sterilize(() -> ((MarkerInfo) configurationElement
-               .createExecutableExtension(INFO_CLASS_PROPERTY))), marker);
-         res.configure(info);
-
-         if (messagePattern != null) {
-            try {
-               Pattern.compile(messagePattern);
-            } catch (final Exception e) {
-               ILTIS.log(NLS.bind(Messages.PMRG_Invalid, EXTENSION_POINT_NAME, e.getMessage()));
-               return;
-            }
-         }
-         addResolution(marker, res, messagePattern);
       }
+      addResolution(marker, res, messagePattern);
+   }
+
+   private static MarkerInfo<?> createCompositeMarkerInfo(final IMarker marker, final IConfigurationElement[] infoElements) {
+      return new CompositeMarkerInfo().also(ci -> ci.infos.addAll(ArrayIterate.collect(infoElements, ie -> createMarkerInfo(marker, ie))));
+   }
+
+   @SuppressWarnings({ "rawtypes", "unchecked" })
+   private static MarkerInfo<?> createMarkerInfo(final IMarker marker, final IConfigurationElement infoElement) {
+      return MarkerInfo.fromCodanProblemMarker(ILTISException.sterilize(() -> ((MarkerInfo) infoElement.createExecutableExtension(
+            INFO_CLASS_PROPERTY))), marker);
    }
 
    @SuppressWarnings("rawtypes")

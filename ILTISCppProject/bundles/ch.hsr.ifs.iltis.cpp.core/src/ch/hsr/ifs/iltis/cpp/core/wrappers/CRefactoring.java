@@ -76,6 +76,17 @@ public abstract class CRefactoring extends Refactoring {
    protected CRefactoringContext      refactoringContext;
    protected ModificationCollector    modificationCollector;
 
+   public CRefactoring(ICElement element, Optional<ITextSelection> selection) {
+      this(element, selection, element.getCProject());
+   }
+
+   /**
+    * @deprecated use {@link #CRefactoring(ICElement, Optional)} instead!
+    * TODO remove after full transition
+    * @param element
+    * @param selection
+    * @param project
+    */
    public CRefactoring(ICElement element, Optional<ITextSelection> selection, ICProject project) {
       this.project = project;
       this.initStatus = new RefactoringStatus();

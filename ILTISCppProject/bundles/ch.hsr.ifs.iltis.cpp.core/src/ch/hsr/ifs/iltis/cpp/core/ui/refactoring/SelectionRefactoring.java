@@ -12,19 +12,19 @@ import ch.hsr.ifs.iltis.cpp.core.wrappers.CRefactoring;
  * 
  * @author tstauber
  */
-public abstract class SelectionRefactoring<T extends MarkerInfo<T>> extends CRefactoring {
+public abstract class SelectionRefactoring<InfoType extends MarkerInfo<InfoType>> extends CRefactoring {
 
-   protected final T info;
+   protected final InfoType info;
 
-   protected SelectionRefactoring(final ICElement element, final T info) {
-      super(element, info.getSelection(), element.getCProject());
+   protected SelectionRefactoring(final ICElement element, final InfoType info) {
+      super(element, info.getSelection());
       this.info = info;
    }
 
    /**
     * @return The info for this refactoring
     */
-   public T getRefactoringInfo() {
+   public InfoType getRefactoringInfo() {
       return info;
    }
 
