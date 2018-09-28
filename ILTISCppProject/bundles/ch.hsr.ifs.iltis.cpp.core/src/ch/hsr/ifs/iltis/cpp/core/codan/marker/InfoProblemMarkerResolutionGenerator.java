@@ -1,7 +1,5 @@
 package ch.hsr.ifs.iltis.cpp.core.codan.marker;
 
-import java.util.regex.Pattern;
-
 import org.eclipse.cdt.codan.core.model.ICodanProblemMarker;
 import org.eclipse.cdt.codan.internal.core.model.CodanProblemMarker;
 import org.eclipse.cdt.codan.ui.ICodanMarkerResolution;
@@ -14,7 +12,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IMarkerResolution;
 import org.eclipse.ui.IMarkerResolutionGenerator;
 import org.eclipse.ui.IMarkerResolutionGenerator2;
@@ -79,25 +76,13 @@ public class InfoProblemMarkerResolutionGenerator implements IMarkerResolutionGe
    private static void processResolution(final IConfigurationElement resolutionElement, final IMarker marker) {
       final String id = resolutionElement.getAttribute(PROBLEM_ID_ATTRIBUTE);
       if (id == null || !isApplicable(marker, id)) return;
-      final String messagePattern = resolutionElement.getAttribute(MESSAGE_PATTERN_ATTRIBUTE);
-      if (messagePattern == null) {
-         ILTIS.log(NLS.bind(Messages.PMRG_NotDefined, EXTENSION_POINT_NAME));
-         return;
-      }
       IConfigurationElement[] infoElements = resolutionElement.getChildren(INFO_ELEMENT_NAME);
 
       IInfoMarkerResolution res = getValidMarkerResolutionInstance(resolutionElement);
       MarkerInfo<?> info = infoElements.length > 1 ? createCompositeMarkerInfo(marker, infoElements) : createMarkerInfo(marker, infoElements[0]);
       res.configure(info);
 
-      if (messagePattern != null) {
-         try {
-            Pattern.compile(messagePattern);
-         } catch (final Exception e) {
-            ILTIS.log(NLS.bind(Messages.PMRG_Invalid, EXTENSION_POINT_NAME, e.getMessage()));
-            return;
-         }
-      }
+      final String messagePattern = resolutionElement.getAttribute(MESSAGE_PATTERN_ATTRIBUTE);
       addResolution(marker, res, messagePattern);
    }
 
