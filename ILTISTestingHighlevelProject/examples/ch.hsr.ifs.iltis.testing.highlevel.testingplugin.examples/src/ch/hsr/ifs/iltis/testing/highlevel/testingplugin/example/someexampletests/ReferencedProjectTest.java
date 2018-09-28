@@ -11,7 +11,6 @@ package ch.hsr.ifs.iltis.testing.highlevel.testingplugin.example.someexampletest
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.model.IIncludeReference;
@@ -34,8 +33,8 @@ public class ReferencedProjectTest extends CDTTestingUITest {
 
    @Test
    public void runTest() throws Throwable {
-      assertEquals("otherProject1, otherProject2", currentProjectHolder.getReferencedProjects().stream().map(ICProject::toString).collect(Collectors
-            .joining(", ")));
+      assertEquals("otherProject1_current", currentProjectHolder.getReferencedProjects().get(0).toString());
+      assertEquals("otherProject2_current", currentProjectHolder.getReferencedProjects().get(1).toString());
       IIncludeReference[] inc = getCurrentCProject().getIncludeReferences();
       assertEquals(2, inc.length);
       List<ICProject> referencedProjects = currentProjectHolder.getReferencedProjects();

@@ -13,7 +13,7 @@ public class ExampleRefactoringModificationsTest extends CDTTestingRefactoringTe
 
    @Override
    protected Refactoring createRefactoring() {
-      return new DummyRenameRefactoring(getCurrentCElement(getCurrentIFile(testSourceFileName)).get(), getSelection(testSourceFileName).get(),
+      return new DummyRenameRefactoring(getCurrentCElement(getCurrentIFile(testSourceFileName)).get(), getSelection(testSourceFileName),
             getCurrentCProject());
    }
 

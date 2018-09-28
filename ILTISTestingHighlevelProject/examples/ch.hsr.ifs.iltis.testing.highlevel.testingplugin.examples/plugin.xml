@@ -3,14 +3,13 @@
 <plugin>
    <extension point="ch.hsr.ifs.iltis.testing.highlevel.testingPlugin">
 	   <testResouresLocation
-	         sourceLocation="resources/ch.hsr.ifs.iltis.testing.highlevel.example/"
-	         externalSourceLocation="ch.hsr.ifs.iltis.testing.highlevel.example.externalTestResource/"/>
+	         sourceLocation="resources/ch.hsr.ifs.iltis.testing.highlevel.testingplugin.example/"
+	         externalSourceLocation="ch.hsr.ifs.iltis.testing.highlevel.testingplugin.example.externalTestResource/"/>
    </extension>
    
    
    <!-- This section of plugin.xml is only required when you require to have your own codan-tests. Also note that these acutally do not belong into the testing-plugin-project but rather into your plugin-project itself.-->
-   <extension
-        point="org.eclipse.cdt.codan.core.checkers">
+   <extension point="org.eclipse.cdt.codan.core.checkers">
      <checker
            class="ch.hsr.ifs.iltis.testing.highlevel.testingplugin.example.examplecodantest.MyCodanChecker"
            id="ch.hsr.ifs.myCodanCheckerId"
@@ -30,10 +29,13 @@
            name="My Checker Category Name">
      </category>
   </extension>
-  <extension id="ch.hsr.ifs.iltis.testing.highlevel.markerResolution"
-         	 name="%extensionMarkerResolution.name"
-         	 point="org.eclipse.cdt.codan.ui.codanMarkerResolution">
+  
+  <extension point="ch.hsr.ifs.iltis.cpp.core.infoMarkerResolution"
+  			 id="ch.hsr.ifs.iltis.testing.highlevel.markerResolution"
+         	 name="%extensionMarkerResolution.name">
       <resolution class="ch.hsr.ifs.iltis.testing.highlevel.testingplugin.example.examplecodantest.MyQuickFix" 
+      			  infoClass="ch.hsr.ifs.iltis.testing.highlevel.testingplugin.example.examplecodantest.ExampleInfo"
       			  problemId="ch.hsr.ifs.myCodanProblemId"/>
    </extension>
+   
 </plugin>

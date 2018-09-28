@@ -36,7 +36,7 @@ public class ExternalIncludeDependencyTestFrameworkTestSubDir extends CDTTesting
       IIncludeReference externalFrameworkTestRef = includeRefs[0];
       IPath expectedExternalFrameworkTestFolderPath = externalTestResourcesHolder.makeProjectAbsolutePath("externalFrameworkTestSubDir");
       assertFolderExists(expectedExternalFrameworkTestFolderPath.append("/sub"));
-      assertEquals(expectedExternalFrameworkTestFolderPath, externalFrameworkTestRef.getPath().toOSString());
+      assertEquals(expectedExternalFrameworkTestFolderPath.toOSString(), externalFrameworkTestRef.getPath().toOSString());
    }
 
    private void assertFolderExists(IPath expectedFolderName) {
