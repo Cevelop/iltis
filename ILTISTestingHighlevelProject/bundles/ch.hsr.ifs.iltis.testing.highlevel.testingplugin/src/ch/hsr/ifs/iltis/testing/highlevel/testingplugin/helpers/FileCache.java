@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Institute for Software, HSR Hochschule fuer Technik
  * Rapperswil, University of applied sciences and others
  * All rights reserved.
- * 
+ *
  * Contributors:
  * Institute for Software - initial API and implementation
  ******************************************************************************/
@@ -24,47 +24,49 @@ import ch.hsr.ifs.iltis.core.core.resources.FileUtil;
 
 public class FileCache {
 
-   private Map<URI, IFile>               mappedURIs         = new HashMap<>();
-   private Map<IFile, IDocumentProvider> connectedDocuments = new HashMap<IFile, IDocumentProvider>();
-   private IDocumentProvider             provider           = new TextFileDocumentProvider();
+    private Map<URI, IFile>               mappedURIs         = new HashMap<>();
+    private Map<IFile, IDocumentProvider> connectedDocuments = new HashMap<>();
+    private IDocumentProvider             provider           = new TextFileDocumentProvider();
 
-   /**
-    * Do not call this method before before performing any changes
-    **/
-   public IDocument getDocument(IFile file) {
-      if (connectedDocuments.containsKey(file)) {
-         /* load from cache */
-         return connectedDocuments.get(file).getDocument(file);
-      }
-      try {
-         if (file == null) { return null; }
-         file.getProject();
-         provider.connect(file);
-         connectedDocuments.put(file, provider);
-         return provider.getDocument(file);
-      } catch (CoreException e) {
-         e.printStackTrace();
-         return null;
-      }
-   }
+    /**
+     * Do not call this method before before performing any changes
+     **/
+    public IDocument getDocument(IFile file) {
+        if (connectedDocuments.containsKey(file)) {
+            /* load from cache */
+            return connectedDocuments.get(file).getDocument(file);
+        }
+        try {
+            if (file == null) {
+                return null;
+            }
+            file.getProject();
+            provider.connect(file);
+            connectedDocuments.put(file, provider);
+            return provider.getDocument(file);
+        } catch (CoreException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-   /**
-    * Do not call this method before before performing any changes
-    **/
-   public IDocument getDocument(URI fileUri) {
-      if (mappedURIs.containsKey(fileUri)) return getDocument(mappedURIs.get(fileUri));
-      IFile file = FileUtil.toIFile(fileUri);
+    /**
+     * Do not call this method before before performing any changes
+     **/
+    public IDocument getDocument(URI fileUri) {
+        if (mappedURIs.containsKey(fileUri)) return getDocument(mappedURIs.get(fileUri));
+        IFile file = FileUtil.toIFile(fileUri);
 
-      mappedURIs.put(fileUri, file);
-      return getDocument(file);
-   }
+        mappedURIs.put(fileUri, file);
+        return getDocument(file);
+    }
 
-   public void clean() {
-      for (Entry<IFile, IDocumentProvider> curEntry : connectedDocuments.entrySet()) {
-         curEntry.getValue().disconnect(curEntry.getKey());
-      }
-      mappedURIs.clear();
-      connectedDocuments.clear();
-   }
+    public void clean() {
+        for (Entry<IFile, IDocumentProvider> curEntry : connectedDocuments.entrySet()) {
+            curEntry.getValue().disconnect(curEntry.getKey());
+        }
+        mappedURIs.clear();
+        connectedDocuments.clear();
+    }
 
 }

@@ -8,35 +8,35 @@ import ch.hsr.ifs.iltis.core.core.functional.functions.ThrowingRunnable;
 
 public abstract class UIThreadSyncRunnable implements Runnable {
 
-   volatile private Exception e;
+    volatile private Exception e;
 
-   public static void run(ThrowingRunnable<Exception> runnable) {
-      new UIThreadSyncRunnable() {
+    public static void run(ThrowingRunnable<Exception> runnable) {
+        new UIThreadSyncRunnable() {
 
-         @Override
-         protected void runSave() throws Exception {
-            runnable.run();
-         }
-      }.runSyncOnUIThread();
-   }
+            @Override
+            protected void runSave() throws Exception {
+                runnable.run();
+            }
+        }.runSyncOnUIThread();
+    }
 
-   protected abstract void runSave() throws Exception;
+    protected abstract void runSave() throws Exception;
 
-   @Override
-   final public void run() {
-      try {
-         runSave();
-      } catch (Exception e) {
-         this.e = e;
-      }
-   }
+    @Override
+    final public void run() {
+        try {
+            runSave();
+        } catch (Exception e) {
+            this.e = e;
+        }
+    }
 
-   private void throwIfHasException() throws RuntimeException {
-      if (e != null) ILTISException.wrap(e).rethrowUnchecked();
-   }
+    private void throwIfHasException() throws RuntimeException {
+        if (e != null) ILTISException.wrap(e).rethrowUnchecked();
+    }
 
-   final public void runSyncOnUIThread() throws RuntimeException {
-      PlatformUI.getWorkbench().getDisplay().syncExec(this);
-      throwIfHasException();
-   }
+    final public void runSyncOnUIThread() throws RuntimeException {
+        PlatformUI.getWorkbench().getDisplay().syncExec(this);
+        throwIfHasException();
+    }
 }

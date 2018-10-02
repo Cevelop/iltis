@@ -10,7 +10,7 @@ import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.cdttest.base.preferencem
  * An extended {@link CDTTestingRefactoringTest} that allows to set individual preferences for each test.
  * <p>
  * Usage:
- * 
+ *
  * <pre>
  * Without evaluation -> ( key | value ) can be chained using commas.
  *
@@ -29,26 +29,26 @@ import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.cdttest.base.preferencem
  * setPreferencesEval=(P_CHAR_MAPPING_TO_FIXED|V_SIZE_16),(P_CHAR_PLATFORM_SIGNED_UNSIGNED|V_CHAR_PLATFORM_UNSIGNED)
  * //@main.cpp
  * char foo {42};
- * 
+ *
  * </pre>
- * 
+ *
  * @author tstauber
  *
  */
 public abstract class CDTTestingRefactoringTestWithPreferences extends CDTTestingRefactoringTest implements ITestPreferencesMixinHost {
 
-   private TestPreferencesMixin testPreferenceMixin = new TestPreferencesMixin(this);
+    private TestPreferencesMixin testPreferenceMixin = new TestPreferencesMixin(this);
 
-   @Override
-   protected void configureTest(final Properties properties) {
-      super.configureTest(properties);
-      testPreferenceMixin.setupPreferences(properties);
-   }
+    @Override
+    protected void configureTest(final Properties properties) {
+        super.configureTest(properties);
+        testPreferenceMixin.setupPreferences(properties);
+    }
 
-   @Override
-   public void tearDown() throws Exception {
-      testPreferenceMixin.resetPreferences();
-      super.tearDown();
-   }
+    @Override
+    public void tearDown() throws Exception {
+        testPreferenceMixin.resetPreferences();
+        super.tearDown();
+    }
 
 }

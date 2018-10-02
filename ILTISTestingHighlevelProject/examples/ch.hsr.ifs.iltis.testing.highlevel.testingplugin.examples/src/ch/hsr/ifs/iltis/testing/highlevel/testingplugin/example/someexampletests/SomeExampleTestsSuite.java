@@ -2,7 +2,7 @@
  * Copyright (c) 2011 Institute for Software, HSR Hochschule fuer Technik
  * Rapperswil, University of applied sciences and others
  * All rights reserved.
- * 
+ *
  * Contributors:
  * Institute for Software - initial API and implementation
  ******************************************************************************/

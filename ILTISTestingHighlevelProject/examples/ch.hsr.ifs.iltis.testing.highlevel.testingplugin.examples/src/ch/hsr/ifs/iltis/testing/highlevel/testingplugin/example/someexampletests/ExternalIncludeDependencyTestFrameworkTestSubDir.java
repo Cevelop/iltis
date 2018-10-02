@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Institute for Software, HSR Hochschule fuer Technik
  * Rapperswil, University of applied sciences and others
  * All rights reserved.
- * 
+ *
  * Contributors:
  * Institute for Software - initial API and implementation
  ******************************************************************************/
@@ -22,26 +22,26 @@ import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.cdttest.base.CDTTestingU
 
 public class ExternalIncludeDependencyTestFrameworkTestSubDir extends CDTTestingUITest {
 
-   @Override
-   protected void initAdditionalIncludes() throws Exception {
-      stageExternalIncludePathsForBothProjects("externalFrameworkTestSubDir");
-      super.initAdditionalIncludes();
-   }
+    @Override
+    protected void initAdditionalIncludes() throws Exception {
+        stageExternalIncludePathsForBothProjects("externalFrameworkTestSubDir");
+        super.initAdditionalIncludes();
+    }
 
-   @Test
-   public void runTest() throws Throwable {
-      IIncludeReference[] includeRefs = getCurrentCProject().getIncludeReferences();
-      assertEquals(1, includeRefs.length);
+    @Test
+    public void runTest() throws Throwable {
+        IIncludeReference[] includeRefs = getCurrentCProject().getIncludeReferences();
+        assertEquals(1, includeRefs.length);
 
-      IIncludeReference externalFrameworkTestRef = includeRefs[0];
-      IPath expectedExternalFrameworkTestFolderPath = externalTestResourcesHolder.makeProjectAbsolutePath("externalFrameworkTestSubDir");
-      assertFolderExists(expectedExternalFrameworkTestFolderPath.append("/sub"));
-      assertEquals(expectedExternalFrameworkTestFolderPath.toOSString(), externalFrameworkTestRef.getPath().toOSString());
-   }
+        IIncludeReference externalFrameworkTestRef = includeRefs[0];
+        IPath expectedExternalFrameworkTestFolderPath = externalTestResourcesHolder.makeProjectAbsolutePath("externalFrameworkTestSubDir");
+        assertFolderExists(expectedExternalFrameworkTestFolderPath.append("/sub"));
+        assertEquals(expectedExternalFrameworkTestFolderPath.toOSString(), externalFrameworkTestRef.getPath().toOSString());
+    }
 
-   private void assertFolderExists(IPath expectedFolderName) {
-      File folder = expectedFolderName.toFile();
-      assertTrue(folder.exists());
-      assertTrue(folder.isDirectory());
-   }
+    private void assertFolderExists(IPath expectedFolderName) {
+        File folder = expectedFolderName.toFile();
+        assertTrue(folder.exists());
+        assertTrue(folder.isDirectory());
+    }
 }

@@ -17,63 +17,63 @@ import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.cdttest.comparison.ASTCo
 
 public class NodeComparisonVisitor {
 
-   private ASTNodeCollector leftCollector;
-   private ASTNodeCollector rightCollector;
+    private ASTNodeCollector leftCollector;
+    private ASTNodeCollector rightCollector;
 
-   private EnumSet<ComparisonArg> args;
-   private boolean                compareComments;
+    private EnumSet<ComparisonArg> args;
+    private boolean                compareComments;
 
-   public NodeComparisonVisitor(IASTTranslationUnit leftAST, IASTTranslationUnit rightAST, EnumSet<ComparisonArg> args) {
-      this.leftCollector = new ASTNodeCollector(leftAST, args);
-      this.rightCollector = new ASTNodeCollector(rightAST, args);
-      this.args = args;
-      this.compareComments = args.contains(ComparisonArg.COMPARE_COMMENTS);
-   }
+    public NodeComparisonVisitor(IASTTranslationUnit leftAST, IASTTranslationUnit rightAST, EnumSet<ComparisonArg> args) {
+        this.leftCollector = new ASTNodeCollector(leftAST, args);
+        this.rightCollector = new ASTNodeCollector(rightAST, args);
+        this.args = args;
+        this.compareComments = args.contains(ComparisonArg.COMPARE_COMMENTS);
+    }
 
-   public ComparisonResult compare() {
-      leftCollector.schedule();
-      rightCollector.schedule();
-      ComparisonResult result;
-      try {
-         result = compareNodes();
-         leftCollector.join();
-         rightCollector.join();
-         if (result.isUnequal()) {
-            return result;
-         } else if (compareComments) {
-            return commentsEqual();
-         } else {
-            return new ComparisonResult(ComparisonState.EQUAL);
-         }
-      } catch (InterruptedException e) {
-         StringPrintStream stream = StringPrintStream.createNew();
-         e.printStackTrace();
-         e.printStackTrace(stream);
-         return new ComparisonResult(ComparisonState.INTERRUPTED, new ComparisonAttribute(ComparisonAttrID.ACTUAL, e.getClass().getSimpleName(),
-               stream.toString()));
-      }
-   }
+    public ComparisonResult compare() {
+        leftCollector.schedule();
+        rightCollector.schedule();
+        ComparisonResult result;
+        try {
+            result = compareNodes();
+            leftCollector.join();
+            rightCollector.join();
+            if (result.isUnequal()) {
+                return result;
+            } else if (compareComments) {
+                return commentsEqual();
+            } else {
+                return new ComparisonResult(ComparisonState.EQUAL);
+            }
+        } catch (InterruptedException e) {
+            StringPrintStream stream = StringPrintStream.createNew();
+            e.printStackTrace();
+            e.printStackTrace(stream);
+            return new ComparisonResult(ComparisonState.INTERRUPTED, new ComparisonAttribute(ComparisonAttrID.ACTUAL, e.getClass().getSimpleName(),
+                    stream.toString()));
+        }
+    }
 
-   public ComparisonResult commentsEqual() {
-      return Functional.zip(leftCollector.getCommentRelations(), rightCollector.getCommentRelations()).map((pair) -> CommentRelation.equals(pair
-            .first(), pair.second(), args)).filter(ComparisonResult::isUnequal).findFirst().orElse(new ComparisonResult(ComparisonState.EQUAL));
-   }
+    public ComparisonResult commentsEqual() {
+        return Functional.zip(leftCollector.getCommentRelations(), rightCollector.getCommentRelations()).map((pair) -> CommentRelation.equals(pair
+                .first(), pair.second(), args)).filter(ComparisonResult::isUnequal).findFirst().orElse(new ComparisonResult(ComparisonState.EQUAL));
+    }
 
-   protected ComparisonResult compareNodes() throws InterruptedException {
-      while (true) {
+    protected ComparisonResult compareNodes() throws InterruptedException {
+        while (true) {
 
-         IASTNode expected = leftCollector.poll();
-         IASTNode actual = rightCollector.poll();
+            IASTNode expected = leftCollector.poll();
+            IASTNode actual = rightCollector.poll();
 
-         if (expected instanceof EOTNode && actual instanceof EOTNode) break;
+            if (expected instanceof EOTNode && actual instanceof EOTNode) break;
 
-         ComparisonResult result = ASTComparison.equals(expected, actual, args);
-         if (result.isUnequal()) {
-            leftCollector.abort();
-            rightCollector.abort();
-            return result;
-         }
-      }
-      return new ComparisonResult(ComparisonState.EQUAL);
-   }
+            ComparisonResult result = ASTComparison.equals(expected, actual, args);
+            if (result.isUnequal()) {
+                leftCollector.abort();
+                rightCollector.abort();
+                return result;
+            }
+        }
+        return new ComparisonResult(ComparisonState.EQUAL);
+    }
 }

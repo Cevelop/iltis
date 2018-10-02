@@ -6,12 +6,12 @@ import ch.hsr.ifs.iltis.cpp.core.resources.info.annotations.MessageInfoArgument;
 
 public class ExampleInfo extends MarkerInfo<ExampleInfo> {
 
-   @MessageInfoArgument(0)
-   public String name;
+    @MessageInfoArgument(0)
+    public String name;
 
-   public ExampleInfo() {}
+    public ExampleInfo() {}
 
-   public ExampleInfo(String name) {
-      this.name = name;
-   }
+    public ExampleInfo(String name) {
+        this.name = name;
+    }
 }

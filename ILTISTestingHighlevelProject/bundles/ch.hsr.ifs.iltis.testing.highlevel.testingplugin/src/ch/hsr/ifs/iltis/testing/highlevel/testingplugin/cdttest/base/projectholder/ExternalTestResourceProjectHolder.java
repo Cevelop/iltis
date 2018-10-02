@@ -22,56 +22,56 @@ import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.testsourcefile.RTSTest.L
 
 public class ExternalTestResourceProjectHolder extends AbstractProjectHolder implements IProjectHolder {
 
-   public static final String NL = System.getProperty("line.separator");
+    public static final String NL = System.getProperty("line.separator");
 
-   protected IWorkspaceRoot workspaceRoot;
+    protected IWorkspaceRoot workspaceRoot;
 
-   public ExternalTestResourceProjectHolder(String projectName, Language language) {
-      this.projectName = projectName;
-      this.language = language;
-   }
+    public ExternalTestResourceProjectHolder(String projectName, Language language) {
+        this.projectName = projectName;
+        this.language = language;
+    }
 
-   @Override
-   public void cleanupProjects() {
-      fileCache.clean();
-      deleteProject(cProject.getProject());
-   }
+    @Override
+    public void cleanupProjects() {
+        fileCache.clean();
+        deleteProject(cProject.getProject());
+    }
 
-   private void deleteProject(IProject project) {
-      try {
-         project.getProject().delete(true, true, new NullProgressMonitor());
-      } catch (CoreException e) {
-         e.printStackTrace();
-      }
-   }
+    private void deleteProject(IProject project) {
+        try {
+            project.getProject().delete(true, true, new NullProgressMonitor());
+        } catch (CoreException e) {
+            e.printStackTrace();
+        }
+    }
 
-   @Override
-   public void importFiles() {
-      for (URL res : stagedFilesToImport) {
-         createIResourceAndInitializeIt(res, cProject.getProject());
-      }
-   }
+    @Override
+    public void importFiles() {
+        for (URL res : stagedFilesToImport) {
+            createIResourceAndInitializeIt(res, cProject.getProject());
+        }
+    }
 
-   private void createIResourceAndInitializeIt(URL sourceURL, IContainer root) {
-      IPath path = new Path(sourceURL.getPath()).removeFirstSegments(1);
-      if (isFolderURL(sourceURL)) {
-         IFolder folder = root.getFolder(path);
-         FileUtil.createFolderWithParents(folder, root);
-      } else {
-         IFile file = root.getFile(path);
-         if (!file.exists()) {
-            FileUtil.createFolderWithParents(file, root);
-            try (InputStream istream = sourceURL.openStream()) {
-               file.create(istream, true, new NullProgressMonitor());
-            } catch (CoreException | IOException e) {
-               e.printStackTrace();
+    private void createIResourceAndInitializeIt(URL sourceURL, IContainer root) {
+        IPath path = new Path(sourceURL.getPath()).removeFirstSegments(1);
+        if (isFolderURL(sourceURL)) {
+            IFolder folder = root.getFolder(path);
+            FileUtil.createFolderWithParents(folder, root);
+        } else {
+            IFile file = root.getFile(path);
+            if (!file.exists()) {
+                FileUtil.createFolderWithParents(file, root);
+                try (InputStream istream = sourceURL.openStream()) {
+                    file.create(istream, true, new NullProgressMonitor());
+                } catch (CoreException | IOException e) {
+                    e.printStackTrace();
+                }
             }
-         }
-      }
-   }
+        }
+    }
 
-   private static boolean isFolderURL(URL url) {
-      return url.getPath().endsWith(String.valueOf(File.separatorChar));
-   }
+    private static boolean isFolderURL(URL url) {
+        return url.getPath().endsWith(String.valueOf(File.separatorChar));
+    }
 
 }

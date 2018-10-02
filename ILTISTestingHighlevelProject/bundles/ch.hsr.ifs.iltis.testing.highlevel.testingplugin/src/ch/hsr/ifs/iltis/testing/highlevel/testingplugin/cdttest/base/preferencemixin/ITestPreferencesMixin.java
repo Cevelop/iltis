@@ -6,7 +6,7 @@ import java.util.Properties;
 /**
  * <p>
  * Usage:
- * 
+ *
  * <pre>
  * Without evaluation -> ( key | value ) can be chained using commas.
  *
@@ -25,18 +25,18 @@ import java.util.Properties;
  * setPreferencesEval=(P_CHAR_MAPPING_TO_FIXED|V_SIZE_16),(P_CHAR_PLATFORM_SIGNED_UNSIGNED|V_CHAR_PLATFORM_UNSIGNED)
  * //@main.cpp
  * char foo {42};
- * 
+ *
  * </pre>
- * 
+ *
  * @author tstauber
  *
  */
 public interface ITestPreferencesMixin {
 
-   abstract void setupPreferences(Properties properties);
+    abstract void setupPreferences(Properties properties);
 
-   abstract void resetPreferences();
+    abstract void resetPreferences();
 
-   abstract ITestPreferencesMixinHost getHost();
+    abstract ITestPreferencesMixinHost getHost();
 
 }

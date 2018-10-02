@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Institute for Software, HSR Hochschule fuer Technik
  * Rapperswil, University of applied sciences and others
  * All rights reserved.
- * 
+ *
  * Contributors:
  * Institute for Software - initial API and implementation
  ******************************************************************************/
@@ -21,11 +21,11 @@ import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.cdttest.base.CDTTestingU
 
 public class CProjectTest extends CDTTestingUITest {
 
-   @Test
-   public void runTest() throws Throwable {
-      IProjectNature cCNature = getCurrentProject().getNature(CCProjectNature.CC_NATURE_ID);
-      assertNull(cCNature); // should be null since we created a non-c++ project
-      IProjectNature cNature = getCurrentProject().getNature(CProjectNature.C_NATURE_ID);
-      assertNotNull(cNature);
-   }
+    @Test
+    public void runTest() throws Throwable {
+        IProjectNature cCNature = getCurrentProject().getNature(CCProjectNature.CC_NATURE_ID);
+        assertNull(cCNature); // should be null since we created a non-c++ project
+        IProjectNature cNature = getCurrentProject().getNature(CProjectNature.C_NATURE_ID);
+        assertNotNull(cNature);
+    }
 }

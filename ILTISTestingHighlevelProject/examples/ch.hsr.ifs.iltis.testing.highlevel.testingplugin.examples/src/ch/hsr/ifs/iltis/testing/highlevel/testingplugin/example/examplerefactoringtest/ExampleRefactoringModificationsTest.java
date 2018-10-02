@@ -9,18 +9,18 @@ import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.example.examplerefactori
 
 public class ExampleRefactoringModificationsTest extends CDTTestingRefactoringTest {
 
-   private String testSourceFileName = "main.cpp";
+    private String testSourceFileName = "main.cpp";
 
-   @Override
-   protected Refactoring createRefactoring() {
-      return new DummyRenameRefactoring(getCurrentCElement(getCurrentIFile(testSourceFileName)).get(), getSelection(testSourceFileName),
-            getCurrentCProject());
-   }
+    @Override
+    protected Refactoring createRefactoring() {
+        return new DummyRenameRefactoring(getCurrentCElement(getCurrentIFile(testSourceFileName)).get(), getSelection(testSourceFileName),
+                getCurrentCProject());
+    }
 
-   @Test
-   public void runTest() throws Throwable {
-      openTestFileInEditor(testSourceFileName);
-      runRefactoringAndAssertSuccess();
-   }
+    @Test
+    public void runTest() throws Throwable {
+        openTestFileInEditor(testSourceFileName);
+        runRefactoringAndAssertSuccess();
+    }
 
 }

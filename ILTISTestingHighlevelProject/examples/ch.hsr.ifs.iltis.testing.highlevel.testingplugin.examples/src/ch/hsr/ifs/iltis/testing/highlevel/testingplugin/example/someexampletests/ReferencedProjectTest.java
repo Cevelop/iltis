@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Institute for Software, HSR Hochschule fuer Technik
  * Rapperswil, University of applied sciences and others
  * All rights reserved.
- * 
+ *
  * Contributors:
  * Institute for Software - initial API and implementation
  ******************************************************************************/
@@ -21,24 +21,24 @@ import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.cdttest.base.CDTTestingU
 
 public class ReferencedProjectTest extends CDTTestingUITest {
 
-   private static final String REFERENCED_PROJECT_NAME1 = "otherProject1";
-   private static final String REFERENCED_PROJECT_NAME2 = "otherProject2";
+    private static final String REFERENCED_PROJECT_NAME1 = "otherProject1";
+    private static final String REFERENCED_PROJECT_NAME2 = "otherProject2";
 
-   @Override
-   protected void initReferencedProjects() throws Exception {
-      stageReferencedProjectForBothProjects(REFERENCED_PROJECT_NAME1, "ReferencedProjectTest_p2.rts");
-      stageReferencedProjectForBothProjects(REFERENCED_PROJECT_NAME2, "ReferencedProjectTest_p3.rts");
-      super.initReferencedProjects();
-   }
+    @Override
+    protected void initReferencedProjects() throws Exception {
+        stageReferencedProjectForBothProjects(REFERENCED_PROJECT_NAME1, "ReferencedProjectTest_p2.rts");
+        stageReferencedProjectForBothProjects(REFERENCED_PROJECT_NAME2, "ReferencedProjectTest_p3.rts");
+        super.initReferencedProjects();
+    }
 
-   @Test
-   public void runTest() throws Throwable {
-      assertEquals("otherProject1_current", currentProjectHolder.getReferencedProjects().get(0).toString());
-      assertEquals("otherProject2_current", currentProjectHolder.getReferencedProjects().get(1).toString());
-      IIncludeReference[] inc = getCurrentCProject().getIncludeReferences();
-      assertEquals(2, inc.length);
-      List<ICProject> referencedProjects = currentProjectHolder.getReferencedProjects();
-      assertEquals(referencedProjects.get(0).getProject().getLocation(), inc[0].getPath());
-      assertEquals(referencedProjects.get(1).getProject().getLocation(), inc[1].getPath());
-   }
+    @Test
+    public void runTest() throws Throwable {
+        assertEquals("otherProject1_current", currentProjectHolder.getReferencedProjects().get(0).toString());
+        assertEquals("otherProject2_current", currentProjectHolder.getReferencedProjects().get(1).toString());
+        IIncludeReference[] inc = getCurrentCProject().getIncludeReferences();
+        assertEquals(2, inc.length);
+        List<ICProject> referencedProjects = currentProjectHolder.getReferencedProjects();
+        assertEquals(referencedProjects.get(0).getProject().getLocation(), inc[0].getPath());
+        assertEquals(referencedProjects.get(1).getProject().getLocation(), inc[1].getPath());
+    }
 }

@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Institute for Software, HSR Hochschule fuer Technik
  * Rapperswil, University of applied sciences and others
  * All rights reserved.
- * 
+ *
  * Contributors:
  * Institute for Software - initial API and implementation
  ******************************************************************************/
@@ -17,9 +17,9 @@ import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.cdttest.base.CDTTestingU
 
 public class SourceFileContentTest extends CDTTestingUITest {
 
-   @Test
-   public void runTest() throws Throwable {
-      assertEquals("#include <iostream>" + NL + NL + "int main() { return 0; }", testFiles.get("XY.cpp").getSource());
-      assertEquals("int main() { return 0; }", testFiles.get("XY.cpp").getExpectedSource());
-   }
+    @Test
+    public void runTest() throws Throwable {
+        assertEquals("#include <iostream>" + NL + NL + "int main() { return 0; }", testFiles.get("XY.cpp").getSource());
+        assertEquals("int main() { return 0; }", testFiles.get("XY.cpp").getExpectedSource());
+    }
 }
