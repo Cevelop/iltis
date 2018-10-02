@@ -31,146 +31,146 @@ import ch.hsr.ifs.iltis.cpp.core.wrappers.CRefactoringContext;
 
 /**
  * A MenuHandler allowing to execute a refactoring with a wizard directly.
- * 
+ *
  * @author tstauber
  *
  * @param <WizardType>
  * @param <RefactoringType>
  */
 public abstract class WizardRefactoringStarterMenuHandler<WizardType extends RefactoringWizard, RefactoringType extends CRefactoring> extends
-      AbstractHandler {
+        AbstractHandler {
 
-   public enum RefactoringSaveMode {
-      /**
-       * Save mode to save all dirty editors (always ask).
-       */
-      SAVE_ALL_ALWAYS_ASK(1),
-      /**
-       * Save mode to save all dirty editors.
-       */
-      SAVE_ALL(2),
-      /**
-       * Save mode to not save any editors.
-       */
-      SAVE_NOTHING(3),
-      /**
-       * Save mode to save all editors that are known to cause trouble for C refactorings, e.g.
-       * editors on compilation units that are not in working copy mode.
-       */
-      SAVE_REFACTORING(4);
+    public enum RefactoringSaveMode {
+        /**
+         * Save mode to save all dirty editors (always ask).
+         */
+        SAVE_ALL_ALWAYS_ASK(1),
+        /**
+         * Save mode to save all dirty editors.
+         */
+        SAVE_ALL(2),
+        /**
+         * Save mode to not save any editors.
+         */
+        SAVE_NOTHING(3),
+        /**
+         * Save mode to save all editors that are known to cause trouble for C refactorings, e.g.
+         * editors on compilation units that are not in working copy mode.
+         */
+        SAVE_REFACTORING(4);
 
-      public final int saveModeConstant;
+        public final int saveModeConstant;
 
-      RefactoringSaveMode(int bridgeConstant) {
-         this.saveModeConstant = bridgeConstant;
-      }
-   }
+        RefactoringSaveMode(final int bridgeConstant) {
+            saveModeConstant = bridgeConstant;
+        }
+    }
 
-   protected RefactoringSaveMode saveMode = RefactoringSaveMode.SAVE_REFACTORING;
+    protected RefactoringSaveMode saveMode = RefactoringSaveMode.SAVE_REFACTORING;
 
-   @Override
-   public Object execute(ExecutionEvent event) throws ExecutionException {
-      Shell parent = HandlerUtil.getActiveShell(event);
+    @Override
+    public Object execute(final ExecutionEvent event) throws ExecutionException {
+        final Shell parent = HandlerUtil.getActiveShell(event);
 
-      IEditorPart editor = HandlerUtil.getActiveEditor(event);
-      if (editor == null || !(editor instanceof ICEditor) || !(editor instanceof ITranslationUnitHolder)) return null;
+        final IEditorPart editor = HandlerUtil.getActiveEditor(event);
+        if (editor == null || !(editor instanceof ICEditor) || !(editor instanceof ITranslationUnitHolder)) return null;
 
-      ITranslationUnit tu = ((ITranslationUnitHolder) editor).getTranslationUnit();
+        final ITranslationUnit tu = ((ITranslationUnitHolder) editor).getTranslationUnit();
 
-      if (tu == null || !(tu instanceof IWorkingCopy)) return null;
+        if (tu == null || !(tu instanceof IWorkingCopy)) return null;
 
-      return execute(parent, (IWorkingCopy) tu, OptionalUtil.of(((ITextEditor) editor).getSelectionProvider()).map(ISelectionProvider::getSelection)
-            .mapAs(ITextSelection.class).get());
-   }
+        return execute(parent, (IWorkingCopy) tu, OptionalUtil.of(((ITextEditor) editor).getSelectionProvider()).map(ISelectionProvider::getSelection)
+                .mapAs(ITextSelection.class).get());
+    }
 
-   /**
-    * Executes the handler.
-    * 
-    * @param shell
-    *        The current shell
-    * @param wc
-    *        The working copy of the translation unit
-    * @param selection
-    *        The selection for which to run the handler
-    * @return the result of the execution. Reserved for future use, must be null.
-    */
-   public Object execute(Shell shell, IWorkingCopy wc, Optional<ITextSelection> selection) {
-      RefactoringType refactoring = getRefactoring((IWorkingCopy) wc, selection);
+    /**
+     * Executes the handler.
+     *
+     * @param shell
+     * The current shell
+     * @param wc
+     * The working copy of the translation unit
+     * @param selection
+     * The selection for which to run the handler
+     * @return the result of the execution. Reserved for future use, must be null.
+     */
+    public Object execute(final Shell shell, final IWorkingCopy wc, final Optional<ITextSelection> selection) {
+        final RefactoringType refactoring = getRefactoring(wc, selection);
 
-      if (refactoring.getContext() == null) getRefactoringContext(refactoring);
+        if (refactoring.getContext() == null) getRefactoringContext(refactoring);
 
-      if (!new RefactoringSaveHelper(saveMode.saveModeConstant).saveEditors(shell)) return null;
+        if (!new RefactoringSaveHelper(saveMode.saveModeConstant).saveEditors(shell)) return null;
 
-      try {
-         final int result = getRefactoringOpenOperation(getRefactoringWizard(refactoring)).run(shell, refactoring.getName());
-         switch (result) {
-         case IDialogConstants.CANCEL_ID:
-         case RefactoringWizardOpenOperation.INITIAL_CONDITION_CHECKING_FAILED:
-            ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
-         }
-      } catch (InterruptedException | CoreException e) {
-         e.printStackTrace();
-      }
-      return null;
-   }
+        try {
+            final int result = getRefactoringOpenOperation(getRefactoringWizard(refactoring)).run(shell, refactoring.getName());
+            switch (result) {
+            case IDialogConstants.CANCEL_ID:
+            case RefactoringWizardOpenOperation.INITIAL_CONDITION_CHECKING_FAILED:
+                ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
+            }
+        } catch (InterruptedException | CoreException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-   /**
-    * Executes the handler, it extracts the translation unit and the current selection from the editor passed as an argument.
-    * 
-    * @param editor
-    *        The editor for which to run the refactoring
-    * @return the result of the execution. Reserved for future use, must be null.
-    */
-   public Object execute(IEditorPart editor) {
-      if (editor == null || !(editor instanceof ICEditor) || !(editor instanceof ITranslationUnitHolder)) return null;
-      Shell parent = editor.getSite().getShell();
+    /**
+     * Executes the handler, it extracts the translation unit and the current selection from the editor passed as an argument.
+     *
+     * @param editor
+     * The editor for which to run the refactoring
+     * @return the result of the execution. Reserved for future use, must be null.
+     */
+    public Object execute(final IEditorPart editor) {
+        if (editor == null || !(editor instanceof ICEditor) || !(editor instanceof ITranslationUnitHolder)) return null;
+        final Shell parent = editor.getSite().getShell();
 
-      ITranslationUnit tu = ((ITranslationUnitHolder) editor).getTranslationUnit();
+        final ITranslationUnit tu = ((ITranslationUnitHolder) editor).getTranslationUnit();
 
-      if (tu == null || !(tu instanceof IWorkingCopy)) return null;
+        if (tu == null || !(tu instanceof IWorkingCopy)) return null;
 
-      return execute(parent, (IWorkingCopy) tu, OptionalUtil.of(((ITextEditor) editor).getSelectionProvider()).map(ISelectionProvider::getSelection)
-            .mapAs(ITextSelection.class).get());
-   }
+        return execute(parent, (IWorkingCopy) tu, OptionalUtil.of(((ITextEditor) editor).getSelectionProvider()).map(ISelectionProvider::getSelection)
+                .mapAs(ITextSelection.class).get());
+    }
 
-   /**
-    * Gets the refactoring. The project can be created by calling {@code element.getCProject()}.
-    * 
-    * @param element
-    *        The ICElement on which to execute the refactoring.
-    * @param selection
-    *        The active selection while starting the refactoring if present. Else Optional.empty().
-    * @return The refactoring.
-    */
-   protected abstract RefactoringType getRefactoring(ICElement element, Optional<ITextSelection> selection);
+    /**
+     * Gets the refactoring. The project can be created by calling {@code element.getCProject()}.
+     *
+     * @param element
+     * The ICElement on which to execute the refactoring.
+     * @param selection
+     * The active selection while starting the refactoring if present. Else Optional.empty().
+     * @return The refactoring.
+     */
+    protected abstract RefactoringType getRefactoring(ICElement element, Optional<ITextSelection> selection);
 
-   /**
-    * If a special refactoring context should be used, it can be created here.
-    * 
-    * @param refactoring
-    *        The refactoring on which to set the context.
-    * @return A CRefactoringContext with the refactoring already set.
-    */
-   protected CRefactoringContext getRefactoringContext(RefactoringType refactoring) {
-      return new CRefactoringContext(refactoring);
-   }
+    /**
+     * If a special refactoring context should be used, it can be created here.
+     *
+     * @param refactoring
+     * The refactoring on which to set the context.
+     * @return A CRefactoringContext with the refactoring already set.
+     */
+    protected CRefactoringContext getRefactoringContext(final RefactoringType refactoring) {
+        return new CRefactoringContext(refactoring);
+    }
 
-   /**
-    * Creates the refactoring-wizard. Can return a {@link NoWizard}.
-    * 
-    * @param refactoring
-    *        The refactoring to create the wizard for.
-    * @return A refactoring wizard
-    */
-   protected abstract WizardType getRefactoringWizard(RefactoringType refactoring);
+    /**
+     * Creates the refactoring-wizard. Can return a {@link NoWizard}.
+     *
+     * @param refactoring
+     * The refactoring to create the wizard for.
+     * @return A refactoring wizard
+     */
+    protected abstract WizardType getRefactoringWizard(RefactoringType refactoring);
 
-   /**
-    * If the refactoring open operation should be modified, this can be done in this hook method.
-    * 
-    * @param wizard
-    * @return
-    */
-   protected RefactoringWizardOpenOperation getRefactoringOpenOperation(WizardType wizard) {
-      return new RefactoringWizardOpenOperation(wizard);
-   }
+    /**
+     * If the refactoring open operation should be modified, this can be done in this hook method.
+     *
+     * @param wizard
+     * @return
+     */
+    protected RefactoringWizardOpenOperation getRefactoringOpenOperation(final WizardType wizard) {
+        return new RefactoringWizardOpenOperation(wizard);
+    }
 }

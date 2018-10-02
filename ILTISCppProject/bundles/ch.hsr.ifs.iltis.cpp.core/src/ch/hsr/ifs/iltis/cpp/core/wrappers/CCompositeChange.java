@@ -9,30 +9,32 @@ import org.eclipse.ltk.core.refactoring.RefactoringChangeDescriptor;
 /**
  * A wrapper class for the cdt CCompositeChange. Using this wrapper reduces the amount of warnings respectively the amount of
  * {@code @SuppressWarnings} tags
- * 
+ *
  * @author tstauber
  *
  */
 public class CCompositeChange extends CompositeChange {
 
-   private RefactoringChangeDescriptor desc;
+    private RefactoringChangeDescriptor desc;
 
-   public CCompositeChange(String name, Change[] children) {
-      super(name, children);
-   }
+    public CCompositeChange(final String name, final Change[] children) {
+        super(name, children);
+    }
 
-   public CCompositeChange(String name) {
-      super(name);
-   }
+    public CCompositeChange(final String name) {
+        super(name);
+    }
 
-   public void setDescription(RefactoringChangeDescriptor descriptor) {
-      desc = descriptor;
-   }
+    public void setDescription(final RefactoringChangeDescriptor descriptor) {
+        desc = descriptor;
+    }
 
-   @Override
-   public ChangeDescriptor getDescriptor() {
-      if (desc != null) { return desc; }
-      return super.getDescriptor();
-   }
+    @Override
+    public ChangeDescriptor getDescriptor() {
+        if (desc != null) {
+            return desc;
+        }
+        return super.getDescriptor();
+    }
 
 }

@@ -25,53 +25,56 @@ import ch.hsr.ifs.iltis.cpp.core.resources.info.MarkerInfo;
 /**
  * A wrapper class for the cdt CRefactoringDescriptior. Using this wrapper reduces the amount of warnings respectively the amount of
  * {@code @SuppressWarnings} tags
- * 
+ *
  * @author tstauber
  *
  */
 @SuppressWarnings("restriction")
 public abstract class CRefactoringDescriptor<RefactoringIdType extends IRefactoringId<RefactoringIdType>, MarkerInfoType extends MarkerInfo<MarkerInfoType>>
-      extends RefactoringDescriptor {
+        extends RefactoringDescriptor {
 
-   protected MarkerInfoType info;
+    protected MarkerInfoType info;
 
-   public CRefactoringDescriptor(RefactoringIdType id, String project, String description, String comment, int flags, MarkerInfoType info) {
-      super(id.getId(), project, description, comment, flags);
-      this.info = info;
-   }
+    public CRefactoringDescriptor(final RefactoringIdType id, final String project, final String description, final String comment, final int flags,
+                                  final MarkerInfoType info) {
+        super(id.getId(), project, description, comment, flags);
+        this.info = info;
+    }
 
-   @Override
-   public abstract CRefactoring createRefactoring(RefactoringStatus status) throws CoreException;
+    @Override
+    public abstract CRefactoring createRefactoring(RefactoringStatus status) throws CoreException;
 
-   @Override
-   public CRefactoringContext createRefactoringContext(RefactoringStatus status) throws CoreException {
-      CRefactoring refactoring = createRefactoring(status);
-      if (refactoring == null) return null;
-      return new CRefactoringContext(refactoring);
-   }
+    @Override
+    public CRefactoringContext createRefactoringContext(final RefactoringStatus status) throws CoreException {
+        final CRefactoring refactoring = createRefactoring(status);
+        if (refactoring == null) return null;
+        return new CRefactoringContext(refactoring);
+    }
 
-   protected ICProject getCProject() throws CoreException {
-      String projectName = getProject();
-      IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-      ICProject cProject = CoreModel.getDefault().create(project);
-      if (cProject == null) { throw new CoreException(new Status(IStatus.ERROR, CUIPlugin.PLUGIN_ID, String.format(
-            "Project \"%s\" does not exist or is not a C/C++ project.", projectName))); }
-      return cProject;
-   }
+    protected ICProject getCProject() throws CoreException {
+        final String projectName = getProject();
+        final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+        final ICProject cProject = CoreModel.getDefault().create(project);
+        if (cProject == null) {
+            throw new CoreException(new Status(IStatus.ERROR, CUIPlugin.PLUGIN_ID, String.format(
+                    "Project \"%s\" does not exist or is not a C/C++ project.", projectName)));
+        }
+        return cProject;
+    }
 
-   protected IFile getFile() throws CoreException {
-      try {
-         return ResourceLookup.selectFileForLocationURI(new URI(info.fileName), ResourcesPlugin.getWorkspace().getRoot().getProject(getProject()));
-      } catch (URISyntaxException e) {
-         throw new CoreException(new Status(IStatus.ERROR, CUIPlugin.PLUGIN_ID, e.getMessage(), e));
-      }
-   }
+    protected IFile getFile() throws CoreException {
+        try {
+            return ResourceLookup.selectFileForLocationURI(new URI(info.fileName), ResourcesPlugin.getWorkspace().getRoot().getProject(getProject()));
+        } catch (final URISyntaxException e) {
+            throw new CoreException(new Status(IStatus.ERROR, CUIPlugin.PLUGIN_ID, e.getMessage(), e));
+        }
+    }
 
-   protected ITranslationUnit getTranslationUnit() throws CoreException {
-      try {
-         return CoreModelUtil.findTranslationUnitForLocation(new URI(info.fileName), getCProject());
-      } catch (URISyntaxException e) {
-         throw new CoreException(new Status(IStatus.ERROR, CUIPlugin.PLUGIN_ID, e.getMessage(), e));
-      }
-   }
+    protected ITranslationUnit getTranslationUnit() throws CoreException {
+        try {
+            return CoreModelUtil.findTranslationUnitForLocation(new URI(info.fileName), getCProject());
+        } catch (final URISyntaxException e) {
+            throw new CoreException(new Status(IStatus.ERROR, CUIPlugin.PLUGIN_ID, e.getMessage(), e));
+        }
+    }
 }

@@ -16,14 +16,14 @@ import ch.hsr.ifs.iltis.cpp.core.wrappers.RefactoringRunner;
  */
 public abstract class SelectionRefactoringRunner<T extends MarkerInfo<T>> extends RefactoringRunner {
 
-   protected final T info;
+    protected final T info;
 
-   protected SelectionRefactoringRunner(ICElement element, Optional<ITextSelection> selection, IShellProvider shellProvider) {
-      super(element, selection, shellProvider, element.getCProject());
-      this.info = getRefactoringInfoConstructor().get();
-      this.info.fileName = element.getCProject().getLocationURI().toString();
-      this.info.setSelection(selection);
-   }
+    protected SelectionRefactoringRunner(final ICElement element, final Optional<ITextSelection> selection, final IShellProvider shellProvider) {
+        super(element, selection, shellProvider, element.getCProject());
+        this.info = getRefactoringInfoConstructor().get();
+        this.info.fileName = element.getCProject().getLocationURI().toString();
+        this.info.setSelection(selection);
+    }
 
-   protected abstract Supplier<T> getRefactoringInfoConstructor();
+    protected abstract Supplier<T> getRefactoringInfoConstructor();
 }

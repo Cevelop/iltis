@@ -8,50 +8,50 @@ import ch.hsr.ifs.iltis.cpp.core.resources.info.MarkerInfo;
 
 public interface ISimpleReporter<ProblemId extends IProblemId<ProblemId>> {
 
-   /**
-    * Adds {@code node} to the list of nodes that will be reported
-    * 
-    * @param problemId
-    *        The problem to be reported
-    * @param node
-    *        The node for which to report the problem
-    */
-   public default void addNodeForReporting(ProblemId problemId, IASTNode node) {
-      addNodeForReporting(new VisitorReport<>(problemId, node));
-   }
+    /**
+     * Adds {@code node} to the list of nodes that will be reported
+     * 
+     * @param problemId
+     * The problem to be reported
+     * @param node
+     * The node for which to report the problem
+     */
+    public default void addNodeForReporting(final ProblemId problemId, final IASTNode node) {
+        addNodeForReporting(new VisitorReport<>(problemId, node));
+    }
 
-   /**
-    * Adds {@code node} to the list of nodes that will be reported
-    * 
-    * @param problemId
-    *        The problem to be reported
-    * @param node
-    *        The node for which to report the problem
-    * @param info
-    *        The marker info
-    */
-   public default void addNodeForReporting(ProblemId problemId, IASTNode node, final MarkerInfo<?> info) {
-      addNodeForReporting(new VisitorReport<>(problemId, node), info);
-   }
+    /**
+     * Adds {@code node} to the list of nodes that will be reported
+     * 
+     * @param problemId
+     * The problem to be reported
+     * @param node
+     * The node for which to report the problem
+     * @param info
+     * The marker info
+     */
+    public default void addNodeForReporting(final ProblemId problemId, final IASTNode node, final MarkerInfo<?> info) {
+        addNodeForReporting(new VisitorReport<>(problemId, node), info);
+    }
 
-   /**
-    * Adds {@code node} to the list of nodes that will be reported
-    *
-    * @param result
-    *        The {@link Pair<IASTNode, ProblemId} that shall be reported
-    */
-   public default void addNodeForReporting(final VisitorReport<ProblemId> result) {
-      addNodeForReporting(result, null);
-   }
+    /**
+     * Adds {@code node} to the list of nodes that will be reported
+     *
+     * @param result
+     * The {@link Pair<IASTNode, ProblemId} that shall be reported
+     */
+    public default void addNodeForReporting(final VisitorReport<ProblemId> result) {
+        addNodeForReporting(result, null);
+    }
 
-   /**
-    * Adds {@code node} to the list of nodes that will be reported
-    *
-    * @param result
-    *        The {@link Pair<IASTNode, ProblemId} that shall be reported
-    * @param info
-    *        The markerInfo for reporting. Can be {@code null}.
-    */
-   public void addNodeForReporting(final VisitorReport<ProblemId> result, final MarkerInfo<?> info);
+    /**
+     * Adds {@code node} to the list of nodes that will be reported
+     *
+     * @param result
+     * The {@link Pair<IASTNode, ProblemId} that shall be reported
+     * @param info
+     * The markerInfo for reporting. Can be {@code null}.
+     */
+    public void addNodeForReporting(final VisitorReport<ProblemId> result, final MarkerInfo<?> info);
 
 }

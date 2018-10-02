@@ -12,32 +12,32 @@ import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
  * @author tstauber
  *
  * @param <ProblemId>
- *        A class which implements IProblemId (It is recommended to use an enum for this)
+ * A class which implements IProblemId (It is recommended to use an enum for this)
  */
 public class VisitorReport<ProblemId extends IProblemId<ProblemId>> extends AbstractPair<ProblemId, IASTNode> {
 
-   public VisitorReport(final ProblemId first, final IASTNode second) {
-      super(first, second);
-   }
+    public VisitorReport(final ProblemId first, final IASTNode second) {
+        super(first, second);
+    }
 
-   /**
-    * @return The problem id which was reported by the checker
-    */
-   public ProblemId getProblemId() {
-      return first;
-   }
+    /**
+     * @return The problem id which was reported by the checker
+     */
+    public ProblemId getProblemId() {
+        return first;
+    }
 
-   /**
-    * Convenience method for {@code getProblemId().getId()}
-    */
-   public String getIdString() {
-      return first.getId();
-   }
+    /**
+     * Convenience method for {@code getProblemId().getId()}
+     */
+    public String getIdString() {
+        return first.getId();
+    }
 
-   /**
-    * @return The node on which the checker hit
-    */
-   public IASTNode getNode() {
-      return second;
-   }
+    /**
+     * @return The node on which the checker hit
+     */
+    public IASTNode getNode() {
+        return second;
+    }
 }

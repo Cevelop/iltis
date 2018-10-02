@@ -10,10 +10,10 @@ import ch.hsr.ifs.iltis.cpp.core.resources.info.IInfo;
 
 /**
  * Used in combination with {@link IInfo} to mark a field to be included in copies, but not to be persisted into the resource marker.
- * 
+ *
  * This annotation can only be used to annotate any field that is able to be cloned.
- * 
- * 
+ *
+ *
  * @author tstauber
  *
  */

@@ -11,33 +11,36 @@ import org.eclipse.collections.impl.utility.Iterate;
 
 public class IASTNodeList<T extends IASTNode> extends FastList<T> implements IASTNodeCollection<T> {
 
-   public IASTNodeList() {}
+    public IASTNodeList() {}
 
-   public IASTNodeList(int initialCapacity) {
-      super(initialCapacity);
-   }
+    public IASTNodeList(final int initialCapacity) {
+        super(initialCapacity);
+    }
 
-   public IASTNodeList(Collection<? extends T> source) {
-      super(source);
-   }
+    public IASTNodeList(final Collection<? extends T> source) {
+        super(source);
+    }
 
-   public boolean envelops(IASTNode node) {
-      return Iterate.anySatisfy(this, n -> n.contains(node));
-   }
+    @Override
+    public boolean envelops(final IASTNode node) {
+        return Iterate.anySatisfy(this, n -> n.contains(node));
+    }
 
-   public boolean envelopsAll(Collection<? extends IASTNode> nodes) {
-      return envelopsAll(nodes.toArray(new IASTNode[nodes.size()]));
-   }
+    @Override
+    public boolean envelopsAll(final Collection<? extends IASTNode> nodes) {
+        return envelopsAll(nodes.toArray(new IASTNode[nodes.size()]));
+    }
 
-   public boolean envelopsAll(IASTNode... nodes) {
-      return ArrayIterate.allSatisfy(nodes, this::envelops);
-   }
+    @Override
+    public boolean envelopsAll(final IASTNode... nodes) {
+        return ArrayIterate.allSatisfy(nodes, this::envelops);
+    }
 
-   /* From FastList */
+    /* From FastList */
 
-   @Override
-   public IASTNodeList<T> reject(Predicate<? super T> predicate) {
-      return this.reject(predicate, new IASTNodeList<>());
-   }
+    @Override
+    public IASTNodeList<T> reject(final Predicate<? super T> predicate) {
+        return this.reject(predicate, new IASTNodeList<>());
+    }
 
 }

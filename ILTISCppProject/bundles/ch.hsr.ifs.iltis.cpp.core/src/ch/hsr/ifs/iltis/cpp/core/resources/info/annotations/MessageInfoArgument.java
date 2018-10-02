@@ -8,10 +8,10 @@ import java.lang.annotation.Target;
 
 /**
  * Used in combination with {@link InfoArgument} to mark a field to be used as a message pattern argument.
- * 
+ *
  * This annotation can only be used to annotate {@link String} fields.
- * 
- * 
+ *
+ *
  * @author tstauber
  *
  */
@@ -19,6 +19,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MessageInfoArgument {
 
-   int value();
+    int value();
 
 }

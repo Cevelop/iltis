@@ -10,7 +10,7 @@ import ch.hsr.ifs.iltis.cpp.core.resources.info.IInfo;
 
 /**
  * Used in combination with an {@link IInfo} to mark a field to be copied and persisted.
- * 
+ *
  * This annotation can only be used to annotate fields of following types:
  * <ul>
  * <li>Boolean & boolean</li>
@@ -24,7 +24,7 @@ import ch.hsr.ifs.iltis.cpp.core.resources.info.IInfo;
  * <li>String</li>
  * <li>Anything that extends IStringifyable</li>
  * </ul>
- * 
+ *
  * @author tstauber
  *
  */

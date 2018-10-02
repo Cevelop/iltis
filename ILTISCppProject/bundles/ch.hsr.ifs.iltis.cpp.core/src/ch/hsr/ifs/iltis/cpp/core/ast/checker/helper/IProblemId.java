@@ -11,21 +11,21 @@ import ch.hsr.ifs.iltis.cpp.core.ids.IId;
  */
 public interface IProblemId<T extends IId<T>> extends IId<T> {
 
-   /**
-    * By default this creates a new IProblemId. This method must be overridden for enums which extend IProblemId.
-    * 
-    * @param id
-    *        The id
-    * @return An IProblemId holding the id of the problem. If an enum constant for this id exists, this method must return said enum constant.
-    */
-   static IProblemId<ProblemIdWrapper> wrap(String id) {
-      return new ProblemIdWrapper(id);
-   }
+    /**
+     * By default this creates a new IProblemId. This method must be overridden for enums which extend IProblemId.
+     * 
+     * @param id
+     * The id
+     * @return An IProblemId holding the id of the problem. If an enum constant for this id exists, this method must return said enum constant.
+     */
+    static IProblemId<ProblemIdWrapper> wrap(final String id) {
+        return new ProblemIdWrapper(id);
+    }
 
-   class ProblemIdWrapper extends IIdWrapper<ProblemIdWrapper> implements IProblemId<ProblemIdWrapper> {
+    class ProblemIdWrapper extends IIdWrapper<ProblemIdWrapper> implements IProblemId<ProblemIdWrapper> {
 
-      protected ProblemIdWrapper(String id) {
-         super(id);
-      }
-   }
+        protected ProblemIdWrapper(final String id) {
+            super(id);
+        }
+    }
 }

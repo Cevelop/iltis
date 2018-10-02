@@ -26,49 +26,50 @@ import ch.hsr.ifs.iltis.core.core.preferences.FieldEditorPropertyAndPreferencePa
  */
 @SuppressWarnings("restriction")
 public abstract class CFieldEditorPropertyAndPreferencePage extends FieldEditorPropertyAndPreferencePage implements IWorkbenchPropertyPage,
-      IWorkbenchPreferencePage {
+        IWorkbenchPreferencePage {
 
-   public CFieldEditorPropertyAndPreferencePage(final int style) {
-      super(style);
-   }
+    public CFieldEditorPropertyAndPreferencePage(final int style) {
+        super(style);
+    }
 
-   public CFieldEditorPropertyAndPreferencePage(final String title, final int style) {
-      super(title, style);
-   }
+    public CFieldEditorPropertyAndPreferencePage(final String title, final int style) {
+        super(title, style);
+    }
 
-   public CFieldEditorPropertyAndPreferencePage(final String title, final ImageDescriptor image, final int style) {
-      super(title, image, style);
-   }
+    public CFieldEditorPropertyAndPreferencePage(final String title, final ImageDescriptor image, final int style) {
+        super(title, image, style);
+    }
 
-   /**
-    * This method is called when the checkbox, which toggles project specific preferences, has been changed.
-    */
-   @Override
-   protected void validationHook() {
-      /* Override and do validation checks and setValid in subclass */
-   }
+    /**
+     * This method is called when the checkbox, which toggles project specific preferences, has been changed.
+     */
+    @Override
+    protected void validationHook() {
+        /* Override and do validation checks and setValid in subclass */
+    }
 
-   /**
-    * Must return the {@code IProject} for which to open the property page.
-    * This could be done by opening a ProjectSelectorDialog.
-    *
-    * @return The project for which to open the project properties
-    */
-   @Override
-   protected ICProject getProjectForWhichToOpenProperties() {
-      final HashSet<ICProject> projectsWithSpecifics = new HashSet<>();
-      try {
-         final ICProject[] projects = CoreModel.getDefault().getCModel().getCProjects();
-         for (final ICProject curr : projects) {
-            if (getPropertyAndPreferenceHelper().projectSpecificPreferencesEnabled(curr.getProject())) {
-               projectsWithSpecifics.add(curr);
+    /**
+     * Must return the {@code IProject} for which to open the property page.
+     * This could be done by opening a ProjectSelectorDialog.
+     *
+     * @return The project for which to open the project properties
+     */
+    @Override
+    protected ICProject getProjectForWhichToOpenProperties() {
+        final HashSet<ICProject> projectsWithSpecifics = new HashSet<>();
+        try {
+            final ICProject[] projects = CoreModel.getDefault().getCModel().getCProjects();
+            for (final ICProject curr : projects) {
+                if (getPropertyAndPreferenceHelper().projectSpecificPreferencesEnabled(curr.getProject())) {
+                    projectsWithSpecifics.add(curr);
+                }
             }
-         }
-      }
-      catch (final CModelException ignore) {}
-      final ProjectSelectionDialog dialog = new ProjectSelectionDialog(getShell(), projectsWithSpecifics);
-      if (dialog.open() == Window.OK) { return (ICProject) dialog.getFirstResult(); }
-      return null;
-   }
+        } catch (final CModelException ignore) {}
+        final ProjectSelectionDialog dialog = new ProjectSelectionDialog(getShell(), projectsWithSpecifics);
+        if (dialog.open() == Window.OK) {
+            return (ICProject) dialog.getFirstResult();
+        }
+        return null;
+    }
 
 }

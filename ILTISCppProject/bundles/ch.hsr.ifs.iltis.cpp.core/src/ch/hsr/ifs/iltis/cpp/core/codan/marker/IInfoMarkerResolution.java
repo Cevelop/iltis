@@ -12,15 +12,15 @@ import ch.hsr.ifs.iltis.cpp.core.resources.info.MarkerInfo;
  */
 public interface IInfoMarkerResolution<T extends MarkerInfo<T>> extends ICodanMarkerResolution {
 
-   /**
-    * 
+    /**
+    *
     */
-   public T getInfo();
+    public T getInfo();
 
-   /**
-    * 
-    * @param info
-    */
-   public void configure(final T info);
+    /**
+     *
+     * @param info
+     */
+    public void configure(final T info);
 
 }

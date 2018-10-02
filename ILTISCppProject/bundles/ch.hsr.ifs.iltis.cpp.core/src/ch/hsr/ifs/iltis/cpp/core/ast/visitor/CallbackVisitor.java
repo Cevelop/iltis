@@ -34,114 +34,140 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTVirtSpecifier;
 
 public class CallbackVisitor extends ASTVisitor {
 
-   private Function<IASTNode, Integer> callback;
+    private final Function<IASTNode, Integer> callback;
 
-   public CallbackVisitor(Function<IASTNode, Integer> callback) {
-      super(true);
-      this.callback = callback;
-   }
+    public CallbackVisitor(final Function<IASTNode, Integer> callback) {
+        super(true);
+        this.callback = callback;
+    }
 
-   public int visit(IASTTranslationUnit tu) {
-      return callback.apply(tu);
-   }
+    @Override
+    public int visit(final IASTTranslationUnit tu) {
+        return callback.apply(tu);
+    }
 
-   public int visit(IASTName name) {
-      return callback.apply(name);
-   }
+    @Override
+    public int visit(final IASTName name) {
+        return callback.apply(name);
+    }
 
-   public int visit(IASTDeclaration declaration) {
-      return callback.apply(declaration);
-   }
+    @Override
+    public int visit(final IASTDeclaration declaration) {
+        return callback.apply(declaration);
+    }
 
-   public int visit(IASTInitializer initializer) {
-      return callback.apply(initializer);
-   }
+    @Override
+    public int visit(final IASTInitializer initializer) {
+        return callback.apply(initializer);
+    }
 
-   public int visit(IASTParameterDeclaration parameterDeclaration) {
-      return callback.apply(parameterDeclaration);
-   }
+    @Override
+    public int visit(final IASTParameterDeclaration parameterDeclaration) {
+        return callback.apply(parameterDeclaration);
+    }
 
-   public int visit(IASTDeclarator declarator) {
-      return callback.apply(declarator);
-   }
+    @Override
+    public int visit(final IASTDeclarator declarator) {
+        return callback.apply(declarator);
+    }
 
-   public int visit(IASTDeclSpecifier declSpec) {
-      return callback.apply(declSpec);
-   }
+    @Override
+    public int visit(final IASTDeclSpecifier declSpec) {
+        return callback.apply(declSpec);
+    }
 
-   public int visit(IASTArrayModifier arrayModifier) {
-      return callback.apply(arrayModifier);
-   }
+    @Override
+    public int visit(final IASTArrayModifier arrayModifier) {
+        return callback.apply(arrayModifier);
+    }
 
-   public int visit(IASTPointerOperator ptrOperator) {
-      return callback.apply(ptrOperator);
-   }
+    @Override
+    public int visit(final IASTPointerOperator ptrOperator) {
+        return callback.apply(ptrOperator);
+    }
 
-   public int visit(IASTAttribute attribute) {
-      return callback.apply(attribute);
-   }
+    @Override
+    public int visit(final IASTAttribute attribute) {
+        return callback.apply(attribute);
+    }
 
-   public int visit(IASTAttributeSpecifier specifier) {
-      return callback.apply(specifier);
-   }
+    @Override
+    public int visit(final IASTAttributeSpecifier specifier) {
+        return callback.apply(specifier);
+    }
 
-   public int visit(IASTToken token) {
-      return callback.apply(token);
-   }
+    @Override
+    public int visit(final IASTToken token) {
+        return callback.apply(token);
+    }
 
-   public int visit(IASTExpression expression) {
-      return callback.apply(expression);
-   }
+    @Override
+    public int visit(final IASTExpression expression) {
+        return callback.apply(expression);
+    }
 
-   public int visit(IASTStatement statement) {
-      return callback.apply(statement);
-   }
+    @Override
+    public int visit(final IASTStatement statement) {
+        return callback.apply(statement);
+    }
 
-   public int visit(IASTTypeId typeId) {
-      return callback.apply(typeId);
-   }
+    @Override
+    public int visit(final IASTTypeId typeId) {
+        return callback.apply(typeId);
+    }
 
-   public int visit(IASTEnumerator enumerator) {
-      return callback.apply(enumerator);
-   }
+    @Override
+    public int visit(final IASTEnumerator enumerator) {
+        return callback.apply(enumerator);
+    }
 
-   public int visit(IASTProblem problem) {
-      return callback.apply(problem);
-   }
+    @Override
+    public int visit(final IASTProblem problem) {
+        return callback.apply(problem);
+    }
 
-   public int visit(ICPPASTBaseSpecifier baseSpecifier) {
-      return callback.apply(baseSpecifier);
-   }
+    @Override
+    public int visit(final ICPPASTBaseSpecifier baseSpecifier) {
+        return callback.apply(baseSpecifier);
+    }
 
-   public int visit(ICPPASTNamespaceDefinition namespaceDefinition) {
-      return callback.apply(namespaceDefinition);
-   }
+    @Override
+    public int visit(final ICPPASTNamespaceDefinition namespaceDefinition) {
+        return callback.apply(namespaceDefinition);
+    }
 
-   public int visit(ICPPASTTemplateParameter templateParameter) {
-      return callback.apply(templateParameter);
-   }
+    @Override
+    public int visit(final ICPPASTTemplateParameter templateParameter) {
+        return callback.apply(templateParameter);
+    }
 
-   public int visit(ICPPASTCapture capture) {
-      return callback.apply(capture);
-   }
+    @Override
+    public int visit(final ICPPASTCapture capture) {
+        return callback.apply(capture);
+    }
 
-   public int visit(ICASTDesignator designator) {
-      return callback.apply(designator);
-   }
+    @Override
+    public int visit(final ICASTDesignator designator) {
+        return callback.apply(designator);
+    }
 
-   public int visit(ICPPASTDesignator designator) {
-      return callback.apply(designator);
-   }
+    @Override
+    public int visit(final ICPPASTDesignator designator) {
+        return callback.apply(designator);
+    }
 
-   public int visit(ICPPASTVirtSpecifier virtSpecifier) {
-      return callback.apply(virtSpecifier);
-   }
+    @Override
+    public int visit(final ICPPASTVirtSpecifier virtSpecifier) {
+        return callback.apply(virtSpecifier);
+    }
 
-   public int visit(ICPPASTClassVirtSpecifier classVirtSpecifier) {
-      return callback.apply(classVirtSpecifier);
-   }
+    @Override
+    public int visit(final ICPPASTClassVirtSpecifier classVirtSpecifier) {
+        return callback.apply(classVirtSpecifier);
+    }
 
-   public int visit(ICPPASTDecltypeSpecifier decltypeSpecifier) {
-      return callback.apply(decltypeSpecifier);
-   }
+    @Override
+    public int visit(final ICPPASTDecltypeSpecifier decltypeSpecifier) {
+        return callback.apply(decltypeSpecifier);
+    }
 }
