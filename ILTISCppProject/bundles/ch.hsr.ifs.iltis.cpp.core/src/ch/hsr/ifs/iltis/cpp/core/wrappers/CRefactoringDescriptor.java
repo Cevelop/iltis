@@ -30,11 +30,12 @@ import ch.hsr.ifs.iltis.cpp.core.resources.info.MarkerInfo;
  *
  */
 @SuppressWarnings("restriction")
-public abstract class CRefactoringDescriptor<R extends IRefactoringId<R>, T extends MarkerInfo<T>> extends RefactoringDescriptor {
+public abstract class CRefactoringDescriptor<RefactoringIdType extends IRefactoringId<RefactoringIdType>, MarkerInfoType extends MarkerInfo<MarkerInfoType>>
+      extends RefactoringDescriptor {
 
-   protected T info;
+   protected MarkerInfoType info;
 
-   public CRefactoringDescriptor(R id, String project, String description, String comment, int flags, T info) {
+   public CRefactoringDescriptor(RefactoringIdType id, String project, String description, String comment, int flags, MarkerInfoType info) {
       super(id.getId(), project, description, comment, flags);
       this.info = info;
    }
