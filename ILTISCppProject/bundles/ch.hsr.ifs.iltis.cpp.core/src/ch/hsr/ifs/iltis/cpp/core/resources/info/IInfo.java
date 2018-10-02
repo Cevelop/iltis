@@ -49,14 +49,13 @@ public interface IInfo<T extends IInfo<T>> extends ICopyable<T> {
       try {
          MutableMap<String, String> map = Maps.mutable.empty();
 
-         for (Field f : InfoConverter.getMessageInfoArgFieldsOrdered(fields)) {
-            InfoConverter.validateMessageInfoArgField(f);
+         for (Field f : hook_getInfoConverter().getMessageInfoArgFieldsOrdered(fields)) {
+            hook_getInfoConverter().validateMessageInfoArgField(f);
             map.put(f.getName(), (String) f.get(this));
          }
-         for (Field f : InfoConverter.getInfoArgumentFields(fields)) {
-            InfoConverter.validateInfoArgField(f);
-            map.put(f.getName(), IStringifyable.class.isAssignableFrom(f.getType()) ? ((IStringifyable<?>) f.get(this)).stringify() : String.valueOf(f
-                  .get(this)));
+         for (Field f : hook_getInfoConverter().getInfoArgumentFields(fields)) {
+            hook_getInfoConverter().validateInfoArgField(f);
+            map.put(f.getName(), hook_getInfoConverter().stringifyField(f, this));
          }
          return map;
       } catch (IllegalArgumentException | IllegalAccessException e) {
@@ -123,16 +122,6 @@ public interface IInfo<T extends IInfo<T>> extends ICopyable<T> {
       info.hook_getInfoConverter().fillAllFieldsInInfo(info, map);
    }
 
-   /**
-    * Override to manipulate the values from fields.
-    * 
-    * @param value
-    * @return
-    */
-   default <FieldType> FieldType convertHook(String fieldname, FieldType value) {
-      return value;
-   }
-
 }
 
 
@@ -153,13 +142,22 @@ class InfoConverter {
 
    protected InfoConverter() {};
 
+   protected String stringifyField(Field f, IInfo<?> info) throws IllegalAccessException {
+      Class<?> clazz = f.getType();
+      if (IStringifyable.class.isAssignableFrom(clazz)) {
+         return ((IStringifyable<?>) f.get(info)).stringify();
+      } else {
+         return String.valueOf(f.get(info));
+      }
+   }
+
    /**
     * Throws an exception if the field is not of type String.
     * 
     * @param f
     *        A field annotated with MessageInfoArgument
     */
-   static void validateMessageInfoArgField(Field f) {
+   protected void validateMessageInfoArgField(Field f) {
       if (!f.getType().isAssignableFrom(String.class)) throw new InfoException("Used MessageInfoArgument annotation on field " + f.getName() +
                                                                                " which is not of type String");
    }
@@ -170,10 +168,10 @@ class InfoConverter {
     * @param f
     *        A field annotated with InfoArgument
     */
-   static void validateInfoArgField(Field f) {
+   protected void validateInfoArgField(Field f) {
       Class<?> c = f.getType();
       if (!(c == Boolean.TYPE || c == Character.TYPE || c == Byte.TYPE || c == Short.TYPE || c == Integer.TYPE || c == Long.TYPE || c == Float.TYPE ||
-            c == Double.TYPE || c == String.class || c.isAssignableFrom(IStringifyable.class))) throw new InfoException(
+            c == Double.TYPE || c == String.class || IStringifyable.class.isAssignableFrom(c))) throw new InfoException(
                   "Used InfoArgument annotation on field " + f.getName() + " which is not of a valid type!");
    }
 
@@ -184,7 +182,7 @@ class InfoConverter {
     *        The fields to filter
     * @return A mutable list of fields annotated with InfoArgument.
     */
-   static MutableList<Field> getInfoArgumentFields(Field[] fields) {
+   protected MutableList<Field> getInfoArgumentFields(Field[] fields) {
       return ArrayIterate.select(fields, f -> f.isAnnotationPresent(InfoArgument.class));
    }
 
@@ -195,12 +193,12 @@ class InfoConverter {
     *        The fields to filter
     * @return A mutable list of fields annotated with MessageInfoArgument sorted by their value.
     */
-   static MutableList<Field> getMessageInfoArgFieldsOrdered(Field[] fields) {
+   protected MutableList<Field> getMessageInfoArgFieldsOrdered(Field[] fields) {
       return ArrayIterate.select(fields, f -> f.isAnnotationPresent(MessageInfoArgument.class)).sortThis((f1, f2) -> f1.getAnnotation(
             MessageInfoArgument.class).value() - f2.getAnnotation(MessageInfoArgument.class).value());
    }
 
-   static <R extends IInfo<R>> MutableList<Field> getPersistableFields(R info) {
+   protected <R extends IInfo<R>> MutableList<Field> getPersistableFields(R info) {
       return ArrayIterate.select(info.getClass().getFields(), f -> f.isAnnotationPresent(InfoArgument.class) || f.isAnnotationPresent(
             MessageInfoArgument.class));
    }
@@ -213,7 +211,7 @@ class InfoConverter {
     * @param task
     *        The task to execute
     */
-   static <R extends IInfo<R>> void doForEachPersistableField(R info, Consumer2<Field, String> task) {
+   protected <R extends IInfo<R>> void doForEachPersistableField(R info, Consumer2<Field, String> task) {
       for (Field f : getPersistableFields(info)) {
          task.accept(f, f.getName());
       }
@@ -251,7 +249,7 @@ class InfoConverter {
     */
    protected <R extends IInfo<R>, T> void fillField(R info, Field f, T value) {
       try {
-         f.set(info, info.convertHook(f.getName(), convertTo(f.getType(), value)));
+         f.set(info, convertTo(f.getType(), value));
       } catch (IllegalArgumentException | IllegalAccessException e) {
          ILTISException.wrap(e).rethrowUnchecked();
       }

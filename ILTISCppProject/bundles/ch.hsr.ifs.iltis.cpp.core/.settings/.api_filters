@@ -8,20 +8,20 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/ch/hsr/ifs/iltis/cpp/core/resources/info/CompositeMarkerInfo.java" type="ch.hsr.ifs.iltis.cpp.core.resources.info.CompositeMarkerInfo">
+        <filter id="643842064">
+            <message_arguments>
+                <message_argument value="InfoConverter"/>
+                <message_argument value="CompositeMarkerInfo"/>
+                <message_argument value="hook_getInfoConverter()"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/ch/hsr/ifs/iltis/cpp/core/resources/info/IInfo.java" type="ch.hsr.ifs.iltis.cpp.core.resources.info.IInfo">
         <filter id="643842064">
             <message_arguments>
                 <message_argument value="InfoConverter"/>
                 <message_argument value="IInfo&lt;T&gt;"/>
-                <message_argument value="hook_getInfoConverter()"/>
-            </message_arguments>
-        </filter>
-    </resource>
-    <resource path="src/ch/hsr/ifs/iltis/cpp/core/resources/info/MarkerInfo.java" type="ch.hsr.ifs.iltis.cpp.core.resources.info.MarkerInfo">
-        <filter id="643842064">
-            <message_arguments>
-                <message_argument value="InfoConverter"/>
-                <message_argument value="MarkerInfo&lt;InfoType&gt;"/>
                 <message_argument value="hook_getInfoConverter()"/>
             </message_arguments>
         </filter>

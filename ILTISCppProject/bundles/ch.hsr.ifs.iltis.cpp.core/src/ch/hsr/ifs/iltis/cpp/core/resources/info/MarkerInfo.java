@@ -1,7 +1,6 @@
 package ch.hsr.ifs.iltis.cpp.core.resources.info;
 
 import java.lang.reflect.Field;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -11,7 +10,6 @@ import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.impl.factory.Maps;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextSelection;
 
@@ -67,12 +65,6 @@ public abstract class MarkerInfo<InfoType extends MarkerInfo<InfoType>> implemen
    @InfoArgument
    public String  sourceId     = SOURCE_ID_DEFAULT;
 
-
-   @Override
-   public InfoConverter hook_getInfoConverter() {
-      return MarkerInfoConverter.INSTANCE;
-   }
-
    /**
     * Comfort method to test if this MarkerInfo uses a selection.
     *
@@ -117,20 +109,20 @@ public abstract class MarkerInfo<InfoType extends MarkerInfo<InfoType>> implemen
    public Object[] toCodanProblemArgsArray() {
       final Field[] fields = getClass().getFields();
       try {
-         final MutableList<Field> sortedMessageInfoFields = InfoConverter.getMessageInfoArgFieldsOrdered(fields);
-         final MutableList<Field> infoArgumentFields = InfoConverter.getInfoArgumentFields(fields);
+         final MutableList<Field> sortedMessageInfoFields = hook_getInfoConverter().getMessageInfoArgFieldsOrdered(fields);
+         final MutableList<Field> infoArgumentFields = hook_getInfoConverter().getInfoArgumentFields(fields);
 
          final Object[] array = new String[(sortedMessageInfoFields.size() + infoArgumentFields.size()) * 2];
          int valueIndex = 0;
          int keyIndex = array.length / 2;
 
          for (final Field f : sortedMessageInfoFields) {
-            InfoConverter.validateMessageInfoArgField(f);
+            hook_getInfoConverter().validateMessageInfoArgField(f);
             array[keyIndex++] = f.getName();
             array[valueIndex++] = f.get(this);
          }
          for (final Field f : infoArgumentFields) {
-            InfoConverter.validateInfoArgField(f);
+            hook_getInfoConverter().validateInfoArgField(f);
             array[keyIndex++] = f.getName();
             array[valueIndex++] = IStringifyable.class.isAssignableFrom(f.getType()) ? ((IStringifyable<?>) f.get(this)).stringify() : String.valueOf(
                   f.get(this));
@@ -200,38 +192,4 @@ public abstract class MarkerInfo<InfoType extends MarkerInfo<InfoType>> implemen
       }
    }
 
-}
-
-
-
-/**
- * InfoConverter subclass supporting marker infos and composite marker infos in particular
- * 
- * @author tstauber
- *
- */
-class MarkerInfoConverter extends InfoConverter {
-
-   public static MarkerInfoConverter INSTANCE = new MarkerInfoConverter();
-
-   private MarkerInfoConverter() {};
-
-   @Override
-   protected <R extends IInfo<R>, T> void fillAllFieldsInInfo(final R info, final Map<String, T> map) {
-      super.fillAllFieldsInInfo(info, map);
-      if (info instanceof CompositeMarkerInfo) {
-         ((CompositeMarkerInfo) info).loadInfos(createInfos(map).collectIf(MarkerInfo.class::isInstance, i -> (MarkerInfo<?>) i));
-      }
-   }
-
-   @SuppressWarnings("unchecked")
-   protected static <R extends IInfo<R>, T> MutableList<R> createInfos(final Map<String, T> data) {
-      final MutableMap<String, String> infosData = Maps.adapt(data).keyValuesView().select(p -> p.getOne().startsWith(INFO_DATA_PREFIX)).toMap(p -> p
-            .getOne().substring(INFO_DATA_PREFIX.length()), p -> (String) p.getTwo());
-
-      return infosData.keyValuesView().collect(p -> MarkerInfo.fromCodanProblemArgsArray(ILTISException.sterilize(() -> {
-         String[] infoElement = p.getOne().split(INFO_TYPE_SEPARATOR);
-         return (R) Platform.getBundle(infoElement[0]).loadClass(infoElement[1]).newInstance();
-      }), p.getTwo().split(INFO_DATA_SEPARATOR))).toList();
-   }
 }
