@@ -8,7 +8,7 @@ public class ReflectionUtil {
 
     /**
      * Searches for any field (even protected, private, or final) and makes it accessible
-     * 
+     *
      * @param target
      * The instance on which to search for this field.
      * @param fieldName
@@ -33,7 +33,7 @@ public class ReflectionUtil {
 
     /**
      * Sets the value of any field (even protected, private, or final) to the value passed
-     * 
+     *
      * @param target
      * The instance on which to manipulate the field
      * @param fieldName
@@ -54,7 +54,7 @@ public class ReflectionUtil {
 
     /**
      * A convenience method to set a field's value to null.
-     * 
+     *
      * @param target
      * The instance on which to manipulate the field
      * @param fieldName
@@ -67,7 +67,7 @@ public class ReflectionUtil {
 
     /**
      * Replaces an array referenced by a field with an empty array
-     * 
+     *
      * @param target
      * The instance on which to manipulate
      * @param fieldName

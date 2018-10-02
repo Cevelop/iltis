@@ -33,7 +33,7 @@ public abstract class IOUtil {
 
         /**
          * Reads the whole content from a file
-         * 
+         *
          * @param file
          * The input file
          * @return The content of the file as a String
@@ -46,7 +46,7 @@ public abstract class IOUtil {
 
         /**
          * Reads the whole content from a file
-         * 
+         *
          * @param file
          * The input file
          * @return The content of the file as a String
@@ -60,7 +60,7 @@ public abstract class IOUtil {
 
         /**
          * Reads the whole content from a file using the specified encoding
-         * 
+         *
          * @param file
          * The input file
          * @param sourceEncoding
@@ -75,7 +75,7 @@ public abstract class IOUtil {
 
         /**
          * Reads the whole content from a file
-         * 
+         *
          * @param url
          * The URL where to find the file
          * @return The content of the file as a String
@@ -88,7 +88,7 @@ public abstract class IOUtil {
 
         /**
          * Reads the whole content from a file using the specified encoding
-         * 
+         *
          * @param url
          * The input file's url
          * @param sourceEncoding
@@ -103,7 +103,7 @@ public abstract class IOUtil {
 
         /**
          * Writes the content into the passed file
-         * 
+         *
          * @param file
          * The output file
          * @param content
@@ -121,7 +121,7 @@ public abstract class IOUtil {
 
     /**
      * A utility class providing static methods to handle input/output with Strings. For more comfort use {@linkplain IOUtil}
-     * 
+     *
      * @author tstauber
      *
      */
@@ -129,7 +129,7 @@ public abstract class IOUtil {
 
         /**
          * Writes the content from the input stream to a String using the provided encoding
-         * 
+         *
          * @param inputStream
          * The input stream from which to read
          * @param sourceEncoding
@@ -153,7 +153,7 @@ public abstract class IOUtil {
 
         /**
          * Reads the provided text into an input stream with utf-8 as default encoding
-         * 
+         *
          * @param text
          * The text to read into the stream
          * @return An input stream ready to provide the text
@@ -164,7 +164,7 @@ public abstract class IOUtil {
 
         /**
          * Reads the provided text into an input stream using the provided encoding
-         * 
+         *
          * @param text
          * The text to read into the stream
          * @param sourceEncoding
@@ -179,7 +179,7 @@ public abstract class IOUtil {
 
     /**
      * Collects all files in the tree starting with root.
-     * 
+     *
      * @param root
      * The root node
      * @return A Collection containing either all child nodes, if root is a directory, or else only root
@@ -200,7 +200,7 @@ public abstract class IOUtil {
 
     /**
      * A helper method for save closing of Closeables
-     * 
+     *
      * @param toClose
      */
     public static void safeClose(final Closeable toClose) {

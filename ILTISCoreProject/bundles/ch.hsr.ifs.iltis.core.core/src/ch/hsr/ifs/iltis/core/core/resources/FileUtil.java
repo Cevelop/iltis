@@ -35,7 +35,7 @@ public abstract class FileUtil {
 
     /**
      * Used to obtain the IFile corresponding to a java File
-     * 
+     *
      * @param file
      * @return the IFile or null if non existent
      */
@@ -45,7 +45,7 @@ public abstract class FileUtil {
 
     /**
      * Used to obtain the IFile for a file path
-     * 
+     *
      * @param filePath
      * @return the IFile or null if non existent
      */
@@ -55,7 +55,7 @@ public abstract class FileUtil {
 
     /**
      * Used to obtain the IFile for a file path
-     * 
+     *
      * @param filePath
      * @return the IFile or null if non existent
      */
@@ -65,7 +65,7 @@ public abstract class FileUtil {
 
     /**
      * Used to obtain the IFile corresponding to a URI
-     * 
+     *
      * @param locationURI
      * The locationURI of the file
      * @return the IFile or null if non existent
@@ -88,7 +88,7 @@ public abstract class FileUtil {
 
     /**
      * Used to create the IFile corresponding to a URI
-     * 
+     *
      * @param locationURI
      * @return the IFile
      */
@@ -100,7 +100,7 @@ public abstract class FileUtil {
 
     /**
      * Used to obtain the File corresponding to a IFile
-     * 
+     *
      * @return the File
      */
     public static File toFile(final IFile file) {
@@ -109,7 +109,7 @@ public abstract class FileUtil {
 
     /**
      * Used to obtain the File corresponding to a filePath
-     * 
+     *
      * @return the File
      */
     public static File toFile(final IPath filePath) {
@@ -118,7 +118,7 @@ public abstract class FileUtil {
 
     /**
      * Used to obtain the File corresponding to a URI
-     * 
+     *
      * @return the File
      */
     private static File toFile(final URI fileURI) {
@@ -129,7 +129,7 @@ public abstract class FileUtil {
 
     /**
      * Used to strip the file extension form a file name
-     * 
+     *
      * @return the file name without extension
      */
     public static String getFilenameWithoutExtension(final String filename) {
@@ -144,7 +144,7 @@ public abstract class FileUtil {
     /**
      * Used to obtain filename with extension from a file path
      * {@code FileUtil.getFilename("/a/b/c/foo.h") -> "foo.h" }
-     * 
+     *
      * @throws ILTISException
      * (unchecked) if invalid path is passed.
      * @return the filename with extension
@@ -158,7 +158,7 @@ public abstract class FileUtil {
     /**
      * Used to obtain the file path without the filename and file extension.
      * {@code FileUtil.removeFilePart("/a/b/c/foo.h") -> "/a/b/c/" }
-     * 
+     *
      * @return The path without filename and extension
      */
     public static String getPathWithoutFilename(final String filePath) {
@@ -167,7 +167,7 @@ public abstract class FileUtil {
 
     /**
      * Used to obtain the the path of the folder which contains this IFile
-     * 
+     *
      * @return The path of the folder containing this file relative to the workspace
      */
     public static IPath getFolderPath(final IFile file) {
@@ -176,7 +176,7 @@ public abstract class FileUtil {
 
     /**
      * Used to obtain the URI from a file path
-     * 
+     *
      * @param filePath
      * @return the URI corresponding to the path
      */
@@ -251,7 +251,7 @@ public abstract class FileUtil {
      * <li>Line separator defined in default preferences.
      * <li>Operating system default line separator.
      * </ol>
-     * 
+     *
      * @param file
      * the file for which line separator should be returned
      * @return line separator for the given file
@@ -297,7 +297,7 @@ public abstract class FileUtil {
 
     /**
      * Creates the folder specified in the path, including all parent folders.
-     * 
+     *
      * @param path
      * The absolute path
      * @param root
@@ -338,7 +338,7 @@ public abstract class FileUtil {
 
     /**
      * Creates the folder specified in the path, including all parent folders.
-     * 
+     *
      * @param folder
      * The folder to create
      * @param root
@@ -350,7 +350,7 @@ public abstract class FileUtil {
 
     /**
      * Creates the parent folders for the file specified in the path.
-     * 
+     *
      * @param file
      * The file for which to create the parent folders
      * @param root

@@ -35,12 +35,12 @@ public class StreamPair<T1, T2> extends AbstractPair<T1, T2> {
 
     /**
      * Performs an unchecked cast to a StreamPair of newT1 and newT2
-     * 
+     *
      * @param <newT1>
      * The target type for the first value
      * @param <newT2>
      * The target type for the second value
-     * 
+     *
      * @return A {@code StreamPair<newT1, }{@code newT2>}
      * @throws ClassCastException
      */
@@ -50,12 +50,12 @@ public class StreamPair<T1, T2> extends AbstractPair<T1, T2> {
 
     /**
      * Performs a checked cast to a StreamPair of clazz1 and clazz2
-     * 
+     *
      * @param <newT1>
      * The target type for the first value
      * @param <newT2>
      * The target type for the second value
-     * 
+     *
      * @param clazz1
      * The target type for the first value
      * @param clazz2

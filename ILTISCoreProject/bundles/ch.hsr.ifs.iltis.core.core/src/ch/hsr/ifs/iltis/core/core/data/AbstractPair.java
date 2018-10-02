@@ -29,10 +29,10 @@ public abstract class AbstractPair<T1, T2> {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * Used to print the content of an AbstractPair. The pair is always printed in this style (first,second) this is kept even for nested
      * structures like (first.first, first.second.first, first.second.second, second.first, second.second).
-     * 
+     *
      */
     @Override
     public String toString() {
@@ -49,7 +49,7 @@ public abstract class AbstractPair<T1, T2> {
 
     /**
      * An internal method used to generate the substring for nested pairs.
-     * 
+     *
      * @return
      */
     protected String toRawString() {
@@ -101,7 +101,7 @@ public abstract class AbstractPair<T1, T2> {
 
     /**
      * Used to compare two AbstractPairs with a custom {@link Equals} comparator.
-     * 
+     *
      * @param obj
      * The object to which to compare {@code this}
      * @param comparator
@@ -114,7 +114,7 @@ public abstract class AbstractPair<T1, T2> {
 
     /**
      * Used to access the elements in a comparison.
-     * 
+     *
      * @author tstauber
      *
      * @param <Other>
@@ -124,7 +124,7 @@ public abstract class AbstractPair<T1, T2> {
 
         /**
          * If the passed object is an instance of AbstractPair, then the first element will be returned else null
-         * 
+         *
          * @param obj
          * The object
          * @return The first element if obj is an AbstractPair, else null
@@ -140,7 +140,7 @@ public abstract class AbstractPair<T1, T2> {
 
         /**
          * If the passed object is an instance of AbstractPair, then the second element will be returned else null
-         * 
+         *
          * @param obj
          * The object
          * @return The second element if obj is an AbstractPair, else null
@@ -157,7 +157,7 @@ public abstract class AbstractPair<T1, T2> {
 
     /**
      * Used to test, if all elements in the pair are equal to each other. This works for nested constructs.
-     * 
+     *
      * @param pair
      * The abstractPair to test
      * @return {@code true} if all elements are equal.
@@ -169,7 +169,7 @@ public abstract class AbstractPair<T1, T2> {
 
     /**
      * Used to test, if NOT all elements in the pair are equal to each other. This works for nested constructs.
-     * 
+     *
      * @param pair
      * The abstractPair to test
      * @return {@code false} if all elements are equal.
@@ -180,12 +180,12 @@ public abstract class AbstractPair<T1, T2> {
 
     /**
      * Used to test, if all elements in the pair are equal to each other. This works for nested constructs. This method takes a custom comparator.
-     * 
+     *
      * @param comparator
      * The comparator which tests for the equality.
      * @param pair
      * The abstractPair to test
-     * 
+     *
      * @return {@code true} if all elements are equal according to the comparator.
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -230,7 +230,7 @@ public abstract class AbstractPair<T1, T2> {
 
     /**
      * Helper class for easier nesting
-     * 
+     *
      * @author tstauber
      *
      * @param <ST1>

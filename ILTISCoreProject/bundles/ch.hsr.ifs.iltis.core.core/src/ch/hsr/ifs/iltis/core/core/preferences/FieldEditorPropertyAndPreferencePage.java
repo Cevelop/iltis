@@ -236,7 +236,7 @@ public abstract class FieldEditorPropertyAndPreferencePage extends FieldEditorPr
     /**
      * Must return the {@code IProject} for which to open the property page.
      * This could be done by opening a ProjectSelectorDialog.
-     * 
+     *
      * If eclipse-cdt is loaded, please refer to use {@code ch.hsr.ifs.iltis.cpp.preferences.CFieldEditorPropertyAndPreferencePage}
      *
      */

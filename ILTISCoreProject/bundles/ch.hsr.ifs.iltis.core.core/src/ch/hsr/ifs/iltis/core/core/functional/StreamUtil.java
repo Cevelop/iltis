@@ -24,12 +24,12 @@ public abstract class StreamUtil {
 
     /**
      * A collector which collects a Stream of StreamPairs into a Map.
-     * 
+     *
      * @param <K>
      * Key type
      * @param <V>
      * Value type
-     * 
+     *
      * @return A Collector
      * @throws NullPointerException
      * If one of the StreamPairs contains {@code null}
@@ -40,12 +40,12 @@ public abstract class StreamUtil {
 
     /**
      * A collector which collects a Stream of StreamPairs into a Map.
-     * 
+     *
      * @param <K>
      * Key type
      * @param <V>
      * Value type
-     * 
+     *
      * @return A Collector which creates a HashMap
      */
     public static <K, V> Collector<StreamPair<K, V>, ?, HashMap<K, V>> toNullableMap() {

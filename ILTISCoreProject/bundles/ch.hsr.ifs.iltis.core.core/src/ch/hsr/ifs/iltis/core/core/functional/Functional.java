@@ -28,12 +28,12 @@ public abstract class Functional {
     /**
      * Used to zip two {@linkplain Stream}s into a single {@linkplain Stream} of {@linkplain StreamPair}. If the two input streams are of different
      * length, {@code null} will be used as default element.
-     * 
+     *
      * @param <A>
      * The first stream's element type
      * @param <B>
      * The second stream's element type
-     * 
+     *
      * @param as
      * The first Stream
      * @param bs
@@ -47,12 +47,12 @@ public abstract class Functional {
     /**
      * Used to zip two {@linkplain Stream}s into a single {@linkplain Stream} of {@linkplain StreamPair}. If the two input streams are of different
      * length, the supplier defaultX will be executed to generate a default element.
-     * 
+     *
      * @param <A>
      * The first stream's element type
      * @param <B>
      * The second stream's element type
-     * 
+     *
      * @param as
      * The first Stream
      * @param defaultA
@@ -71,12 +71,12 @@ public abstract class Functional {
     /**
      * Used to zip two {@linkplain Stream}s into a single {@linkplain Stream} of {@linkplain StreamPair}. If the two input streams are of different
      * length, the function defaultX will be executed to generate a default element.
-     * 
+     *
      * @param <A>
      * The first stream's element type
      * @param <B>
      * The second stream's element type
-     * 
+     *
      * @param as
      * The first Stream
      * @param defaultA
@@ -131,14 +131,14 @@ public abstract class Functional {
 
     /**
      * Used to zip two {@linkplain Collection}s into a single {@linkplain Stream} of {@linkplain StreamPair}.
-     * 
+     *
      * @see #zipWithDefaults(Stream, Stream, Supplier, Supplier)
-     * 
+     *
      * @param <A>
      * The first collection's element type
      * @param <B>
      * The second collection's element type
-     * 
+     *
      * @param as
      * The first values
      * @param bs
@@ -151,14 +151,14 @@ public abstract class Functional {
 
     /**
      * Used to zip two {@linkplain X[]} into a single {@linkplain Stream} of {@linkplain StreamPair}.
-     * 
+     *
      * @see #zipWithDefaults(Stream, Stream, Supplier, Supplier)
-     * 
+     *
      * @param <A>
      * The first array's element type
      * @param <B>
      * The second array's element type
-     * 
+     *
      * @param as
      * The first values
      * @param bs
@@ -171,15 +171,15 @@ public abstract class Functional {
 
     /**
      * Used to zip a {@linkplain Map} into a single {@linkplain Stream} of {@linkplain StreamPair}.
-     * 
+     *
      * @see #zipWithDefaults(Stream, Stream, Supplier, Supplier)
      * @see StreamUtil#toMap()
-     * 
+     *
      * @param <A>
      * The map's key type
      * @param <B>
      * The map's value type
-     * 
+     *
      * @param map
      * The map
      * @return A {@linkplain Stream} of {@linkplain StreamPair}
@@ -191,14 +191,14 @@ public abstract class Functional {
     /**
      * Used to zip three {@linkplain Stream}s into a single {@linkplain Stream} of {@linkplain StreamTriple}. If the three input streams are of
      * different length, {@code null} will be used as default element.
-     * 
+     *
      * @param <A>
      * The first stream's element type
      * @param <B>
      * The second stream's element type
      * @param <C>
      * The third stream's element type
-     * 
+     *
      * @param as
      * The first Stream
      * @param bs
@@ -214,14 +214,14 @@ public abstract class Functional {
     /**
      * Used to zip three {@linkplain Stream}s into a single {@linkplain Stream} of {@linkplain StreamTriple}. If the three input streams are of
      * different length, defaultX will be used to generate a default element.
-     * 
+     *
      * @param <A>
      * The first stream's element type
      * @param <B>
      * The second stream's element type
      * @param <C>
      * The third stream's element type
-     * 
+     *
      * @param as
      * The first Stream
      * @param defaultA
@@ -245,14 +245,14 @@ public abstract class Functional {
     /**
      * Used to zip three {@linkplain Stream}s into a single {@linkplain Stream} of {@linkplain StreamTriple}. If the three input streams are of
      * different length, defaultX will be used to generate a default element.
-     * 
+     *
      * @param <A>
      * The first stream's element type
      * @param <B>
      * The second stream's element type
      * @param <C>
      * The third stream's element type
-     * 
+     *
      * @param as
      * The first Stream
      * @param defaultA
@@ -318,23 +318,23 @@ public abstract class Functional {
 
     /**
      * Used to zip three {@linkplain Collection}s into a single {@linkplain Stream} of {@linkplain StreamTriple}.
-     * 
+     *
      * @see #zipWithDefaults(Stream, Stream, Stream, Function2, Function2, Function2)
-     * 
+     *
      * @param <A>
      * The first Collection's elements' type
      * @param <B>
      * The second Collection's elements' type
      * @param <C>
      * The third Collection's elements' type
-     * 
+     *
      * @param as
      * The first Collection
      * @param bs
      * The second Collection
      * @param cs
      * The third Collection
-     * 
+     *
      * @return A {@linkplain Stream} of {@linkplain StreamTriple}
      */
     public static <A, B, C> Stream<StreamTriple<A, B, C>> zip(final Collection<A> as, final Collection<B> bs, final Collection<C> cs) {
@@ -343,23 +343,23 @@ public abstract class Functional {
 
     /**
      * Used to zip three {@linkplain X[]} into a single {@linkplain Stream} of {@linkplain StreamTriple}.
-     * 
+     *
      * @see #zipWithDefaults(Stream, Stream, Stream, Function2, Function2, Function2)
-     * 
+     *
      * @param <A>
      * The first array's elements' type
      * @param <B>
      * The second array's elements' type
      * @param <C>
      * The third array's elements' type
-     * 
+     *
      * @param as
      * The first array
      * @param bs
      * The second array
      * @param cs
      * The third array
-     * 
+     *
      * @return A {@linkplain Stream} of {@linkplain StreamTriple}
      */
     public static <A, B, C> Stream<StreamTriple<A, B, C>> zip(final A[] as, final B[] bs, final C[] cs) {
@@ -369,17 +369,17 @@ public abstract class Functional {
     /**
      * Used to apply a mapping to an array. As no arrays of generic types can be created (arrays are covariant), the method reference to an array
      * constructor must be passed.
-     * 
+     *
      * <pre>
-     * 
+     *
      * {@code map(fooArray, (foo) -> foo.extractBar, Bar[]::new);}
      * </pre>
-     * 
+     *
      * @param <A>
      * The input array's elements' type
      * @param <B>
      * The resulting array's elements' type
-     * 
+     *
      * @param as
      * The input array
      * @param mapping
@@ -394,7 +394,7 @@ public abstract class Functional {
 
     /**
      * Used to cast an element to the target type. If this cast is invalid, null will be returned
-     * 
+     *
      * @param <T>
      * The Type of clazz
      * @param type
@@ -410,7 +410,7 @@ public abstract class Functional {
 
     /**
      * Used to perform an unchecked cast to {@linkplain T}.
-     * 
+     *
      * @param o
      * The object to cast
      * @return The object casted to {@linkplain T}
@@ -424,12 +424,12 @@ public abstract class Functional {
 
     /**
      * Depending if the passed object is an instance of the target type, one of funThen and funElse will be executed and the result will be returned.
-     * 
+     *
      * @param <T>
      * The target type
      * @param <R>
      * The return type
-     * 
+     *
      * @param arg
      * The object to test
      * @param type
@@ -446,12 +446,12 @@ public abstract class Functional {
 
     /**
      * Depending if the passed object is an instance of the target type, one of funThen and funElse will be executed and the result will be returned.
-     * 
+     *
      * @param <T>
      * The target type
      * @param <R>
      * The return type
-     * 
+     *
      * @param arg
      * The object to test
      * @param type
@@ -470,10 +470,10 @@ public abstract class Functional {
      * Executes a function, if the passed object is instance of the target type. If the object is an instance of the target type, it will be casted
      * and
      * passed to the function.
-     * 
+     *
      * @param <T>
      * The target type
-     * 
+     *
      * @param arg
      * The object to test
      * @param type
@@ -491,12 +491,12 @@ public abstract class Functional {
      * Executes a function, if the passed object is instance of the target type. If the object is an instance of the target type, it will be casted
      * and
      * passed to the function. The passed function can throw.
-     * 
+     *
      * @param <T>
      * The target type
      * @param <E>
      * The exception type
-     * 
+     *
      * @param arg
      * The object to test
      * @param type
@@ -514,10 +514,10 @@ public abstract class Functional {
 
     /**
      * Depending if the passed object is an instance of the target type, one of funThen and funElse will be executed.
-     * 
+     *
      * @param <T>
      * The target type
-     * 
+     *
      * @param arg
      * The object to test
      * @param type
@@ -537,12 +537,12 @@ public abstract class Functional {
 
     /**
      * Depending if the passed object is an instance of the target type, one of funThen and funElse will be executed.
-     * 
+     *
      * @param <T>
      * The target type
      * @param <E>
      * The exception type
-     * 
+     *
      * @param arg
      * The object to test
      * @param type
@@ -565,12 +565,12 @@ public abstract class Functional {
 
     /**
      * Depending if the passed object is an instance of the target type, one of funThen and funElse will be executed.
-     * 
+     *
      * @param <T>
      * The target type
      * @param <E>
      * The exception type
-     * 
+     *
      * @param arg
      * The object to test
      * @param type
@@ -593,14 +593,14 @@ public abstract class Functional {
 
     /**
      * Depending if the passed object is an instance of the target type, one of funThen and funElse will be executed.
-     * 
+     *
      * @param <T>
      * The target type
      * @param <E1>
      * The "then" exception type
      * @param <E2>
      * The "else" exception type
-     * 
+     *
      * @param arg
      * The object to test
      * @param type
@@ -626,10 +626,10 @@ public abstract class Functional {
     /**
      * Depending if an element fulfills the predicate ifFun or elseFun it will be moved to the respective collection. If neither matches it will be
      * added to the collection returned.
-     * 
+     *
      * <p>
      * If an element fulfills both predicates, it will be added to both collections.
-     * 
+     *
      * @param stream
      * The stream
      * @param ifFun
@@ -665,7 +665,7 @@ public abstract class Functional {
     @SafeVarargs
     /**
      * Executes the action for every element passed.
-     * 
+     *
      * @param action
      * The action to execute
      * @param elements
@@ -679,7 +679,7 @@ public abstract class Functional {
 
     /**
      * Passed each of the elements to the consumer. The consumer can throw!
-     * 
+     *
      * @param action
      * The consumer to execute
      * @param elements
@@ -696,7 +696,7 @@ public abstract class Functional {
 
     /**
      * If the passed argument is not null, it will be used to execute the function.
-     * 
+     *
      * @param arg
      * The argument (might be null)
      * @param fun
@@ -711,7 +711,7 @@ public abstract class Functional {
 
     /**
      * If the passed arguments are not null, they will be used to execute the function.
-     * 
+     *
      * @param arg1
      * The first argument (might be null)
      * @param arg2
@@ -728,7 +728,7 @@ public abstract class Functional {
 
     /**
      * Allows to execute a lambda which takes the object as parameter.
-     * 
+     *
      * @param object
      * The object to execute
      * @param also
@@ -742,9 +742,9 @@ public abstract class Functional {
 
     /**
      * Allows to execute the creator and executes a lambda on the result.
-     * 
+     *
      * This method is equivalent to {@link #also(Object, Consumer)} using {@code creator.get()} as object.
-     * 
+     *
      * @param creator
      * The creator to create the object with.
      * @param also

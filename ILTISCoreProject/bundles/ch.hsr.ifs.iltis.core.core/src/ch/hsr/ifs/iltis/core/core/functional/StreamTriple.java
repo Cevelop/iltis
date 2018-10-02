@@ -44,14 +44,14 @@ public class StreamTriple<T1, T2, T3> extends AbstractPair<T1, StreamPair<T2, T3
 
     /**
      * Performs an unchecked cast to a StreamTriple of newT1, newT2, and newT3
-     * 
+     *
      * @param <newT1>
      * The target type for the first value
      * @param <newT2>
      * The target type for the second value
      * @param <newT3>
      * The target type for the third value
-     * 
+     *
      * @return A {@code StreamTriple<newT1, }{@code newT2, newT3>}
      * @throws ClassCastException
      */
@@ -61,14 +61,14 @@ public class StreamTriple<T1, T2, T3> extends AbstractPair<T1, StreamPair<T2, T3
 
     /**
      * Performs a checked cast to a StreamTriple of clazz1, clazz2, and clazz3
-     * 
+     *
      * @param <newT1>
      * The target type for the first value
      * @param <newT2>
      * The target type for the second value
      * @param <newT3>
      * The target type for the third value
-     * 
+     *
      * @param clazz1
      * The target type for the first value
      * @param clazz2

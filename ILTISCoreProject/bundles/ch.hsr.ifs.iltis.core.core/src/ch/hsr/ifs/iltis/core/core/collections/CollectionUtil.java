@@ -28,7 +28,7 @@ public abstract class CollectionUtil {
 
     /**
      * Used for implicit creation of an array by using varargs
-     * 
+     *
      * @param elements
      * The elements from which to create the array
      * @return an array consisting of the passed elements
@@ -40,7 +40,7 @@ public abstract class CollectionUtil {
 
     /**
      * Used for implicit creation of a List from varargs
-     * 
+     *
      * @param elements
      * The elements from which to create the list
      * @return A {@link List}
@@ -52,7 +52,7 @@ public abstract class CollectionUtil {
 
     /**
      * Used for implicit creation of a Map from arrays
-     * 
+     *
      * @param elements
      * The elements from which to create the list
      * @return A {@link Map}
@@ -70,7 +70,7 @@ public abstract class CollectionUtil {
 
     /**
      * Used to create an unordered set from varargs
-     * 
+     *
      * @param elements
      * The elements from which to create the set
      * @return A {@link Set} containing the elements
@@ -82,7 +82,7 @@ public abstract class CollectionUtil {
 
     /**
      * Used to create an ordered set from varargs
-     * 
+     *
      * @param elements
      * The elements from which to create the set
      * @return A {@link Set} containing the elements
@@ -94,7 +94,7 @@ public abstract class CollectionUtil {
 
     /**
      * Used to create an ordered set from a {@link Collection}
-     * 
+     *
      * @param elements
      * The elements from which to create the set
      * @return A {@link Set} containing the elements
@@ -105,9 +105,9 @@ public abstract class CollectionUtil {
 
     /**
      * Used to create a {@link Map} from two arrays.
-     * 
+     *
      * The arrays should be of the same length, else null will be used as default value.
-     * 
+     *
      * @param keys
      * The array with the keys for the map
      * @param values
@@ -120,7 +120,7 @@ public abstract class CollectionUtil {
 
     /**
      * Used to cast a {@link Collection} of one type to a Collection of the type passed as clazz
-     * 
+     *
      * @param list
      * The Collection to cast
      * @param clazz
@@ -135,7 +135,7 @@ public abstract class CollectionUtil {
 
     /**
      * Used to cast a {@link map} of one type to a Map with keys and values of the type passed as clazz
-     * 
+     *
      * @param list
      * The Map to cast
      * @param clazz
@@ -150,7 +150,7 @@ public abstract class CollectionUtil {
 
     /**
      * Used to cast a {@link map} to a Map with keys of type keyClazz and values of valueClazz
-     * 
+     *
      * @param keyClazz
      * The target Class for the keys
      * @param valueClazz
@@ -165,7 +165,7 @@ public abstract class CollectionUtil {
 
     /**
      * Checks if the {@link Iterable} it has no {@code null} values
-     * 
+     *
      * @param it
      * The Iterable to check
      * @return {@code true} if none of the elements of it are {@code null}
@@ -182,7 +182,7 @@ public abstract class CollectionUtil {
 
     /**
      * Used to find if an {@link Iterable} is empty
-     * 
+     *
      * @param it
      * The Iterable to check
      * @return {@code true} if it is empty
@@ -193,7 +193,7 @@ public abstract class CollectionUtil {
 
     /**
      * Used to obtain the first element of any {@link Iterable}
-     * 
+     *
      * @param it
      * The Iterable
      * @return {@link Optional} containing the first element, or an empty Optional if the iterable is empty
@@ -205,7 +205,7 @@ public abstract class CollectionUtil {
 
     /**
      * Used to get all but the first element of an {@link Iterable}
-     * 
+     *
      * @param it
      * The Iterable
      * @return A {@link Collection} with all elements but the first
@@ -229,7 +229,7 @@ public abstract class CollectionUtil {
 
     /**
      * Used to get the last element of an array
-     * 
+     *
      * @param elements
      * An array
      * @return An {@link Optional} containing the last element, or an empty Optional, if elements is empty
@@ -240,7 +240,7 @@ public abstract class CollectionUtil {
 
     /**
      * Used to get the last element of a {@link List}
-     * 
+     *
      * @param elements
      * An List
      * @return An {@link Optional} containing the last element, or an empty Optional, if elements is empty
@@ -251,7 +251,7 @@ public abstract class CollectionUtil {
 
     /**
      * Used to check if a collection contains an element using a specific equals method
-     * 
+     *
      * @param collection
      * The collection
      * @param element
@@ -269,7 +269,7 @@ public abstract class CollectionUtil {
 
     /**
      * Used to check if two {@link Collection}s contain the same elements. Whereby the comparator is used to check if two elements are equal.
-     * 
+     *
      * @param c1
      * The first Collection
      * @param c2
@@ -293,7 +293,7 @@ public abstract class CollectionUtil {
 
     /**
      * Used to check if two {@link Collection}s contain the same elements in the same order
-     * 
+     *
      * @param c1
      * The first Collection
      * @param c2
@@ -306,7 +306,7 @@ public abstract class CollectionUtil {
 
     /**
      * Used to check if two {@link Iterable}s contain the same elements in the same order
-     * 
+     *
      * @param c1
      * The first Iterable
      * @param c2
@@ -319,7 +319,7 @@ public abstract class CollectionUtil {
 
     /**
      * Used to check if an Iterable and an Array contain the same elements in the same order
-     * 
+     *
      * @param c1
      * The Iterable
      * @param c2

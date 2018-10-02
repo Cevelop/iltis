@@ -22,7 +22,7 @@ public abstract class StreamFactory {
 
     /**
      * Creates a {@linkplain Stream} from an {@linkplain Enumeration}
-     * 
+     *
      * @param enumeration
      * The Enumeration
      * @return A Stream containing the elements of the Enumeration
@@ -52,7 +52,7 @@ public abstract class StreamFactory {
 
     /**
      * Creates a {@linkplain Stream} from an {@linkplain Iterator}
-     * 
+     *
      * @param iterator
      * The Iterator
      * @return A Stream containing all the elements of the Iterator
@@ -63,7 +63,7 @@ public abstract class StreamFactory {
 
     /**
      * Creates a {@linkplain Stream} from an {@linkplain Spliterator}
-     * 
+     *
      * @param spliterator
      * The Spliterator
      * @return A Stream containing all the elements of the Spliterator
@@ -74,7 +74,7 @@ public abstract class StreamFactory {
 
     /**
      * Creates a {@linkplain Stream} from an varargs
-     * 
+     *
      * @param elements
      * The elements
      * @return A Stream containing the elements
@@ -86,7 +86,7 @@ public abstract class StreamFactory {
 
     /**
      * Creates a concatenated stream
-     * 
+     *
      * @param first
      * The first stream
      * @param others

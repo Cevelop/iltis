@@ -17,7 +17,7 @@ public abstract class ProjectUtil {
 
     /**
      * Checks if a file URI is part of a project
-     * 
+     *
      * @param fileUri
      * The file's URI
      * @param project

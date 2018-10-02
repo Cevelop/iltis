@@ -102,8 +102,8 @@ public class SoftReferenceCache<KeyType, ValueType> implements Map<KeyType, Valu
      */
     @Override
     public Set<Entry<KeyType, ValueType>> entrySet() {
-        return cacheMap.keyValuesView().collect(kvp -> new DecachingEntry<>(kvp.getOne(), kvp.getTwo(),
-                new WeakReference<>(this)), Sets.mutable.empty());
+        return cacheMap.keyValuesView().collect(kvp -> new DecachingEntry<>(kvp.getOne(), kvp.getTwo(), new WeakReference<>(this)), Sets.mutable
+                .empty());
     }
 
     /* -------------- CACHE HANDLING -------------- */

@@ -38,7 +38,7 @@ public class OptionalUtil<T> {
     /**
      * This creates a new OptionalUtil<T> without having to cast the value.
      * If the creation fails this can be rather expensive, therefore this method should not be used to test if something is of a class;
-     * 
+     *
      * @throws ClassCastException
      * If the attempted cast failed
      */
@@ -97,7 +97,7 @@ public class OptionalUtil<T> {
 
     /**
      * Executes the passed function, if the optional has a value present.
-     * 
+     *
      * @param <T>
      * The type wrapped by the Optional
      * @param funThen
@@ -122,7 +122,7 @@ public class OptionalUtil<T> {
 
     /**
      * Executes the passed function, if the optional has no value present.
-     * 
+     *
      * @param <T>
      * The type wrapped by the Optional
      * @param funThen
@@ -140,7 +140,7 @@ public class OptionalUtil<T> {
 
     /**
      * Executes the passed function, if the optional has a value present.
-     * 
+     *
      * @param <T>
      * The type wrapped by the Optional
      * @param <E>
@@ -157,7 +157,7 @@ public class OptionalUtil<T> {
 
     /**
      * Executes the passed function, if the optional has no value present.
-     * 
+     *
      * @param <T>
      * The type wrapped by the Optional
      * @param <E>
@@ -174,7 +174,7 @@ public class OptionalUtil<T> {
 
     /**
      * Executes the passed function, if the optional has a value present.
-     * 
+     *
      * @param <T>
      * The type wrapped by the Optional
      * @param funThen

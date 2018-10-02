@@ -24,7 +24,7 @@ public class ILTISException extends RuntimeException {
 
     /**
      * Changes lambda to non-throwing
-     * 
+     *
      * @param functionalInterface
      * The lambda
      * @return The same lambda but all exceptions are thrown unchecked
@@ -41,7 +41,7 @@ public class ILTISException extends RuntimeException {
 
     /**
      * Changes lambda to non-throwing
-     * 
+     *
      * @param functionalInterface
      * The lambda
      * @return The same lambda but all exceptions are thrown unchecked
@@ -58,7 +58,7 @@ public class ILTISException extends RuntimeException {
 
     /**
      * Changes lambda to non-throwing
-     * 
+     *
      * @param functionalInterface
      * The lambda
      * @return The same lambda but all exceptions are thrown unchecked
@@ -75,7 +75,7 @@ public class ILTISException extends RuntimeException {
 
     /**
      * Changes lambda to non-throwing
-     * 
+     *
      * @param functionalInterface
      * The lambda
      * @return The same lambda but all exceptions are thrown unchecked
@@ -92,7 +92,7 @@ public class ILTISException extends RuntimeException {
 
     /**
      * Creates a new {@code ILTISException} containing a message
-     * 
+     *
      * @param message
      * The message displayed if the exception is thrown
      */
@@ -102,7 +102,7 @@ public class ILTISException extends RuntimeException {
 
     /**
      * Creates a new {@code ILTISException} containing a message but without a stack-trace if createStacktrace is false
-     * 
+     *
      * @param message
      * The message displayed if the exception is thrown
      * @param createStacktrace
@@ -114,7 +114,7 @@ public class ILTISException extends RuntimeException {
 
     /**
      * Creates a new {@code ILTISException} wrapping another exception
-     * 
+     *
      * @param originalException
      * The original exception which will be wrapped
      */
@@ -129,7 +129,7 @@ public class ILTISException extends RuntimeException {
 
     /**
      * Creates a new {@code ILTISException} with a message and a cause
-     * 
+     *
      * @param message
      * The message displayed if the exception is thrown
      * @param cause
@@ -141,7 +141,7 @@ public class ILTISException extends RuntimeException {
 
     /**
      * Creates a new {@code ILTISException}
-     * 
+     *
      * @param message
      * The message displayed if the exception is thrown
      * @param cause
@@ -158,7 +158,7 @@ public class ILTISException extends RuntimeException {
 
     /**
      * If the {@code ILTISException} was created with a wrapped exception, this throws the wrapped exception, otherwise it throws itself.
-     * 
+     *
      * @throws Exception
      */
     public void rethrow() throws Exception {
@@ -172,7 +172,7 @@ public class ILTISException extends RuntimeException {
     /**
      * Rethrows the wrapped exception as an unchecked exception. If there is no wrapped exception, the ILTISException rethrows itself as an unchecked
      * exception.
-     * 
+     *
      * @return Theoretically a {@code RuntimeException} but that never happens, as an unchecked Exception is thrown in this method.
      */
     public RuntimeException rethrowUnchecked() {
@@ -182,7 +182,7 @@ public class ILTISException extends RuntimeException {
     /**
      * Rethrows the wrapped exception as a checked exception. If there is no wrapped exception, the ILTISException rethrows itself as a checked
      * exception.
-     * 
+     *
      * @return Theoretically an {@code Exception} but that never happens, as an checked Exception is thrown in this method.
      */
     public Exception rethrowChecked() {
@@ -191,7 +191,7 @@ public class ILTISException extends RuntimeException {
 
     /**
      * Uses generic magic to "cast" a checked exception into an unchecked exception.
-     * 
+     *
      * @return Theoretically a kind of {@link RuntimeException}, but this never happens, as the method always throws.
      * @throws T
      * To make the magic work, this must be a {@code RuntimeException} or something which extends {@code RuntimeException}

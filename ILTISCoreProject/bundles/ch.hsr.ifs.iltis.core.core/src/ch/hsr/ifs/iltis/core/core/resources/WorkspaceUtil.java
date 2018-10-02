@@ -20,7 +20,7 @@ public class WorkspaceUtil {
 
     /**
      * Tries to get the default line separator for this workspace. If none is set the system-default will be used.
-     * 
+     *
      * @return A String containing a line separator
      */
     public static String getWorkspaceLineSeparator() {
@@ -40,7 +40,7 @@ public class WorkspaceUtil {
 
     /**
      * Convenience method to get the workspace root
-     * 
+     *
      * @return The workspace root
      */
     public static IWorkspaceRoot getWorkspaceRoot() {

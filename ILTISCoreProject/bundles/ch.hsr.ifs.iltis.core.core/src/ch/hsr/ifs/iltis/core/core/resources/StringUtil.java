@@ -20,7 +20,7 @@ public abstract class StringUtil {
 
     /**
      * A utility class which offers convenience methods for Strings which resemble code
-     * 
+     *
      * @author tstauber
      *
      */

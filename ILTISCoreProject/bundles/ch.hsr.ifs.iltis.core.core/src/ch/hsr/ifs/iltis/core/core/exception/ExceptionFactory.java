@@ -20,7 +20,7 @@ public class ExceptionFactory {
 
     /**
      * Throws an unchecked {@link ExceptionFactory} with the message msg, if expected does <b>not</b> equals actual
-     * 
+     *
      * @param msg
      * The message
      * @param expected
@@ -37,7 +37,7 @@ public class ExceptionFactory {
 
     /**
      * Throws an unchecked {@link ExceptionFactory} with the message msg, if expected equals actual
-     * 
+     *
      * @param msg
      * The message
      * @param expected
@@ -54,7 +54,7 @@ public class ExceptionFactory {
 
     /**
      * Throws an unchecked {@link ExceptionFactory} with the message msg, if the passed expression is False
-     * 
+     *
      * @param msg
      * The message
      * @param expr
@@ -68,7 +68,7 @@ public class ExceptionFactory {
 
     /**
      * Throws an unchecked {@link ExceptionFactory} with the message msg, if the passed expression is True
-     * 
+     *
      * @param msg
      * The message
      * @param expr
@@ -82,7 +82,7 @@ public class ExceptionFactory {
 
     /**
      * Throws an unchecked {@link ExceptionFactory} with the message msg, if the passed object is null
-     * 
+     *
      * @param msg
      * The message
      * @param object
@@ -96,7 +96,7 @@ public class ExceptionFactory {
 
     /**
      * Throws an unchecked {@link ExceptionFactory} with the message msg, if the passed object is NOT assignable from clazz
-     * 
+     *
      * @param msg
      * The message
      * @param object
@@ -112,7 +112,7 @@ public class ExceptionFactory {
 
     /**
      * Throws an unchecked {@link ExceptionFactory} with the message msg, if the passed object is assignable from clazz
-     * 
+     *
      * @param msg
      * The message
      * @param object
@@ -128,7 +128,7 @@ public class ExceptionFactory {
 
     /**
      * Throws an unchecked {@link ExceptionFactory} with the message msg, if the passed object is NOT assignable from clazz
-     * 
+     *
      * @param msg
      * The message
      * @param clazz
@@ -144,7 +144,7 @@ public class ExceptionFactory {
 
     /**
      * Throws an unchecked {@link ExceptionFactory} with the message msg, if the passed object is assignable from clazz
-     * 
+     *
      * @param msg
      * The message
      * @param clazz
@@ -182,7 +182,7 @@ public class ExceptionFactory {
 
     /**
      * Throws a new ILTISException with the message as an unchecked exception
-     * 
+     *
      * @param message
      * The message
      */
