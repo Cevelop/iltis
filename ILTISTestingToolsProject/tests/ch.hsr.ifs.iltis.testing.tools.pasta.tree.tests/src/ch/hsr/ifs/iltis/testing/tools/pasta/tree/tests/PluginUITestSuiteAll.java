@@ -6,12 +6,10 @@ import org.junit.runners.Suite.SuiteClasses;
 
 
 @RunWith(Suite.class)
-//@formatter:off
-@SuiteClasses({
-    NodeTest.class,
-    JBaumTest.class,
+@SuiteClasses({ //
+                NodeTest.class, //
+                JBaumTest.class,//
 })
-//@formatter:on
 public class PluginUITestSuiteAll {
 
 }

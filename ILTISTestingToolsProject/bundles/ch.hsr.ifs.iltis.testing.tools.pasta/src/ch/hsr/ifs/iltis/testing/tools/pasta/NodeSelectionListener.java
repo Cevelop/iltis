@@ -5,5 +5,5 @@ import org.eclipse.cdt.core.dom.ast.IASTNode;
 
 public interface NodeSelectionListener {
 
-   void nodeSelected(IASTNode node);
+    void nodeSelected(IASTNode node);
 }
