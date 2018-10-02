@@ -53,7 +53,7 @@ public abstract class SimpleChecker<ProblemId extends IProblemId<ProblemId>> ext
     /**
      * Returns the {@code ASTVisitor} which should be used. If the visitor is a SimpleVisitor,
      * {@code this::addNodeForReporting} can be used as callback.
-     * 
+     *
      * This method should only create a visitor. The created visitor will be stored in {@link #visitor}.
      */
     protected abstract SimpleVisitor<?, ?> createVisitor();

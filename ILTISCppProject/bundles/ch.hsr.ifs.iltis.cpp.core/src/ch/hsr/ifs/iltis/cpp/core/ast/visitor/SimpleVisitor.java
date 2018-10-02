@@ -39,7 +39,7 @@ public abstract class SimpleVisitor<ProblemId extends IProblemId<ProblemId>, Arg
 
     /**
      * Constructs a new SimpleVisitor
-     * 
+     *
      * @param reporter
      * The reporter. Mostly this would be a {@link SimpleChecker} or a {@link CRefactoring} implementing {@link ISimpleReporter}
      * @param args
@@ -52,7 +52,7 @@ public abstract class SimpleVisitor<ProblemId extends IProblemId<ProblemId>, Arg
 
     /**
      * Constructs a new SimpleVisitor
-     * 
+     *
      * @param reporter
      * The reporter. Mostly this would be a {@link SimpleChecker} or a {@link CRefactoring} implementing {@link ISimpleReporter}
      * @param args
@@ -65,7 +65,7 @@ public abstract class SimpleVisitor<ProblemId extends IProblemId<ProblemId>, Arg
 
     /**
      * Constructs a new SimpleVisitor
-     * 
+     *
      * @param reporter
      * The reporter. Mostly this would be a {@link SimpleChecker} or a {@link CRefactoring} implementing {@link ISimpleReporter}
      */
@@ -75,7 +75,7 @@ public abstract class SimpleVisitor<ProblemId extends IProblemId<ProblemId>, Arg
 
     /**
      * Adds a collection of arguments to this visitors. This method returns the visitors itself to allow chaining.
-     * 
+     *
      * @param args
      * The arguments to add
      * @return Itself to allow chaining
@@ -87,7 +87,7 @@ public abstract class SimpleVisitor<ProblemId extends IProblemId<ProblemId>, Arg
 
     /**
      * Adds a collection of arguments to this visitors. This method returns the visitors itself to allow chaining.
-     * 
+     *
      * @param args
      * The arguments to add
      * @return Itself to allow chaining
@@ -116,7 +116,7 @@ public abstract class SimpleVisitor<ProblemId extends IProblemId<ProblemId>, Arg
     /**
      * This method can be overridden for custom enabling. By default if the reporter happens to be a IChecker, this visitor is considered enabled, if
      * any of the {@link #getProblemIds()} is enabled for it.
-     * 
+     *
      * @return If this visitor shall be enabled
      */
     public boolean isEnabled() {

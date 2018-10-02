@@ -10,19 +10,19 @@ import ch.hsr.ifs.iltis.testing.core.core.validators.WrapperValidationTest;
 
 public class ValidateWrappers extends WrapperValidationTest {
 
-   @Test
-   public void validateCPPVisitor() {
-      validate(CPPVisitor.class);
-   }
+    @Test
+    public void validateCPPVisitor() {
+        validate(CPPVisitor.class);
+    }
 
-   @Test
-   public void validateSelectionHelper() {
-      validate(SelectionHelper.class);
-   }
+    @Test
+    public void validateSelectionHelper() {
+        validate(SelectionHelper.class);
+    }
 
-   @Test
-   public void validateIndexToASTNameHelper() {
-      validate(IndexToASTNameHelper.class);
-   }
+    @Test
+    public void validateIndexToASTNameHelper() {
+        validate(IndexToASTNameHelper.class);
+    }
 
 }

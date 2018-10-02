@@ -10,7 +10,7 @@ public interface ISimpleReporter<ProblemId extends IProblemId<ProblemId>> {
 
     /**
      * Adds {@code node} to the list of nodes that will be reported
-     * 
+     *
      * @param problemId
      * The problem to be reported
      * @param node
@@ -22,7 +22,7 @@ public interface ISimpleReporter<ProblemId extends IProblemId<ProblemId>> {
 
     /**
      * Adds {@code node} to the list of nodes that will be reported
-     * 
+     *
      * @param problemId
      * The problem to be reported
      * @param node

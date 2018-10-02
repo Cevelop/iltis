@@ -16,7 +16,7 @@ public class ITranslationUnitUtil {
 
     /**
      * Crates a map indexed by line number, containing pairs of line-start-offset and line-content.
-     * 
+     *
      * @param tu
      * The translation unit to extract the content from
      * @return The created map
@@ -39,7 +39,7 @@ public class ITranslationUnitUtil {
 
     /**
      * Detects if a line is following a line containing only whitespace
-     * 
+     *
      * @param node
      * The node to take the start-line from
      * @param linenoOffsetContentMap
@@ -52,7 +52,7 @@ public class ITranslationUnitUtil {
 
     /**
      * Detects if a line is followed by a line containing only whitespace
-     * 
+     *
      * @param node
      * The node to take the end-line from
      * @param linenoOffsetContentMap
@@ -65,7 +65,7 @@ public class ITranslationUnitUtil {
 
     /**
      * Detects if line X consists of only whitespace
-     * 
+     *
      * @param lineNo
      * The line number to test
      * @param linenoOffsetContentMap

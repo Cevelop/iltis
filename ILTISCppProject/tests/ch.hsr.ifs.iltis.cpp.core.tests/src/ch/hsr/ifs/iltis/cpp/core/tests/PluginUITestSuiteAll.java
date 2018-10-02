@@ -9,9 +9,8 @@ import ch.hsr.ifs.iltis.cpp.core.tests.validators.ValidateWrappers;
 
 
 @RunWith(Suite.class)
-//@formatter:off
-@SuiteClasses({
-   ValidateWrappers.class,
-   TestSuiteIncludes.class,
+@SuiteClasses({ //
+                ValidateWrappers.class, //
+                TestSuiteIncludes.class,//
 })
 public class PluginUITestSuiteAll {}

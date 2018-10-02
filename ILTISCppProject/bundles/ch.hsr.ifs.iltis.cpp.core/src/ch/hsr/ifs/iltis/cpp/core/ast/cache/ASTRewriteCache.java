@@ -35,7 +35,7 @@ public class ASTRewriteCache {
 
     /**
      * Returns the cached rewrite for the passed translation unit.
-     * 
+     *
      * @param translationUnit
      * The translation unit
      * @return The rewrite, or null if something went wrong
@@ -58,7 +58,7 @@ public class ASTRewriteCache {
 
     /**
      * Returns the cached translation unit or loads it if not yet in cache
-     * 
+     *
      * @param translationUnit
      * The translation unit
      * @return The translation unit, or null if something went wrong
@@ -90,7 +90,7 @@ public class ASTRewriteCache {
 
     /**
      * Returns a change representing all changes to all the cached translation units
-     * 
+     *
      * @return The composite change.
      */
     public Change getChange() {

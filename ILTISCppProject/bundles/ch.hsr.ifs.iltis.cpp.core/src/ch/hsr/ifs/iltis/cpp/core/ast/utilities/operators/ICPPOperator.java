@@ -16,7 +16,7 @@ public interface ICPPOperator {
     /**
      * The values returned by this method are not guaranteed to be stable, but the relative precedence will be correct.
      * The lower the returned value, the stronger the operator binds.
-     * 
+     *
      * @return The precedence of this operator, whereby lower is stronger.
      */
     int getRelativePrecedence();

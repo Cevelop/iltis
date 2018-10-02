@@ -218,17 +218,17 @@ public interface IBetterFactory extends ICPPNodeFactory {
 
     /**
      * Creates a new binary expression while automatically grouping the operands if necessary.
-     * 
+     *
      * <pre>
-     * Examples: 
-     * 
+     * Examples:
+     *
      * [a + b] * [10] -> [(a + b)] * [10]
-     * 
+     *
      * [a ? b : c] = [d] -> [(a ? b : c)] = [d]
-     * 
+     *
      * [a * b] * [c] -> no additional grouping
      * </pre>
-     * 
+     *
      * @param operator
      * The operator (one of {@link IASTBinaryExpression}{@code .op_...})
      * @param operand1
@@ -241,13 +241,13 @@ public interface IBetterFactory extends ICPPNodeFactory {
 
     /**
      * Creates a new unary expression while automatically grouping the operands if necessary.
-     * 
+     *
      * <pre>
      * Example:
-     * 
+     *
      * *[c++] -> *[(c++)]
      * </pre>
-     * 
+     *
      * @param operator
      * The operator (one of {@link IASTUnaryExpression}{@code .op_...})
      * @param operand
@@ -258,15 +258,15 @@ public interface IBetterFactory extends ICPPNodeFactory {
 
     /**
      * Creates a new conditional expression while automatically grouping the operands if necessary.
-     * 
+     *
      * <pre>
-     * Examples: 
-     * 
+     * Examples:
+     *
      * [a + b] * [10] -> [(a + b)] * [10]
-     * 
+     *
      * [a] ? [b] : [c=d] ->
      * </pre>
-     * 
+     *
      * @param condition
      * @param positive
      * @param negative
