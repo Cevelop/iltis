@@ -17,23 +17,21 @@ import ch.hsr.ifs.iltis.core.core.tests.resources.StringUtilTest;
 
 
 @RunWith(Suite::class)
-//@formatter:off
 @Suite.SuiteClasses(
-   CollectionHelperTest::class,
-   
-   PairTest::class,
-   WrapperTest::class,
-   
-   ExceptionTest::class,
-   UnlessTest::class,
-   
-   FunctionalTest::class,
-   OptionalUtilTest::class,
-   StreamFactoryTest::class,
-   StreamUtilTest::class,
+		CollectionHelperTest::class,//
 
-   IOUtilTest::class,
-   StringUtilTest::class
+		PairTest::class,//
+		WrapperTest::class,//
+
+		ExceptionTest::class,//
+		UnlessTest::class,//
+
+		FunctionalTest::class,//
+		OptionalUtilTest::class,//
+		StreamFactoryTest::class,//
+		StreamUtilTest::class,//
+
+		IOUtilTest::class,//
+		StringUtilTest::class//
 )
-//@formatter:on
 class UnitTestSuiteAll

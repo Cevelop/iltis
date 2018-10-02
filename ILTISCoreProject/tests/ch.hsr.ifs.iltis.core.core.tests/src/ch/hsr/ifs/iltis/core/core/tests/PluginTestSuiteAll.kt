@@ -7,9 +7,7 @@ import ch.hsr.ifs.iltis.core.core.tests.resources.FileUtilTest;
 
 
 @RunWith(Suite::class)
-//@formatter:off
 @Suite.SuiteClasses(
-   FileUtilTest::class
+		FileUtilTest::class//
 )
-//@formatter:on
 class PluginTestSuiteAll

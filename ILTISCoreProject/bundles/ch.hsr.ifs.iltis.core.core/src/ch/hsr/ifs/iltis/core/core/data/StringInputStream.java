@@ -7,16 +7,16 @@ import java.nio.charset.StandardCharsets;
 
 
 public class StringInputStream extends InputStream {
-   
-   ByteArrayInputStream stream;
-   
-   public StringInputStream(String source) {
-      this.stream = new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8));
-   }
-   
-   @Override
-   public int read() throws IOException {
-      return stream.read();
-   }
-   
+
+    ByteArrayInputStream stream;
+
+    public StringInputStream(final String source) {
+        stream = new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8));
+    }
+
+    @Override
+    public int read() throws IOException {
+        return stream.read();
+    }
+
 }

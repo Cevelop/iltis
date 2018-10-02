@@ -16,7 +16,7 @@ import org.eclipse.collections.impl.factory.Sets;
 
 /**
  * A soft reference based cache. It uses the phantoms of the reference to remove the entries from the map once the soft-references were collected.
- * 
+ *
  * @author tstauber
  *
  * @param <KeyType>
@@ -25,22 +25,22 @@ import org.eclipse.collections.impl.factory.Sets;
 public class SoftReferenceCache<KeyType, ValueType> implements Map<KeyType, ValueType> {
 
     protected MutableMap<KeyType, CacheRef<KeyType, ValueType>> cacheMap = Maps.mutable.empty();
-    protected ReferenceQueue<ValueType>                         refQueue = new ReferenceQueue<ValueType>();
+    protected ReferenceQueue<ValueType>                         refQueue = new ReferenceQueue<>();
 
     @Override
-    public ValueType get(Object key) {
+    public ValueType get(final Object key) {
         handleEnqueuedCacheRefs();
-        CacheRef<KeyType, ValueType> cRef = cacheMap.get(key);
+        final CacheRef<KeyType, ValueType> cRef = cacheMap.get(key);
         return cRef == null ? null : cRef.get();
     }
 
     @Override
-    public boolean containsKey(Object key) {
+    public boolean containsKey(final Object key) {
         return cacheMap.containsKey(key);
     }
 
     @Override
-    public boolean containsValue(Object value) {
+    public boolean containsValue(final Object value) {
         return cacheMap.containsValue(value);
     }
 
@@ -57,24 +57,24 @@ public class SoftReferenceCache<KeyType, ValueType> implements Map<KeyType, Valu
     }
 
     @Override
-    public ValueType put(KeyType key, ValueType value) {
+    public ValueType put(final KeyType key, final ValueType value) {
         handleEnqueuedCacheRefs();
-        CacheRef<KeyType, ValueType> oldCRef = cacheMap.put(key, new CacheRef<KeyType, ValueType>(key, value, refQueue));
+        final CacheRef<KeyType, ValueType> oldCRef = cacheMap.put(key, new CacheRef<>(key, value, refQueue));
         return oldCRef == null ? null : oldCRef.get();
     }
 
     @Override
-    public ValueType remove(Object key) {
+    public ValueType remove(final Object key) {
         handleEnqueuedCacheRefs();
-        CacheRef<KeyType, ValueType> cRef = cacheMap.remove(key);
+        final CacheRef<KeyType, ValueType> cRef = cacheMap.remove(key);
         return cRef == null ? null : cRef.get();
     }
 
     @Override
-    public void putAll(Map<? extends KeyType, ? extends ValueType> map) {
+    public void putAll(final Map<? extends KeyType, ? extends ValueType> map) {
         handleEnqueuedCacheRefs();
-        for (KeyType key : map.keySet()) {
-            cacheMap.put(key, new CacheRef<KeyType, ValueType>(key, map.get(key), refQueue));
+        for (final KeyType key : map.keySet()) {
+            cacheMap.put(key, new CacheRef<>(key, map.get(key), refQueue));
         }
     }
 
@@ -102,8 +102,8 @@ public class SoftReferenceCache<KeyType, ValueType> implements Map<KeyType, Valu
      */
     @Override
     public Set<Entry<KeyType, ValueType>> entrySet() {
-        return cacheMap.keyValuesView().collect(kvp -> new DecachingEntry<KeyType, ValueType>(kvp.getOne(), kvp.getTwo(),
-                new WeakReference<SoftReferenceCache<KeyType, ValueType>>(this)), Sets.mutable.empty());
+        return cacheMap.keyValuesView().collect(kvp -> new DecachingEntry<>(kvp.getOne(), kvp.getTwo(),
+                new WeakReference<>(this)), Sets.mutable.empty());
     }
 
     /* -------------- CACHE HANDLING -------------- */
@@ -120,7 +120,7 @@ public class SoftReferenceCache<KeyType, ValueType> implements Map<KeyType, Valu
 
     /**
      * A kind of SoftReference holding the key corresponding to a value in the cache.
-     * 
+     *
      * @author tstauber
      *
      * @param <KeyType>
@@ -130,7 +130,7 @@ public class SoftReferenceCache<KeyType, ValueType> implements Map<KeyType, Valu
 
         protected final KeyType key;
 
-        public CacheRef(KeyType key, ValueType ref, ReferenceQueue<ValueType> queue) {
+        public CacheRef(final KeyType key, final ValueType ref, final ReferenceQueue<ValueType> queue) {
             super(ref, queue);
             this.key = key;
         }
@@ -139,7 +139,7 @@ public class SoftReferenceCache<KeyType, ValueType> implements Map<KeyType, Valu
 
     /**
      * A map entry used for memory safe decaching of SoftReferenceCache.
-     * 
+     *
      * @author tstauber
      *
      * @param <KeyType>
@@ -150,9 +150,10 @@ public class SoftReferenceCache<KeyType, ValueType> implements Map<KeyType, Valu
         protected KeyType   key;
         protected ValueType value;
 
-        private WeakReference<SoftReferenceCache<KeyType, ValueType>> writeThroughHolder;
+        private final WeakReference<SoftReferenceCache<KeyType, ValueType>> writeThroughHolder;
 
-        public DecachingEntry(KeyType key, CacheRef<KeyType, ValueType> cacheRef, WeakReference<SoftReferenceCache<KeyType, ValueType>> cacheHolder) {
+        public DecachingEntry(final KeyType key, final CacheRef<KeyType, ValueType> cacheRef,
+                              final WeakReference<SoftReferenceCache<KeyType, ValueType>> cacheHolder) {
             this.key = key;
             this.value = cacheRef.get();
             this.writeThroughHolder = cacheHolder;
@@ -169,9 +170,9 @@ public class SoftReferenceCache<KeyType, ValueType> implements Map<KeyType, Valu
         }
 
         @Override
-        public ValueType setValue(ValueType value) {
+        public ValueType setValue(final ValueType value) {
             this.value = value;
-            SoftReferenceCache<KeyType, ValueType> cacheHolder = writeThroughHolder.get();
+            final SoftReferenceCache<KeyType, ValueType> cacheHolder = writeThroughHolder.get();
             if (cacheHolder != null && cacheHolder.cacheMap.containsKey(this.key)) {
                 return cacheHolder.put(this.key, this.value);
             }

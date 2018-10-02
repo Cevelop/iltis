@@ -18,32 +18,32 @@ import org.osgi.service.prefs.Preferences;
  */
 public class WorkspaceUtil {
 
-   /**
-    * Tries to get the default line separator for this workspace. If none is set the system-default will be used.
-    * 
-    * @return A String containing a line separator
-    */
-   public static String getWorkspaceLineSeparator() {
-      Preferences rootNode = Platform.getPreferencesService().getRootNode();
-      return getLineSeparatorFromPreferences(rootNode.node(InstanceScope.SCOPE)).orElseGet(() -> getLineSeparatorFromPreferences(rootNode.node(
-               DefaultScope.SCOPE)).orElse(System.getProperty("line.separator")));
-   }
+    /**
+     * Tries to get the default line separator for this workspace. If none is set the system-default will be used.
+     * 
+     * @return A String containing a line separator
+     */
+    public static String getWorkspaceLineSeparator() {
+        final Preferences rootNode = Platform.getPreferencesService().getRootNode();
+        return getLineSeparatorFromPreferences(rootNode.node(InstanceScope.SCOPE)).orElseGet(() -> getLineSeparatorFromPreferences(rootNode.node(
+                DefaultScope.SCOPE)).orElse(System.getProperty("line.separator")));
+    }
 
-   private static Optional<String> getLineSeparatorFromPreferences(Preferences node) {
-      try {
-         return node.nodeExists(Platform.PI_RUNTIME) ? Optional.ofNullable(node.node(Platform.PI_RUNTIME).get(Platform.PREF_LINE_SEPARATOR, null))
-                  : Optional.empty();
-      } catch (BackingStoreException ignored) {
-         return Optional.empty();
-      }
-   }
+    private static Optional<String> getLineSeparatorFromPreferences(final Preferences node) {
+        try {
+            return node.nodeExists(Platform.PI_RUNTIME) ? Optional.ofNullable(node.node(Platform.PI_RUNTIME).get(Platform.PREF_LINE_SEPARATOR, null))
+                                                        : Optional.empty();
+        } catch (final BackingStoreException ignored) {
+            return Optional.empty();
+        }
+    }
 
-   /**
-    * Convenience method to get the workspace root
-    * 
-    * @return The workspace root
-    */
-   public static IWorkspaceRoot getWorkspaceRoot() {
-      return ResourcesPlugin.getWorkspace().getRoot();
-   }
+    /**
+     * Convenience method to get the workspace root
+     * 
+     * @return The workspace root
+     */
+    public static IWorkspaceRoot getWorkspaceRoot() {
+        return ResourcesPlugin.getWorkspace().getRoot();
+    }
 }

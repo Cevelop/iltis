@@ -8,16 +8,16 @@ import org.junit.Assert.assertEquals
 
 class StreamUtilTest {
 
-   @Test
-   fun `toMap() Collector sets missing key to 'null'`() {
-      val keys = arrayOf("foo", "bar", "baz")
-      val vals = arrayOf(1, 2, 3, 4)
+	@Test
+	fun `toMap() Collector sets missing key to 'null'`() {
+		val keys = arrayOf("foo", "bar", "baz")
+		val vals = arrayOf(1, 2, 3, 4)
 
-      val actual = Functional.zip(keys, vals).collect(StreamUtil.toMap())
+		val actual = Functional.zip(keys, vals).collect(StreamUtil.toMap())
 
-      val expected = mapOf(keys[0] to vals[0], keys[1] to vals[1], keys[2] to vals[2], null to vals[3])
+		val expected = mapOf(keys[0] to vals[0], keys[1] to vals[1], keys[2] to vals[2], null to vals[3])
 
-      assertEquals(expected, actual);
-   }
+		assertEquals(expected, actual);
+	}
 
 }
