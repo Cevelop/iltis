@@ -19,13 +19,6 @@ import ch.hsr.ifs.iltis.testing.tools.pasta.visualtree.ASTCanvas;
 
 public class ASTWidget extends ScrolledComposite {
 
-    {
-        addDisposeListener(e -> {
-            grabCursor.dispose();
-            openCursor.dispose();
-        });
-    }
-
     /* CURSORS */
     private static final int CURSOR_SIZE = 38;
 
@@ -38,6 +31,13 @@ public class ASTWidget extends ScrolledComposite {
     /* CANVAS */
     private Point   dragSource = new Point(0, 0);
     private boolean dragFlag   = false;
+
+    {
+        addDisposeListener(e -> {
+            grabCursor.dispose();
+            openCursor.dispose();
+        });
+    }
 
     private final ASTCanvas canvas = new ASTCanvas(this, this::ensureBoxIsVisible, SWT.BACKGROUND);
     {
