@@ -14,7 +14,7 @@
 		<maven.surefire.version>2.22.0</maven.surefire.version>
 		<kotlin.version>1.2.50</kotlin.version>
 	</properties>
-	
+
 	<profiles>
 		<profile>
 			<id>master</id>
@@ -82,7 +82,7 @@
 			</build>
 		</profile>
 	</profiles>
-	
+
 
 	<build>
 		<pluginManagement>
@@ -166,6 +166,47 @@
 							<arch>x86_64</arch>
 						</environment>
 					</environments>
+				</configuration>
+			</plugin>
+
+			<!--  Javadoc with extra tags -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.0.1</version>
+				<configuration>
+					<tags>
+						<tag>
+							<name>noimplement</name>
+							<placement>a</placement>
+							<head>No Implement:</head>
+						</tag>
+						<tag>
+							<name>noextend</name>
+							<placement>a</placement>
+							<head>No Extend:</head>
+						</tag>
+						<tag>
+							<name>noreference</name>
+							<placement>a</placement>
+							<head>No Reference:</head>
+						</tag>
+						<tag>
+							<name>noinstantiate</name>
+							<placement>a</placement>
+							<head>No Instantiate:</head>
+						</tag>
+						<tag>
+							<name>nooverride</name>
+							<placement>a</placement>
+							<head>No Override:</head>
+						</tag>
+						<tag>
+							<name>category</name>
+							<placement>a</placement>
+							<head>Category:</head>
+						</tag>
+					</tags>
 				</configuration>
 			</plugin>
 
