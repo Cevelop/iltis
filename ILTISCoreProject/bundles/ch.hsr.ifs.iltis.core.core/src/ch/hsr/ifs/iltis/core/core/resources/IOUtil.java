@@ -53,6 +53,7 @@ public abstract class IOUtil {
          * @throws IOException
          * If an I/O error occurs
          * @throws CoreException
+         * If accessing the file throws one
          */
         public static String read(final IFile file) throws IOException, CoreException {
             return StringIO.write(file.getContents(), StandardCharsets.UTF_8);
@@ -199,9 +200,10 @@ public abstract class IOUtil {
     }
 
     /**
-     * A helper method for save closing of Closeables
+     * A helper method for safe closing of {@code Closeable}s
      *
      * @param toClose
+     * The {@code Closable} which should be closed
      */
     public static void safeClose(final Closeable toClose) {
         if (toClose != null) {

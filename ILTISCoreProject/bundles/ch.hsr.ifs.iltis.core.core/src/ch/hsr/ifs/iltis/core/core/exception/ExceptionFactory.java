@@ -21,6 +21,10 @@ public class ExceptionFactory {
     /**
      * Throws an unchecked {@link ExceptionFactory} with the message msg, if expected does <b>not</b> equals actual
      *
+     * @param <T1>
+     * The type of the expected parameter
+     * @param <T2>
+     * The type of the actual parameter
      * @param msg
      * The message
      * @param expected
@@ -38,6 +42,10 @@ public class ExceptionFactory {
     /**
      * Throws an unchecked {@link ExceptionFactory} with the message msg, if expected equals actual
      *
+     * @param <T1>
+     * The type of the expected parameter
+     * @param <T2>
+     * The type of the actual parameter
      * @param msg
      * The message
      * @param expected
@@ -97,6 +105,8 @@ public class ExceptionFactory {
     /**
      * Throws an unchecked {@link ExceptionFactory} with the message msg, if the passed object is NOT assignable from clazz
      *
+     * @param <T>
+     * The actual type of the passed class
      * @param msg
      * The message
      * @param object
@@ -113,6 +123,8 @@ public class ExceptionFactory {
     /**
      * Throws an unchecked {@link ExceptionFactory} with the message msg, if the passed object is assignable from clazz
      *
+     * @param <T>
+     * The actual type of the passed class
      * @param msg
      * The message
      * @param object
@@ -129,6 +141,8 @@ public class ExceptionFactory {
     /**
      * Throws an unchecked {@link ExceptionFactory} with the message msg, if the passed object is NOT assignable from clazz
      *
+     * @param <T>
+     * The actual type of the passed class
      * @param msg
      * The message
      * @param clazz
@@ -145,6 +159,8 @@ public class ExceptionFactory {
     /**
      * Throws an unchecked {@link ExceptionFactory} with the message msg, if the passed object is assignable from clazz
      *
+     * @param <T>
+     * The actual type of the passed class
      * @param msg
      * The message
      * @param clazz
@@ -159,6 +175,8 @@ public class ExceptionFactory {
     }
 
     /**
+     * @param <T>
+     * The actual type of the passed class
      * @param object
      * The object to test
      * @param clazz
@@ -170,6 +188,8 @@ public class ExceptionFactory {
     }
 
     /**
+     * @param <T>
+     * The actual type of the passed class
      * @param object
      * The object to test
      * @param clazz

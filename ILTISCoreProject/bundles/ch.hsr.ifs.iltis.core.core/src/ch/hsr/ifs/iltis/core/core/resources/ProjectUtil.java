@@ -9,7 +9,10 @@ import org.eclipse.core.runtime.Path;
 /**
  * Helps converting resources or extracting resources from other elements.
  *
- * @see ch.hsr.ifs.iltis.cpp.resources.CProjectUtil
+ * <p>
+ * <b>See Also</b><br>
+ * &emsp;&emsp;&emsp;ch.hsr.ifs.iltis.cpp.core.resources.CProjectUtil
+ * </p>
  *
  * @author tstauber
  */

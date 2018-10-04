@@ -44,7 +44,7 @@ public class TextSelectionUtil {
      * The first selection
      * @param two
      * The second selection
-     * @return @{code true} iff the selection truly overlap. Containment does not count as overlapping.
+     * @return {@code true} iff the selection truly overlap. Containment does not count as overlapping.
      */
     public static boolean overlap(final ITextSelection one, final ITextSelection two) {
         /* [one {two ] } || { two [ } one ] */

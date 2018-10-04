@@ -20,7 +20,9 @@ import org.eclipse.collections.impl.factory.Sets;
  * @author tstauber
  *
  * @param <KeyType>
+ * The reference cache key type
  * @param <ValueType>
+ * The reference cache value type
  */
 public class SoftReferenceCache<KeyType, ValueType> implements Map<KeyType, ValueType> {
 
@@ -124,7 +126,9 @@ public class SoftReferenceCache<KeyType, ValueType> implements Map<KeyType, Valu
      * @author tstauber
      *
      * @param <KeyType>
+     * The reference cache key type
      * @param <ValueType>
+     * The reference cache value type
      */
     protected static class CacheRef<KeyType, ValueType> extends SoftReference<ValueType> {
 
@@ -143,7 +147,9 @@ public class SoftReferenceCache<KeyType, ValueType> implements Map<KeyType, Valu
      * @author tstauber
      *
      * @param <KeyType>
+     * The reference cache key type
      * @param <ValueType>
+     * The reference cache value type
      */
     protected static class DecachingEntry<KeyType, ValueType> implements Map.Entry<KeyType, ValueType> {
 

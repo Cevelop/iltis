@@ -22,6 +22,7 @@ public interface ThrowingSupplier<R, E extends Throwable> {
      *
      * @return A value of type {@link R}
      * @throws E
+     * The thrown exception
      */
     public R get() throws E;
 }

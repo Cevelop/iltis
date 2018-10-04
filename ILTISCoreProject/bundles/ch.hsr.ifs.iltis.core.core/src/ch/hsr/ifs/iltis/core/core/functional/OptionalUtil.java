@@ -18,6 +18,8 @@ import ch.hsr.ifs.iltis.core.core.functional.functions.ThrowingFunction;
  *
  * @author tstauber
  *
+ * @param <T>
+ * The type wrapped by the Optional
  */
 public class OptionalUtil<T> {
 
@@ -36,11 +38,18 @@ public class OptionalUtil<T> {
     }
 
     /**
-     * This creates a new OptionalUtil<T> without having to cast the value.
+     * This creates a new {@code OptionalUtil<T>} without having to cast the value.
      * If the creation fails this can be rather expensive, therefore this method should not be used to test if something is of a class;
      *
+     * @param <T>
+     * The type wrapped by the Optional
+     * @param value
+     * The original value to be wrapped in an {@code OptionalUtil<T>}
      * @throws ClassCastException
      * If the attempted cast failed
+     * @return The wrapped value
+     * @throws ClassCastException
+     * If the {@code Object} is not castable to {@code T}
      */
     public static <T> OptionalUtil<T> asOf(final Object value) {
         try {
@@ -98,10 +107,9 @@ public class OptionalUtil<T> {
     /**
      * Executes the passed function, if the optional has a value present.
      *
-     * @param <T>
-     * The type wrapped by the Optional
      * @param funThen
      * A function which takes the extracted value of the passed Optional
+     * @return this
      */
     public OptionalUtil<T> ifPresent(final Consumer<T> funThen) {
         optional.ifPresent(funThen::accept);
@@ -123,10 +131,9 @@ public class OptionalUtil<T> {
     /**
      * Executes the passed function, if the optional has no value present.
      *
-     * @param <T>
-     * The type wrapped by the Optional
      * @param funThen
      * A function which takes the extracted value of the passed Optional
+     * @return this
      */
     public OptionalUtil<T> ifNotPresent(final Supplier<T> funThen) {
         if (!optional.isPresent()) funThen.get();
@@ -141,14 +148,13 @@ public class OptionalUtil<T> {
     /**
      * Executes the passed function, if the optional has a value present.
      *
-     * @param <T>
-     * The type wrapped by the Optional
      * @param <E>
      * The exception type
      * @param funThen
      * A function which can throw and takes the extracted value of the passed Optional
      * @throws E
      * pass-through from funThen
+     * @return this
      */
     public <E extends Exception> OptionalUtil<T> ifPresentT(final ThrowingConsumer<T, E> funThen) throws E {
         if (optional.isPresent()) funThen.accept(optional.get());
@@ -158,14 +164,13 @@ public class OptionalUtil<T> {
     /**
      * Executes the passed function, if the optional has no value present.
      *
-     * @param <T>
-     * The type wrapped by the Optional
      * @param <E>
      * The exception type
      * @param funThen
      * A function which can throw and takes the extracted value of the passed Optional
      * @throws E
      * pass-through from funThen
+     * @return this
      */
     public <E extends Exception> OptionalUtil<T> ifNotPresentT(final ThrowingConsumer<T, E> funThen) throws E {
         if (!optional.isPresent()) funThen.accept(optional.get());
@@ -175,10 +180,9 @@ public class OptionalUtil<T> {
     /**
      * Executes the passed function, if the optional has a value present.
      *
-     * @param <T>
-     * The type wrapped by the Optional
      * @param funThen
      * A function which takes the extracted value of the passed Optional
+     * @return this
      */
     public OptionalUtil<T> useIfPresent(final Consumer<Optional<T>> funThen) {
         if (optional.isPresent()) funThen.accept(optional);

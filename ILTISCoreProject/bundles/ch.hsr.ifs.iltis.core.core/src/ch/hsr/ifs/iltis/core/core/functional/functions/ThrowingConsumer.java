@@ -23,6 +23,7 @@ public interface ThrowingConsumer<T, E extends Throwable> {
      * @param t
      * The argument
      * @throws E
+     * The thrown exception
      */
     public void accept(T t) throws E;
 }

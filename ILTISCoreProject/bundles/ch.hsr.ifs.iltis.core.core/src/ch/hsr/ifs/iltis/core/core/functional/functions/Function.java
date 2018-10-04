@@ -10,7 +10,7 @@ import java.util.function.Supplier;
  *
  * @see Function
  *
- * @param <P>
+ * @param <T>
  * The type of the argument
  * @param <R>
  * The return type

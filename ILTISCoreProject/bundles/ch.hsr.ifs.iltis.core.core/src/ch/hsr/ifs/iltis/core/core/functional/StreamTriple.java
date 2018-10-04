@@ -54,6 +54,9 @@ public class StreamTriple<T1, T2, T3> extends AbstractPair<T1, StreamPair<T2, T3
      *
      * @return A {@code StreamTriple<newT1, }{@code newT2, newT3>}
      * @throws ClassCastException
+     * If {@code first} is not castable to {@code newT1}
+     * or {@code second} is not castable to {@code newT2}
+     * or {@code third} is not castable to {@code newT3}
      */
     public <newT1, newT2, newT3> StreamTriple<newT1, newT2, newT3> as() {
         return new StreamTriple<>(Functional.as(first()), Functional.as(second()), Functional.as(third()));

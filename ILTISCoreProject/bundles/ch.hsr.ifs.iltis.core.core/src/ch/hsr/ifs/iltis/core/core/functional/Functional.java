@@ -150,7 +150,7 @@ public abstract class Functional {
     }
 
     /**
-     * Used to zip two {@linkplain X[]} into a single {@linkplain Stream} of {@linkplain StreamPair}.
+     * Used to zip array of type {@linkplain A} and {@linkplain B} into a single {@linkplain Stream} of {@linkplain StreamPair}.
      *
      * @see #zipWithDefaults(Stream, Stream, Supplier, Supplier)
      *
@@ -271,6 +271,7 @@ public abstract class Functional {
      * The generator to create a default element to use if the first stream is shorter than the first, or second. It can use the current element
      * of the
      * first, and second stream.
+     * @return A {@linkplain Stream} of {@linkplain StreamTriple}
      */
     public static <A, B, C> Stream<StreamTriple<A, B, C>> zipWithDefaults(final Stream<A> as, final Stream<B> bs, final Stream<C> cs,
             final Function2<B, C, A> defaultA, final Function2<A, C, B> defaultB, final Function2<A, B, C> defaultC) {
@@ -342,7 +343,7 @@ public abstract class Functional {
     }
 
     /**
-     * Used to zip three {@linkplain X[]} into a single {@linkplain Stream} of {@linkplain StreamTriple}.
+     * Used to zip arrays of type {@linkplain A}, {@linkplain B} and {@linkplain C} into a single {@linkplain Stream} of {@linkplain StreamTriple}.
      *
      * @see #zipWithDefaults(Stream, Stream, Stream, Function2, Function2, Function2)
      *
@@ -401,8 +402,8 @@ public abstract class Functional {
      * The target type
      * @param o
      * The object to cast
-     * @returns The object o casted to {@link T} if it is an instance of the target type.
-     * @returns Else {@code null}
+     * @return The object o casted to {@link T} if it is an instance of the target type
+     * or else {@code null}
      */
     public static <T> T asOrNull(final Class<T> type, final Object o) {
         return type.isInstance(o) ? type.cast(o) : null;
@@ -411,6 +412,8 @@ public abstract class Functional {
     /**
      * Used to perform an unchecked cast to {@linkplain T}.
      *
+     * @param <T>
+     * The return type to which the object is cast
      * @param o
      * The object to cast
      * @return The object casted to {@linkplain T}
@@ -630,6 +633,8 @@ public abstract class Functional {
      * <p>
      * If an element fulfills both predicates, it will be added to both collections.
      *
+     * @param <E>
+     * The {@code Collection}s and {@code Stream} type
      * @param stream
      * The stream
      * @param ifFun
@@ -666,6 +671,8 @@ public abstract class Functional {
     /**
      * Executes the action for every element passed.
      *
+     * @param <T>
+     * The {@code Consumer} and element array type
      * @param action
      * The action to execute
      * @param elements
@@ -680,6 +687,10 @@ public abstract class Functional {
     /**
      * Passed each of the elements to the consumer. The consumer can throw!
      *
+     * @param <T>
+     * The {@code ThrowingConsumer} input and element array type
+     * @param <E>
+     * The {@code ThrowingConsumer} return and exception type
      * @param action
      * The consumer to execute
      * @param elements
@@ -697,6 +708,10 @@ public abstract class Functional {
     /**
      * If the passed argument is not null, it will be used to execute the function.
      *
+     * @param <T1>
+     * The {@code Function} input and arg type
+     * @param <R>
+     * The {@code Function} return and default value type
      * @param arg
      * The argument (might be null)
      * @param fun
@@ -712,6 +727,12 @@ public abstract class Functional {
     /**
      * If the passed arguments are not null, they will be used to execute the function.
      *
+     * @param <T1>
+     * The {@code Function} first input and arg1 type
+     * @param <T2>
+     * The {@code Function} second input and arg2 type
+     * @param <R>
+     * The {@code Function} return and default value type
      * @param arg1
      * The first argument (might be null)
      * @param arg2
@@ -729,6 +750,8 @@ public abstract class Functional {
     /**
      * Allows to execute a lambda which takes the object as parameter.
      *
+     * @param <T>
+     * The {@code Consumer} input and object type
      * @param object
      * The object to execute
      * @param also
@@ -745,6 +768,8 @@ public abstract class Functional {
      *
      * This method is equivalent to {@link #also(Object, Consumer)} using {@code creator.get()} as object.
      *
+     * @param <T>
+     * The {@code Supplier} and {@code Consumer} input type
      * @param creator
      * The creator to create the object with.
      * @param also

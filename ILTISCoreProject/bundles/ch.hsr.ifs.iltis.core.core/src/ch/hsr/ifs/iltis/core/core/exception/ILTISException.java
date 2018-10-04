@@ -25,6 +25,10 @@ public class ILTISException extends RuntimeException {
     /**
      * Changes lambda to non-throwing
      *
+     * @param <R>
+     * The return type of the returned {@code Supplier}
+     * @param <E>
+     * The exception type extending {@code Exception}
      * @param functionalInterface
      * The lambda
      * @return The same lambda but all exceptions are thrown unchecked
@@ -42,6 +46,10 @@ public class ILTISException extends RuntimeException {
     /**
      * Changes lambda to non-throwing
      *
+     * @param <R>
+     * The return type of the returned {@code Consumer}
+     * @param <E>
+     * The exception type extending {@code Exception}
      * @param functionalInterface
      * The lambda
      * @return The same lambda but all exceptions are thrown unchecked
@@ -59,6 +67,8 @@ public class ILTISException extends RuntimeException {
     /**
      * Changes lambda to non-throwing
      *
+     * @param <E>
+     * The exception type extending {@code Exception}
      * @param functionalInterface
      * The lambda
      * @return The same lambda but all exceptions are thrown unchecked
@@ -76,6 +86,12 @@ public class ILTISException extends RuntimeException {
     /**
      * Changes lambda to non-throwing
      *
+     * @param <T>
+     * The input type of the returned {@code Function}
+     * @param <R>
+     * The return type of the returned {@code Function}
+     * @param <E>
+     * The exception type extending {@code Exception}
      * @param functionalInterface
      * The lambda
      * @return The same lambda but all exceptions are thrown unchecked
@@ -160,6 +176,7 @@ public class ILTISException extends RuntimeException {
      * If the {@code ILTISException} was created with a wrapped exception, this throws the wrapped exception, otherwise it throws itself.
      *
      * @throws Exception
+     * A re-throw of the original {@code Exception} or {@code this}
      */
     public void rethrow() throws Exception {
         if (originalException != null) {

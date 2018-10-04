@@ -1,5 +1,6 @@
 package ch.hsr.ifs.iltis.core.core.preferences;
 
+import org.eclipse.core.internal.resources.PreferenceInitializer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.preference.FieldEditor;
@@ -62,9 +63,7 @@ public abstract class FieldEditorPropertyAndPreferencePage extends FieldEditorPr
     }
 
     /**
-     * If this is a property page, the passed projectElement will be handled by calling {@link handlePropertyPageElement(IAdaptable)}. Then the
-     * controls
-     * will be created and the {@link FieldEditor}s will be updated.
+     * If this is a property page, the passed projectElement will be handled by calling {@link #updateFieldEditors()}.
      *
      * @see org.eclipse.jface.preference.PreferencePage#createControl(Composite)
      */
@@ -98,6 +97,9 @@ public abstract class FieldEditorPropertyAndPreferencePage extends FieldEditorPr
 
     /**
      * Creates and initializes the header
+     *
+     * @param parent
+     * The parent {@code Composite}
      */
     protected void createAndInitializeHeader(final Composite parent) {
         final int numColumnsHeader = 2;
@@ -211,6 +213,8 @@ public abstract class FieldEditorPropertyAndPreferencePage extends FieldEditorPr
 
     /**
      * Convenience method for testing if project specific preferences are enabled.
+     *
+     * @return true if the project specific preference is enabled
      */
     protected boolean projectPreferencesEnabled() {
         return headerCheckbox.getSelection();
@@ -218,7 +222,8 @@ public abstract class FieldEditorPropertyAndPreferencePage extends FieldEditorPr
 
     /**
      * Defines what should happen after the "Restore Defaults" button was pressed. If this is a property page, the project will be reset to workspace
-     * preferences and the values of the contained {@link FieldEditor}s will be reset to the values in the corresponding {@link PreferenceI}. If this
+     * preferences and the values of the contained {@link FieldEditor}s will be reset to the values in the corresponding
+     * {@link PreferenceInitializer}. If this
      * method is overloaded, the overload should call {@code super.performDefaults()}.
      *
      * @see org.eclipse.jface.preference.PreferencePage#performDefaults()
@@ -239,6 +244,7 @@ public abstract class FieldEditorPropertyAndPreferencePage extends FieldEditorPr
      *
      * If eclipse-cdt is loaded, please refer to use {@code ch.hsr.ifs.iltis.cpp.preferences.CFieldEditorPropertyAndPreferencePage}
      *
+     * @return an {@code IProject} which extends {@code IAdaptable}
      */
     protected abstract IAdaptable getProjectForWhichToOpenProperties();
 

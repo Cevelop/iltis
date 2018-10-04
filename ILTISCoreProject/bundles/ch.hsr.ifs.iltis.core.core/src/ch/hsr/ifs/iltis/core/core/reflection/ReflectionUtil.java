@@ -9,13 +9,17 @@ public class ReflectionUtil {
     /**
      * Searches for any field (even protected, private, or final) and makes it accessible
      *
+     * @param <TargetType>
+     * The target type
      * @param target
      * The instance on which to search for this field.
      * @param fieldName
      * The name of the field to find
      * @return The field made accessible
      * @throws SecurityException
+     * if {@link Class#getDeclaredFields()} throws
      * @throws NoSuchFieldException
+     * if no fields exist
      */
     public static <TargetType> Field getFieldAccessible(final TargetType target, final String fieldName) throws NoSuchFieldException {
         Class<?> clazz = target.getClass();
@@ -34,6 +38,10 @@ public class ReflectionUtil {
     /**
      * Sets the value of any field (even protected, private, or final) to the value passed
      *
+     * @param <TargetType>
+     * The target type
+     * @param <FieldType>
+     * The field type
      * @param target
      * The instance on which to manipulate the field
      * @param fieldName
@@ -55,6 +63,8 @@ public class ReflectionUtil {
     /**
      * A convenience method to set a field's value to null.
      *
+     * @param <TargetType>
+     * The target type
      * @param target
      * The instance on which to manipulate the field
      * @param fieldName
@@ -68,6 +78,8 @@ public class ReflectionUtil {
     /**
      * Replaces an array referenced by a field with an empty array
      *
+     * @param <TargetType>
+     * The target type
      * @param target
      * The instance on which to manipulate
      * @param fieldName

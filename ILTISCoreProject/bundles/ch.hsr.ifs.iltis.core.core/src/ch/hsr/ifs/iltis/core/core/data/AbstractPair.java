@@ -50,7 +50,7 @@ public abstract class AbstractPair<T1, T2> {
     /**
      * An internal method used to generate the substring for nested pairs.
      *
-     * @return
+     * @return the raw {@code String}
      */
     protected String toRawString() {
         return getFirstString() + ", " + getSecondString();
@@ -102,6 +102,8 @@ public abstract class AbstractPair<T1, T2> {
     /**
      * Used to compare two AbstractPairs with a custom {@link Equals} comparator.
      *
+     * @param <SndPair>
+     * The type of the second pair
      * @param obj
      * The object to which to compare {@code this}
      * @param comparator
@@ -158,6 +160,10 @@ public abstract class AbstractPair<T1, T2> {
     /**
      * Used to test, if all elements in the pair are equal to each other. This works for nested constructs.
      *
+     * @param <T1>
+     * The first pair type
+     * @param <T2>
+     * The second pair type
      * @param pair
      * The abstractPair to test
      * @return {@code true} if all elements are equal.
@@ -170,6 +176,10 @@ public abstract class AbstractPair<T1, T2> {
     /**
      * Used to test, if NOT all elements in the pair are equal to each other. This works for nested constructs.
      *
+     * @param <T1>
+     * The first pair type
+     * @param <T2>
+     * The second pair type
      * @param pair
      * The abstractPair to test
      * @return {@code false} if all elements are equal.
@@ -181,6 +191,10 @@ public abstract class AbstractPair<T1, T2> {
     /**
      * Used to test, if all elements in the pair are equal to each other. This works for nested constructs. This method takes a custom comparator.
      *
+     * @param <T1>
+     * The first pair type
+     * @param <T2>
+     * The second pair type
      * @param comparator
      * The comparator which tests for the equality.
      * @param pair
@@ -202,9 +216,11 @@ public abstract class AbstractPair<T1, T2> {
     }
 
     /**
-     * @returns An Optional containing the value if all values are equal
-     * @returns An empty Optional if all values are {@code null}
-     * @returns {@code null} if not all values are equal
+     * @param comparator
+     * The {@code Equals} comparator used for the comparison
+     * @return An Optional containing the value if all values are equal
+     * or an empty Optional if all values are {@code null}
+     * or {@code null} if not all values are equal
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected Optional<T1> getValueIfAllValuesSame(final Equals<T1, T2> comparator) {
@@ -234,7 +250,9 @@ public abstract class AbstractPair<T1, T2> {
      * @author tstauber
      *
      * @param <ST1>
+     * The first {@code NestingHelper} type
      * @param <ST2>
+     * The second {@code NestingHelper} type
      */
     protected static class NestingHelper<ST1, ST2> extends AbstractPair<ST1, ST2> {
 

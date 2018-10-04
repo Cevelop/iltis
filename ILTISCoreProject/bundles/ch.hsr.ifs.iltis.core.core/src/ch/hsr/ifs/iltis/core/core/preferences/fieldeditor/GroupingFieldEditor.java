@@ -102,7 +102,7 @@ public abstract class GroupingFieldEditor extends FieldEditor {
     /**
      * Adds all the field editors contained in {@code editors} to the composite
      *
-     * @param editor
+     * @param editors
      * A {@code Collection} of field editors that shall be part of the
      * composite
      */
