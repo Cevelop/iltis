@@ -27,7 +27,9 @@ import ch.hsr.ifs.iltis.core.core.resources.WorkspaceUtil;
  * A utility class providing static methods to handle files. For I/O functionality please
  * refer to {@link IOUtil}
  * 
- * @see ch.hsr.ifs.iltis.cpp.resources.CFileUtil
+ * <p><b>See Also</b><br>
+ * &emsp;&emsp;&emsp;ch.hsr.ifs.iltis.cpp.core.resources.CFileUtil</p>
+ * 
  * @author tstauber
  *
  */
@@ -37,9 +39,10 @@ public abstract class FileUtil {
    /* IFile */
 
    /**
-    * Used to obtain the IFile corresponding to a java File
+    * Used to obtain the IFile corresponding to a Java File
     * 
     * @param file
+    *        The original Java {@code File}
     * @return the IFile or null if non existent
     */
    public static IFile toIFile(final File file) {
@@ -50,6 +53,7 @@ public abstract class FileUtil {
     * Used to obtain the IFile for a file path
     * 
     * @param filePath
+    *        The file path as a {@code String}
     * @return the IFile or null if non existent
     */
    public static IFile toIFile(final String filePath) {
@@ -60,6 +64,7 @@ public abstract class FileUtil {
     * Used to obtain the IFile for a file path
     * 
     * @param filePath
+    *        The files file {@code IPath}
     * @return the IFile or null if non existent
     */
    public static IFile toIFile(final IPath filePath) {
@@ -70,7 +75,7 @@ public abstract class FileUtil {
     * Used to obtain the IFile corresponding to a URI
     * 
     * @param locationURI
-    *        The locationURI of the file
+    *        The location {@code URI} of the file
     * @return the IFile or null if non existent
     */
    public static IFile getIFile(final URI locationURI) {
@@ -89,6 +94,7 @@ public abstract class FileUtil {
     * Used to create the IFile corresponding to a URI
     * 
     * @param locationURI
+    *        The files location {@code URI}
     * @return the IFile
     */
    public static IFile toIFile(final URI locationURI) {
@@ -100,6 +106,9 @@ public abstract class FileUtil {
    /**
     * Used to obtain the File corresponding to a IFile
     * 
+    * @param file
+    *        The original {@code IFile}
+    * 
     * @return the File
     */
    public static File toFile(final IFile file) {
@@ -109,6 +118,9 @@ public abstract class FileUtil {
    /**
     * Used to obtain the File corresponding to a filePath
     * 
+    * @param filePath
+    *        The original files {@code IPath}
+    * 
     * @return the File
     */
    public static File toFile(final IPath filePath) {
@@ -117,6 +129,9 @@ public abstract class FileUtil {
 
    /**
     * Used to obtain the File corresponding to a URI
+    * 
+    * @param fileURI
+    *        The original files {@code URI}
     * 
     * @return the File
     */
@@ -128,6 +143,9 @@ public abstract class FileUtil {
 
    /**
     * Used to strip the file extension form a file name
+    * 
+    * @param filename
+    *        The original file name as a {@code String}
     * 
     * @return the file name without extension
     */
@@ -144,6 +162,9 @@ public abstract class FileUtil {
     * Used to obtain filename with extension from a file path
     * {@code FileUtil.getFilename("/a/b/c/foo.h") -> "foo.h" }
     * 
+    * @param filePath
+    *        The original file path as a {@code String}
+    * 
     * @throws ILTISException
     *         (unchecked) if invalid path is passed.
     * @return the filename with extension
@@ -158,6 +179,9 @@ public abstract class FileUtil {
     * Used to obtain the file path without the filename and file extension.
     * {@code FileUtil.removeFilePart("/a/b/c/foo.h") -> "/a/b/c/" }
     * 
+    * @param filePath
+    *        The original file path as a {@code String}
+    * 
     * @return The path without filename and extension
     */
    public static String getPathWithoutFilename(final String filePath) {
@@ -166,6 +190,9 @@ public abstract class FileUtil {
 
    /**
     * Used to obtain the the path of the folder which contains this IFile
+    * 
+    * @param file
+    *        The original {@code IFile}
     * 
     * @return The path of the folder containing this file relative to the workspace
     */
@@ -177,6 +204,7 @@ public abstract class FileUtil {
     * Used to obtain the URI from a file path
     * 
     * @param filePath
+    *        The file path for which the {@code URI} should be created
     * @return the URI corresponding to the path
     */
    public static URI stringToUri(final String filePath) {
@@ -204,6 +232,11 @@ public abstract class FileUtil {
 
    /**
     * Converts an IPath into its canonical form for the local file system.
+    * 
+    * @param path
+    *        The original {@code IPath}
+    * 
+    * @return the canonical {@code IPath}
     */
    public static IPath canonicalPath(IPath path) {
       return org.eclipse.core.internal.utils.FileUtil.canonicalPath(path);
@@ -218,6 +251,11 @@ public abstract class FileUtil {
     * <p>
     * This method is similar to java.nio.file.Path.toRealPath(LinkOption.NOFOLLOW_LINKS)
     * in Java 1.7.
+    * 
+    * @param path
+    *        The original {@code IPath}
+    * 
+    * @return the real {@code IPath}
     */
    public static IPath realPath(IPath path) {
       return org.eclipse.core.internal.utils.FileUtil.realPath(path);
@@ -225,6 +263,11 @@ public abstract class FileUtil {
 
    /**
     * Converts a URI into its canonical form.
+    * 
+    * @param uri
+    *        The original {@code URI}
+    * 
+    * @return the canonical {@code URI}
     */
    public static URI canonicalURI(URI uri) {
       return org.eclipse.core.internal.utils.FileUtil.canonicalURI(uri);
@@ -235,6 +278,11 @@ public abstract class FileUtil {
     * with the actual case as it exists in the file system.
     *
     * @see #realPath(IPath)
+    * 
+    * @param uri
+    *        The original {@code URI}
+    * 
+    * @return the real {@code URI}
     */
    public static URI realURI(URI uri) {
       return org.eclipse.core.internal.utils.FileUtil.realURI(uri);
@@ -260,24 +308,48 @@ public abstract class FileUtil {
    }
 
    /**
-    * Returns true if the given file system locations overlap, and false otherwise.
+    * Checks if two location overlap.
     * Overlap means the locations are the same, or one is a proper prefix of the other.
+    * 
+    * @param location1
+    *        The first location's {@code URI}
+    * 
+    * @param location2
+    *        The second location's {@code URI}
+    * 
+    * @return true if the given file system locations overlap, and false otherwise
     */
    public static boolean isOverlapping(URI location1, URI location2) {
       return org.eclipse.core.internal.utils.FileUtil.isOverlapping(location1, location2);
    }
 
    /**
-    * Returns true if location1 is the same as, or a proper prefix of, location2.
+    * Checks if two locations have the same or a proper prefix.
     * Returns false otherwise.
+    * 
+    * @param location1
+    *        The first location's {@code IPath}
+    * 
+    * @param location2
+    *        The second location's {@code IPath}
+    * 
+    * @return true if location1 is the same as or a proper prefix of location2
     */
    public static boolean isPrefixOf(IPath location1, IPath location2) {
       return org.eclipse.core.internal.utils.FileUtil.isPrefixOf(location1, location2);
    }
 
    /**
-    * Returns true if location1 is the same as, or a proper prefix of, location2.
+    * Checks if two locations have the same or a proper prefix.
     * Returns false otherwise.
+    * 
+    * @param location1
+    *        The first location's {@code URI}
+    * 
+    * @param location2
+    *        The second location's {@code URI}
+    * 
+    * @return true if location1 is the same as, or a proper prefix of, location2
     */
    public static boolean isPrefixOf(URI location1, URI location2) {
       return org.eclipse.core.internal.utils.FileUtil.isPrefixOf(location1, location2);
@@ -289,6 +361,11 @@ public abstract class FileUtil {
     * <p>
     * Note this method differs from URIUtil in its handling of relative URIs
     * as being relative to path variables.
+    * 
+    * @param uri
+    *        The original {@code URI}
+    * 
+    * @return the {@code URI}s {@code IPath}
     */
    public static IPath toPath(URI uri) {
       return org.eclipse.core.internal.utils.FileUtil.toPath(uri);
@@ -301,6 +378,8 @@ public abstract class FileUtil {
     *        The absolute path
     * @param root
     *        The root container
+    * @param isFolder
+    *        Is the path a folder and not a file
     */
    public static void createFolderWithParents(IPath path, IContainer root, boolean isFolder) {
       IPath relativePath;

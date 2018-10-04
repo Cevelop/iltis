@@ -40,6 +40,8 @@ public abstract class FieldEditorPreferencePage extends org.eclipse.jface.prefer
     * Returns the id of the current preference page as defined in plugin.xml
     *
     * Subclasses must implement.
+    * 
+    * @return the page id as a {@code String}
     */
    abstract protected String getPageId();
 
@@ -49,11 +51,13 @@ public abstract class FieldEditorPreferencePage extends org.eclipse.jface.prefer
     * DO NOT CALL DIRECTLY - USE {@link #getPropertyAndPreferenceHelper()} INSTEAD.
     *
     * Subclasses must implement.
+    * 
+    * @return the {@code IPropertyAndPreferenceHelper}
     */
    abstract protected IPropertyAndPreferenceHelper createPropertyAndPreferenceHelper();
 
    /**
-    * Returns the {@link IPropertyAndPreferenceHelper}
+    * @return the {@link IPropertyAndPreferenceHelper}
     */
    protected IPropertyAndPreferenceHelper getPropertyAndPreferenceHelper() {
       return propertyAndPreferenceHelper;
@@ -75,6 +79,8 @@ public abstract class FieldEditorPreferencePage extends org.eclipse.jface.prefer
     * be created.
     *
     * @see org.eclipse.jface.preference.PreferencePage#createContents(org.eclipse.swt.widgets.Composite)
+    * 
+    * @return the {@code Control}
     */
    @Override
    protected Control createContents(final Composite parent) {
@@ -85,6 +91,8 @@ public abstract class FieldEditorPreferencePage extends org.eclipse.jface.prefer
     * Returns the workspace preference store
     *
     * @see org.eclipse.jface.preference.PreferencePage#getPreferenceStore()
+    * 
+    * @return the {@code IPreferenceStore}
     */
    @Override
    public IPreferenceStore getPreferenceStore() {
@@ -93,6 +101,8 @@ public abstract class FieldEditorPreferencePage extends org.eclipse.jface.prefer
 
    /**
     * Returns the {@link FieldEditor} members
+    * 
+    * @return the {@code FieldEditor} {@code List}
     */
    protected List<FieldEditor> getFieldEditors() {
       return editors;
@@ -101,7 +111,7 @@ public abstract class FieldEditorPreferencePage extends org.eclipse.jface.prefer
    /**
     * Initializes the {@link FieldEditorPreferencePage}'s preference store.
     *
-    * Subclass can implement, but should call {@link super.init(IWorkbench)}
+    * Subclass can implement, but should call {@code super.init(IWorkbench)}
     */
    @Override
    public void init(final IWorkbench workbench) {

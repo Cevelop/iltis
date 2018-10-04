@@ -26,6 +26,7 @@ public interface ThrowingFunction<T, R, E extends Throwable> {
     *        The argument
     * @return A value of type {@link R}
     * @throws E
+    *         The thrown exception
     */
    public R apply(T t) throws E;
 }

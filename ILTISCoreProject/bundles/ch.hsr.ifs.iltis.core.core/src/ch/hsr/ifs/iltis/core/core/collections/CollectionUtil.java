@@ -29,6 +29,8 @@ public abstract class CollectionUtil {
    /**
     * Used for implicit creation of an array by using varargs
     * 
+    * @param <T>
+    *        The array element type
     * @param elements
     *        The elements from which to create the array
     * @return an array consisting of the passed elements
@@ -41,6 +43,8 @@ public abstract class CollectionUtil {
    /**
     * Used for implicit creation of a List from varargs
     * 
+    * @param <T>
+    *        The {@code List} element type
     * @param elements
     *        The elements from which to create the list
     * @return A {@link List}
@@ -53,8 +57,14 @@ public abstract class CollectionUtil {
    /**
     * Used for implicit creation of a Map from arrays
     * 
-    * @param elements
-    *        The elements from which to create the list
+    * @param <K>
+    *        The {@code Map} key type
+    * @param <V>
+    *        The {@code Map} value type
+    * @param keys
+    *        The keys to use in the map
+    * @param values
+    *        The values to use in the map
     * @return A {@link Map}
     */
    public static <K, V> Map<K, V> map(final K[] keys, final V[] values) {
@@ -63,6 +73,12 @@ public abstract class CollectionUtil {
 
    /**
     * Used to convert a {@link Collection} to a {@link List}
+    * 
+    * @param <T>
+    *        The {@code List} element type
+    * @param elements
+    *        The original {@code Collection}
+    * @return A new {@code List} from the passed {@code collection}
     */
    public static <T> List<T> list(final Collection<T> elements) {
       return new ArrayList<>(elements);
@@ -71,6 +87,8 @@ public abstract class CollectionUtil {
    /**
     * Used to create an unordered set from varargs
     * 
+    * @param <T>
+    *        The {@code Set} element type
     * @param elements
     *        The elements from which to create the set
     * @return A {@link Set} containing the elements
@@ -83,6 +101,8 @@ public abstract class CollectionUtil {
    /**
     * Used to create an ordered set from varargs
     * 
+    * @param <T>
+    *        The {@code Set} element type
     * @param elements
     *        The elements from which to create the set
     * @return A {@link Set} containing the elements
@@ -95,6 +115,8 @@ public abstract class CollectionUtil {
    /**
     * Used to create an ordered set from a {@link Collection}
     * 
+    * @param <T>
+    *        The {@code Set} element type
     * @param elements
     *        The elements from which to create the set
     * @return A {@link Set} containing the elements
@@ -108,6 +130,10 @@ public abstract class CollectionUtil {
     * 
     * The arrays should be of the same length, else null will be used as default value.
     * 
+    * @param <K>
+    *        The {@code Map} key type
+    * @param <V>
+    *        The {@code Map} value type
     * @param keys
     *        The array with the keys for the map
     * @param values
@@ -121,6 +147,8 @@ public abstract class CollectionUtil {
    /**
     * Used to cast a {@link Collection} of one type to a Collection of the type passed as clazz
     * 
+    * @param <T>
+    *        The {@code Collection} element type
     * @param list
     *        The Collection to cast
     * @param clazz
@@ -135,8 +163,10 @@ public abstract class CollectionUtil {
 
    /**
     * Used to cast a {@link map} of one type to a Map with keys and values of the type passed as clazz
-    * 
-    * @param list
+    *
+    * @param <T>
+    *        The {@code Map} key and value type
+    * @param map
     *        The Map to cast
     * @param clazz
     *        The target Class
@@ -151,11 +181,17 @@ public abstract class CollectionUtil {
    /**
     * Used to cast a {@link map} to a Map with keys of type keyClazz and values of valueClazz
     * 
+    * @param <T1>
+    *        The {@code Map} key type
+    * @param <T2>
+    *        The {@code Map} value type
+    * @param map
+    *        The Map to cast
     * @param keyClazz
     *        The target Class for the keys
     * @param valueClazz
     *        The target Class for the values
-    * @return A Map<keyClazz, valueClazz>
+    * @return A {@code Map<keyClazz, valueClazz>}
     * @throws ClassCastException
     *         If the cast is invalid
     */
@@ -166,6 +202,8 @@ public abstract class CollectionUtil {
    /**
     * Checks if the {@link Iterable} it has no {@code null} values
     * 
+    * @param <T>
+    *        The {@code Iterable} element type
     * @param it
     *        The Iterable to check
     * @return {@code true} if none of the elements of it are {@code null}
@@ -192,9 +230,12 @@ public abstract class CollectionUtil {
    /**
     * Used to obtain the first element of any {@link Iterable}
     * 
+    * @param <E>
+    *        The {@code Iterable} element type
     * @param it
     *        The Iterable
-    * @return {@link Optional} containing the first element, or an empty Optional if the iterable is empty
+    * @return {@link Optional} containing the first element,
+    *         or an empty {@code Optional} if the {@code Iterable} is empty
     */
    public static <E> Optional<E> head(final Iterable<E> it) {
       final Iterator<E> iterator = it.iterator();
@@ -204,6 +245,8 @@ public abstract class CollectionUtil {
    /**
     * Used to get all but the first element of an {@link Iterable}
     * 
+    * @param <E>
+    *        The {@code Iterable} element type
     * @param it
     *        The Iterable
     * @return A {@link Collection} with all elements but the first
@@ -214,7 +257,9 @@ public abstract class CollectionUtil {
 
    /**
     * Used to get the first element of an {@link Iterable}
-    *
+    * 
+    * @param <E>
+    *        The {@code Iterable} element type
     * @param it
     *        The Iterable
     * @param defaultValue
@@ -228,6 +273,8 @@ public abstract class CollectionUtil {
    /**
     * Used to get the last element of an array
     * 
+    * @param <E>
+    *        The array element type
     * @param elements
     *        An array
     * @return An {@link Optional} containing the last element, or an empty Optional, if elements is empty
@@ -239,6 +286,8 @@ public abstract class CollectionUtil {
    /**
     * Used to get the last element of a {@link List}
     * 
+    * @param <E>
+    *        The {@code List} element type
     * @param elements
     *        An List
     * @return An {@link Optional} containing the last element, or an empty Optional, if elements is empty
@@ -250,6 +299,10 @@ public abstract class CollectionUtil {
    /**
     * Used to check if a collection contains an element using a specific equals method
     * 
+    * @param <E1>
+    *        The {@code Collection} element type
+    * @param <E2>
+    *        The element type
     * @param collection
     *        The collection
     * @param element
@@ -268,6 +321,10 @@ public abstract class CollectionUtil {
    /**
     * Used to check if two {@link Collection}s contain the same elements. Whereby the comparator is used to check if two elements are equal.
     * 
+    * @param <E1>
+    *        The first {@code Collection} element type
+    * @param <E2>
+    *        The second {@code Collection} element type
     * @param c1
     *        The first Collection
     * @param c2
@@ -292,6 +349,8 @@ public abstract class CollectionUtil {
    /**
     * Used to check if two {@link Collection}s contain the same elements in the same order
     * 
+    * @param <E>
+    *        The {@code Collection} element type
     * @param c1
     *        The first Collection
     * @param c2
@@ -305,6 +364,8 @@ public abstract class CollectionUtil {
    /**
     * Used to check if two {@link Iterable}s contain the same elements in the same order
     * 
+    * @param <E>
+    *        The {@code Iterable} element type
     * @param c1
     *        The first Iterable
     * @param c2
@@ -318,6 +379,8 @@ public abstract class CollectionUtil {
    /**
     * Used to check if an Iterable and an Array contain the same elements in the same order
     * 
+    * @param <E>
+    *        The {@code Iterable} element type
     * @param c1
     *        The Iterable
     * @param c2

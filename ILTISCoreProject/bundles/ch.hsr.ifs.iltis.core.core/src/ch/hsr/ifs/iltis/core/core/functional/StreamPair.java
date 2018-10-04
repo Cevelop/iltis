@@ -43,6 +43,8 @@ public class StreamPair<T1, T2> extends AbstractPair<T1, T2> {
     * 
     * @return A {@code StreamPair<newT1, }{@code newT2>}
     * @throws ClassCastException
+    *         If {@code first} is not castable to {@code newT1}
+    *         or {@code second} is not castable to {@code newT2}
     */
    public <newT1, newT2> StreamPair<newT1, newT2> as() {
       return new StreamPair<>(Functional.as(first), Functional.as(second));

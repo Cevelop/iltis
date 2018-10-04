@@ -7,7 +7,7 @@ package ch.hsr.ifs.iltis.core.core.functional.functions;
  * 
  * @see Consumer
  *
- * @param <P>
+ * @param <T>
  *        The type of the argument
  */
 @FunctionalInterface

@@ -51,9 +51,9 @@ public class CompositeFieldEditor extends GroupingFieldEditor {
     * @param marginInPx
     *        The margin between the contained field editors in pixels
     */
-   public CompositeFieldEditor(final String name, final Composite parent, final int noOfColumnsInternal, final int noOfColumnsExternal,
+   public CompositeFieldEditor(final String name, final Composite parent, final int numColumnsInternal, final int numColumnsExternal,
                                final int marginInPx) {
-      super(name, "composite", parent, noOfColumnsInternal, noOfColumnsExternal, marginInPx);
+      super(name, "composite", parent, numColumnsInternal, numColumnsExternal, marginInPx);
 
       composite = new Composite(parent, SWT.NONE);
       createControl(parent);

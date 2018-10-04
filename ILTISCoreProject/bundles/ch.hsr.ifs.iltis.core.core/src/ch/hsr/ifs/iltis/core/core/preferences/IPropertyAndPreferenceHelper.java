@@ -21,6 +21,8 @@ public interface IPropertyAndPreferenceHelper {
 
    /**
     * Returns the workspacePreferences for this plugin
+    * 
+    * @return the workspace {@link IPreferenceStore}
     */
    public IPreferenceStore getWorkspacePreferences();
 
@@ -36,6 +38,8 @@ public interface IPropertyAndPreferenceHelper {
     * should share the same preferenceIdQualifier
     *
     * Subclasses must implement.
+    * 
+    * @return the preference id qualifier as {@link String}
     */
    public String getPreferenceIdQualifier();
 
@@ -44,6 +48,8 @@ public interface IPropertyAndPreferenceHelper {
     * qualifier is used to search for default values. If this method is not
     * overridden then the default preference id qualifier is assumed to be the
     * same as the preference id qualifier.
+    * 
+    * @return the preference id qualifier as {@link String}
     */
    public String getDefaultPreferenceIdQualifier();
 
@@ -52,9 +58,7 @@ public interface IPropertyAndPreferenceHelper {
     *
     * @param project
     *        The project for which to get the preference store, not null
-    * @param preferenceIdQualifier
-    *        The qualifier to the preference node, not null
-    * @return The {@code IPreferenceStore} for this project and this qualifier.
+    * @return The {@link IPreferenceStore} for this project and this qualifier.
     */
    public IPreferenceStore getProjectPreferences(final IProject project);
 
@@ -69,6 +73,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The boolean value for this name in the workspace or project preferences
     */
    public boolean getBoolean(final String name, final IProject project);
 
@@ -81,6 +86,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The boolean value for this name in the project or workspace preferences
     */
    public boolean getProjectBoolean(final String name, final IProject project);
 
@@ -95,6 +101,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The default boolean value for this name in the workspace or project preferences
     */
    public boolean getDefaultBoolean(final String name, final IProject project);
 
@@ -108,6 +115,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The default boolean value for this name in the project or workspace preferences
     */
    public boolean getProjectDefaultBoolean(String name, IProject project);
 
@@ -122,6 +130,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The double value for this name in the workspace or project preferences
     */
    public double getDouble(final String name, final IProject project);
 
@@ -134,6 +143,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The double value for this name in the project or workspace preferences
     */
    public double getProjectDouble(final String name, final IProject project);
 
@@ -148,6 +158,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The default double value for this name in the workspace or project preferences
     */
    public double getDefaultDouble(final String name, final IProject project);
 
@@ -161,6 +172,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The default double value for this name in the project or workspace preferences
     */
    public double getProjectDefaultDouble(final String name, final IProject project);
 
@@ -175,6 +187,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The float value for this name in the workspace or project preferences
     */
    public float getFloat(final String name, final IProject project);
 
@@ -187,6 +200,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The float value for this name in the project or workspace preferences
     */
    public float getProjectFloat(final String name, final IProject project);
 
@@ -201,6 +215,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The default float value for this name in the workspace or project preferences
     */
    public float getDefaultFloat(final String name, final IProject project);
 
@@ -214,6 +229,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The default float value for this name in the project or workspace preferences
     */
    public float getProjectDefaultFloat(final String name, final IProject project);
 
@@ -228,6 +244,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The int value for this name in the workspace or project preferences
     */
    public int getInt(final String name, final IProject project);
 
@@ -240,6 +257,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The int value for this name in the project or workspace preferences
     */
    public int getProjectInt(final String name, final IProject project);
 
@@ -254,6 +272,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The default int value for this name in the workspace or project preferences
     */
    public int getDefaultInt(final String name, final IProject project);
 
@@ -267,6 +286,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The default int value for this name in the project or workspace preferences
     */
    public int getProjectDefaultInt(final String name, final IProject project);
 
@@ -281,6 +301,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The long value for this name in the workspace or project preferences
     */
    public long getLong(final String name, final IProject project);
 
@@ -293,6 +314,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The long value for this name in the project or workspace preferences
     */
    public long getProjectLong(final String name, final IProject project);
 
@@ -307,6 +329,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The default long value for this name in the workspace or project preferences
     */
    public long getDefaultLong(final String name, final IProject project);
 
@@ -320,6 +343,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The default long value for this name in the project or workspace preferences
     */
    public long getProjectDefaultLong(final String name, final IProject project);
 
@@ -334,6 +358,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The {@link String} value for this name in the workspace or project preferences
     */
    public String getString(final String name, final IProject project);
 
@@ -346,6 +371,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The {@link String} value for this name in the project or workspace preferences
     */
    public String getProjectString(final String name, final IProject project);
 
@@ -360,6 +386,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The default {@link String} value for this name in the workspace or project preferences
     */
    public String getDefaultString(final String name, final IProject project);
 
@@ -373,6 +400,7 @@ public interface IPropertyAndPreferenceHelper {
     *        The preference name
     * @param project
     *        The project, null returns workspace preference
+    * @return The default {@link String} value for this name in the project or workspace preferences
     */
    public String getProjectDefaultString(final String name, final IProject project);
 

@@ -23,6 +23,8 @@ public abstract class StreamFactory {
    /**
     * Creates a {@linkplain Stream} from an {@linkplain Enumeration}
     * 
+    * @param <T>
+    *        The {@code Stream} and {@code Enumeration} type
     * @param enumeration
     *        The Enumeration
     * @return A Stream containing the elements of the Enumeration
@@ -50,6 +52,8 @@ public abstract class StreamFactory {
    /**
     * Creates a {@linkplain Stream} from an {@linkplain Iterator}
     * 
+    * @param <T>
+    *        The {@code Stream} and {@code Iterator} type
     * @param iterator
     *        The Iterator
     * @return A Stream containing all the elements of the Iterator
@@ -61,6 +65,8 @@ public abstract class StreamFactory {
    /**
     * Creates a {@linkplain Stream} from an {@linkplain Spliterator}
     * 
+    * @param <T>
+    *        The {@code Stream} and {@code Spliterator} type
     * @param spliterator
     *        The Spliterator
     * @return A Stream containing all the elements of the Spliterator
@@ -72,6 +78,8 @@ public abstract class StreamFactory {
    /**
     * Creates a {@linkplain Stream} from an varargs
     * 
+    * @param <T>
+    *        The {@code Stream} and element array type
     * @param elements
     *        The elements
     * @return A Stream containing the elements
@@ -84,6 +92,8 @@ public abstract class StreamFactory {
    /**
     * Creates a concatenated stream
     * 
+    * @param <T>
+    *        The {@code Stream} type
     * @param first
     *        The first stream
     * @param others
