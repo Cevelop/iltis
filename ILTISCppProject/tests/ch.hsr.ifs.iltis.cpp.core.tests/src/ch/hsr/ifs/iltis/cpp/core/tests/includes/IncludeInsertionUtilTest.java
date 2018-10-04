@@ -50,7 +50,7 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
     private void executeActionAndAssertSameAST(final String headerName, final boolean isSystemInclude) throws CoreException {
         final CharSequence[] sections = getContents(2);
         final ITranslationUnit first = createTranslationUnitFrom(sections[0]);
-        IncludeInsertionUtil.includeIfNotJetIncluded(first.getAST(), headerName, isSystemInclude, TextFileChange.FORCE_SAVE);
+        IncludeInsertionUtil.includeIfNotYetIncluded(first.getAST(), headerName, isSystemInclude, TextFileChange.FORCE_SAVE);
         final ITranslationUnit result = createTranslationUnit();
         final ITranslationUnit second = createTranslationUnitFrom(sections[1]);
         assertEquals(second.getAST().getRawSignature(), result.getAST().getRawSignature());

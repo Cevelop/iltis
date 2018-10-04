@@ -46,30 +46,30 @@ public class IncludeInsertionUtil {
      * Creates and performs a change which inserts an user include into the passed
      * {@link IASTTranslationUnit}. The include directive is only inserted, if there isn't already one for this header.
      *
-     * @see #createIncludeIfNotJetIncluded(IASTTranslationUnit)
+     * @see #createIncludeIfNotYetIncluded(IASTTranslationUnit)
      */
     public static void insertUserIncludeIfNeeded(final IASTTranslationUnit ast, final String headerName) {
-        includeIfNotJetIncluded(ast, headerName, false);
+        includeIfNotYetIncluded(ast, headerName, false);
     }
 
     /**
      * Creates and performs a change which inserts a system include into the passed
      * {@link IASTTranslationUnit}. The include directive is only inserted, if there isn't already one for this header.
      *
-     * @see #createIncludeIfNotJetIncluded(IASTTranslationUnit)
+     * @see #createIncludeIfNotYetIncluded(IASTTranslationUnit)
      */
     public static void insertSystemIncludeIfNeeded(final IASTTranslationUnit ast, final String headerName) {
-        includeIfNotJetIncluded(ast, headerName, true);
+        includeIfNotYetIncluded(ast, headerName, true);
     }
 
     /**
      * Creates and performs a change which inserts an include into the passed
      * {@link IASTTranslationUnit}. The include directive is only inserted, if there isn't already one for this header.
      *
-     * @see #createIncludeIfNotJetIncluded(IASTTranslationUnit)
+     * @see #createIncludeIfNotYetIncluded(IASTTranslationUnit)
      */
-    public static void includeIfNotJetIncluded(final IASTTranslationUnit ast, final String headerName, final boolean isSystemInclude) {
-        includeIfNotJetIncluded(ast, headerName, isSystemInclude, TextFileChange.KEEP_SAVE_STATE);
+    public static void includeIfNotYetIncluded(final IASTTranslationUnit ast, final String headerName, final boolean isSystemInclude) {
+        includeIfNotYetIncluded(ast, headerName, isSystemInclude, TextFileChange.KEEP_SAVE_STATE);
     }
 
     /**
@@ -80,11 +80,11 @@ public class IncludeInsertionUtil {
      * Sets savestate of TextChange. Can be {@code TextFileChange.KEEP_SAVE_STATE}, {@code TextFileChange.FORCE_SAVE},
      * {@code TextFileChange.LEAVE_DIRTY}
      *
-     * @see #createIncludeIfNotJetIncluded(IASTTranslationUnit)
+     * @see #createIncludeIfNotYetIncluded(IASTTranslationUnit)
      */
-    public static void includeIfNotJetIncluded(final IASTTranslationUnit ast, final String headerName, final boolean isSystemInclude,
+    public static void includeIfNotYetIncluded(final IASTTranslationUnit ast, final String headerName, final boolean isSystemInclude,
             final int textChangeSaveState) {
-        includeIfNotJetIncluded(ast, headerName, isSystemInclude, textChangeSaveState, new NullProgressMonitor());
+        includeIfNotYetIncluded(ast, headerName, isSystemInclude, textChangeSaveState, new NullProgressMonitor());
     }
 
     /**
@@ -95,12 +95,12 @@ public class IncludeInsertionUtil {
      * Sets savestate of TextChange. Can be {@code TextFileChange.KEEP_SAVE_STATE}, {@code TextFileChange.FORCE_SAVE},
      * {@code TextFileChange.LEAVE_DIRTY}
      *
-     * @see #createIncludeIfNotJetIncluded(IASTTranslationUnit)
+     * @see #createIncludeIfNotYetIncluded(IASTTranslationUnit)
      */
-    public static void includeIfNotJetIncluded(final IASTTranslationUnit ast, final String headerName, final boolean isSystemInclude,
+    public static void includeIfNotYetIncluded(final IASTTranslationUnit ast, final String headerName, final boolean isSystemInclude,
             final int textChangeSaveState, final IProgressMonitor pm) {
 
-        createIncludeIfNotJetIncluded(ast, headerName, isSystemInclude).ifPresent(change -> {
+        createIncludeIfNotYetIncluded(ast, headerName, isSystemInclude).ifPresent(change -> {
             try {
                 change.setSaveMode(textChangeSaveState);
                 change.perform(pm);
@@ -120,9 +120,9 @@ public class IncludeInsertionUtil {
      *
      * @returns The {@link TextFileChange} or {@code null} if already included
      */
-    public static Optional<TextFileChange> createIncludeIfNotJetIncluded(final IASTTranslationUnit ast, final String headerName,
+    public static Optional<TextFileChange> createIncludeIfNotYetIncluded(final IASTTranslationUnit ast, final String headerName,
             final boolean isSystemInclude) {
-        return createIncludeInScopeIfNotJetIncluded(ast, headerName, isSystemInclude, PreprocessorScope.createFrom(ast));
+        return createIncludeInScopeIfNotYetIncluded(ast, headerName, isSystemInclude, PreprocessorScope.createFrom(ast));
     }
 
     /**
@@ -138,7 +138,7 @@ public class IncludeInsertionUtil {
      *
      * @returns The {@link TextFileChange} or {@code null} if already included
      */
-    public static Optional<TextFileChange> createIncludeInScopeIfNotJetIncluded(final IASTTranslationUnit ast, final String headerName,
+    public static Optional<TextFileChange> createIncludeInScopeIfNotYetIncluded(final IASTTranslationUnit ast, final String headerName,
             final boolean isSystemInclude, final PreprocessorScope scope) {
 
         if (isAlreadyIncluded(scope, headerName)) return Optional.empty();
