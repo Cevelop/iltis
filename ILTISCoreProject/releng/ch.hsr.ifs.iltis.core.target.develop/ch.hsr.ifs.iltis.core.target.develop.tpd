@@ -13,6 +13,7 @@ location "http://download.eclipse.org/releases/photon" {
 	org.junit.jupiter.engine lazy
 	org.junit.platform.engine lazy
 	org.junit.vintage.engine lazy
+	org.eclipse.pde.api.tools.annotations lazy
 }
 
 location "https://cevelop.com/iltis-unstable" {

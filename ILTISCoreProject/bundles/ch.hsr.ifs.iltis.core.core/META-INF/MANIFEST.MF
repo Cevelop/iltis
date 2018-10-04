@@ -15,6 +15,7 @@ Require-Bundle: org.eclipse.ui.workbench,
  ch.hsr.ifs.iltis.core.kotlin;visibility:=reexport,
  org.eclipse.collections,
  org.eclipse.text,
+ org.eclipse.pde.api.tools.annotations,
  org.eclipse.jface.text;bundle-version="3.13.0"
 Export-Package: ch.hsr.ifs.iltis.core.core;uses:="org.osgi.framework,org.eclipse.core.runtime",
  ch.hsr.ifs.iltis.core.core.arrays;uses:="ch.hsr.ifs.iltis.core.core.functional.functions",

@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.pde.api.tools.annotations.NoReference;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
@@ -53,6 +54,7 @@ public abstract class FieldEditorPreferencePage extends org.eclipse.jface.prefer
      * @return the {@code IPropertyAndPreferenceHelper}
      * @noreference This method is not intended to be referenced by clients. Use {@link #getPropertyAndPreferenceHelper()} instead.
      */
+    @NoReference
     abstract protected IPropertyAndPreferenceHelper createPropertyAndPreferenceHelper();
 
     /**
