@@ -719,6 +719,8 @@ public abstract class Functional {
      * @param defaultValue
      * The default value to return iff arg was null
      * @return The result of the function, or the defaultValue if arg was null.
+     * 
+     * @since 1.1
      */
     public static <T1, R> R doIfNotNull(final T1 arg, final Function<T1, R> fun, final R defaultValue) {
         return arg != null ? fun.apply(arg) : defaultValue;
@@ -742,6 +744,8 @@ public abstract class Functional {
      * @param defaultValue
      * The default value to return iff at least one of arg1 or arg2 was null
      * @return The result of the function, or the defaultValue if at least one of arg1 or arg2 was null.
+     * 
+     * @since 1.1
      */
     public static <T1, T2, R> R doIfNotNull(final T1 arg1, final T2 arg2, final Function2<T1, T2, R> fun, final R defaultValue) {
         return arg1 != null && arg2 != null ? fun.apply(arg1, arg2) : defaultValue;
@@ -757,6 +761,8 @@ public abstract class Functional {
      * @param also
      * The action to execute with the object
      * @return The object
+     * 
+     * @since 1.1
      */
     public static <T> T also(final T object, final Consumer<T> also) {
         also.accept(object);
@@ -775,6 +781,8 @@ public abstract class Functional {
      * @param also
      * The action to execute with the object
      * @return The object created using the creator.
+     * 
+     * @since 1.1
      */
     public static <T> T also(final Supplier<T> creator, final Consumer<T> also) {
         final T object = creator.get();

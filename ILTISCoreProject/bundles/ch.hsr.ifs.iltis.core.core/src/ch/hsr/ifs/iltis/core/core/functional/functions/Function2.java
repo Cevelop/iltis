@@ -17,6 +17,16 @@ package ch.hsr.ifs.iltis.core.core.functional.functions;
 @FunctionalInterface
 public interface Function2<P1, P2, R> {
 
+    /**
+     * 
+     * Fills in the first parameter of this function.
+     * 
+     * @param param1
+     * The value to bind the first parameter to.
+     * @return A {@link CurriedFunction} with param1 filled in.
+     * 
+     * @since 1.1
+     */
     default Function<P2, R> curry(final P1 param1) {
         return new CurriedFunction<>(param1, this);
     }

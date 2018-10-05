@@ -24,7 +24,7 @@ public class ILTISException extends RuntimeException {
 
     /**
      * Changes lambda to non-throwing
-     *
+     * 
      * @param <R>
      * The return type of the returned {@code Supplier}
      * @param <E>
@@ -32,6 +32,8 @@ public class ILTISException extends RuntimeException {
      * @param functionalInterface
      * The lambda
      * @return The same lambda but all exceptions are thrown unchecked
+     * 
+     * @since 1.1
      */
     public static <R, E extends Exception> Supplier<R> sterilize(final ThrowingSupplier<R, E> functionalInterface) {
         return () -> {
@@ -53,6 +55,8 @@ public class ILTISException extends RuntimeException {
      * @param functionalInterface
      * The lambda
      * @return The same lambda but all exceptions are thrown unchecked
+     * 
+     * @since 1.1
      */
     public static <R, E extends Exception> Consumer<R> sterilize(final ThrowingConsumer<R, E> functionalInterface) {
         return (r) -> {
@@ -72,6 +76,8 @@ public class ILTISException extends RuntimeException {
      * @param functionalInterface
      * The lambda
      * @return The same lambda but all exceptions are thrown unchecked
+     * 
+     * @since 1.1
      */
     public static <E extends Exception> Runnable sterilize(final ThrowingRunnable<E> functionalInterface) {
         return () -> {
@@ -95,6 +101,8 @@ public class ILTISException extends RuntimeException {
      * @param functionalInterface
      * The lambda
      * @return The same lambda but all exceptions are thrown unchecked
+     * 
+     * @since 1.1
      */
     public static <T, R, E extends Exception> Function<T, R> sterilize(final ThrowingFunction<T, R, E> functionalInterface) {
         return (t) -> {

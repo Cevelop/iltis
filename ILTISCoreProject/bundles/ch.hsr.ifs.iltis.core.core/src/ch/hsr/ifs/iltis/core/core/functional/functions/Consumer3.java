@@ -13,6 +13,8 @@ package ch.hsr.ifs.iltis.core.core.functional.functions;
  * The type of the second argument
  * @param <P3>
  * The type of the third argument
+ * 
+ * @since 1.1
  */
 @FunctionalInterface
 public interface Consumer3<P1, P2, P3> {

@@ -7,6 +7,8 @@ import org.eclipse.jface.text.ITextSelection;
  * A utility class for TextSelections
  *
  * @author tstauber
+ * 
+ * @since 1.1
  *
  */
 public class TextSelectionUtil {

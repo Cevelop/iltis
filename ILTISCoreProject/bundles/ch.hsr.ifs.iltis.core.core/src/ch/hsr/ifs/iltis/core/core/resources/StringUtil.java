@@ -120,6 +120,15 @@ public abstract class StringUtil {
         return s.charAt(0) == '"' && s.charAt(s.length() - 1) == '"' || s.charAt(0) == '\'' && s.charAt(s.length() - 1) == '\'';
     }
 
+    /**
+     * Detects if the passed char array contains only whitespace
+     * 
+     * @param chars
+     * The chars to test
+     * @return {@code true} iff every char in chars tests positively on {@link Character#isWhitespace(char)}.
+     * 
+     * @since 1.1
+     */
     public static boolean containsOnlyWhitespace(final char[] chars) {
         return CharIterableIterate.allSatisfy(CharLists.immutable.of(chars), c -> Character.isWhitespace(c));
     }
