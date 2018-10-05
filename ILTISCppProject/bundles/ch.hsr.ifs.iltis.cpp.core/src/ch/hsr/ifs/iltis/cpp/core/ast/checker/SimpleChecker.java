@@ -85,6 +85,8 @@ public abstract class SimpleChecker<ProblemId extends IProblemId<ProblemId>> ext
     /**
      * Per default this method returns the arguments for each result. These arguments are then used to report the problem.
      * Can be overridden.
+     * 
+     * @since 1.1
      */
     protected MarkerInfo<?> infoHook(final VisitorReport<? extends IProblemId<ProblemId>> result) {
         return infosToReport.getOrDefault(result, null);

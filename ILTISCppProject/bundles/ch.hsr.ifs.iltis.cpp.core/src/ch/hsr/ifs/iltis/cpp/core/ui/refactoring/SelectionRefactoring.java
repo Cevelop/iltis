@@ -16,6 +16,9 @@ public abstract class SelectionRefactoring<InfoType extends MarkerInfo<InfoType>
 
     protected final InfoType info;
 
+    /**
+     * @since 1.1
+     */
     protected SelectionRefactoring(final ICElement element, final InfoType info) {
         super(element, info.getSelection());
         this.info = info;
@@ -23,6 +26,8 @@ public abstract class SelectionRefactoring<InfoType extends MarkerInfo<InfoType>
 
     /**
      * @return The info for this refactoring
+     * 
+     * @since 1.1
      */
     public InfoType getRefactoringInfo() {
         return info;

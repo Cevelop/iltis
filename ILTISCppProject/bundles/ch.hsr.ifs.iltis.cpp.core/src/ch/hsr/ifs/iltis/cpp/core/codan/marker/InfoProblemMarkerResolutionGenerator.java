@@ -26,6 +26,8 @@ import ch.hsr.ifs.iltis.cpp.core.resources.info.MarkerInfo;
  * An {@link IMarkerResolutionGenerator} that is able to handle resolutions with info element.
  *
  * @author tstauber
+ * 
+ * @since 1.1
  */
 public class InfoProblemMarkerResolutionGenerator implements IMarkerResolutionGenerator2 {
 
@@ -109,7 +111,6 @@ public class InfoProblemMarkerResolutionGenerator implements IMarkerResolutionGe
         }
     }
 
-    @SuppressWarnings("restriction")
     private static boolean isApplicable(final IMarker marker, final String id) {
         final String problemId = marker.getAttribute(ICodanProblemMarker.ID, null);
         return problemId != null && problemId.equals(id);

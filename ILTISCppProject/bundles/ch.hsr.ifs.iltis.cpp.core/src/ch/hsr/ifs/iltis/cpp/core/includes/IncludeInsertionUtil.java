@@ -67,6 +67,8 @@ public class IncludeInsertionUtil {
      * {@link IASTTranslationUnit}. The include directive is only inserted, if there isn't already one for this header.
      *
      * @see #createIncludeIfNotYetIncluded(IASTTranslationUnit)
+     * 
+     * @since 1.1
      */
     public static void includeIfNotYetIncluded(final IASTTranslationUnit ast, final String headerName, final boolean isSystemInclude) {
         includeIfNotYetIncluded(ast, headerName, isSystemInclude, TextFileChange.KEEP_SAVE_STATE);
@@ -81,6 +83,8 @@ public class IncludeInsertionUtil {
      * {@code TextFileChange.LEAVE_DIRTY}
      *
      * @see #createIncludeIfNotYetIncluded(IASTTranslationUnit)
+     * 
+     * @since 1.1
      */
     public static void includeIfNotYetIncluded(final IASTTranslationUnit ast, final String headerName, final boolean isSystemInclude,
             final int textChangeSaveState) {
@@ -96,6 +100,8 @@ public class IncludeInsertionUtil {
      * {@code TextFileChange.LEAVE_DIRTY}
      *
      * @see #createIncludeIfNotYetIncluded(IASTTranslationUnit)
+     * 
+     * @since 1.1
      */
     public static void includeIfNotYetIncluded(final IASTTranslationUnit ast, final String headerName, final boolean isSystemInclude,
             final int textChangeSaveState, final IProgressMonitor pm) {
@@ -119,6 +125,8 @@ public class IncludeInsertionUtil {
      * </pre>
      *
      * @returns The {@link TextFileChange} or {@code null} if already included
+     * 
+     * @since 1.1
      */
     public static Optional<TextFileChange> createIncludeIfNotYetIncluded(final IASTTranslationUnit ast, final String headerName,
             final boolean isSystemInclude) {
@@ -137,6 +145,8 @@ public class IncludeInsertionUtil {
      * For better performance, the PreprocessorScope tree should be cached if multiple operations are executed.
      *
      * @returns The {@link TextFileChange} or {@code null} if already included
+     * 
+     * @since 1.1
      */
     public static Optional<TextFileChange> createIncludeInScopeIfNotYetIncluded(final IASTTranslationUnit ast, final String headerName,
             final boolean isSystemInclude, final PreprocessorScope scope) {

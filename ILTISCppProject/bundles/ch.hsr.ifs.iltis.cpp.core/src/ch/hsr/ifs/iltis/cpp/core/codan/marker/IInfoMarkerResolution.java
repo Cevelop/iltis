@@ -9,6 +9,8 @@ import ch.hsr.ifs.iltis.cpp.core.resources.info.MarkerInfo;
  * The interface common to all labeled-marker resolutions
  *
  * @author tstauber
+ * 
+ * @since 1.1
  */
 public interface IInfoMarkerResolution<T extends MarkerInfo<T>> extends ICodanMarkerResolution {
 

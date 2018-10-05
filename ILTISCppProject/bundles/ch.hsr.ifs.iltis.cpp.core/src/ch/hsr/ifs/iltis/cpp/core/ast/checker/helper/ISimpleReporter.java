@@ -15,6 +15,8 @@ public interface ISimpleReporter<ProblemId extends IProblemId<ProblemId>> {
      * The problem to be reported
      * @param node
      * The node for which to report the problem
+     * 
+     * @since 1.1
      */
     public default void addNodeForReporting(final ProblemId problemId, final IASTNode node) {
         addNodeForReporting(new VisitorReport<>(problemId, node));
@@ -29,6 +31,8 @@ public interface ISimpleReporter<ProblemId extends IProblemId<ProblemId>> {
      * The node for which to report the problem
      * @param info
      * The marker info
+     * 
+     * @since 1.1
      */
     public default void addNodeForReporting(final ProblemId problemId, final IASTNode node, final MarkerInfo<?> info) {
         addNodeForReporting(new VisitorReport<>(problemId, node), info);
@@ -51,6 +55,8 @@ public interface ISimpleReporter<ProblemId extends IProblemId<ProblemId>> {
      * The {@link Pair<IASTNode, ProblemId} that shall be reported
      * @param info
      * The markerInfo for reporting. Can be {@code null}.
+     * 
+     * @since 1.1
      */
     public void addNodeForReporting(final VisitorReport<ProblemId> result, final MarkerInfo<?> info);
 

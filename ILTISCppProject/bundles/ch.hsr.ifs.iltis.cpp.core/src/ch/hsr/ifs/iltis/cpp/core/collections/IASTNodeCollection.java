@@ -12,6 +12,8 @@ import org.eclipse.cdt.core.dom.ast.IASTNode;
  *
  * @param <T>
  * A type of IASTNode
+ * 
+ * @since 1.1
  */
 public interface IASTNodeCollection<T extends IASTNode> extends Collection<T> {
 

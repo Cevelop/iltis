@@ -73,6 +73,11 @@ public abstract class CRefactoring extends Refactoring {
     protected CRefactoringContext      refactoringContext;
     protected ModificationCollector    modificationCollector;
 
+    /**
+     * Constructor for the abstract CRefactoring. Replaces the constructor {@link #CRefactoring(ICElement, Optional, ICProject)}.
+     * 
+     * @since 1.1
+     */
     public CRefactoring(final ICElement element, final Optional<ITextSelection> selection) {
         this(element, selection, element.getCProject());
     }
@@ -120,6 +125,11 @@ public abstract class CRefactoring extends Refactoring {
         this.refactoringContext = refactoringContext;
     }
 
+    /**
+     * Returns the context in which this refactoring is executed.
+     * 
+     * @since 1.1
+     */
     public CRefactoringContext getContext() {
         return refactoringContext;
     }

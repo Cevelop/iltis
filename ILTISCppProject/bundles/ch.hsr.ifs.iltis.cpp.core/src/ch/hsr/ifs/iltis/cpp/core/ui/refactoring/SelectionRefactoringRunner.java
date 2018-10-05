@@ -13,6 +13,8 @@ import ch.hsr.ifs.iltis.cpp.core.wrappers.RefactoringRunner;
 
 /**
  * TODO
+ * 
+ * @since 1.1
  */
 public abstract class SelectionRefactoringRunner<T extends MarkerInfo<T>> extends RefactoringRunner {
 

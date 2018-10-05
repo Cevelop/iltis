@@ -9,6 +9,13 @@ import org.eclipse.jface.text.TextSelection;
 import ch.hsr.ifs.iltis.core.core.ui.jface.TextSelectionUtil;
 
 
+/**
+ * An utility call for ITextSelections using cdt components.
+ * 
+ * @author tstauber
+ * 
+ * @since 1.1
+ */
 public class CTextSelectionUtil extends TextSelectionUtil {
 
     /**

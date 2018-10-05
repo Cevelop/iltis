@@ -40,6 +40,13 @@ import ch.hsr.ifs.iltis.cpp.core.wrappers.CRefactoringContext;
 public abstract class WizardRefactoringStarterMenuHandler<WizardType extends RefactoringWizard, RefactoringType extends CRefactoring> extends
         AbstractHandler {
 
+    /**
+     * An enum warping the int representing the save modes.
+     * 
+     * @author tstauber
+     * 
+     * @since 1.1
+     */
     public enum RefactoringSaveMode {
         /**
          * Save mode to save all dirty editors (always ask).
@@ -66,6 +73,11 @@ public abstract class WizardRefactoringStarterMenuHandler<WizardType extends Ref
         }
     }
 
+    /**
+     * The current save mode
+     * 
+     * @since 1.1
+     */
     protected RefactoringSaveMode saveMode = RefactoringSaveMode.SAVE_REFACTORING;
 
     @Override
@@ -120,6 +132,8 @@ public abstract class WizardRefactoringStarterMenuHandler<WizardType extends Ref
      * @param editor
      * The editor for which to run the refactoring
      * @return the result of the execution. Reserved for future use, must be null.
+     * 
+     * @since 1.1
      */
     public Object execute(final IEditorPart editor) {
         if (editor == null || !(editor instanceof ICEditor) || !(editor instanceof ITranslationUnitHolder)) return null;

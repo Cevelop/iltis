@@ -17,6 +17,8 @@ public abstract class RefactoringStarterMenuHandler<RefactoringType extends CRef
 
     /**
      * This method gets finalized here. There is no need to override in a subtype, as it can't use a wizard.
+     * 
+     * @since 1.1
      */
     @Override
     protected final NoWizard getRefactoringWizard(final RefactoringType refactoring) {
@@ -25,6 +27,8 @@ public abstract class RefactoringStarterMenuHandler<RefactoringType extends CRef
 
     /**
      * This method gets finalized here. There is no need to override in a subtype, as it can't use a wizard.
+     * 
+     * @since 1.1
      */
     @Override
     protected RefactoringWizardOpenOperation getRefactoringOpenOperation(final NoWizard wizard) {

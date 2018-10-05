@@ -5,7 +5,9 @@ package ch.hsr.ifs.iltis.cpp.core.resources.info;
  *
  * @author void
  *
- * @param <T>
+ * @param <T> The type itself
+ * 
+ * @since 1.1
  */
 public interface IStringifyable<T extends IStringifyable<T>> {
 

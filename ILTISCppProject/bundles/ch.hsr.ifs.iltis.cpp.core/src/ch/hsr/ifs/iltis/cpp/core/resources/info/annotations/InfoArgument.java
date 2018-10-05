@@ -26,6 +26,8 @@ import ch.hsr.ifs.iltis.cpp.core.resources.info.IInfo;
  * </ul>
  *
  * @author tstauber
+ * 
+ * @since 1.1
  *
  */
 @Target(ElementType.FIELD)

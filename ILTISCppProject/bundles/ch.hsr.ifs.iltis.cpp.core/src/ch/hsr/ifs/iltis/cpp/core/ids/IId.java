@@ -8,6 +8,8 @@ import ch.hsr.ifs.iltis.cpp.core.resources.info.IStringifyable;
 
 /**
  * An interface which should be implemented by types which represent an id
+ * 
+ * @since 1.1
  */
 public interface IId<T extends IId<T> & IStringifyable<T>> extends IStringifyable<T> {
 

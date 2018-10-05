@@ -18,6 +18,8 @@ import ch.hsr.ifs.iltis.cpp.core.resources.info.annotations.InfoArgument;
  * String-List that is stringifyable. Can be used as an {@link InfoArgument}.
  *
  * @author tstauber
+ * 
+ * @since 1.1
  *
  */
 public class StringList extends AbstractMutableList<String> implements IStringifyable<StringList> {
