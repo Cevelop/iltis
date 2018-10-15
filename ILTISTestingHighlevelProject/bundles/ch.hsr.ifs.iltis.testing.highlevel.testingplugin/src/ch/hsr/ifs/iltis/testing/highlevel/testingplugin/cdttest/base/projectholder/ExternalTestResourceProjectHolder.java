@@ -1,6 +1,5 @@
 package ch.hsr.ifs.iltis.testing.highlevel.testingplugin.cdttest.base.projectholder;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -71,7 +70,8 @@ public class ExternalTestResourceProjectHolder extends AbstractProjectHolder imp
     }
 
     private static boolean isFolderURL(URL url) {
-        return url.getPath().endsWith(String.valueOf(File.separatorChar));
+        String path = url.getPath();
+        return path.endsWith("/") || path.endsWith("\\");
     }
 
 }
