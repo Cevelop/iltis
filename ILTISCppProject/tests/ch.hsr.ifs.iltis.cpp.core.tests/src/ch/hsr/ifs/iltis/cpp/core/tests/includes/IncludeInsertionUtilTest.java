@@ -7,10 +7,14 @@ import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.cdt.core.testplugin.util.TestSourceReader;
 import org.eclipse.cdt.internal.core.model.ExternalTranslationUnit;
+import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.osgi.framework.FrameworkUtil;
 
+import ch.hsr.ifs.iltis.cpp.core.includes.IncludeDirective;
+import ch.hsr.ifs.iltis.cpp.core.includes.IncludeDirective.IncludeType;
 import ch.hsr.ifs.iltis.cpp.core.includes.IncludeInsertionUtil;
 
 
@@ -47,10 +51,23 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
         return createTranslationUnit();
     }
 
-    private void executeActionAndAssertSameAST(final String headerName, final boolean isSystemInclude) throws CoreException {
+    private void executeActionAndAssertSameAST(final IncludeDirective include) throws CoreException {
         final CharSequence[] sections = getContents(2);
         final ITranslationUnit first = createTranslationUnitFrom(sections[0]);
-        IncludeInsertionUtil.includeIfNotYetIncluded(first.getAST(), headerName, isSystemInclude, TextFileChange.FORCE_SAVE);
+        IncludeInsertionUtil.includeIfNotYetIncluded(first.getAST(), include, TextFileChange.FORCE_SAVE);
+        final ITranslationUnit result = createTranslationUnit();
+        final ITranslationUnit second = createTranslationUnitFrom(sections[1]);
+        assertEquals(second.getAST().getRawSignature(), result.getAST().getRawSignature());
+    }
+
+    private void executeActionAndAssertSameAST(final String headerName, final IncludeType includeType) throws CoreException {
+        executeActionAndAssertSameAST(new IncludeDirective(headerName, includeType));
+    }
+
+    private void executeActionAndAssertSameAST(final MutableList<IncludeDirective> headers) throws CoreException {
+        final CharSequence[] sections = getContents(2);
+        final ITranslationUnit first = createTranslationUnitFrom(sections[0]);
+        IncludeInsertionUtil.includeIfNotYetIncluded(first.getAST(), headers, TextFileChange.FORCE_SAVE);
         final ITranslationUnit result = createTranslationUnit();
         final ITranslationUnit second = createTranslationUnitFrom(sections[1]);
         assertEquals(second.getAST().getRawSignature(), result.getAST().getRawSignature());
@@ -64,7 +81,7 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
     //
     //short foo {42};
     public void testSystemIncludeExists() throws CoreException {
-        executeActionAndAssertSameAST("cstdint", true);
+        executeActionAndAssertSameAST("cstdint", IncludeType.SYSTEM);
     }
 
     //short foo {9001};
@@ -73,7 +90,7 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
     //
     //short foo {9001};
     public void testSystemIncludeWasAdded() throws CoreException {
-        executeActionAndAssertSameAST("algorithm", true);
+        executeActionAndAssertSameAST("algorithm", IncludeType.SYSTEM);
     }
 
     //#include "foo.h"
@@ -90,7 +107,7 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
     //int main(){
     //}
     public void testSystemIncludeWasAddedIntoExistingMixedIncludes() throws CoreException {
-        executeActionAndAssertSameAST("cstdint", true);
+        executeActionAndAssertSameAST("cstdint", IncludeType.SYSTEM);
     }
 
     //#include <iostream>
@@ -109,7 +126,7 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
     //int main(){
     //}
     public void testUserIncludeAddedIntoExistingMixedIncludes() throws CoreException {
-        executeActionAndAssertSameAST("sigmund.h", false);
+        executeActionAndAssertSameAST("sigmund.h", IncludeType.USER);
     }
 
     //#define ABCD 2
@@ -165,7 +182,7 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
     //#endif
     //}
     public void testIsIncludePlacedWithOtherPPStatementsPresent() throws CoreException {
-        executeActionAndAssertSameAST("cstdint", true);
+        executeActionAndAssertSameAST("cstdint", IncludeType.SYSTEM);
     }
 
     //#ifndef GRANDPARENT_H
@@ -188,7 +205,7 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
     //
     //#endif /* GRANDPARENT_H */
     public void testIsIncludePlacedWithNoOtherIncludesPresent() throws CoreException {
-        executeActionAndAssertSameAST("cstdint", true);
+        executeActionAndAssertSameAST("cstdint", IncludeType.SYSTEM);
     }
 
     //#ifndef GRANDPARENT_H
@@ -211,7 +228,7 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
     //
     //#endif /* GRANDPARENT_H */
     public void testIsUserIncludePlacedWithNoOtherIncludesPresent() throws CoreException {
-        executeActionAndAssertSameAST("bampf.h", false);
+        executeActionAndAssertSameAST("bampf.h", IncludeType.USER);
     }
 
     //#ifndef GRANDPARENT_H
@@ -238,7 +255,7 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
     //
     //#endif /* GRANDPARENT_H */
     public void testIsSystemIncludeInsertedAtTheRightPositionWithOtherUserIncludes() throws CoreException {
-        executeActionAndAssertSameAST("cstdint", true);
+        executeActionAndAssertSameAST("cstdint", IncludeType.SYSTEM);
     }
 
     //#ifndef GRANDPARENT_H
@@ -264,7 +281,7 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
     //
     //#endif /* GRANDPARENT_H */
     public void testIsUserIncludeInsertedAtTheRightPositionWithOtherUserIncludes() throws CoreException {
-        executeActionAndAssertSameAST("bampf.h", false);
+        executeActionAndAssertSameAST("bampf.h", IncludeType.USER);
     }
 
     //#ifndef GRANDPARENT_H
@@ -290,7 +307,7 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
     //
     //#endif /* GRANDPARENT_H */
     public void testIsSystemIncludeInsertedAtTheRightPositionWithOtherSystemIncludes() throws CoreException {
-        executeActionAndAssertSameAST("cstdint", true);
+        executeActionAndAssertSameAST("cstdint", IncludeType.SYSTEM);
     }
 
     //#ifndef GRANDPARENT_H
@@ -317,7 +334,7 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
     //
     //#endif /* GRANDPARENT_H */
     public void testIsUserIncludeInsertedAtTheRightPositionWithOtherSystemIncludes() throws CoreException {
-        executeActionAndAssertSameAST("bampf.h", false);
+        executeActionAndAssertSameAST("bampf.h", IncludeType.USER);
     }
 
     //#ifndef GRANDPARENT_H
@@ -347,7 +364,7 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
     //
     //#endif /* GRANDPARENT_H */
     public void testIsSystemIncludeInsertedAtTheRightPositionWithOtherSystemAndUserIncludes() throws CoreException {
-        executeActionAndAssertSameAST("cstdint", true);
+        executeActionAndAssertSameAST("cstdint", IncludeType.SYSTEM);
     }
 
     //#ifndef GRANDPARENT_H
@@ -377,7 +394,92 @@ public class IncludeInsertionUtilTest extends CodanTestCase {
     //
     //#endif /* GRANDPARENT_H */
     public void testIsUserIncludeInsertedAtTheRightPositionWithOtherSystemAndUserIncludes() throws CoreException {
-        executeActionAndAssertSameAST("bampf.h", false);
+        executeActionAndAssertSameAST("bampf.h", IncludeType.USER);
     }
 
+    //#include "foo.h"
+    //
+    //int main(){
+    //}
+
+    //#include "foo.h"
+    //
+    //#include <cstdint>
+    //#include <iostream>
+    //#include <vector>
+    //
+    //int main(){
+    //}
+    public void testMultipleSystemIncludes() throws CoreException {
+        executeActionAndAssertSameAST(Lists.mutable.of(//
+                new IncludeDirective("cstdint", IncludeType.SYSTEM), //
+                new IncludeDirective("iostream", IncludeType.SYSTEM), //
+                new IncludeDirective("vector", IncludeType.SYSTEM)));
+    }
+
+    //int main(){
+    //}
+
+    //#include "foo.h"
+    //
+    //#include <cstdint>
+    //#include <iostream>
+    //#include <vector>
+    //
+    //int main(){
+    //}
+    public void testMultipleMixedSystemIncludes() throws CoreException {
+        executeActionAndAssertSameAST(Lists.mutable.of(//
+                new IncludeDirective("iostream", IncludeType.SYSTEM), //
+                new IncludeDirective("cstdint", IncludeType.SYSTEM), //
+                new IncludeDirective("foo.h", IncludeType.USER), //
+                new IncludeDirective("vector", IncludeType.SYSTEM)));
+    }
+
+    //int main(){
+    //}
+
+    //#include "baz.h"
+    //#include "foo.h"
+    //
+    //#include <cstdint>
+    //#include <iostream>
+    //#include <vector>
+    //
+    //int main(){
+    //}
+    public void testMultipleMixedSystemAndUserIncludes() throws CoreException {
+        executeActionAndAssertSameAST(Lists.mutable.of(//
+                new IncludeDirective("iostream", IncludeType.SYSTEM), //
+                new IncludeDirective("cstdint", IncludeType.SYSTEM), //
+                new IncludeDirective("foo.h", IncludeType.USER), //
+                new IncludeDirective("baz.h", IncludeType.USER), //
+                new IncludeDirective("vector", IncludeType.SYSTEM)));
+    }
+
+    //#include "a.h"
+    //#include "c.h"
+    //
+    //int main(){
+    //}
+
+    //#include "a.h"
+    //#include "b.h"
+    //
+    //#include <iostream>
+    //#include <vector>
+    //
+    //#include "c.h"
+    //
+    //int main(){
+    //}
+    public void testMultipleMixedSystemAndUserIncludesInsertedInBetween() throws CoreException {
+        /*
+         * This will currently result with the system includes in between the users includes.
+         */
+        executeActionAndAssertSameAST(Lists.mutable.of(//
+                new IncludeDirective("vector", IncludeType.SYSTEM), //
+                new IncludeDirective("b.h", IncludeType.USER), //
+                new IncludeDirective("iostream", IncludeType.SYSTEM)));
+    }
 }

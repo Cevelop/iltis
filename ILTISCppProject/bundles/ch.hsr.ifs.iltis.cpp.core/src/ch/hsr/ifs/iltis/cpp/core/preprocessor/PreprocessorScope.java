@@ -25,6 +25,8 @@ import org.eclipse.collections.impl.factory.Stacks;
 import org.eclipse.collections.impl.utility.ArrayIterate;
 
 import ch.hsr.ifs.iltis.core.core.functional.functions.Consumer;
+import ch.hsr.ifs.iltis.cpp.core.includes.IncludeDirective;
+import ch.hsr.ifs.iltis.cpp.core.includes.IncludeDirective.IncludeType;
 
 
 public class PreprocessorScope {
@@ -73,10 +75,15 @@ public class PreprocessorScope {
         return root;
     }
 
+    @Deprecated
     public Optional<? extends IASTPreprocessorStatement> findStmtAfterWhichToAddInclude(final String name, final boolean isSystemInclude) {
+        return findStmtAfterWhichToAddInclude(new IncludeDirective(name, isSystemInclude ? IncludeType.SYSTEM : IncludeType.USER));
+    }
+
+    public Optional<? extends IASTPreprocessorStatement> findStmtAfterWhichToAddInclude(final IncludeDirective include) {
         final MutableList<? extends IASTPreprocessorIncludeStatement> includeStatements = getIncludeDirectives();
         if (!includeStatements.isEmpty()) {
-            final IASTPreprocessorStatement stmt = includeStatements.toReversed().detect(st -> compareIncludes(st, name, isSystemInclude) < 0);
+            final IASTPreprocessorStatement stmt = includeStatements.toReversed().detect(st -> compareIncludes(st, include) < 0);
             if (stmt != null) return Optional.of(stmt);
         }
         return findLastNonScopeNonIncludeStatementBeforeSubScopes();
@@ -88,11 +95,11 @@ public class PreprocessorScope {
     }
 
     public Optional<IASTPreprocessorStatement> findLastNonScopeNonIncludeStatementBeforeSubScopes() {
-        final MutableList<IASTPreprocessorStatement> nonIcludeStmts = nonScopeContent.select(s -> !(s instanceof IASTPreprocessorIncludeStatement));
-        if (nonIcludeStmts.isEmpty()) {
+        final MutableList<IASTPreprocessorStatement> nonIncludeStmts = nonScopeContent.select(s -> !(s instanceof IASTPreprocessorIncludeStatement));
+        if (nonIncludeStmts.isEmpty()) {
             return Optional.ofNullable(start);
         } else {
-            return Lists.adapt(nonIcludeStmts).select(s -> {
+            return Lists.adapt(nonIncludeStmts).select(s -> {
                 final IASTFileLocation loc = s.getFileLocation();
                 return Lists.adapt(subScopes).collect(sc -> sc.start).noneSatisfyWith((scope, endOffset) -> scope.getFileLocation()
                         .getNodeOffset() < endOffset, loc.getNodeOffset() + loc.getNodeLength());

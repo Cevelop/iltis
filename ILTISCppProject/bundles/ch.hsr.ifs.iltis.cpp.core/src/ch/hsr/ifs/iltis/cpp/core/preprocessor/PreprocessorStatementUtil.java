@@ -8,6 +8,8 @@ import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.tuple.Pair;
 
 import ch.hsr.ifs.iltis.core.core.resources.FileUtil;
+import ch.hsr.ifs.iltis.cpp.core.includes.IncludeDirective;
+import ch.hsr.ifs.iltis.cpp.core.includes.IncludeDirective.IncludeType;
 
 
 public class PreprocessorStatementUtil {
@@ -66,7 +68,15 @@ public class PreprocessorStatementUtil {
      * @return A negative number iff l should be ordered before r, 0 iff l is equal to r, a positive number iff l should be ordered after r
      */
     public static int compareIncludes(final IASTPreprocessorIncludeStatement l, final IASTPreprocessorIncludeStatement r) {
-        return compareIncludes(l, r.getName().toString(), r.isSystemInclude());
+        return compareIncludes(l, new IncludeDirective(r.getName().toString(), r.isSystemInclude() ? IncludeType.SYSTEM : IncludeType.USER));
+    }
+
+    /**
+     * @use {@link #compareIncludes(IASTPreprocessorIncludeStatement, IncludeDirective)}
+     */
+    @Deprecated
+    public static int compareIncludes(final IASTPreprocessorIncludeStatement l, final String includeName, final boolean isSystemInclude) {
+        return compareIncludes(l, new IncludeDirective(includeName, isSystemInclude ? IncludeType.SYSTEM : IncludeType.USER));
     }
 
     /**
@@ -74,22 +84,19 @@ public class PreprocessorStatementUtil {
      *
      * @param l
      * The include statement
-     * @param includeName
-     * The other include's name
-     * @param isSystemInclude
-     * If the other include is a system include
+     * @param include
+     * The other {@link IncludeDirective}
      * @return A negative number iff l should be ordered before the other include, 0 iff l is equal to the other include, a positive number iff l
      * should be ordered after the other include
      */
-    public static int compareIncludes(final IASTPreprocessorIncludeStatement l, final String includeName, final boolean isSystemInclude) {
-        if (l.isSystemInclude() && !isSystemInclude) {
+    public static int compareIncludes(final IASTPreprocessorIncludeStatement l, final IncludeDirective include) {
+        if (l.isSystemInclude() && include.type != IncludeType.SYSTEM) {
             return +1;
-        } else if (!l.isSystemInclude() && isSystemInclude) {
+        } else if (!l.isSystemInclude() && include.type == IncludeType.SYSTEM) {
             return -1;
         } else {
             /* l.isSystemInclude() == isSystemInclude */
-            return l.getName().toString().compareTo(includeName);
+            return l.getName().toString().compareTo(include.target);
         }
     }
-
 }
