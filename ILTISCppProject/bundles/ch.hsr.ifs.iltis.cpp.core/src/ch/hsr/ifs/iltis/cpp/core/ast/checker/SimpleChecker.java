@@ -69,7 +69,12 @@ public abstract class SimpleChecker<ProblemId extends IProblemId<ProblemId>> ext
      */
     protected void report() {
         nodesToReport.stream().forEach((checkerResult) -> {
-            reportProblem(checkerResult.getProblemId(), locationHook(checkerResult.getNode()), infoHook(checkerResult));
+            MarkerInfo<?> info = infoHook(checkerResult);
+            if (info != null) {
+                reportProblem(checkerResult.getProblemId(), locationHook(checkerResult.getNode()), info);
+            } else {
+                reportProblem(checkerResult.getProblemId(), locationHook(checkerResult.getNode()));
+            }
         });
         nodesToReport.clear();
     }

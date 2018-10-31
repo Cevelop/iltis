@@ -28,6 +28,7 @@ import ch.hsr.ifs.iltis.cpp.core.resources.info.annotations.InfoArgument;
 @SuppressWarnings("restriction")
 public abstract class MarkerInfo<InfoType extends MarkerInfo<InfoType>> implements IInfo<InfoType> {
 
+    public static final String  ID_DEFAULT            = "";
     public static final String  FILENAME_DEFAULT      = "";
     public static final int     SEVERITY_DEFAULT      = IMarker.SEVERITY_INFO;
     public static final String  MESSAGE_DEFAULT       = "";
@@ -41,7 +42,7 @@ public abstract class MarkerInfo<InfoType extends MarkerInfo<InfoType>> implemen
     public static final String  SOURCE_ID_DEFAULT     = "";
 
     @InfoArgument
-    public String  id           = "";
+    public String  id           = ID_DEFAULT;
     @InfoArgument
     public String  fileName     = FILENAME_DEFAULT;
     @InfoArgument
