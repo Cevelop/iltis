@@ -8,6 +8,7 @@ import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTranslationUnit;
 import org.eclipse.cdt.utils.Platform;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -101,6 +102,10 @@ public class VisualASTNode extends TreeNode<IASTNode, VisualASTNode> {
         button.setVisible(visible);
     }
 
+    public boolean isRealLeaf() {
+        return data.getChildren().length == 0;
+    }
+
     @Override
     protected boolean hasChildren() {
         return !((childrenLoaded && children.isEmpty()) || (!childrenLoaded && data.getChildren().length == 0) || treatAsLeaf);
@@ -139,12 +144,12 @@ public class VisualASTNode extends TreeNode<IASTNode, VisualASTNode> {
 
             @Override
             public void mouseDown(MouseEvent e) {
-                if (e.button == 1 && !childrenLoaded) lazyLoadChildren();
+                if (e.button == 1 && hasChildren() && !childrenLoaded) lazyLoadChildren();
             }
         });
 
-        /* Make real leaf-nodes unclickable */
-        button.setEnabled(node.getChildren().length > 0);
+        /* Make font in leaf nodes italic */
+        if (isRealLeaf()) button.setFont(JFaceResources.getFontRegistry().getItalic(JFaceResources.DEFAULT_FONT));
 
         styleButton(button, node);
         final Point minButtonSize = button.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
@@ -162,12 +167,19 @@ public class VisualASTNode extends TreeNode<IASTNode, VisualASTNode> {
             button.setBackground(ColorUtil.instance.GOLDEN_YELLOW);
             button.getFont().getFontData()[0].setStyle(SWT.BOLD);
         } else {
+            /* Color cuda nodes */
+            Bundle cudaSchmuda = Platform.getBundle("ch.stautob.eclipse.cuda.ui");
+            if (cudaSchmuda != null) {
+                if (isInstanceOf(cudaSchmuda, "ch.stautob.eclipse.cuda.ui.dom.ast.cuda.ICudaASTNode", astNode)) {
+                    button.setBackground(ColorUtil.instance.CUDA_GREEN);
+                }
+            }
             /* TODO replace once own cuda parser was implemented */
-            Bundle bundle = Platform.getBundle("com.nvidia.cuda.ui");
-            if (bundle != null) {
-                if (isInstanceOf(bundle, "com.nvidia.cuda.ui.editor.language.ast.KernelCallExpression", astNode) || isInstanceOf(bundle,
-                        "com.nvidia.cuda.ui.editor.language.ast.CudaASTFieldReference", astNode) || isInstanceOf(bundle,
-                                "com.nvidia.cuda.ui.editor.language.ast.CudaASTIdExpression", astNode) || isInstanceOf(bundle,
+            Bundle nvidiaCuda = Platform.getBundle("com.nvidia.cuda.ui");
+            if (nvidiaCuda != null) {
+                if (isInstanceOf(nvidiaCuda, "com.nvidia.cuda.ui.editor.language.ast.KernelCallExpression", astNode) || isInstanceOf(nvidiaCuda,
+                        "com.nvidia.cuda.ui.editor.language.ast.CudaASTFieldReference", astNode) || isInstanceOf(nvidiaCuda,
+                                "com.nvidia.cuda.ui.editor.language.ast.CudaASTIdExpression", astNode) || isInstanceOf(nvidiaCuda,
                                         "com.nvidia.cuda.ui.editor.language.ast.CudaASTSimpleDeclSpecifier", astNode)) {
                     button.setBackground(ColorUtil.instance.CUDA_GREEN);
                 }

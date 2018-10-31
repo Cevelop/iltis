@@ -199,12 +199,14 @@ public class ASTCanvas extends Canvas {
     }
 
     private void toggleNode(final VisualASTNode node) {
-        if (node.isTreatedAsLeaf()) {
-            node.expand();
-        } else {
-            node.collaps();
+        if (!node.isRealLeaf()) {
+            if (node.isTreatedAsLeaf()) {
+                node.expand();
+            } else {
+                node.collaps();
+            }
+            refresh(node);
         }
-        refresh(node);
     }
 
     @Override
