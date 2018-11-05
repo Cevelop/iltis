@@ -16,7 +16,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.internal.core.SourceType;
 import org.eclipse.jdt.internal.junit.model.TestCaseElement;
 import org.eclipse.jdt.internal.junit.model.TestElement;
 import org.eclipse.jdt.internal.junit.model.TestSuiteElement;
@@ -118,10 +117,6 @@ public class JumpToRTSHandler extends AbstractHandler {
     }
 
     private String getTestFileName(IType classType) throws CoreException {
-        if (!(classType instanceof SourceType)) {
-            throw new IllegalArgumentException("Invalid source type: " + classType.getFullyQualifiedName());
-        }
-
         String filePath = getPathViaAnnotation(classType);
         return filePath != null ? filePath : guessPath();
     }
@@ -184,7 +179,7 @@ public class JumpToRTSHandler extends AbstractHandler {
                 } else {
                     IDE.openEditor(page, file);
                 }
-            } catch (CoreException | BadLocationException | IllegalArgumentException | NullPointerException e) {
+            } catch (CoreException | BadLocationException | NullPointerException e) {
                 e.printStackTrace();
                 MessageDialog.openError(shell, "Jump to RTS", "Failed to find associated RTS file.");
             }
