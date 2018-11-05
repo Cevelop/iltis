@@ -119,7 +119,7 @@ public class JumpToRTSHandler extends AbstractHandler {
 
     private String getTestFileName(IType classType) throws CoreException {
         if (!(classType instanceof SourceType)) {
-            return null;
+            throw new IllegalArgumentException("Invalid source type: " + classType.getFullyQualifiedName());
         }
 
         String filePath = getPathViaAnnotation(classType);
@@ -184,7 +184,7 @@ public class JumpToRTSHandler extends AbstractHandler {
                 } else {
                     IDE.openEditor(page, file);
                 }
-            } catch (CoreException | BadLocationException | NullPointerException e) {
+            } catch (CoreException | BadLocationException | IllegalArgumentException | NullPointerException e) {
                 e.printStackTrace();
                 MessageDialog.openError(shell, "Jump to RTS", "Failed to find associated RTS file.");
             }
