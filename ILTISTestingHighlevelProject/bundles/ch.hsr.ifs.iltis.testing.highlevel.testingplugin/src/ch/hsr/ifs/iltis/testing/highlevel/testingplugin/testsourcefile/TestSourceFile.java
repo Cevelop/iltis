@@ -25,11 +25,18 @@ import org.eclipse.jface.text.TextSelection;
  */
 public class TestSourceFile {
 
+    private static enum Mode {
+        CREATE, //
+        DELETE, //
+        KEEP //
+    }
+
     private static final String NL      = System.getProperty("line.separator");
     private static final int    NOT_SET = -1;
 
     private final String             name;
     private final StringBuilder      source = new StringBuilder();
+    private Mode                     mode;
     private StringBuilder            expectedSource;
     private Optional<ITextSelection> selection;
 
@@ -44,6 +51,7 @@ public class TestSourceFile {
      */
     public TestSourceFile(final String name) {
         this.name = name;
+        this.mode = Mode.KEEP;
     }
 
     public String getExpectedSource() {
@@ -81,20 +89,40 @@ public class TestSourceFile {
         expectedSource.append(line);
     }
 
-    void setSelectionStart(int start) {
+    void setSelectionStart(final int start) {
         selectionStart = start;
     }
 
-    void setSelectionEnd(int end) {
+    void setSelectionEnd(final int end) {
         selectionEnd = end;
     }
 
-    void setSelectionStartRelativeToNextLine(int start) {
+    void setSelectionStartRelativeToNextLine(final int start) {
         selectionStart = start + getSourceLengthOnWhichToAppend();
     }
 
-    void setSelectionEndRelativeToNextLine(int end) {
+    void setSelectionEndRelativeToNextLine(final int end) {
         selectionEnd = end + getSourceLengthOnWhichToAppend();
+    }
+
+    public void createFileMode() {
+        mode = Mode.CREATE;
+    }
+
+    public boolean shouldBeCreated() {
+        return mode == Mode.CREATE;
+    }
+
+    public void deleteFileMode() {
+        mode = Mode.DELETE;
+    }
+
+    public boolean shouldBeDeleted() {
+        return mode == Mode.DELETE;
+    }
+
+    public boolean shouldBeKept() {
+        return mode == Mode.KEEP;
     }
 
     public boolean hasSelection() {

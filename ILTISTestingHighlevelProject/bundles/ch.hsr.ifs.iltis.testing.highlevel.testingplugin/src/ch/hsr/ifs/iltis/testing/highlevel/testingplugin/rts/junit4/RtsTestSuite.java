@@ -89,8 +89,8 @@ public class RtsTestSuite extends Suite {
     }
 
     @SuppressWarnings("unchecked")
-    private ArrayList<RTSTest> getParametersList(TestClass clazz) throws Throwable {
-        return (ArrayList<RTSTest>) getParametersMethod(clazz).invokeExplosively(null, clazz.getJavaClass());
+    private List<RTSTest> getParametersList(TestClass clazz) throws Throwable {
+        return (List<RTSTest>) getParametersMethod(clazz).invokeExplosively(null, clazz.getJavaClass());
     }
 
     private FrameworkMethod getParametersMethod(TestClass testClass) throws Exception {

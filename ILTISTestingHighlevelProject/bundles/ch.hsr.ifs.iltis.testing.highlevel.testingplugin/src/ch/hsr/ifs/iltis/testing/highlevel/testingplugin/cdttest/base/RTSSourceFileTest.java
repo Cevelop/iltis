@@ -1,11 +1,10 @@
 package ch.hsr.ifs.iltis.testing.highlevel.testingplugin.cdttest.base;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.BufferedReader;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.List;
 
 import org.junit.runner.RunWith;
 
@@ -25,7 +24,7 @@ public abstract class RTSSourceFileTest extends SourceFileBaseTest {
 
     @Override
     protected void initExternalTestResourcesHolder() throws Exception {
-        Enumeration<URL> externalResources = evaluator.getExternalResourcesForActiveBundle();
+        final Enumeration<URL> externalResources = evaluator.getExternalResourcesForActiveBundle();
         if (externalResources != null) {
             externalTestResourcesHolder = new ExternalTestResourceProjectHolder(EXTERNAL_TEST_RESOURCE_PROJECT_NAME, language);
             externalTestResourcesHolder.createProject();
@@ -45,19 +44,16 @@ public abstract class RTSSourceFileTest extends SourceFileBaseTest {
      */
     protected void stageReferencedProjectForBothProjects(final String projectName, final String rtsFileName) throws Exception {
         try (BufferedReader in = evaluator.getRtsFileReader(rtsFileName)) {
-            final ArrayList<RTSTest> testCases = RTSFileParser.parse(in);
-            assertTrue("The RTS file + \'" + rtsFileName + "\' which represents a referenced project must contain exactly one test case.", testCases
-                    .size() == 1);
-            RTSTest testCase = testCases.get(0);
+            final RTSTest testCase = RTSFileParser.parse(in);
             stageReferencedProjectsForBothProjects(new ReferencedProjectDescription(projectName, testCase.getLanguage(), testCase
                     .getTestSourceFiles()));
         }
     }
 
     @RTSTestCases
-    public static ArrayList<RTSTest> testCases(final Class<? extends RTSSourceFileTest> testClass) throws Exception {
+    public static List<RTSTest> testCases(final Class<? extends RTSSourceFileTest> testClass) throws Exception {
         try (BufferedReader in = new ExtensionPointEvaluator(testClass).getRtsFileReader()) {
-            return RTSFileParser.parse(in);
+            return Arrays.asList(RTSFileParser.parse(in));
         }
     }
 

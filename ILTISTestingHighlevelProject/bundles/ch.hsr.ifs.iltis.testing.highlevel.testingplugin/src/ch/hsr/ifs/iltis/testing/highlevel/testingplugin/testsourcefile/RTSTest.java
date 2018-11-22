@@ -1,19 +1,20 @@
 package ch.hsr.ifs.iltis.testing.highlevel.testingplugin.testsourcefile;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class RTSTest {
 
-    private String                    testName;
-    private Language                  language        = Language.CPP;
-    private ArrayList<TestSourceFile> testSourceFiles = new ArrayList<>();
+    private final String               testName;
+    private Language                   language        = Language.CPP;
+    private final List<TestSourceFile> testSourceFiles = new ArrayList<>();
 
-    public RTSTest(String name) {
+    public RTSTest(final String name) {
         this.testName = name;
     }
 
-    public ArrayList<TestSourceFile> getTestSourceFiles() {
+    public List<TestSourceFile> getTestSourceFiles() {
         return testSourceFiles;
     }
 
@@ -21,7 +22,7 @@ public class RTSTest {
         return testName;
     }
 
-    public void addFile(TestSourceFile file) {
+    public void addTestFile(final TestSourceFile file) {
         testSourceFiles.add(file);
     }
 
@@ -38,7 +39,7 @@ public class RTSTest {
 
         String lang;
 
-        Language(String lang) {
+        Language(final String lang) {
             this.lang = lang;
         }
 

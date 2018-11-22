@@ -62,17 +62,17 @@ public class TestProjectHolder extends AbstractProjectHolder implements ITestPro
     protected static final int  INDEXER_TIMEOUT_SEC         = Integer.parseInt(System.getProperty(INDEXER_TIMEOUT_PROPERTY,
             DEFAULT_INDEXER_TIMEOUT_SEC));
 
-    private boolean isExpectedProject;
+    private final boolean isExpectedProject;
 
-    private List<ICProject> referencedProjects = new ArrayList<>();
-    private List<IPath>     formattedDocuments = new ArrayList<>();
+    private final List<ICProject> referencedProjects = new ArrayList<>();
+    private final List<IPath>     formattedDocuments = new ArrayList<>();
 
-    private ArrayList<IPath>                        stagedExternalIncudePaths  = new ArrayList<>();
-    private ArrayList<IPath>                        stagedInternalIncludePaths = new ArrayList<>();
-    private ArrayList<ReferencedProjectDescription> stagedReferncedProjects    = new ArrayList<>();
-    private HashMap<String, String>                 stagedTestSourcesToImport  = new HashMap<>();
+    private final ArrayList<IPath>                        stagedExternalIncudePaths  = new ArrayList<>();
+    private final ArrayList<IPath>                        stagedInternalIncludePaths = new ArrayList<>();
+    private final ArrayList<ReferencedProjectDescription> stagedReferncedProjects    = new ArrayList<>();
+    private final HashMap<String, String>                 stagedTestSourcesToImport  = new HashMap<>();
 
-    public TestProjectHolder(String projectName, Language language, boolean isExpectedProject) {
+    public TestProjectHolder(final String projectName, final Language language, final boolean isExpectedProject) {
         this.projectName = projectName;
         this.language = language;
         this.isExpectedProject = isExpectedProject;
@@ -91,10 +91,10 @@ public class TestProjectHolder extends AbstractProjectHolder implements ITestPro
         referencedProjects.stream().forEach(this::deleteProject);
     }
 
-    private void deleteProject(ICProject project) {
+    private void deleteProject(final ICProject project) {
         try {
             project.getProject().delete(true, true, new NullProgressMonitor());
-        } catch (CoreException e) {
+        } catch (final CoreException e) {
             e.printStackTrace();
         }
     }
@@ -150,7 +150,7 @@ public class TestProjectHolder extends AbstractProjectHolder implements ITestPro
     }
 
     @Override
-    public ITestProjectHolder setLanguage(Language language) {
+    public ITestProjectHolder setLanguage(final Language language) {
         this.language = language;
         return this;
     }
@@ -231,7 +231,7 @@ public class TestProjectHolder extends AbstractProjectHolder implements ITestPro
     }
 
     @Override
-    public ProjectHolderJob formatFileAsync(IPath path) {
+    public ProjectHolderJob formatFileAsync(final IPath path) {
         return ProjectHolderJob.create("Formatting project " + projectName, ITestProjectHolder.FORMATT_FILE_JOB_FAMILY, mon -> {
             if (!formattedDocuments.contains(path)) {
                 final IDocument doc = getDocument(getFile(path));
@@ -261,26 +261,35 @@ public class TestProjectHolder extends AbstractProjectHolder implements ITestPro
 
     @Override
     public void importFiles() {
-        for (URL url : stagedFilesToImport) {
-            IFile iFile = getProject().getFile(url.getPath());
+        for (final URL url : stagedFilesToImport) {
+            final IFile iFile = getProject().getFile(url.getPath());
             try {
                 importFile(iFile, getProject(), url.openStream());
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 ILTISException.wrap(e).rethrowUnchecked();
             }
         }
 
-        for (Entry<String, String> entry : stagedTestSourcesToImport.entrySet()) {
-            IFile iFile = getProject().getFile(entry.getKey());
+        for (final Entry<String, String> entry : stagedTestSourcesToImport.entrySet()) {
+            final IFile iFile = getProject().getFile(entry.getKey());
             importFile(iFile, getProject(), new StringInputStream(entry.getValue()));
         }
     }
 
     @Override
-    public void stageTestSourceFilesForImport(Collection<TestSourceFile> files) {
-        for (TestSourceFile file : files) {
-            stagedTestSourcesToImport.put(file.getName(), isExpectedProject ? file.getExpectedSource() : file.getSource());
+    public void stageTestSourceFilesForImport(final Collection<TestSourceFile> files) {
+        for (final TestSourceFile file : files) {
+            final String source = isExpectedProject ? file.getExpectedSource() : file.getSource();
+            if (shouldBeStaged(file)) {
+                stagedTestSourcesToImport.put(file.getName(), source);
+            }
         }
+    }
+
+    private boolean shouldBeStaged(final TestSourceFile file) {
+        return file.shouldBeKept() //
+               || (file.shouldBeDeleted() && !isExpectedProject) //
+               || (file.shouldBeCreated() && isExpectedProject);
     }
 
     @Override
@@ -290,12 +299,12 @@ public class TestProjectHolder extends AbstractProjectHolder implements ITestPro
     }
 
     private void setupReferencedProjects() throws CoreException {
-        for (ReferencedProjectDescription pd : stagedReferncedProjects) {
+        for (final ReferencedProjectDescription pd : stagedReferncedProjects) {
 
             final ICProject referencedCProject = createNewProject(pd.getProjectName() + (isExpectedProject ? "_expected" : "_current"), pd
                     .getLanguage());
-            for (TestSourceFile file : pd.getSourceFiles()) {
-                IProject referencedProject = referencedCProject.getProject();
+            for (final TestSourceFile file : pd.getSourceFiles()) {
+                final IProject referencedProject = referencedCProject.getProject();
                 importFile(referencedProject.getFile(file.getName()), referencedProject, new StringInputStream(isExpectedProject ? file
                         .getExpectedSource() : file.getSource()));
             }
@@ -304,8 +313,8 @@ public class TestProjectHolder extends AbstractProjectHolder implements ITestPro
     }
 
     @Override
-    public void stageReferencedProjects(ReferencedProjectDescription... referencedProjects) {
-        for (ReferencedProjectDescription pd : referencedProjects) {
+    public void stageReferencedProjects(final ReferencedProjectDescription... referencedProjects) {
+        for (final ReferencedProjectDescription pd : referencedProjects) {
             stagedReferncedProjects.add(pd);
         }
     }
@@ -316,7 +325,7 @@ public class TestProjectHolder extends AbstractProjectHolder implements ITestPro
             System.err.println("Overwriting existing file which should not yet exist: " + file.getName());
             try {
                 file.setContents(stream, true, false, new NullProgressMonitor());
-            } catch (CoreException e) {
+            } catch (final CoreException e) {
                 ILTISException.wrap(e).rethrowUnchecked();
             }
         } else {
@@ -324,7 +333,7 @@ public class TestProjectHolder extends AbstractProjectHolder implements ITestPro
                 if (!file.exists()) {
                     file.create(stream, true, new NullProgressMonitor());
                 }
-            } catch (CoreException e) {
+            } catch (final CoreException e) {
                 ILTISException.wrap(e).rethrowUnchecked();
             }
         }
@@ -345,16 +354,16 @@ public class TestProjectHolder extends AbstractProjectHolder implements ITestPro
     }
 
     @Override
-    public Optional<ICElement> getCElement(IPath path) {
+    public Optional<ICElement> getCElement(final IPath path) {
         try {
             return Optional.ofNullable(getCProject().findElement(path));
-        } catch (CModelException ignored) {
+        } catch (final CModelException ignored) {
             return Optional.empty();
         }
     }
 
     @Override
-    public Optional<ICElement> getCElement(IFile file) {
+    public Optional<ICElement> getCElement(final IFile file) {
         return getCElement(file.getLocation());
     }
 

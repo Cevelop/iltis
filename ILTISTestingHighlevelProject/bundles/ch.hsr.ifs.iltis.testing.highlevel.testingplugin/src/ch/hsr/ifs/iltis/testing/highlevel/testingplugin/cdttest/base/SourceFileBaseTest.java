@@ -10,7 +10,9 @@ package ch.hsr.ifs.iltis.testing.highlevel.testingplugin.cdttest.base;
 
 import static ch.hsr.ifs.iltis.core.core.functional.Functional.doForT;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
@@ -94,11 +96,11 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
         initializeConfiguration(extractProperties(configFile));
     }
 
-    private boolean isConfigFile(TestSourceFile file) {
+    private boolean isConfigFile(final TestSourceFile file) {
         return file.getName().equals(CDTTestingConfigConstants.CONFIG_FILE_NAME);
     }
 
-    public void setLanguage(Language language) {
+    public void setLanguage(final Language language) {
         this.language = language;
     }
 
@@ -144,7 +146,7 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
         super.initProjectFiles();
     }
 
-    private void formatDocumentForBothProjects(String relativePath) throws InterruptedException {
+    private void formatDocumentForBothProjects(final String relativePath) throws InterruptedException {
         scheduleAndJoinBoth((holder) -> holder.formatFileAsync(holder.makeProjectAbsolutePath(relativePath)));
     }
 
@@ -161,7 +163,7 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
      * @throws IllegalArgumentException
      * If the no file with this name exists.
      */
-    protected Optional<ICElement> getCurrentCElement(String testSourceFileName) {
+    protected Optional<ICElement> getCurrentCElement(final String testSourceFileName) {
         return getCurrentCElement(getCurrentIFile(testSourceFileName));
     }
 
@@ -171,7 +173,7 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
      * @throws IllegalArgumentException
      * If the no file with this name exists.
      */
-    protected Optional<ICElement> getExpectedCElement(String testSourceFileName) {
+    protected Optional<ICElement> getExpectedCElement(final String testSourceFileName) {
         return getExpectedCElement(getExpectedIFile(testSourceFileName));
     }
 
@@ -195,7 +197,7 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
     /**
      * Convenience method to get the text selection from a file name
      */
-    protected Optional<ITextSelection> getSelection(String testSourceFileName) {
+    protected Optional<ITextSelection> getSelection(final String testSourceFileName) {
         return Optional.ofNullable(testFiles.get(testSourceFileName)).flatMap(TestSourceFile::getSelection);
     }
 
@@ -205,7 +207,7 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
      * @throws IllegalArgumentException
      * If the no file with this name exists.
      */
-    protected IFile getCurrentIFile(String testSourceFileName) {
+    protected IFile getCurrentIFile(final String testSourceFileName) {
         return getIFile(testSourceFileName, currentProjectHolder);
     }
 
@@ -215,7 +217,7 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
      * @throws IllegalArgumentException
      * If the no file with this name exists.
      */
-    protected IFile getExpectedIFile(String testSourceFileName) {
+    protected IFile getExpectedIFile(final String testSourceFileName) {
         return getIFile(testSourceFileName, expectedProjectHolder);
     }
 
@@ -233,7 +235,7 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
      * @throws IllegalArgumentException
      * If the no file with this name exist
      */
-    private IFile getIFile(String testSourceFileName, IProjectHolder holder) {
+    private IFile getIFile(final String testSourceFileName, final IProjectHolder holder) {
         if (testFiles.containsKey(testSourceFileName)) {
             return getIFile(testFiles.get(testSourceFileName), holder);
         } else {
@@ -244,18 +246,18 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
     /**
      * Convenience method to get the {@code IFile} with was created from this test source file in the current project.
      */
-    protected IFile getCurrentIFile(TestSourceFile testSourceFile) {
+    protected IFile getCurrentIFile(final TestSourceFile testSourceFile) {
         return getIFile(testSourceFile, currentProjectHolder);
     }
 
     /**
      * Convenience method to get the {@code IFile} with was created from this test source file in the expected project.
      */
-    protected IFile getExpectedIFile(TestSourceFile testSourceFile) {
+    protected IFile getExpectedIFile(final TestSourceFile testSourceFile) {
         return getIFile(testSourceFile, expectedProjectHolder);
     }
 
-    private IFile getIFile(TestSourceFile testSourceFile, IProjectHolder holder) {
+    private IFile getIFile(final TestSourceFile testSourceFile, final IProjectHolder holder) {
         return holder.getFile(testSourceFile.getName());
     }
 
@@ -267,7 +269,7 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
      * @param args
      * The comparison arguments
      */
-    protected void assertAllSourceFilesEqual(EnumSet<ComparisonArg> args) {
+    protected void assertAllSourceFilesEqual(final EnumSet<ComparisonArg> args) {
         for (final TestSourceFile testFile : testFiles.values()) {
             fastAssertEquals(testFile.getName(), args);
         }
@@ -285,7 +287,7 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
      * @throws IllegalArgumentException
      * If no test source file with this name exists.
      */
-    public void fastAssertEquals(final String testSourceFileName, EnumSet<ComparisonArg> args) {
+    public void fastAssertEquals(final String testSourceFileName, final EnumSet<ComparisonArg> args) {
         fastAssertEquals(testSourceFileName, args, ITranslationUnit.AST_SKIP_INDEXED_HEADERS | ITranslationUnit.AST_CONFIGURE_USING_SOURCE_CONTEXT |
                                                    ITranslationUnit.AST_SKIP_TRIVIAL_EXPRESSIONS_IN_AGGREGATE_INITIALIZERS);
     }
@@ -304,25 +306,35 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
      * @throws IllegalArgumentException
      * If no test source file with this name exists.
      */
-    public void fastAssertEquals(final String testSourceFileName, EnumSet<ComparisonArg> args, int astStyle) {
+    public void fastAssertEquals(final String testSourceFileName, final EnumSet<ComparisonArg> args, final int astStyle) {
         if (testFiles.containsKey(testSourceFileName)) {
-            if (args.contains(ComparisonArg.USE_SOURCE_COMPARISON)) {
-                assertEqualsWithSource(testSourceFileName, args);
+            if (testFiles.get(testSourceFileName).shouldBeDeleted()) {
+                assertFalse("File " + testSourceFileName + " has not been deleted.", getCurrentIFile(testSourceFileName).exists());
+                assertFalse("Expected Testfile " + testSourceFileName + " created, this should not happen.", //
+                        getExpectedIFile(testSourceFileName).exists());
             } else {
-                assertEqualsWithAST(testSourceFileName, args, astStyle);
+                assertTrue("File " + testSourceFileName + " has not been created or kept.", getCurrentIFile(testSourceFileName).exists());
+                assertTrue("Expected Testfile " + testSourceFileName + " NOT created, this should not happen.", //
+                        getExpectedIFile(testSourceFileName).exists());
+                if (args.contains(ComparisonArg.USE_SOURCE_COMPARISON)) {
+                    assertEqualsWithSource(testSourceFileName, args);
+                } else {
+                    assertEqualsWithAST(testSourceFileName, args, astStyle);
+                }
             }
+
         } else {
             throw new IllegalArgumentException("No such test file \"" + testSourceFileName + "\" found.");
         }
     }
 
-    private void assertEqualsWithSource(final String testSourceFileName, EnumSet<ComparisonArg> args) {
+    private void assertEqualsWithSource(final String testSourceFileName, final EnumSet<ComparisonArg> args) {
         String expectedSource;
         String currentSource;
         if (!args.contains(ComparisonArg.DEBUG_NO_FORMATTING)) {
             try {
                 formatDocumentForBothProjects(testSourceFileName);
-            } catch (InterruptedException e) {
+            } catch (final InterruptedException e) {
                 e.printStackTrace();
             }
         }
@@ -336,7 +348,7 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
         assertEquals("Textual comparison", expectedSource, currentSource);
     }
 
-    private void assertEqualsWithAST(final String testSourceFileName, EnumSet<ComparisonArg> args, int astStyle) {
+    private void assertEqualsWithAST(final String testSourceFileName, final EnumSet<ComparisonArg> args, final int astStyle) {
         final IIndex[] expectedIndex = { null };
         final IIndex[] currentIndex = { null };
         final ITranslationUnit[] expectedTU = { null };
@@ -344,27 +356,27 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
         final IASTTranslationUnit[] expectedAST = { null };
         final IASTTranslationUnit[] currentAST = { null };
         try {
-            ProjectHolderJob expected = ProjectHolderJob.create("Create expected AST", "ch.hsr.ifs.cdttesting.comparison.buildAST", mon -> {
+            final ProjectHolderJob expected = ProjectHolderJob.create("Create expected AST", "ch.hsr.ifs.cdttesting.comparison.buildAST", mon -> {
                 try {
                     expectedIndex[0] = CCorePlugin.getIndexManager().getIndex(getExpectedCProject(), IIndexManager.ADD_DEPENDENCIES &
                                                                                                      IIndexManager.ADD_DEPENDENT);
                     expectedIndex[0].acquireReadLock();
                     expectedTU[0] = CoreModelUtil.findTranslationUnit(getExpectedIFile(testSourceFileName));
                     expectedAST[0] = expectedTU[0].getAST(expectedIndex[0], astStyle);
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     return new Status(IStatus.ERROR, FrameworkUtil.getBundle(getClass()).getSymbolicName(), "Could not create expected AST", e);
                 }
                 return Status.OK_STATUS;
             });
 
-            ProjectHolderJob current = ProjectHolderJob.create("Create current AST", "ch.hsr.ifs.cdttesting.comparison.buildAST", mon -> {
+            final ProjectHolderJob current = ProjectHolderJob.create("Create current AST", "ch.hsr.ifs.cdttesting.comparison.buildAST", mon -> {
                 try {
                     currentIndex[0] = CCorePlugin.getIndexManager().getIndex(getCurrentCProject(), IIndexManager.ADD_DEPENDENCIES &
                                                                                                    IIndexManager.ADD_DEPENDENT);
                     currentIndex[0].acquireReadLock();
                     currentTU[0] = CoreModelUtil.findTranslationUnit(getCurrentIFile(testSourceFileName));
                     currentAST[0] = currentTU[0].getAST(currentIndex[0], astStyle);
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     return new Status(IStatus.ERROR, FrameworkUtil.getBundle(getClass()).getSymbolicName(), "Could not create current AST", e);
                 }
                 return Status.OK_STATUS;
@@ -381,9 +393,9 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
 
             ASTComparison.assertEqualsAST(expectedTU[0].getAST(), currentTU[0].getAST(), args); //FIXME remove after testing
             //         ASTComparison.assertEqualsAST(expectedAST[0], currentAST[0], args);
-        } catch (CoreException e) {
+        } catch (final CoreException e) {
             throw ILTISException.wrap(e);
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             fail("Thread got interrupted");
         } finally {
             if (expectedIndex[0] != null) expectedIndex[0].releaseReadLock();
