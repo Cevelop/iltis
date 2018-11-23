@@ -1,8 +1,9 @@
 package ch.hsr.ifs.iltis.testing.highlevel.testingplugin.cdttest.base;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.BufferedReader;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -44,7 +45,10 @@ public abstract class RTSSourceFileTest extends SourceFileBaseTest {
      */
     protected void stageReferencedProjectForBothProjects(final String projectName, final String rtsFileName) throws Exception {
         try (BufferedReader in = evaluator.getRtsFileReader(rtsFileName)) {
-            final RTSTest testCase = RTSFileParser.parse(in);
+            final List<RTSTest> testCases = RTSFileParser.parse(in);
+            assertTrue("The RTS file + \'" + rtsFileName + "\' which represents a referenced project must contain exactly one test case.", //
+                    testCases.size() == 1);
+            final RTSTest testCase = testCases.get(0);
             stageReferencedProjectsForBothProjects(new ReferencedProjectDescription(projectName, testCase.getLanguage(), testCase
                     .getTestSourceFiles()));
         }
@@ -53,7 +57,7 @@ public abstract class RTSSourceFileTest extends SourceFileBaseTest {
     @RTSTestCases
     public static List<RTSTest> testCases(final Class<? extends RTSSourceFileTest> testClass) throws Exception {
         try (BufferedReader in = new ExtensionPointEvaluator(testClass).getRtsFileReader()) {
-            return Arrays.asList(RTSFileParser.parse(in));
+            return RTSFileParser.parse(in);
         }
     }
 

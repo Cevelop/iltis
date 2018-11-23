@@ -3,8 +3,12 @@ package ch.hsr.ifs.iltis.testing.highlevel.testingplugin.testsourcefile;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.impl.factory.Lists;
 
 
 public class RTSFileParser {
@@ -42,17 +46,18 @@ public class RTSFileParser {
 
     private static class RTSFileParserState {
 
-        static final String FAIL_INVALID_PARSE_STATE = "Invalid parse state!";
+        private static final String FAIL_INVALID_PARSE_STATE = "Invalid parse state!";
 
-        RTSTest        currentTest = null;
-        TestSourceFile currentFile = null;
+        MutableList<RTSTest> tests       = Lists.mutable.empty();
+        RTSTest              currentTest = null;
+        TestSourceFile       currentFile = null;
 
         String failMSG = FAIL_INVALID_PARSE_STATE;
 
         MatcherState matcherState = MatcherState.ROOT;
     }
 
-    public static RTSTest parse(final BufferedReader inputReader) throws Exception {
+    public static List<RTSTest> parse(final BufferedReader inputReader) throws Exception {
         final Matcher BEGIN_OF_SELECTION_MATCHER = Pattern.compile(SELECTION_START_TAG_REGEX).matcher("");
         final Matcher END_OF_SELECTION_MATCHER = Pattern.compile(SELECTION_END_TAG_REGEX).matcher("");
 
@@ -148,7 +153,7 @@ public class RTSFileParser {
                 fail(state.failMSG);
             }
         }
-        return state.currentTest;
+        return state.tests;
     }
 
     private static void enterExpected(final RTSFileParserState state) {
@@ -186,6 +191,7 @@ public class RTSFileParser {
         } else {
             state.matcherState = MatcherState.IN_TEST_CASE;
             state.currentTest = new RTSTest(name);
+            state.tests.add(state.currentTest);
         }
     }
 
