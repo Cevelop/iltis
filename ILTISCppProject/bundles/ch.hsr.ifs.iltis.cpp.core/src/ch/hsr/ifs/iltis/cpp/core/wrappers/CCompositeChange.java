@@ -29,6 +29,21 @@ public class CCompositeChange extends CompositeChange {
         desc = descriptor;
     }
 
+    /**
+     * Add a Change to this composite change. Other composite changes will be
+     * merged automatically.
+     * 
+     * @param change The change to be added to this composite change
+     * iff it is a CompositeChange as well, it will automatically be merged.
+     */
+    public void flatAdd(Change change) {
+        if (change instanceof CompositeChange) {
+            merge((CompositeChange) change);
+        } else {
+            add(change);
+        }
+    }
+
     @Override
     public ChangeDescriptor getDescriptor() {
         if (desc != null) {

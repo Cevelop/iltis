@@ -2,7 +2,6 @@ package ch.hsr.ifs.iltis.cpp.core.wrappers;
 
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.dom.rewrite.ASTRewrite;
-import org.eclipse.cdt.internal.ui.refactoring.changes.CCompositeChange;
 import org.eclipse.cdt.internal.ui.refactoring.changes.CreateFileChange;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableMap;
@@ -14,7 +13,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.mapping.IResourceChangeDescriptionFactory;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.ltk.core.refactoring.Change;
-import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.TextChange;
 import org.eclipse.ltk.core.refactoring.resource.DeleteResourceChange;
 import org.eclipse.ltk.core.refactoring.resource.MoveResourceChange;
@@ -37,8 +35,8 @@ public class ModificationCollector {
     private final IResourceChangeDescriptionFactory deltaFactory;
 
     // Each translation unit can have only one ASTRewrite.
-    private final MutableMap<IASTTranslationUnit, ASTRewrite> rewriters = Maps.mutable.empty();
-    private final MutableList<Change>                         changes   = Lists.mutable.empty();
+    private final MutableMap<String, ASTRewrite> rewriters = Maps.mutable.empty();
+    private final MutableList<Change>            changes   = Lists.mutable.empty();
 
     public ModificationCollector() {
         this(null);
@@ -49,11 +47,12 @@ public class ModificationCollector {
     }
 
     public ASTRewrite rewriterForTranslationUnit(final IASTTranslationUnit ast) {
-        if (!rewriters.containsKey(ast)) {
-            rewriters.put(ast, ASTRewrite.create(ast));
+        final String filePath = ast.getFilePath();
+        if (!rewriters.containsKey(filePath)) {
+            rewriters.put(filePath, ASTRewrite.create(ast));
             addToDelta((IFile) ast.getOriginatingTranslationUnit().getResource());
         }
-        return rewriters.get(ast);
+        return rewriters.get(filePath);
     }
 
     /**
@@ -165,8 +164,8 @@ public class ModificationCollector {
         final CCompositeChange result = new CCompositeChange("");
         result.markAsSynthetic();
 
-        changes.forEach(result::add);
-        rewriters.forEachValue(c -> addFlattened(c.rewriteAST(), result));
+        rewriters.forEachValue(r -> result.flatAdd(r.rewriteAST()));
+        changes.forEach(result::flatAdd);
 
         return result;
     }
@@ -198,22 +197,5 @@ public class ModificationCollector {
     private void addToDelta(final RenameResourceChange change, final IPath destination) {
         if (deltaFactory == null) return;
         deltaFactory.move(getResource(change), destination);
-    }
-
-    /**
-     * If {@code change} is a CompositeChange, merges it into the {@code receiver}, otherwise
-     * adds it to the {@code receiver}.
-     *
-     * @param change
-     * The change being added.
-     * @param receiver
-     * The composite change that receives the addition.
-     */
-    private void addFlattened(final Change change, final CompositeChange receiver) {
-        if (change instanceof CompositeChange) {
-            receiver.merge((CompositeChange) change);
-        } else {
-            receiver.add(change);
-        }
     }
 }
