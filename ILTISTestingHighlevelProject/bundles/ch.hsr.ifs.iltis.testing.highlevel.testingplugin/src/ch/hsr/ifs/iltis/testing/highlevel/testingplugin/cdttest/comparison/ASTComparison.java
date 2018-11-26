@@ -28,6 +28,7 @@ import org.eclipse.cdt.core.dom.ast.IASTPointer;
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorIncludeStatement;
 import org.eclipse.cdt.core.dom.ast.IASTProblem;
 import org.eclipse.cdt.core.dom.ast.IASTProblemHolder;
+import org.eclipse.cdt.core.dom.ast.IASTSimpleDeclSpecifier;
 import org.eclipse.cdt.core.dom.ast.IASTSimpleDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTStatement;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
@@ -383,6 +384,12 @@ public class ASTComparison {
                 final ICPPASTEnumerationSpecifier et = as(expected);
                 final ICPPASTEnumerationSpecifier at = as(actual);
                 return et.isOpaque() == at.isOpaque() && et.isScoped() == at.isScoped();
+            } else if (expected instanceof IASTSimpleDeclSpecifier) {
+                final IASTSimpleDeclSpecifier et = as(expected);
+                final IASTSimpleDeclSpecifier at = as(actual);
+                return et.getType() == at.getType() && et.isSigned() == at.isSigned() && et.isUnsigned() && at.isUnsigned() //
+                       && et.isShort() == at.isShort() && et.isLong() == at.isLong() && et.isLongLong() == at.isLongLong() //
+                       && et.isComplex() == at.isComplex() && et.isImaginary() == at.isImaginary();
             } else {
                 return defaultHandler(expected, actual, args);
             } /* Continue comparing raw-signature */
