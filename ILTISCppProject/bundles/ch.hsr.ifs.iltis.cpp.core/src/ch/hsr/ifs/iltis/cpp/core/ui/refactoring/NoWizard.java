@@ -1,8 +1,7 @@
 package ch.hsr.ifs.iltis.cpp.core.ui.refactoring;
 
-import org.eclipse.ltk.core.refactoring.Refactoring;
-import org.eclipse.ltk.core.refactoring.RefactoringContext;
-import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
+import ch.hsr.ifs.iltis.cpp.core.wrappers.CRefactoring;
+import ch.hsr.ifs.iltis.cpp.core.wrappers.CRefactoringContext;
 
 
 /**
@@ -11,13 +10,13 @@ import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
  * @author tstauber
  *
  */
-class NoWizard extends RefactoringWizard {
+class NoWizard extends CRefactoringWizard {
 
-    public NoWizard(final Refactoring refactoring) {
+    public NoWizard(final CRefactoring refactoring) {
         super(refactoring, CHECK_INITIAL_CONDITIONS_ON_OPEN);
     }
 
-    public NoWizard(final RefactoringContext context) {
+    public NoWizard(final CRefactoringContext context) {
         super(context, CHECK_INITIAL_CONDITIONS_ON_OPEN);
     }
 
@@ -25,5 +24,4 @@ class NoWizard extends RefactoringWizard {
     protected void addUserInputPages() {
         /* Do nothing to avoid showing */
     }
-
 }

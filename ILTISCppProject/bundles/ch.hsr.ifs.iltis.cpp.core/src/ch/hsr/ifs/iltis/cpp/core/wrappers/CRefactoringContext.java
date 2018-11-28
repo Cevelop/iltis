@@ -47,6 +47,11 @@ public class CRefactoringContext extends RefactoringContext {
         return IIndexManager.ADD_DEPENDENCIES | IIndexManager.ADD_DEPENDENT;
     }
 
+    @Override
+    public CRefactoring getRefactoring() {
+        return (CRefactoring) super.getRefactoring();
+    }
+
     /**
      * Returns an AST for the given translation unit. The AST is built for the working
      * copy of the translation unit if such working copy exists. The returned AST is
@@ -92,7 +97,7 @@ public class CRefactoringContext extends RefactoringContext {
         }
     }
 
-    private void releaseSharedAST(final IASTTranslationUnit sharedAST) {
+    private static void releaseSharedAST(final IASTTranslationUnit sharedAST) {
         if (sharedAST != null) {
             ASTProvider.getASTProvider().releaseSharedAST(sharedAST);
         }
@@ -111,7 +116,7 @@ public class CRefactoringContext extends RefactoringContext {
         fSharedAST = ast;
     }
 
-    private void assertNotCanceled(final IProgressMonitor pm) {
+    private static void assertNotCanceled(final IProgressMonitor pm) {
         if (pm != null && pm.isCanceled()) throw new OperationCanceledException();
     }
 
@@ -146,8 +151,12 @@ public class CRefactoringContext extends RefactoringContext {
     public void dispose() {
         if (isDisposed()) throw new IllegalStateException("CRefactoringContext.dispose() called more than once."); //$NON-NLS-1$
         releaseSharedAST(fSharedAST);
-        if (fIndex != null) fIndex.releaseReadLock();
+        releaseIndex(fIndex);
         super.dispose();
+    }
+
+    private static void releaseIndex(IIndex index) {
+        if (index != null) index.releaseReadLock();
     }
 
     protected boolean isDisposed() {
