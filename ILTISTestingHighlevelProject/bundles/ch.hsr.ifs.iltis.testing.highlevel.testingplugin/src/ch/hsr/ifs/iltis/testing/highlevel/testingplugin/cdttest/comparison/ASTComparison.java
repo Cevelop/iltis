@@ -387,7 +387,7 @@ public class ASTComparison {
             } else if (expected instanceof IASTSimpleDeclSpecifier) {
                 final IASTSimpleDeclSpecifier et = as(expected);
                 final IASTSimpleDeclSpecifier at = as(actual);
-                return et.getType() == at.getType() && et.isSigned() == at.isSigned() && et.isUnsigned() && at.isUnsigned() //
+                return et.getType() == at.getType() && et.isSigned() == at.isSigned() && et.isUnsigned() == at.isUnsigned() //
                        && et.isShort() == at.isShort() && et.isLong() == at.isLong() && et.isLongLong() == at.isLongLong() //
                        && et.isComplex() == at.isComplex() && et.isImaginary() == at.isImaginary();
             } else {
