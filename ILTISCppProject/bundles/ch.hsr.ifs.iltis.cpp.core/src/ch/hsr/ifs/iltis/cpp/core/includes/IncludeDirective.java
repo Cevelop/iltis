@@ -3,7 +3,13 @@ package ch.hsr.ifs.iltis.cpp.core.includes;
 import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
 import ch.hsr.ifs.iltis.cpp.core.util.constants.CommonCPPConstants;
 
-
+/**
+ * TODO(Hansruedi) Please write javadoc
+ * @author hpatzen
+ * 
+ * @since 1.1
+ *
+ */
 public class IncludeDirective implements Comparable<IncludeDirective> {
 
     private static final String SPACE_STR = " ";
@@ -37,6 +43,14 @@ public class IncludeDirective implements Comparable<IncludeDirective> {
         this.type = type;
         this.startSymbol = (type == IncludeType.SYSTEM) ? "<" : "\"";
         this.endSymbol = (type == IncludeType.SYSTEM) ? ">" : "\"";
+    }
+    
+    public static IncludeDirective newSys(final String target) {
+        return new IncludeDirective(target, IncludeType.SYSTEM);
+    }
+
+    public static IncludeDirective newUsr(final String target) {
+        return new IncludeDirective(target, IncludeType.USER);
     }
 
     @Override
