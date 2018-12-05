@@ -3,8 +3,10 @@ package ch.hsr.ifs.iltis.cpp.core.includes;
 import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
 import ch.hsr.ifs.iltis.cpp.core.util.constants.CommonCPPConstants;
 
+
 /**
  * TODO(Hansruedi) Please write javadoc
+ * 
  * @author hpatzen
  * 
  * @since 1.1
@@ -12,13 +14,13 @@ import ch.hsr.ifs.iltis.cpp.core.util.constants.CommonCPPConstants;
  */
 public class IncludeDirective implements Comparable<IncludeDirective> {
 
-    private static final String SPACE_STR = " ";
+    private static final char SPACE = ' ';
 
     public final String      target;
     public final IncludeType type;
 
-    private final String startSymbol;
-    private final String endSymbol;
+    private final char startSymbol;
+    private final char endSymbol;
 
     /**
      * There are currently two ways of including a header in C and C++. One can
@@ -41,14 +43,28 @@ public class IncludeDirective implements Comparable<IncludeDirective> {
         if (target == null || target.length() == 0) throw new ILTISException("Include directives must have a name.");
         this.target = target;
         this.type = type;
-        this.startSymbol = (type == IncludeType.SYSTEM) ? "<" : "\"";
-        this.endSymbol = (type == IncludeType.SYSTEM) ? ">" : "\"";
+        this.startSymbol = (type == IncludeType.SYSTEM) ? '<' : '"';
+        this.endSymbol = (type == IncludeType.SYSTEM) ? '>' : '"';
     }
-    
+
+    /**
+     * Static factory method creating a new system include
+     * 
+     * @param target
+     * The target to include
+     * @return A new system include to the target
+     */
     public static IncludeDirective newSys(final String target) {
         return new IncludeDirective(target, IncludeType.SYSTEM);
     }
 
+    /**
+     * Static factory method creating a new user include
+     * 
+     * @param target
+     * The target to include
+     * @return A new user include to the target
+     */
     public static IncludeDirective newUsr(final String target) {
         return new IncludeDirective(target, IncludeType.USER);
     }
@@ -62,8 +78,8 @@ public class IncludeDirective implements Comparable<IncludeDirective> {
 
     @Override
     public String toString() {
-        StringBuffer includeString = new StringBuffer(CommonCPPConstants.INCLUDE_DIRECTIVE);
-        includeString.append(SPACE_STR);
+        StringBuilder includeString = new StringBuilder(CommonCPPConstants.INCLUDE_DIRECTIVE);
+        includeString.append(SPACE);
         includeString.append(startSymbol);
         includeString.append(target);
         includeString.append(endSymbol);
