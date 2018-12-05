@@ -36,6 +36,49 @@ public class ReflectionUtil {
     }
 
     /**
+     * Tries to get the value of the field with fieldName on the object target.
+     * <b>This method does not work with value-types</b>
+     * 
+     * @since 1.1
+     * 
+     * @param target
+     * The object on which to get the field
+     * @param fieldName
+     * The name of the field to get
+     * @return The value of the field
+     */
+    public static <TargetType, FieldType> FieldType get(final TargetType target, final String fieldName) {
+        return getOrDefault(target, fieldName, null);
+    }
+
+    /**
+     * Tries to get the value of the field with fieldName on the object target.
+     * <b>This method does not work with value-types</b>
+     * 
+     * @since 1.1
+     * 
+     * @param target
+     * The object on which to get the field
+     * @param fieldName
+     * The name of the field to get
+     * @param def
+     * The default value to use if the field could not be read
+     * @return The value of the field
+     */
+    @SuppressWarnings("unchecked")
+    public static <TargetType, FieldType> FieldType getOrDefault(final TargetType target, final String fieldName, final FieldType def) {
+        try {
+            Field f = getFieldAccessible(target, fieldName);
+            return (FieldType) f.get(target);
+        } catch (ClassCastException e) {
+            return def;
+        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {
+            e.printStackTrace();
+            return def;
+        }
+    }
+
+    /**
      * Sets the value of any field (even protected, private, or final) to the value passed
      *
      * @param <TargetType>
