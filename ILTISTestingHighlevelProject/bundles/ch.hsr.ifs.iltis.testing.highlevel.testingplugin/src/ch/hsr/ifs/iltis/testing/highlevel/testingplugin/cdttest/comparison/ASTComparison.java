@@ -32,6 +32,7 @@ import org.eclipse.cdt.core.dom.ast.IASTProblemHolder;
 import org.eclipse.cdt.core.dom.ast.IASTSimpleDeclSpecifier;
 import org.eclipse.cdt.core.dom.ast.IASTSimpleDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTStatement;
+import org.eclipse.cdt.core.dom.ast.IASTToken;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTAliasDeclaration;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTArraySubscriptExpression;
@@ -236,8 +237,6 @@ public class ASTComparison {
 
     private static String collectToString(final Stream<IASTPreprocessorIncludeStatement> nodes) {
         return nodes.map(ASTComparison::getAugmentedSignature).collect(Collectors.joining("\n"));
-        // TODO(tstauber - Dec 14, 2018) REMOVE AFTER TESTING 
-        //        return nodes.map(ASTComparison::getRawSignatureOrMissing).collect(Collectors.joining("\n"));
     }
 
     private static List<ComparisonAttribute> generateBasicIncludeComparisonAttributes(final String firstMismatchLineNo, final String expected,
@@ -250,19 +249,13 @@ public class ASTComparison {
         return Stream.of(ast.getIncludeDirectives()).filter(ASTComparison::isPartOfNonSyntheticTuFile);
     }
 
-    //TODO make synthetic a comparison-attribute
     protected static boolean isPartOfNonSyntheticTuFile(IASTNode node) {
         if (!(node instanceof ASTNode)) return node.isPartOfTranslationUnitFile();
         IASTTranslationUnit ast = node.getTranslationUnit();
         if (ast != null) {
             ILocationResolver lr = ast.getAdapter(ILocationResolver.class);
             if (lr != null) {
-                // TODO(tstauber - Dec 14, 2018) REMOVE AFTER TESTING 
-                IASTFileLocation fileLocation = node.getFileLocation();
-                return lr.isPartOfTranslationUnitFile(((ASTNode) node).getOffset()) /*
-                                                                                     * && fileLocation != null && !(fileLocation.getNodeOffset() == 0
-                                                                                     * && fileLocation.getNodeLength() == 0)
-                                                                                     */;
+                return lr.isPartOfTranslationUnitFile(((ASTNode) node).getOffset());
             }
         }
         return false;
@@ -322,7 +315,6 @@ public class ASTComparison {
      * @return Those children which are either part of the TU file or are purely synthetic.
      */
     private static Stream<IASTNode> getFilteredChildren(final IASTNode node) {
-        //TODO why did I think synthetic nodes should be included here?????
         return Stream.of(node.getChildren()).filter(n -> n.isPartOfTranslationUnitFile() || n.getContainingFilename().isEmpty());
     }
 
@@ -536,12 +528,12 @@ public class ASTComparison {
         } else if (expected instanceof ICPPASTAttribute) {
             final ICPPASTAttribute et = as(expected);
             final ICPPASTAttribute at = as(actual);
-            return compareNullable(et.getArgumentClause(), at.getArgumentClause()) && compareNullable(et.getName(), at.getName()) && compareNullable(
-                    et.getScope(), at.getScope()) && et.hasPackExpansion() == at.hasPackExpansion();
+            return tokenEquals(et.getArgumentClause(), at.getArgumentClause()) && compareNullable(et.getName(), at.getName()) && compareNullable(et
+                    .getScope(), at.getScope()) && et.hasPackExpansion() == at.hasPackExpansion();
         } else if (expected instanceof IASTAttribute) {
             final IASTAttribute et = as(expected);
             final IASTAttribute at = as(actual);
-            return compareNullable(et.getArgumentClause(), at.getArgumentClause()) && compareNullable(et.getName(), at.getName());
+            return tokenEquals(et.getArgumentClause(), at.getArgumentClause()) && compareNullable(et.getName(), at.getName());
         } else {
             /* OTHER */
             if (expected instanceof IASTTranslationUnit || expected instanceof IASTArrayModifier || expected instanceof IASTInitializer) {
@@ -552,6 +544,11 @@ public class ASTComparison {
 
         /* Default case */
         return equalsNormalizedRaw(expected, actual);
+    }
+
+    private static boolean tokenEquals(IASTToken expected, IASTToken actual) {
+        return compareNullable(expected.getTokenType(), actual.getTokenType()) && compareNullable(expected.getTokenCharImage(), actual
+                .getTokenCharImage());
     }
 
     private static boolean defaultHandler(final IASTNode expected, final IASTNode actual, final EnumSet<ComparisonArg> args) {
