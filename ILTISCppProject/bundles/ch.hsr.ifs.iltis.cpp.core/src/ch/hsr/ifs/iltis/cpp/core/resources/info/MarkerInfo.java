@@ -24,6 +24,7 @@ import ch.hsr.ifs.iltis.cpp.core.resources.info.annotations.InfoArgument;
  * @author void
  *
  * @param <InfoType>
+ * @since 1.1
  */
 @SuppressWarnings("restriction")
 public abstract class MarkerInfo<InfoType extends MarkerInfo<InfoType>> implements IInfo<InfoType> {

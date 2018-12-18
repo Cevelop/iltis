@@ -97,6 +97,15 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
     }
 
     @Override
+    public ICPPASTQualifiedName newQualifiedName(String[] qualifiers, ICPPASTName name) {
+        ICPPASTQualifiedName qualifiedName = newQualifiedName(name);
+        for (String qualifier : qualifiers) {
+            qualifiedName.addNameSpecifier(newName(qualifier));
+        }
+        return qualifiedName;
+    }
+
+    @Override
     public IASTIdExpression newIdExpression(final String name) {
         return newIdExpression(newName(name));
     }

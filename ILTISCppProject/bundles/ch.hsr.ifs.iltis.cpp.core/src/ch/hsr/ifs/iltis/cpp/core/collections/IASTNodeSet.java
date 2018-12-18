@@ -9,7 +9,13 @@ import org.eclipse.collections.impl.set.sorted.mutable.TreeSortedSet;
 import org.eclipse.collections.impl.utility.ArrayIterate;
 import org.eclipse.collections.impl.utility.Iterate;
 
-
+/**
+ * A set specialized for IASTNodes
+ * @author tstauber
+ *
+ * @param <NodeType>
+ * @since 1.1
+ */
 public class IASTNodeSet<NodeType extends IASTNode> extends TreeSortedSet<NodeType> implements IASTNodeCollection<NodeType> {
 
     public IASTNodeSet() {

@@ -56,6 +56,11 @@ public interface IBetterFactory extends ICPPNodeFactory {
 
     ICPPASTQualifiedName newQualifiedName(ICPPASTName... names);
 
+    /**
+     * @since 1.1
+     */
+    ICPPASTQualifiedName newQualifiedName(String[] qualifiers, ICPPASTName name);
+
     IASTIdExpression newIdExpression(String name);
 
     ICPPASTDeclarator newDeclarator(String name);

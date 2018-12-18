@@ -22,6 +22,11 @@ public interface IProblemId<T extends IId<T>> extends IId<T> {
         return new ProblemIdWrapper(id);
     }
 
+    /**
+     * An internal helper-class
+     * 
+     * @since 1.1
+     */
     class ProblemIdWrapper extends IIdWrapper<ProblemIdWrapper> implements IProblemId<ProblemIdWrapper> {
 
         protected ProblemIdWrapper(final String id) {

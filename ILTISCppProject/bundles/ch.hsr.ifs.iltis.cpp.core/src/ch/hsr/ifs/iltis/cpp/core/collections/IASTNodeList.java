@@ -9,6 +9,12 @@ import org.eclipse.collections.impl.utility.ArrayIterate;
 import org.eclipse.collections.impl.utility.Iterate;
 
 
+/**
+ * A list specialized for IASTNodes.
+ * 
+ * @author tstauber
+ * @since 1.1
+ */
 public class IASTNodeList<T extends IASTNode> extends FastList<T> implements IASTNodeCollection<T> {
 
     public IASTNodeList() {}

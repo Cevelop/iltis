@@ -105,6 +105,7 @@ public abstract class WizardRefactoringStarterMenuHandler<WizardType extends Ref
      * @param selection
      * The selection for which to run the handler
      * @return the result of the execution. Reserved for future use, must be null.
+     * @since 1.1
      */
     public Object execute(final Shell shell, final IWorkingCopy wc, final Optional<ITextSelection> selection) {
         final RefactoringType refactoring = getRefactoring(wc, selection);

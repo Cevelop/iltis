@@ -20,6 +20,14 @@ import ch.hsr.ifs.iltis.cpp.core.resources.info.annotations.MessageInfoArgument;
 import ch.hsr.ifs.iltis.cpp.core.resources.info.annotations.NonPersistentCopyArgument;
 
 
+/**
+ * Interface used for information
+ * 
+ * @author tstauber
+ *
+ * @param <T>
+ * @since 1.1
+ */
 public interface IInfo<T extends IInfo<T>> extends ICopyable<T> {
 
     /**

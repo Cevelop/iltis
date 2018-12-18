@@ -89,6 +89,7 @@ public class ModificationCollector {
      * the file content
      * @param encoding
      * the file encoding
+     * @since 1.1
      */
     public void createResourceChange(final String name, final IPath path, final String source, final String encoding) {
         final CreateFileChange change = new CreateFileChange(name, path, source, encoding);
@@ -103,6 +104,7 @@ public class ModificationCollector {
      * the resource path
      * @param forceOutOfSync
      * if <code>true</code>, deletes the resource with {@link IResource#FORCE}
+     * @since 1.1
      */
     public void deleteResourceChange(final IPath resourcePath, final boolean forceOutOfSync) {
         deleteResourceChange(resourcePath, forceOutOfSync, false);
@@ -118,6 +120,7 @@ public class ModificationCollector {
      * @param deleteContent
      * if <code>true</code> delete the project contents.
      * The content delete is not undoable. This setting only applies to projects and is not used when deleting files or folders.
+     * @since 1.1
      */
     public void deleteResourceChange(final IPath resourcePath, final boolean forceOutOfSync, final boolean deleteContent) {
         final DeleteResourceChange change = new DeleteResourceChange(resourcePath, forceOutOfSync, deleteContent);
@@ -133,6 +136,7 @@ public class ModificationCollector {
      * @param target
      * the container the resource is moved to. An existing resource at the destination will be
      * replaced.
+     * @since 1.1
      */
     public void moveResourceChange(final IResource source, final IContainer target) {
         final MoveResourceChange change = new MoveResourceChange(source, target);
@@ -147,6 +151,7 @@ public class ModificationCollector {
      * the path of the resource to rename
      * @param newName
      * the new name. Must not be empty.
+     * @since 1.1
      */
     public void renameResourceChange(final IPath resourcePath, final String newName) {
         final RenameResourceChange change = new RenameResourceChange(resourcePath, newName);
@@ -158,6 +163,7 @@ public class ModificationCollector {
      * Creates the final change, merging all other changes into one {@link ch.hsr.ifs.iltis.cpp.core.wrappers.CCompositeChange}.
      *
      * @return a new {@link ch.hsr.ifs.iltis.cpp.core.wrappers.CCompositeChange}.
+     * @since 1.1
      */
     public CCompositeChange createFinalChange() {
         // Synthetic changes aren't displayed and therefore don't need a name

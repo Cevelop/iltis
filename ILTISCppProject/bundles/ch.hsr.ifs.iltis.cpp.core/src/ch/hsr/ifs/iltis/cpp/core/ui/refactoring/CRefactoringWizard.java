@@ -14,6 +14,7 @@ import ch.hsr.ifs.iltis.cpp.core.wrappers.CRefactoringContext;
  * to access the refactoring and its context individually.
  * 
  * @author hpatzen
+ * @since 1.1
  */
 public abstract class CRefactoringWizard extends RefactoringWizard {
 

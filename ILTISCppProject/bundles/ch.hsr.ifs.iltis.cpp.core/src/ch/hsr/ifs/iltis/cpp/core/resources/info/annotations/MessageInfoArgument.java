@@ -13,6 +13,7 @@ import java.lang.annotation.Target;
  *
  *
  * @author tstauber
+ * @since 1.1
  *
  */
 @Target(ElementType.FIELD)

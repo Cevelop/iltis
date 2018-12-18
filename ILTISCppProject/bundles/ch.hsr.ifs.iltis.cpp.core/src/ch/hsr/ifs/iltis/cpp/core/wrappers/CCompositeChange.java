@@ -33,8 +33,10 @@ public class CCompositeChange extends CompositeChange {
      * Add a Change to this composite change. Other composite changes will be
      * merged automatically.
      * 
-     * @param change The change to be added to this composite change
+     * @param change
+     * The change to be added to this composite change
      * iff it is a CompositeChange as well, it will automatically be merged.
+     * @since 1.1
      */
     public void flatAdd(Change change) {
         if (change instanceof CompositeChange) {

@@ -47,6 +47,11 @@ public class CRefactoringContext extends RefactoringContext {
         return IIndexManager.ADD_DEPENDENCIES | IIndexManager.ADD_DEPENDENT;
     }
 
+    /**
+     * Used to return a CRefactoring instead of Refactoring
+     * 
+     * @since 1.1
+     */
     @Override
     public CRefactoring getRefactoring() {
         return (CRefactoring) super.getRefactoring();

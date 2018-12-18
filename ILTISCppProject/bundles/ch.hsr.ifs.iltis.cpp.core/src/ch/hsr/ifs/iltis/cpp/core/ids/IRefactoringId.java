@@ -2,6 +2,8 @@ package ch.hsr.ifs.iltis.cpp.core.ids;
 
 /**
  * An interface which should be implemented by types which represent a refactoring-id
+ * 
+ * @since 1.1
  */
 public interface IRefactoringId<T extends IId<T>> extends IId<T> {
 
