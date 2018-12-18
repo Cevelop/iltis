@@ -97,7 +97,8 @@ class ASTNodeCollector {
 
     private int handleNode(IASTNode node) {
         // FIXME implement working test for isPartOfTranslationUnitFile()
-        if (!node.isPartOfTranslationUnitFile()) return ASTVisitor.PROCESS_SKIP;
+        /* If AST is not synthetic, check if node is part for the TU file. */
+        if (!node.isPartOfTranslationUnitFile() && !node.getContainingFilename().isEmpty()) return ASTVisitor.PROCESS_SKIP;
         try {
             updateAllCommentRelations(commentRelations, node);
             pipe.put(node);

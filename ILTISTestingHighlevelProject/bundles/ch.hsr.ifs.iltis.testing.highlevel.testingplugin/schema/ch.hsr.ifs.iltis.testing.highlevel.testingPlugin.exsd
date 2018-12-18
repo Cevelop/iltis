@@ -3,7 +3,7 @@
 <schema targetNamespace="ch.hsr.ifs.iltis.testing.highlevel" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="ch.hsr.ifs.iltis.testing.highlevel" id="testingPlugin" name="CDT RTS Testing Plugin"/>
+         <meta.schema plugin="ch.hsr.ifs.iltis.testing.highlevel" id="testingPlugin" name="ILTIS RTS Testing Plugin"/>
       </appinfo>
       <documentation>
          Extend this extension point if your plugin wants to use the CDT RTS (Refactoring Test Suite) testing framework.

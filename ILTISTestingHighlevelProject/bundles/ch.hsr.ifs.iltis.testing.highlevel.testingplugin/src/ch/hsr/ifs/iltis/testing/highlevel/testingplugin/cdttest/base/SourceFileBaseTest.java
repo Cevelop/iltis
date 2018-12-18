@@ -287,9 +287,17 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
      * @throws IllegalArgumentException
      * If no test source file with this name exists.
      */
-    public void fastAssertEquals(final String testSourceFileName, final EnumSet<ComparisonArg> args) {
-        fastAssertEquals(testSourceFileName, args, ITranslationUnit.AST_SKIP_INDEXED_HEADERS | ITranslationUnit.AST_CONFIGURE_USING_SOURCE_CONTEXT |
-                                                   ITranslationUnit.AST_SKIP_TRIVIAL_EXPRESSIONS_IN_AGGREGATE_INITIALIZERS);
+    public void fastAssertEquals(final String testSourceFileName, EnumSet<ComparisonArg> args) {
+        fastAssertEquals(testSourceFileName, args, getASTComparisonParameters());
+    }
+
+    /**
+     * Override to change the used AST comparison attributes.
+     * 
+     * @return The comparison parameters to use
+     */
+    protected int getASTComparisonParameters() {
+        return 0 /* Default value equivalent to no special style */ ;
     }
 
     /**
@@ -322,7 +330,6 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
                     assertEqualsWithAST(testSourceFileName, args, astStyle);
                 }
             }
-
         } else {
             throw new IllegalArgumentException("No such test file \"" + testSourceFileName + "\" found.");
         }
@@ -356,7 +363,7 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
         final IASTTranslationUnit[] expectedAST = { null };
         final IASTTranslationUnit[] currentAST = { null };
         try {
-            final ProjectHolderJob expected = ProjectHolderJob.create("Create expected AST", "ch.hsr.ifs.cdttesting.comparison.buildAST", mon -> {
+            ProjectHolderJob expected = ProjectHolderJob.create("Create expected AST", "ch.hsr.ifs.cdttesting.comparison.buildAST.expected", mon -> {
                 try {
                     expectedIndex[0] = CCorePlugin.getIndexManager().getIndex(getExpectedCProject(), IIndexManager.ADD_DEPENDENCIES &
                                                                                                      IIndexManager.ADD_DEPENDENT);
@@ -369,7 +376,7 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
                 return Status.OK_STATUS;
             });
 
-            final ProjectHolderJob current = ProjectHolderJob.create("Create current AST", "ch.hsr.ifs.cdttesting.comparison.buildAST", mon -> {
+            ProjectHolderJob current = ProjectHolderJob.create("Create current AST", "ch.hsr.ifs.cdttesting.comparison.buildAST.current", mon -> {
                 try {
                     currentIndex[0] = CCorePlugin.getIndexManager().getIndex(getCurrentCProject(), IIndexManager.ADD_DEPENDENCIES &
                                                                                                    IIndexManager.ADD_DEPENDENT);
@@ -385,17 +392,12 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
             scheduleAndJoinBoth(current, expected, false);
 
             doForT(j -> {
-                if (j.getState() != IStatus.OK) fail(j.getResult().getException().getMessage());
+                assertNotNull(j);
+                assertTrue(j.getResult().getException().getMessage(), j.getState() != IStatus.OK);
             }, expected, current);
 
-            assertNotNull(expected);
-            assertNotNull(current);
-
-            ASTComparison.assertEqualsAST(expectedTU[0].getAST(), currentTU[0].getAST(), args); //FIXME remove after testing
-            //         ASTComparison.assertEqualsAST(expectedAST[0], currentAST[0], args);
-        } catch (final CoreException e) {
-            throw ILTISException.wrap(e);
-        } catch (final InterruptedException e) {
+            ASTComparison.assertEqualsAST(expectedAST[0], currentAST[0], args);
+        } catch (InterruptedException e) {
             fail("Thread got interrupted");
         } finally {
             if (expectedIndex[0] != null) expectedIndex[0].releaseReadLock();
