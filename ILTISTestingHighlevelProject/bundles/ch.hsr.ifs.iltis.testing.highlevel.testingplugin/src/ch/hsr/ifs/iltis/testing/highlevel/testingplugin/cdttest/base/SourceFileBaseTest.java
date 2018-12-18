@@ -393,7 +393,7 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
 
             doForT(j -> {
                 assertNotNull(j);
-                assertTrue(j.getResult().getException().getMessage(), j.getState() != IStatus.OK);
+                if (j.getState() != IStatus.OK) fail(j.getResult().getException().getMessage());
             }, expected, current);
 
             ASTComparison.assertEqualsAST(expectedAST[0], currentAST[0], args);
