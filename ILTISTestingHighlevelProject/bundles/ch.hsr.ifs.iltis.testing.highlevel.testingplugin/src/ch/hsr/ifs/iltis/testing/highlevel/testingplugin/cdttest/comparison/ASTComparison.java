@@ -547,6 +547,8 @@ public class ASTComparison {
     }
 
     private static boolean tokenEquals(IASTToken expected, IASTToken actual) {
+        if (expected == null && actual == null) return true;
+        if (expected == null || actual == null) return false;
         return compareNullable(expected.getTokenType(), actual.getTokenType()) && compareNullable(expected.getTokenCharImage(), actual
                 .getTokenCharImage());
     }
