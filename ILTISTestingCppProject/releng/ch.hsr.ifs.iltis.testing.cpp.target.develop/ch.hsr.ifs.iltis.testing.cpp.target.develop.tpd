@@ -6,6 +6,7 @@ location "http://download.eclipse.org/releases/2018-12" {
 
 location "http://download.eclipse.org/tools/cdt/releases/9.6/" {
 	org.eclipse.cdt.sdk lazy
+	org.eclipse.cdt.core lazy
 }
 
 location "http://download.eclipse.org/tools/orbit/downloads/drops/R20180606145124/repository/" {
