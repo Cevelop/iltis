@@ -2,6 +2,10 @@ package ch.hsr.ifs.iltis.core.core.reflection;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import org.eclipse.collections.impl.utility.ArrayIterate;
 
 
 public class ReflectionUtil {
@@ -33,6 +37,40 @@ public class ReflectionUtil {
             }
         }
         throw new NoSuchFieldException();
+    }
+
+    /**
+     * Calls a method
+     * 
+     * @param target
+     * @param methodName
+     * @param parameters
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <TargetType, ReturnType> ReturnType call(final TargetType target, final String methodName, Object... parameters) {
+        ArrayIterate.collect(parameters, p -> p.getClass()).toArray(new Class<?>[parameters.length]);
+        try {
+            Method method = target.getClass().getMethod(methodName, ArrayIterate.collect(parameters, p -> p.getClass()).toArray(
+                    new Class<?>[parameters.length]));
+            method.setAccessible(true);
+            return (ReturnType) method.invoke(target, parameters);
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public static <TargetType> void callVoid(final TargetType target, final String methodName, Object... parameters) {
+        ArrayIterate.collect(parameters, p -> p.getClass()).toArray(new Class<?>[parameters.length]);
+        try {
+            Method method = target.getClass().getMethod(methodName, ArrayIterate.collect(parameters, p -> p.getClass()).toArray(
+                    new Class<?>[parameters.length]));
+            method.setAccessible(true);
+            method.invoke(target, parameters);
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
