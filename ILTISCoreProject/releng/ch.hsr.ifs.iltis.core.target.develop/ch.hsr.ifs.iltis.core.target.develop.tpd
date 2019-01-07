@@ -1,6 +1,6 @@
 target "ILTIS-CORE" with source requirements
 
-location "http://download.eclipse.org/releases/photon" {
+location "http://download.eclipse.org/releases/2018-12" {
 	org.eclipse.emf.common.ui.feature.group lazy
 	org.eclipse.equinox.launcher lazy
 	org.eclipse.core.resources lazy
