@@ -44,6 +44,7 @@ Build Signed:
     paths:
       - ./*/*/*/target/repository/**
       - ./**/.log
+    when: always
 
 Build Unsigned:
   <<: *BUILD_COMMON
