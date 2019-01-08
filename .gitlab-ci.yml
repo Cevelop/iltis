@@ -43,6 +43,7 @@ Build Signed:
   artifacts:
     paths:
       - ./*/*/*/target/repository/**
+      - ./**/.log
 
 Build Unsigned:
   <<: *BUILD_COMMON
