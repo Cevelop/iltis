@@ -43,7 +43,7 @@ Build Signed:
   artifacts:
     paths:
       - ./*/*/*/target/repository/**
-      - ./**/.log
+      - ./*/*/*/*/*/*/.metadata/.log
     when: always
 
 Build Unsigned:
