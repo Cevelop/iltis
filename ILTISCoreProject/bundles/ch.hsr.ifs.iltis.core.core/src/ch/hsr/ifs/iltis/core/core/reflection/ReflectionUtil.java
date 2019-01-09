@@ -42,6 +42,8 @@ public class ReflectionUtil {
     /**
      * Calls a method
      * 
+     * @since 1.1
+     * 
      * @param target
      * @param methodName
      * @param parameters
@@ -61,6 +63,9 @@ public class ReflectionUtil {
         }
     }
     
+    /**
+     * @since 1.1
+     */
     public static <TargetType> void callVoid(final TargetType target, final String methodName, Object... parameters) {
         ArrayIterate.collect(parameters, p -> p.getClass()).toArray(new Class<?>[parameters.length]);
         try {
