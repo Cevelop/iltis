@@ -5,7 +5,7 @@ package ch.hsr.ifs.iltis.core.core.object;
  * 
  * @author void
  * 
- * @since 1.1
+ * @since 2.0
  *
  */
 public interface ICopyable<T extends ICopyable<T>> {

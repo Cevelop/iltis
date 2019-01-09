@@ -25,7 +25,7 @@ public interface Function2<P1, P2, R> {
      * The value to bind the first parameter to.
      * @return A {@link CurriedFunction} with param1 filled in.
      * 
-     * @since 1.1
+     * @since 2.0
      */
     default Function<P2, R> curry(final P1 param1) {
         return new CurriedFunction<>(param1, this);

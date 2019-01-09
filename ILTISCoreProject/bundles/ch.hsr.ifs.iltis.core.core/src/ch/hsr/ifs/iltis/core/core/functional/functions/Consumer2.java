@@ -12,7 +12,7 @@ package ch.hsr.ifs.iltis.core.core.functional.functions;
  * @param <P2>
  * The type of the second argument
  * 
- * @since 1.1
+ * @since 2.0
  */
 @FunctionalInterface
 public interface Consumer2<P1, P2> {

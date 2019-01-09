@@ -42,7 +42,7 @@ public class ReflectionUtil {
     /**
      * Calls a method
      * 
-     * @since 1.1
+     * @since 2.0
      * 
      * @param target
      * @param methodName
@@ -64,7 +64,7 @@ public class ReflectionUtil {
     }
     
     /**
-     * @since 1.1
+     * @since 2.0
      */
     public static <TargetType> void callVoid(final TargetType target, final String methodName, Object... parameters) {
         ArrayIterate.collect(parameters, p -> p.getClass()).toArray(new Class<?>[parameters.length]);
@@ -82,7 +82,7 @@ public class ReflectionUtil {
      * Tries to get the value of the field with fieldName on the object target.
      * <b>This method does not work with value-types</b>
      * 
-     * @since 1.1
+     * @since 2.0
      * 
      * @param target
      * The object on which to get the field
@@ -98,7 +98,7 @@ public class ReflectionUtil {
      * Tries to get the value of the field with fieldName on the object target.
      * <b>This method does not work with value-types</b>
      * 
-     * @since 1.1
+     * @since 2.0
      * 
      * @param target
      * The object on which to get the field

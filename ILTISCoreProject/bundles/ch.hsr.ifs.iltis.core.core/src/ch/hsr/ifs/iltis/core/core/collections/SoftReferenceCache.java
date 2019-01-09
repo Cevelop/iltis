@@ -24,7 +24,7 @@ import org.eclipse.collections.impl.factory.Sets;
  * @param <ValueType>
  * The reference cache value type
  * 
- * @since 1.1
+ * @since 2.0
  */
 public class SoftReferenceCache<KeyType, ValueType> implements Map<KeyType, ValueType> {
 
