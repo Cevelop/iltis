@@ -68,6 +68,8 @@ Deploy:
   dependencies:
     - Build Signed
   script:
-    - "export P2_ROOT=${P2_ROOT_BASE}$( (echo ${CI_COMMIT_REF_NAME} | grep develop &>/dev/null) && echo '-unstable')"
+    - "export P2_ROOT_TOP=${P2_ROOT_BASE}$( (echo ${CI_COMMIT_REF_NAME} | grep develop &>/dev/null) && echo '-unstable')"
+    - "export P2_ROOT=${P2_ROOT_TOP}/$(git describe --abbrev=0 | grep -oP 'v\K([0-9]+.[0-9]+)')"
     - "export P2_COMPOSITE_VERSION=$(sed -n 's/[ \\t]*<version>\\([0-9]\\.[0-9]\\.[0-9]\\)-SNAPSHOT<\\/version>/\\1/p' *Project/**/*.update/pom.xml | head -1)"
     - "./tools/ci/deploy"
+    - "ssh ${P2_USER}@${P2_HOST} 'cd ${P2_ROOT_TOP} && compile-composite-updatesite '${P2_COMPOSITE_NAME}' '${P2_COMPOSITE_VERSION}''"
