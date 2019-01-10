@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ILTIS Testing Cpp Core
 Bundle-SymbolicName: ch.hsr.ifs.iltis.testing.cpp.core
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 2.0.0.qualifier
 Automatic-Module-Name: ch.hsr.ifs.iltis.testing.cpp
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: ch.hsr.ifs.iltis.testing.core.core;bundle-version="1.1.0",
