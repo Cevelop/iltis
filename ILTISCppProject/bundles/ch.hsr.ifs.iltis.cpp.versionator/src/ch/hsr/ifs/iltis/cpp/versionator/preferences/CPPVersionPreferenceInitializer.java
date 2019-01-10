@@ -12,10 +12,10 @@ import ch.hsr.ifs.iltis.cpp.versionator.definition.CPPVersion;
  */
 public class CPPVersionPreferenceInitializer extends AbstractPreferenceInitializer {
 
-   @Override
-   public void initializeDefaultPreferences() {
-      IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-      store.setDefault(CPPVersionPreferenceConstants.ELEVENATOR_VERSION_DEFAULT, CPPVersion.DEFAULT.name());
-   }
+    @Override
+    public void initializeDefaultPreferences() {
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+        store.setDefault(CPPVersionPreferenceConstants.ELEVENATOR_VERSION_DEFAULT, CPPVersion.DEFAULT.name());
+    }
 
 }

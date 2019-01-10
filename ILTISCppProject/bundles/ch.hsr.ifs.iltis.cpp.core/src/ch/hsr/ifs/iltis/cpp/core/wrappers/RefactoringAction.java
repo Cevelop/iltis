@@ -19,55 +19,58 @@ import ch.hsr.ifs.iltis.cpp.core.ui.refactoring.WizardRefactoringStarterMenuHand
 
 
 /**
-* @deprecated Use {@link WizardRefactoringStarterMenuHandler} instead
-*/
+ * @deprecated Use {@link WizardRefactoringStarterMenuHandler} instead
+ */
+@Deprecated
 @SuppressWarnings("restriction")
 public abstract class RefactoringAction extends Action {
 
-   protected CEditor      fEditor;
-   private IWorkbenchSite fSite;
-   private ICElement      fElement;
-   private boolean        saveRequired;
+    protected CEditor      fEditor;
+    private IWorkbenchSite fSite;
+    private ICElement      fElement;
+    private boolean        saveRequired;
 
-   public RefactoringAction(String label) {
-      super(label);
-   }
+    public RefactoringAction(final String label) {
+        super(label);
+    }
 
-   public void setEditor(IEditorPart editor) {
-      fEditor = null;
-      fSite = null;
-      if (editor instanceof CEditor) {
-         fEditor = (CEditor) editor;
-      }
-      setEnabled(fEditor != null);
-   }
+    public void setEditor(final IEditorPart editor) {
+        fEditor = null;
+        fSite = null;
+        if (editor instanceof CEditor) {
+            fEditor = (CEditor) editor;
+        }
+        setEnabled(fEditor != null);
+    }
 
-   public void setSite(IWorkbenchSite site) {
-      fEditor = null;
-      fSite = site;
-   }
+    public void setSite(final IWorkbenchSite site) {
+        fEditor = null;
+        fSite = site;
+    }
 
-   @Override
-   public final void run() {
-      if (saveRequired) {
-         EclipseObjects.getActivePage().saveAllEditors(true);
-         if (EclipseObjects.getActivePage().getDirtyEditors().length != 0) { return; }
-      }
-      if (fEditor != null) {
-         Optional.ofNullable(CUIPlugin.getDefault().getWorkingCopyManager().getWorkingCopy(fEditor.getEditorInput())).ifPresent(wc -> run(fEditor
-               .getSite(), wc, OptionalUtil.of(fEditor.getSelectionProvider()).map(ISelectionProvider::getSelection).mapAs(ITextSelection.class)
-                     .get()));
-      } else if (fSite != null && fElement != null) {
-         run(fSite, fElement);
-      }
-   }
+    @Override
+    public final void run() {
+        if (saveRequired) {
+            EclipseObjects.getActivePage().saveAllEditors(true);
+            if (EclipseObjects.getActivePage().getDirtyEditors().length != 0) {
+                return;
+            }
+        }
+        if (fEditor != null) {
+            Optional.ofNullable(CUIPlugin.getDefault().getWorkingCopyManager().getWorkingCopy(fEditor.getEditorInput())).ifPresent(wc -> run(fEditor
+                    .getSite(), wc, OptionalUtil.of(fEditor.getSelectionProvider()).map(ISelectionProvider::getSelection).mapAs(ITextSelection.class)
+                            .get()));
+        } else if (fSite != null && fElement != null) {
+            run(fSite, fElement);
+        }
+    }
 
-   public void updateSelection(ICElement elem) {
-      fElement = elem;
-      setEnabled(elem != null);
-   }
+    public void updateSelection(final ICElement elem) {
+        fElement = elem;
+        setEnabled(elem != null);
+    }
 
-   public abstract void run(IShellProvider shellProvider, IWorkingCopy wc, Optional<ITextSelection> s);
+    public abstract void run(IShellProvider shellProvider, IWorkingCopy wc, Optional<ITextSelection> s);
 
-   public abstract void run(IShellProvider shellProvider, ICElement elem);
+    public abstract void run(IShellProvider shellProvider, ICElement elem);
 }

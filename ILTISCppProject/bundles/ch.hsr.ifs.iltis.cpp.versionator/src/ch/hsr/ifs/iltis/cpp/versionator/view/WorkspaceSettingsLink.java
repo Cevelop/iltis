@@ -11,22 +11,22 @@ import ch.hsr.ifs.iltis.cpp.versionator.preferences.CPPVersionSelectionPreferenc
 
 public class WorkspaceSettingsLink extends Link {
 
-   public WorkspaceSettingsLink(Composite parent, int style) {
-      super(parent, style);
+    public WorkspaceSettingsLink(Composite parent, int style) {
+        super(parent, style);
 
-      String linkText = "Configure Workspace Settings...";
+        String linkText = "Configure Workspace Settings...";
 
-      setFont(parent.getFont());
-      setText("<A>" + linkText + "</A>"); //$NON-NLS-1$//$NON-NLS-2$
-      addSelectionListener(new SelectionAdapter() {
+        setFont(parent.getFont());
+        setText("<A>" + linkText + "</A>"); //$NON-NLS-1$//$NON-NLS-2$
+        addSelectionListener(new SelectionAdapter() {
 
-         @Override
-         public void widgetSelected(SelectionEvent e) {
-            PreferencesUtil.createPreferenceDialogOn(getShell(), CPPVersionSelectionPreferencePage.PAGE_ID, null, null).open();
-         }
-      });
-   }
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                PreferencesUtil.createPreferenceDialogOn(getShell(), CPPVersionSelectionPreferencePage.PAGE_ID, null, null).open();
+            }
+        });
+    }
 
-   @Override
-   protected void checkSubclass() {}
+    @Override
+    protected void checkSubclass() {}
 }

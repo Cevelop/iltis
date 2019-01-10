@@ -1,11 +1,14 @@
 package ch.hsr.ifs.iltis.cpp.core.includes;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorIncludeStatement;
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorStatement;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
+import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.api.partition.list.PartitionMutableList;
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.core.resources.IFile;
@@ -18,9 +21,9 @@ import org.eclipse.text.edits.MultiTextEdit;
 
 import ch.hsr.ifs.iltis.core.core.resources.FileUtil;
 import ch.hsr.ifs.iltis.cpp.core.ast.utilities.ITranslationUnitUtil;
+import ch.hsr.ifs.iltis.cpp.core.includes.IncludeDirective.IncludeType;
 import ch.hsr.ifs.iltis.cpp.core.preprocessor.PreprocessorScope;
 import ch.hsr.ifs.iltis.cpp.core.preprocessor.PreprocessorStatementUtil;
-import ch.hsr.ifs.iltis.cpp.core.util.constants.CommonCPPConstants;
 
 
 /**
@@ -30,206 +33,359 @@ import ch.hsr.ifs.iltis.cpp.core.util.constants.CommonCPPConstants;
  */
 public class IncludeInsertionUtil {
 
-   private static StringBuffer getSystemIncludeStatement(final String includeName) {
-      return new StringBuffer(CommonCPPConstants.INCLUDE_DIRECTIVE + " <" + includeName + ">");
-   }
+    /**
+     * Creates and performs a change which inserts an user include into the passed
+     * {@link IASTTranslationUnit}. The include directive is only inserted, if there isn't already one for this header.
+     *
+     * @see #createIncludeIfNotYetIncluded(IASTTranslationUnit)
+     */
+    public static void insertUserIncludeIfNeeded(final IASTTranslationUnit ast, final String headerName) {
+        includeIfNotYetIncluded(ast, new IncludeDirective(headerName, IncludeType.USER));
+    }
 
-   private static StringBuffer getUserIncludeStatement(final String includeName) {
-      return new StringBuffer(CommonCPPConstants.INCLUDE_DIRECTIVE + " \"" + includeName + "\"");
-   }
+    /**
+     * Creates and performs a change which inserts a system include into the passed
+     * {@link IASTTranslationUnit}. The include directive is only inserted, if there isn't already one for this header.
+     *
+     * @see #createIncludeIfNotYetIncluded(IASTTranslationUnit)
+     */
+    public static void insertSystemIncludeIfNeeded(final IASTTranslationUnit ast, final String headerName) {
+        includeIfNotYetIncluded(ast, new IncludeDirective(headerName, IncludeType.SYSTEM));
+    }
 
-   private static StringBuffer getIncludeStatement(final String includeName, final boolean isSystemInclude) {
-      return isSystemInclude ? getSystemIncludeStatement(includeName) : getUserIncludeStatement(includeName);
-   }
+    /**
+     * @use {@link #includeIfNotYetIncluded(IASTTranslationUnit, IncludeDirective)}
+     * 
+     * @since 1.1
+     */
+    @Deprecated
+    public static void includeIfNotYetIncluded(final IASTTranslationUnit ast, final String headerName, final boolean isSystemInclude) {
+        includeIfNotYetIncluded(ast, new IncludeDirective(headerName, isSystemInclude ? IncludeType.SYSTEM : IncludeType.USER),
+                TextFileChange.KEEP_SAVE_STATE);
+    }
 
-   /**
-    * Creates and performs a change which inserts an user include into the passed
-    * {@link IASTTranslationUnit}. The include directive is only inserted, if there isn't already one for this header.
-    *
-    * @see #createIncludeIfNotJetIncluded(IASTTranslationUnit)
-    */
-   public static void insertUserIncludeIfNeeded(final IASTTranslationUnit ast, final String headerName) {
-      includeIfNotJetIncluded(ast, headerName, false);
-   }
+    /**
+     * Creates and performs a change which inserts an include into the passed
+     * {@link IASTTranslationUnit}. The include directive is only inserted, if there isn't already one for this header.
+     *
+     * @see #createIncludeIfNotYetIncluded(IASTTranslationUnit)
+     * 
+     * @since 1.2
+     */
+    public static void includeIfNotYetIncluded(final IASTTranslationUnit ast, final IncludeDirective include) {
+        includeIfNotYetIncluded(ast, include, TextFileChange.KEEP_SAVE_STATE);
+    }
 
-   /**
-    * Creates and performs a change which inserts a system include into the passed
-    * {@link IASTTranslationUnit}. The include directive is only inserted, if there isn't already one for this header.
-    *
-    * @see #createIncludeIfNotJetIncluded(IASTTranslationUnit)
-    */
-   public static void insertSystemIncludeIfNeeded(final IASTTranslationUnit ast, final String headerName) {
-      includeIfNotJetIncluded(ast, headerName, true);
-   }
+    /**
+     * @use {@link #includeIfNotYetIncluded(IASTTranslationUnit, IncludeDirective, int)}
+     * 
+     * @since 1.1
+     */
+    @Deprecated
+    public static void includeIfNotYetIncluded(final IASTTranslationUnit ast, final String headerName, final boolean isSystemInclude,
+            final int textChangeSaveState) {
+        includeIfNotYetIncluded(ast, new IncludeDirective(headerName, isSystemInclude ? IncludeType.SYSTEM : IncludeType.USER), textChangeSaveState,
+                new NullProgressMonitor());
+    }
 
-   /**
-    * Creates and performs a change which inserts an include into the passed
-    * {@link IASTTranslationUnit}. The include directive is only inserted, if there isn't already one for this header.
-    *
-    * @see #createIncludeIfNotJetIncluded(IASTTranslationUnit)
-    */
-   public static void includeIfNotJetIncluded(final IASTTranslationUnit ast, final String headerName, final boolean isSystemInclude) {
-      includeIfNotJetIncluded(ast, headerName, isSystemInclude, TextFileChange.KEEP_SAVE_STATE);
-   }
+    /**
+     * Creates and performs a change which inserts an include into the passed
+     * {@link IASTTranslationUnit}. The include directive is only inserted, if there isn't already one for this header.
+     *
+     * @param textChangeSaveState
+     * Sets savestate of TextChange. Can be {@code TextFileChange.KEEP_SAVE_STATE}, {@code TextFileChange.FORCE_SAVE},
+     * {@code TextFileChange.LEAVE_DIRTY}
+     *
+     * @see #createIncludeIfNotYetIncluded(IASTTranslationUnit)
+     * 
+     * @since 1.2
+     */
+    public static void includeIfNotYetIncluded(final IASTTranslationUnit ast, final MutableList<IncludeDirective> includes,
+            final int textChangeSaveState) {
+        includeIfNotYetIncluded(ast, includes, textChangeSaveState, new NullProgressMonitor());
+    }
 
-   /**
-    * Creates and performs a change which inserts an include into the passed
-    * {@link IASTTranslationUnit}. The include directive is only inserted, if there isn't already one for this header.
-    *
-    * @param textChangeSaveState
-    *        Sets savestate of TextChange. Can be {@code TextFileChange.KEEP_SAVE_STATE}, {@code TextFileChange.FORCE_SAVE},
-    *        {@code TextFileChange.LEAVE_DIRTY}
-    *
-    * @see #createIncludeIfNotJetIncluded(IASTTranslationUnit)
-    */
-   public static void includeIfNotJetIncluded(final IASTTranslationUnit ast, final String headerName, final boolean isSystemInclude,
-         final int textChangeSaveState) {
-      includeIfNotJetIncluded(ast, headerName, isSystemInclude, textChangeSaveState, new NullProgressMonitor());
-   }
+    /**
+     * Creates and performs a change which inserts an include into the passed
+     * {@link IASTTranslationUnit}. The include directive is only inserted, if there isn't already one for this header.
+     *
+     * @param textChangeSaveState
+     * Sets savestate of TextChange. Can be {@code TextFileChange.KEEP_SAVE_STATE}, {@code TextFileChange.FORCE_SAVE},
+     * {@code TextFileChange.LEAVE_DIRTY}
+     *
+     * @see #createIncludeIfNotYetIncluded(IASTTranslationUnit)
+     * 
+     * @since 1.2
+     */
+    public static void includeIfNotYetIncluded(final IASTTranslationUnit ast, final IncludeDirective include, final int textChangeSaveState) {
+        includeIfNotYetIncluded(ast, include, textChangeSaveState, new NullProgressMonitor());
+    }
 
-   /**
-    * Creates and performs a change which inserts an include into the passed
-    * {@link IASTTranslationUnit}. The include directive is only inserted, if there isn't already one for this header.
-    *
-    * @param textChangeSaveState
-    *        Sets savestate of TextChange. Can be {@code TextFileChange.KEEP_SAVE_STATE}, {@code TextFileChange.FORCE_SAVE},
-    *        {@code TextFileChange.LEAVE_DIRTY}
-    *
-    * @see #createIncludeIfNotJetIncluded(IASTTranslationUnit)
-    */
-   public static void includeIfNotJetIncluded(final IASTTranslationUnit ast, final String headerName, final boolean isSystemInclude,
-         final int textChangeSaveState, final IProgressMonitor pm) {
+    /**
+     * @use {@link #includeIfNotYetIncluded(IASTTranslationUnit, IncludeDirective, int, IProgressMonitor)}
+     * 
+     * @since 1.1
+     */
+    @Deprecated
+    public static void includeIfNotYetIncluded(final IASTTranslationUnit ast, final String headerName, final boolean isSystemInclude,
+            final int textChangeSaveState, final IProgressMonitor pm) {
+        includeIfNotYetIncluded(ast, new IncludeDirective(headerName, isSystemInclude ? IncludeType.SYSTEM : IncludeType.USER), textChangeSaveState,
+                pm);
+    }
 
-      createIncludeIfNotJetIncluded(ast, headerName, isSystemInclude).ifPresent(change -> {
-         try {
-            change.setSaveMode(textChangeSaveState);
-            change.perform(pm);
-         } catch (final CoreException e) {
-            e.printStackTrace();
-         }
-      });
-   }
+    /**
+     * Creates and performs a change which inserts an include into the passed
+     * {@link IASTTranslationUnit}. The include directive is only inserted, if there isn't already one for this header.
+     *
+     * @param textChangeSaveState
+     * Sets savestate of TextChange. Can be {@code TextFileChange.KEEP_SAVE_STATE}, {@code TextFileChange.FORCE_SAVE},
+     * {@code TextFileChange.LEAVE_DIRTY}
+     *
+     * @see #createIncludeIfNotYetIncluded(IASTTranslationUnit)
+     * 
+     * @since 1.2
+     */
+    public static void includeIfNotYetIncluded(final IASTTranslationUnit ast, final MutableList<IncludeDirective> includes,
+            final int textChangeSaveState, final IProgressMonitor pm) {
 
-   /**
-    * Creates and returns a TextFileChange to insert an include into the passed translation unit. The caller must provide the include name and the
-    * information if it is a system include or a user include.
-    *
-    * <pre>
-    * An include name can be something like {@code vector} or {@code foo.h}
-    * </pre>
-    *
-    * @returns The {@link TextFileChange} or {@code null} if already included
-    */
-   public static Optional<TextFileChange> createIncludeIfNotJetIncluded(final IASTTranslationUnit ast, final String headerName,
-         final boolean isSystemInclude) {
-      return createIncludeInScopeIfNotJetIncluded(ast, headerName, isSystemInclude, PreprocessorScope.createFrom(ast));
-   }
+        createIncludeIfNotYetIncluded(ast, includes).ifPresent(change -> {
+            try {
+                change.setSaveMode(textChangeSaveState);
+                change.perform(pm);
+            } catch (final CoreException e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
-   /**
-    * Creates and returns a TextFileChange to insert an include into the passed translation unit. The caller must provide the include name and the
-    * information if it is a system include or a user include.
-    *
-    * <pre>
-    * An include name can be something like {@code vector} or {@code foo.h}
-    * </pre>
-    *
-    * @param scope
-    *        For better performance, the PreprocessorScope tree should be cached if multiple operations are executed.
-    *
-    * @returns The {@link TextFileChange} or {@code null} if already included
-    */
-   public static Optional<TextFileChange> createIncludeInScopeIfNotJetIncluded(final IASTTranslationUnit ast, final String headerName,
-         final boolean isSystemInclude, final PreprocessorScope scope) {
+    /**
+     * @see #includeIfNotYetIncluded(IASTTranslationUnit, MutableList, int, IProgressMonitor)
+     * 
+     * @since 1.2
+     */
+    public static void includeIfNotYetIncluded(final IASTTranslationUnit ast, final IncludeDirective include, final int textChangeSaveState,
+            final IProgressMonitor pm) {
+        includeIfNotYetIncluded(ast, Lists.mutable.of(include), textChangeSaveState, pm);
+    }
 
-      if (isAlreadyIncluded(scope, headerName)) return Optional.empty();
+    /**
+     * @use {@link #createIncludeIfNotYetIncluded(IASTTranslationUnit, IncludeDirective)}
+     * 
+     * @since 1.1
+     */
+    @Deprecated
+    public static Optional<TextFileChange> createIncludeIfNotYetIncluded(final IASTTranslationUnit ast, final String headerName,
+            final boolean isSystemInclude) {
+        return createIncludeInScopeIfNotYetIncluded(ast, new IncludeDirective(headerName, isSystemInclude ? IncludeType.SYSTEM : IncludeType.USER),
+                PreprocessorScope.createFrom(ast));
+    }
 
-      final IFile file = ast.getOriginatingTranslationUnit().getFile();
+    /**
+     * Creates and returns a TextFileChange to insert an include into the passed translation unit. The caller must provide the include name and the
+     * information if it is a system include or a user include.
+     *
+     * <pre>
+     * An include name can be something like {@code vector} or {@code foo.h}
+     * </pre>
+     *
+     * @returns The {@link TextFileChange} or {@code null} if already included
+     * 
+     * @since 1.2
+     */
+    public static Optional<TextFileChange> createIncludeIfNotYetIncluded(final IASTTranslationUnit ast,
+            final MutableList<IncludeDirective> includes) {
+        return createIncludeInScopeIfNotYetIncluded(ast, includes, PreprocessorScope.createFrom(ast));
+    }
 
-      MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap = ITranslationUnitUtil.createLinenoOffsetContentMap(ast
-            .getOriginatingTranslationUnit());
+    /**
+     * Creates and returns a TextFileChange to insert an include into the passed translation unit. The caller must provide the include name and the
+     * information if it is a system include or a user include.
+     *
+     * <pre>
+     * An include name can be something like {@code vector} or {@code foo.h}
+     * </pre>
+     *
+     * @returns The {@link TextFileChange} or {@code null} if already included
+     * 
+     * @since 1.2
+     */
+    public static Optional<TextFileChange> createIncludeIfNotYetIncluded(final IASTTranslationUnit ast, final IncludeDirective include) {
+        return createIncludeInScopeIfNotYetIncluded(ast, include, PreprocessorScope.createFrom(ast));
+    }
 
-      final TextFileChange change = new TextFileChange("Add Include " + headerName, file);
-      change.setSaveMode(TextFileChange.LEAVE_DIRTY);
-      change.setEdit(new MultiTextEdit());
+    /**
+     * @use {@link #createIncludeInScopeIfNotYetIncluded(IASTTranslationUnit, IncludeDirective, PreprocessorScope)}
+     * 
+     * @since 1.1
+     */
+    @Deprecated
+    public static Optional<TextFileChange> createIncludeInScopeIfNotYetIncluded(final IASTTranslationUnit ast, final String headerName,
+            final boolean isSystemInclude, final PreprocessorScope scope) {
+        return createIncludeInScopeIfNotYetIncluded(ast, new IncludeDirective(headerName, isSystemInclude ? IncludeType.SYSTEM : IncludeType.USER),
+                scope);
+    }
 
-      final String lineSep = FileUtil.getLineSeparator(file);
+    /**
+     * Creates and returns a TextFileChange to insert an include into the passed translation unit. The caller must provide the include name and the
+     * information if it is a system include or a user include.
+     *
+     * <pre>
+     * An include name can be something like {@code vector} or {@code foo.h}
+     * </pre>
+     *
+     * @param scope
+     * For better performance, the PreprocessorScope tree should be cached if multiple operations are executed.
+     *
+     * @returns The {@link TextFileChange} or {@code null} if already included
+     * 
+     * @since 1.2
+     */
+    public static Optional<TextFileChange> createIncludeInScopeIfNotYetIncluded(final IASTTranslationUnit ast, final List<IncludeDirective> includes,
+            final PreprocessorScope scope) {
 
-      final StringBuffer includeStmt = getIncludeStatement(headerName, isSystemInclude);
-      includeStmt.append(lineSep);
+        final MutableList<IncludeDirective> sortedIncludes = Lists.adapt(includes).select(i -> !isAlreadyIncluded(scope, i.target)).sortThis();
 
-      int offset = 0;
-      final Optional<? extends IASTPreprocessorStatement> previousStatement = scope.findStmtAfterWhichToAddInclude(headerName, isSystemInclude);
+        if (sortedIncludes.isEmpty()) return Optional.empty();
 
-      if (previousStatement.isPresent()) {
-         final IASTPreprocessorStatement prevStmt = previousStatement.get();
-         offset = PreprocessorStatementUtil.getOffsetToInsertAfter(previousStatement, linenoOffsetContentMap);
+        final IFile file = ast.getOriginatingTranslationUnit().getFile();
 
-         final Optional<IASTPreprocessorStatement> nextStatement = Lists.immutable.of(ast.getAllPreprocessorStatements()).dropWhile(
-               s -> s != prevStmt).drop(1).getFirstOptional();
+        final MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap = ITranslationUnitUtil.createLinenoOffsetContentMap(ast
+                .getOriginatingTranslationUnit());
 
-         if (nextStatement.isPresent()) {
-            final IASTPreprocessorStatement nextStmt = nextStatement.get();
+        final TextFileChange change = new TextFileChange("Add include(s)", file);
+        change.setSaveMode(TextFileChange.LEAVE_DIRTY);
+        change.setEdit(new MultiTextEdit());
 
-            if (prevStmt instanceof IASTPreprocessorIncludeStatement && nextStmt instanceof IASTPreprocessorIncludeStatement) {
-               /* inbetween two includes */
-               if (((IASTPreprocessorIncludeStatement) prevStmt).isSystemInclude() != isSystemInclude) {
-                  includeStmt.insert(0, lineSep);
-               }
-               if (((IASTPreprocessorIncludeStatement) nextStmt).isSystemInclude() != isSystemInclude) {
-                  includeStmt.append(lineSep);
-               }
-            } else if (prevStmt instanceof IASTPreprocessorIncludeStatement) {
-               if (((IASTPreprocessorIncludeStatement) prevStmt).isSystemInclude() != isSystemInclude) {
-                  includeStmt.insert(0, lineSep);
-               }
-               if (!ITranslationUnitUtil.isFollowedByAWhitespaceLine(prevStmt, linenoOffsetContentMap)) {
-                  includeStmt.append(lineSep);
-               }
-            } else if (nextStmt instanceof IASTPreprocessorIncludeStatement) {
-               /* use this stmt to insert */
-               if (((IASTPreprocessorIncludeStatement) nextStmt).isSystemInclude() != isSystemInclude) {
-                  includeStmt.append(lineSep);
-               }
-               if (!ITranslationUnitUtil.isLeadByAWhitespaceLine(nextStmt, linenoOffsetContentMap)) {
-                  includeStmt.insert(0, lineSep);
-               }
-               offset = PreprocessorStatementUtil.getOffsetToInsertBefore(nextStatement);
+        final String lineSeparator = FileUtil.getLineSeparator(file);
+
+        int offset = 0;
+        final StringBuffer includeStmt = createIncludeString(sortedIncludes, lineSeparator);
+
+        final Optional<? extends IASTPreprocessorStatement> previousStatement = scope.findStmtAfterWhichToAddInclude(sortedIncludes.get(0));
+
+        /**
+         *  TODO: refactor this, find a way to correctly include a list of mixed statements
+         *  like in IncludeInsertionUtilTest#testMultipleMixedSystemAndUserIncludesInsertedInBetween()
+         */
+        if (previousStatement.isPresent()) {
+            final IASTPreprocessorStatement prevStmt = previousStatement.get();
+            offset = PreprocessorStatementUtil.getOffsetToInsertAfter(previousStatement, linenoOffsetContentMap);
+
+            final Optional<IASTPreprocessorStatement> nextStatement = Lists.immutable.of(ast.getAllPreprocessorStatements()).dropWhile(
+                    s -> s != prevStmt).drop(1).getFirstOptional();
+
+            final IncludeType firstIncludeType = sortedIncludes.getFirst().type;
+            final IncludeType lastIncludeType = sortedIncludes.getLast().type;
+            final boolean insertAfterPreviousStatement = (prevStmt instanceof IASTPreprocessorIncludeStatement);
+
+            if (nextStatement.isPresent()) {
+                final IASTPreprocessorStatement nextStmt = nextStatement.get();
+                final boolean insertBeforeNextStatement = (nextStmt instanceof IASTPreprocessorIncludeStatement);
+
+                if (insertAfterPreviousStatement && insertBeforeNextStatement) {
+                    /* inbetween two includes */
+                    if (((IASTPreprocessorIncludeStatement) prevStmt).isSystemInclude() != (firstIncludeType == IncludeType.SYSTEM)) {
+                        includeStmt.insert(0, lineSeparator);
+                    }
+                    if (((IASTPreprocessorIncludeStatement) nextStmt).isSystemInclude() != (lastIncludeType == IncludeType.SYSTEM)) {
+                        includeStmt.append(lineSeparator);
+                    }
+                } else if (insertAfterPreviousStatement) {
+                    if (((IASTPreprocessorIncludeStatement) prevStmt).isSystemInclude() != (firstIncludeType == IncludeType.SYSTEM)) {
+                        includeStmt.insert(0, lineSeparator);
+                    }
+                    if (!ITranslationUnitUtil.isFollowedByAWhitespaceLine(prevStmt, linenoOffsetContentMap)) {
+                        includeStmt.append(lineSeparator);
+                    }
+                } else if (insertBeforeNextStatement) {
+                    /* use this stmt to insert */
+                    if (((IASTPreprocessorIncludeStatement) nextStmt).isSystemInclude() != (lastIncludeType == IncludeType.SYSTEM)) {
+                        includeStmt.append(lineSeparator);
+                    }
+                    if (!ITranslationUnitUtil.isLeadByAWhitespaceLine(nextStmt, linenoOffsetContentMap)) {
+                        includeStmt.insert(0, lineSeparator);
+                    }
+                    offset = PreprocessorStatementUtil.getOffsetToInsertBefore(nextStatement);
+                } else {
+                    if (!ITranslationUnitUtil.isFollowedByAWhitespaceLine(prevStmt, linenoOffsetContentMap)) {
+                        includeStmt.append(lineSeparator);
+                    }
+                    if (!ITranslationUnitUtil.isLeadByAWhitespaceLine(nextStmt, linenoOffsetContentMap)) {
+                        includeStmt.insert(0, lineSeparator);
+                    }
+                }
             } else {
-               if (!ITranslationUnitUtil.isFollowedByAWhitespaceLine(prevStmt, linenoOffsetContentMap)) {
-                  includeStmt.append(lineSep);
-               }
-               if (!ITranslationUnitUtil.isLeadByAWhitespaceLine(nextStmt, linenoOffsetContentMap)) {
-                  includeStmt.insert(0, lineSep);
-               }
+                if (!(insertAfterPreviousStatement && ((IASTPreprocessorIncludeStatement) prevStmt)
+                        .isSystemInclude() == (firstIncludeType == IncludeType.SYSTEM))) {
+                    includeStmt.insert(0, lineSeparator);
+                }
+                if (ITranslationUnitUtil.lineNcontainsOnlyWhitespace(0, linenoOffsetContentMap)) {
+                    includeStmt.append(lineSeparator);
+                }
             }
-         } else {
-            if (!(prevStmt instanceof IASTPreprocessorIncludeStatement && ((IASTPreprocessorIncludeStatement) prevStmt)
-                  .isSystemInclude() == isSystemInclude)) {
-               includeStmt.insert(0, lineSep);
-            }
-            if (ITranslationUnitUtil.lineNcontainsOnlyWhitespace(0, linenoOffsetContentMap)) {
-               includeStmt.append(lineSep);
-            }
-         }
-      } else {
-         offset = 0;
-         includeStmt.append(lineSep);
-      }
+        } else {
+            offset = 0;
+            includeStmt.append(lineSeparator);
+        }
 
-      change.addEdit(new InsertEdit(offset, includeStmt.toString()));
+        change.addEdit(new InsertEdit(offset, includeStmt.toString()));
 
-      return Optional.of(change);
-   }
+        return Optional.of(change);
+    }
 
-   /**
-    * Returns if the given header-file is already included in a influencing scope. This
-    * function is not able to determine if the include is indirectly included.
-    *
-    * @return If the {@link IASTPreprocessorIncludeStatement} {@code header} is
-    *         already included.
-    */
-   private static boolean isAlreadyIncluded(final PreprocessorScope scope, final String header) {
-      return scope.streamUp().anyMatch(s -> s.getIncludeDirectives().anySatisfy((stmt) -> stmt.getName().toString().equals(header)));
-   }
+    /**
+     * Creates and returns a TextFileChange to insert an include into the passed translation unit. The caller must provide the include name and the
+     * information if it is a system include or a user include.
+     *
+     * <pre>
+     * An include name can be something like {@code vector} or {@code foo.h}
+     * </pre>
+     *
+     * @param scope
+     * For better performance, the PreprocessorScope tree should be cached if multiple operations are executed.
+     *
+     * @returns The {@link TextFileChange} or {@code null} if already included
+     * 
+     * @since 1.2
+     */
+    public static Optional<TextFileChange> createIncludeInScopeIfNotYetIncluded(final IASTTranslationUnit ast, final IncludeDirective include,
+            final PreprocessorScope scope) {
+        return createIncludeInScopeIfNotYetIncluded(ast, Lists.mutable.of(include), scope);
+    }
 
+    /**
+     * Returns if the given header-file is already included in a influencing scope. This
+     * function is not able to determine if the include is indirectly included.
+     *
+     * @return If the {@link IASTPreprocessorIncludeStatement} {@code header} is
+     * already included.
+     */
+    private static boolean isAlreadyIncluded(final PreprocessorScope scope, final String header) {
+        return scope.streamUp().anyMatch(s -> s.getIncludeDirectives().anySatisfy((stmt) -> stmt.getName().toString().equals(header)));
+    }
+
+    private static StringBuffer createIncludeString(final MutableList<IncludeDirective> includes, final String lineSeparator) {
+        PartitionMutableList<IncludeDirective> includePartition = includes.sortThis().partition(i -> i.type == IncludeType.USER);
+
+        final String userIncludes = includePartition.getSelected().makeString(lineSeparator);
+        final String systemIncludes = includePartition.getRejected().makeString(lineSeparator);
+
+        final StringBuffer includeStmt = new StringBuffer(userIncludes);
+
+        if (!userIncludes.isEmpty()) {
+            includeStmt.append(lineSeparator);
+        }
+
+        if (!userIncludes.isEmpty() && !systemIncludes.isEmpty()) {
+            includeStmt.append(lineSeparator);
+        }
+
+        includeStmt.append(systemIncludes);
+
+        if (!systemIncludes.isEmpty()) {
+            includeStmt.append(lineSeparator);
+        }
+
+        return includeStmt;
+    }
 }

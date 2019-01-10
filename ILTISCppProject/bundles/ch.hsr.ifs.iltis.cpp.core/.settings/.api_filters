@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="ch.hsr.ifs.iltis.cpp.core" version="2">
+    <resource path="src/ch/hsr/ifs/iltis/cpp/core/ast/nodefactory/ExtendedNodeFactory.java" type="ch.hsr.ifs.iltis.cpp.core.ast.nodefactory.ExtendedNodeFactory">
+        <filter id="576720909">
+            <message_arguments>
+                <message_argument value="CPPNodeFactory"/>
+                <message_argument value="ExtendedNodeFactory"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/ch/hsr/ifs/iltis/cpp/core/resources/info/CompositeMarkerInfo.java" type="ch.hsr.ifs.iltis.cpp.core.resources.info.CompositeMarkerInfo">
+        <filter id="643842064">
+            <message_arguments>
+                <message_argument value="InfoConverter"/>
+                <message_argument value="CompositeMarkerInfo"/>
+                <message_argument value="hook_getInfoConverter()"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/ch/hsr/ifs/iltis/cpp/core/resources/info/IInfo.java" type="ch.hsr.ifs.iltis.cpp.core.resources.info.IInfo">
+        <filter id="643842064">
+            <message_arguments>
+                <message_argument value="InfoConverter"/>
+                <message_argument value="IInfo&lt;T&gt;"/>
+                <message_argument value="hook_getInfoConverter()"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>

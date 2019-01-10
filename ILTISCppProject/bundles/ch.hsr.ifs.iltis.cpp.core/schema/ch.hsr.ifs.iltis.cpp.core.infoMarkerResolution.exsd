@@ -3,10 +3,10 @@
 <schema targetNamespace="ch.hsr.ifs.iltis.cpp.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="ch.hsr.ifs.iltis.cpp.core" id="labeledMarkerResolution" name="Labeled Marker Resolution"/>
+         <meta.schema plugin="ch.hsr.ifs.iltis.cpp.core" id="infoMarkerResolution" name="Info Marker Resolution"/>
       </appinfo>
       <documentation>
-         Like a classic Marker Resolution, but allows to define the content on the label in the extension definiton.
+         Like a classic Marker Resolution, but allows to use a MarkerInfo generated from the IMarker.
       </documentation>
    </annotation>
 
@@ -54,13 +54,16 @@
          </documentation>
       </annotation>
       <complexType>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="info"/>
+         </sequence>
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
                   Class that implements ILabeledMarkerResolution and provides a fix for the given problems
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":com.cevelop.iltis.cpp.codan.marker.ILabeledMarkerResolution"/>
+                  <meta.attribute kind="java" basedOn=":ch.hsr.ifs.iltis.cpp.core.codan.marker.IInfoMarkerResolution"/>
                </appinfo>
             </annotation>
          </attribute>
@@ -74,13 +77,28 @@
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="labelText" type="string">
+         <attribute name="messagePattern" type="string">
             <annotation>
                <documentation>
-                  The label to show for this resolution
+                  
                </documentation>
                <appinfo>
                   <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="info">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The class representing the MarkerInfo of this resolution
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="ch.hsr.ifs.iltis.cpp.core.ui.refactoring.MarkerInfo:"/>
                </appinfo>
             </annotation>
          </attribute>

@@ -25,44 +25,44 @@ import ch.hsr.ifs.iltis.cpp.versionator.Activator;
 @SuppressWarnings("restriction")
 public final class EnableCodanCheckers {
 
-   private EnableCodanCheckers() {}
+    private EnableCodanCheckers() {}
 
-   public static void enableProblems(IProject project, boolean enabled, String... ids) {
-      List<String> problemIDs = Arrays.asList(ids);
-      ICheckersRegistry checkersRegistry = CodanRuntime.getInstance().getCheckersRegistry();
-      IProblemProfile profile = checkersRegistry.getResourceProfileWorkingCopy(project);
-      IPersistentPreferenceStore prefStore = new ScopedPreferenceStore(new ProjectScope(project), CodanCorePlugin.PLUGIN_ID);
-      CodanPreferencesLoader codanPreferencesLoader = new CodanPreferencesLoader();
-      codanPreferencesLoader.setInput(profile);
+    public static void enableProblems(IProject project, boolean enabled, String... ids) {
+        List<String> problemIDs = Arrays.asList(ids);
+        ICheckersRegistry checkersRegistry = CodanRuntime.getInstance().getCheckersRegistry();
+        IProblemProfile profile = checkersRegistry.getResourceProfileWorkingCopy(project);
+        IPersistentPreferenceStore prefStore = new ScopedPreferenceStore(new ProjectScope(project), CodanCorePlugin.PLUGIN_ID);
+        CodanPreferencesLoader codanPreferencesLoader = new CodanPreferencesLoader();
+        codanPreferencesLoader.setInput(profile);
 
-      for (IProblem problem : profile.getProblems()) {
-         String problemID = problem.getId();
-         if (problemIDs.contains(problemID)) {
-            ((CodanProblem) problem).setEnabled(enabled);
+        for (IProblem problem : profile.getProblems()) {
+            String problemID = problem.getId();
+            if (problemIDs.contains(problemID)) {
+                ((CodanProblem) problem).setEnabled(enabled);
 
-            String property = codanPreferencesLoader.getProperty(problemID);
-            prefStore.setValue(problemID, property);
-         }
-      }
-      checkersRegistry.updateProfile(project, profile);
+                String property = codanPreferencesLoader.getProperty(problemID);
+                prefStore.setValue(problemID, property);
+            }
+        }
+        checkersRegistry.updateProfile(project, profile);
 
-      try {
-         prefStore.save();
-      } catch (IOException e) {
-         Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not save codan preferences");
-         Activator.getDefault().getLog().log(status);
-      }
-   }
+        try {
+            prefStore.save();
+        } catch (IOException e) {
+            Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not save codan preferences");
+            Activator.getDefault().getLog().log(status);
+        }
+    }
 
-   public static void setPreference_UseWorkspaceSettings(IProject project, boolean useWorkspaceSettings) {
-      try {
-         ProjectScope ps = new ProjectScope(project);
-         ScopedPreferenceStore scoped = new ScopedPreferenceStore(ps, CodanCorePlugin.PLUGIN_ID);
-         scoped.setValue(PreferenceConstants.P_USE_PARENT, useWorkspaceSettings);
-         scoped.save();
-      } catch (IOException e) {
-         Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not save codan preferences");
-         Activator.getDefault().getLog().log(status);
-      }
-   }
+    public static void setPreference_UseWorkspaceSettings(IProject project, boolean useWorkspaceSettings) {
+        try {
+            ProjectScope ps = new ProjectScope(project);
+            ScopedPreferenceStore scoped = new ScopedPreferenceStore(ps, CodanCorePlugin.PLUGIN_ID);
+            scoped.setValue(PreferenceConstants.P_USE_PARENT, useWorkspaceSettings);
+            scoped.save();
+        } catch (IOException e) {
+            Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not save codan preferences");
+            Activator.getDefault().getLog().log(status);
+        }
+    }
 }

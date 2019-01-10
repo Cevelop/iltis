@@ -54,224 +54,229 @@ import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.CPPUnaryOperator;
 
 public interface IBetterFactory extends ICPPNodeFactory {
 
-   ICPPASTQualifiedName newQualifiedName(ICPPASTName... names);
+    ICPPASTQualifiedName newQualifiedName(ICPPASTName... names);
 
-   IASTIdExpression newIdExpression(String name);
+    /**
+     * @since 1.1
+     */
+    ICPPASTQualifiedName newQualifiedName(String[] qualifiers, ICPPASTName name);
 
-   ICPPASTDeclarator newDeclarator(String name);
+    IASTIdExpression newIdExpression(String name);
 
-   ICPPASTDeclarator newDeclarator(String name, IASTInitializer initializer);
+    ICPPASTDeclarator newDeclarator(String name);
 
-   ICPPASTDeclarator newPointerDeclarator(String name);
+    ICPPASTDeclarator newDeclarator(String name, IASTInitializer initializer);
 
-   ICPPASTDeclarator newPointerDeclarator(String name, IASTInitializerClause initClause);
+    ICPPASTDeclarator newPointerDeclarator(String name);
 
-   ICPPASTDeclarator newReferenceDeclarator(String name);
+    ICPPASTDeclarator newPointerDeclarator(String name, IASTInitializerClause initClause);
 
-   ICPPASTDeclarator newReferenceDeclarator(String name, IASTInitializerClause initClause);
+    ICPPASTDeclarator newReferenceDeclarator(String name);
 
-   IASTDeclarationStatement newDeclarationStatement(IASTDeclSpecifier declSpecifier, IASTDeclarator... declarators);
+    ICPPASTDeclarator newReferenceDeclarator(String name, IASTInitializerClause initClause);
 
-   ICPPASTFieldReference newFieldReference(String owner, String field);
+    IASTDeclarationStatement newDeclarationStatement(IASTDeclSpecifier declSpecifier, IASTDeclarator... declarators);
 
-   ICPPASTFieldReference newFieldReference(String owner, String field, boolean isPointerDereference);
+    ICPPASTFieldReference newFieldReference(String owner, String field);
 
-   IASTUnaryExpression newParenthesizedExpression(IASTExpression operand);
+    ICPPASTFieldReference newFieldReference(String owner, String field, boolean isPointerDereference);
 
-   IASTUnaryExpression newAddressOfExpression(String operand);
+    IASTUnaryExpression newParenthesizedExpression(IASTExpression operand);
 
-   IASTUnaryExpression newAddressOfExpression(IASTExpression operand);
+    IASTUnaryExpression newAddressOfExpression(String operand);
 
-   IASTUnaryExpression newDereferenceExpression(String operand);
+    IASTUnaryExpression newAddressOfExpression(IASTExpression operand);
 
-   IASTUnaryExpression newDereferenceExpression(IASTExpression operand);
+    IASTUnaryExpression newDereferenceExpression(String operand);
 
-   ICPPASTNewExpression newNewExpression(IASTDeclSpecifier declSpecifier, IASTInitializerClause... arguments);
+    IASTUnaryExpression newDereferenceExpression(IASTExpression operand);
 
-   ICPPASTFunctionCallExpression newFunctionCallExpression(IASTExpression idExpr, IASTExpression... arguments);
+    ICPPASTNewExpression newNewExpression(IASTDeclSpecifier declSpecifier, IASTInitializerClause... arguments);
 
-   IASTExpressionStatement newFunctionCallStatement(IASTExpression idExpr, IASTInitializerClause... arguments);
+    ICPPASTFunctionCallExpression newFunctionCallExpression(IASTExpression idExpr, IASTExpression... arguments);
 
-   IASTExpressionStatement newFunctionCallStatement(String functionName, IASTInitializerClause... arguments);
+    IASTExpressionStatement newFunctionCallStatement(IASTExpression idExpr, IASTInitializerClause... arguments);
 
-   ICPPASTLiteralExpression newIntegerLiteral(int n);
+    IASTExpressionStatement newFunctionCallStatement(String functionName, IASTInitializerClause... arguments);
 
-   ICPPASTLiteralExpression newFloatLiteral(float n);
+    ICPPASTLiteralExpression newIntegerLiteral(int n);
 
-   ICPPASTLiteralExpression newCharLiteral(char c);
+    ICPPASTLiteralExpression newFloatLiteral(float n);
 
-   ICPPASTLiteralExpression newStringLiteral(String str);
+    ICPPASTLiteralExpression newCharLiteral(char c);
 
-   ICPPASTLiteralExpression newNullptr();
+    ICPPASTLiteralExpression newStringLiteral(String str);
 
-   ICPPASTNamedTypeSpecifier newTypedefNameSpecifier(String name);
+    ICPPASTLiteralExpression newNullptr();
 
-   ICPPASTName addTemplateArgumentsToLastName(String name, IASTNode... arguments);
+    ICPPASTNamedTypeSpecifier newTypedefNameSpecifier(String name);
 
-   ICPPASTNamedTypeSpecifier newTemplateDeclSpecifier(String name, IASTNode... arguments);
+    ICPPASTName addTemplateArgumentsToLastName(String name, IASTNode... arguments);
 
-   ICPPASTCompositeTypeSpecifier newCompositeTypeSpecifier(int key, String name);
+    ICPPASTNamedTypeSpecifier newTemplateDeclSpecifier(String name, IASTNode... arguments);
 
-   ICPPASTFunctionDeclarator newFunctionDeclarator();
+    ICPPASTCompositeTypeSpecifier newCompositeTypeSpecifier(int key, String name);
 
-   ICPPASTFunctionDeclarator newFunctionDeclarator(String name, IASTParameterDeclaration... paramDeclarations);
+    ICPPASTFunctionDeclarator newFunctionDeclarator();
 
-   ICPPASTFunctionDeclarator newFunctionDeclarator(IASTName name, IASTParameterDeclaration... paramDeclarations);
+    ICPPASTFunctionDeclarator newFunctionDeclarator(String name, IASTParameterDeclaration... paramDeclarations);
 
-   ICPPASTConstructorChainInitializer newConstructorChainInitializer(String variableName);
+    ICPPASTFunctionDeclarator newFunctionDeclarator(IASTName name, IASTParameterDeclaration... paramDeclarations);
 
-   IASTExpressionStatement newAssignmentStatement(IASTExpression op1, IASTExpression op2);
+    ICPPASTConstructorChainInitializer newConstructorChainInitializer(String variableName);
 
-   IASTExpressionStatement newMemberFunctionCallStatement(String owner, String field, IASTExpression... arguments);
+    IASTExpressionStatement newAssignmentStatement(IASTExpression op1, IASTExpression op2);
 
-   ICPPASTFunctionCallExpression newMemberFunctionCallExpression(String owner, String field, IASTExpression... arguments);
+    IASTExpressionStatement newMemberFunctionCallStatement(String owner, String field, IASTExpression... arguments);
 
-   ICPPASTInitializerList newInitializerList(IASTInitializerClause... clauses);
+    ICPPASTFunctionCallExpression newMemberFunctionCallExpression(String owner, String field, IASTExpression... arguments);
 
-   ICPPASTSimpleDeclSpecifier newSimpleDeclSpecifier(Kind kind);
+    ICPPASTInitializerList newInitializerList(IASTInitializerClause... clauses);
 
-   ICPPASTSimpleDeclSpecifier newSimpleDeclSpecifier(int type);
+    ICPPASTSimpleDeclSpecifier newSimpleDeclSpecifier(Kind kind);
 
-   /**
-    * Creates a new type identifier with an empty declarator
-    */
-   ICPPASTTypeId newTypeId(IASTDeclSpecifier declSpecifier);
+    ICPPASTSimpleDeclSpecifier newSimpleDeclSpecifier(int type);
 
-   IASTDeclarationStatement newDeclarationStatementFromDeclarator(IASTDeclarator declarator);
+    /**
+     * Creates a new type identifier with an empty declarator
+     */
+    ICPPASTTypeId newTypeId(IASTDeclSpecifier declSpecifier);
 
-   ICPPASTTemplateDeclaration newTemplateDeclaration(IASTDeclaration body, ICPPASTTemplateParameter... params);
+    IASTDeclarationStatement newDeclarationStatementFromDeclarator(IASTDeclarator declarator);
 
-   ICPPASTTemplateDeclaration newTemplateDeclaration(IASTDeclaration body, List<ICPPASTTemplateParameter> params);
+    ICPPASTTemplateDeclaration newTemplateDeclaration(IASTDeclaration body, ICPPASTTemplateParameter... params);
 
-   ICPPASTSimpleTypeTemplateParameter newTemplateParameterDefinition(String paramName);
+    ICPPASTTemplateDeclaration newTemplateDeclaration(IASTDeclaration body, List<ICPPASTTemplateParameter> params);
 
-   IASTFunctionCallExpression newFunctionCallExpression(String functionName, IASTInitializerClause... args);
+    ICPPASTSimpleTypeTemplateParameter newTemplateParameterDefinition(String paramName);
 
-   IASTFunctionCallExpression newMemberFunctionCallExpression(IASTName objectName, String methodName, IASTInitializerClause... args);
+    IASTFunctionCallExpression newFunctionCallExpression(String functionName, IASTInitializerClause... args);
 
-   IASTBinaryExpression newAssignment(IASTExpression lhs, IASTExpression rhs);
+    IASTFunctionCallExpression newMemberFunctionCallExpression(IASTName objectName, String methodName, IASTInitializerClause... args);
 
-   IASTBinaryExpression newPlusAssignment(IASTExpression lhs, IASTExpression rhs);
+    IASTBinaryExpression newAssignment(IASTExpression lhs, IASTExpression rhs);
 
-   IASTBinaryExpression newPlusExpression(IASTExpression lhs, IASTExpression rhs);
+    IASTBinaryExpression newPlusAssignment(IASTExpression lhs, IASTExpression rhs);
 
-   IASTBinaryExpression newMinusExpression(IASTExpression lhs, IASTExpression rhs);
+    IASTBinaryExpression newPlusExpression(IASTExpression lhs, IASTExpression rhs);
 
-   IASTUnaryExpression newLogicalNotExpression(IASTExpression operand);
+    IASTBinaryExpression newMinusExpression(IASTExpression lhs, IASTExpression rhs);
 
-   IASTBinaryExpression newEqualityComparison(IASTExpression lhs, IASTExpression rhs, boolean isEqual);
+    IASTUnaryExpression newLogicalNotExpression(IASTExpression operand);
 
-   IASTUnaryExpression newDereferenceOperatorExpression(IASTExpression expression);
+    IASTBinaryExpression newEqualityComparison(IASTExpression lhs, IASTExpression rhs, boolean isEqual);
 
-   IASTUnaryExpression newAdressOperatorExpression(IASTExpression expression);
+    IASTUnaryExpression newDereferenceOperatorExpression(IASTExpression expression);
 
-   IASTUnaryExpression newNegatedExpression(IASTExpression expression);
+    IASTUnaryExpression newAdressOperatorExpression(IASTExpression expression);
 
-   IASTEqualsInitializer newEqualsInitializerWithList(IASTInitializerClause... clauses);
+    IASTUnaryExpression newNegatedExpression(IASTExpression expression);
 
-   IASTDeclarationStatement newDeclarationStatement(String type, String varName, IASTInitializerClause initializerClause);
+    IASTEqualsInitializer newEqualsInitializerWithList(IASTInitializerClause... clauses);
 
-   IASTDeclarationStatement newDeclarationStatement(String type, String varName, IASTInitializer initializer);
+    IASTDeclarationStatement newDeclarationStatement(String type, String varName, IASTInitializerClause initializerClause);
 
-   IASTCompoundStatement newCompoundStatement(IASTStatement... statements);
+    IASTDeclarationStatement newDeclarationStatement(String type, String varName, IASTInitializer initializer);
 
-   IASTIfStatement newIfStatement(IASTExpression condition, IASTCompoundStatement then);
+    IASTCompoundStatement newCompoundStatement(IASTStatement... statements);
 
-   IASTUnaryExpression newBracketedExpression(IASTExpression operand);
+    IASTIfStatement newIfStatement(IASTExpression condition, IASTCompoundStatement then);
 
-   ICPPASTNamedTypeSpecifier newNamedTypeSpecifier(String typeName);
+    IASTUnaryExpression newBracketedExpression(IASTExpression operand);
 
-   /**
-    * Creates a new type identifier with an empty name
-    */
-   ICPPASTTypeId newIASTTypeId(ICPPASTNamedTypeSpecifier newNamedTypeSpecifier);
+    ICPPASTNamedTypeSpecifier newNamedTypeSpecifier(String typeName);
 
-   IASTConditionalExpression newConditionalExpression(IASTExpression condition, IASTExpression positive, IASTExpression negative);
+    /**
+     * Creates a new type identifier with an empty name
+     */
+    ICPPASTTypeId newIASTTypeId(ICPPASTNamedTypeSpecifier newNamedTypeSpecifier);
 
-   /* Create Also Factory Methods */
+    IASTConditionalExpression newConditionalExpression(IASTExpression condition, IASTExpression positive, IASTExpression negative);
 
-   IASTCompoundStatement newCompoundStatement(Consumer<IASTCompoundStatement> also);
+    /* Create Also Factory Methods */
 
-   IASTDeclarationStatement newDeclarationStatement(Consumer<IASTDeclarationStatement> also);
+    IASTCompoundStatement newCompoundStatement(Consumer<IASTCompoundStatement> also);
 
-   ICPPASTDeclarator newDeclarator(IASTName name, Consumer<ICPPASTDeclarator> also);
+    IASTDeclarationStatement newDeclarationStatement(Consumer<IASTDeclarationStatement> also);
 
-   ICPPASTFunctionCallExpression newFunctionCallExpression(Consumer<ICPPASTFunctionCallExpression> also);
+    ICPPASTDeclarator newDeclarator(IASTName name, Consumer<ICPPASTDeclarator> also);
 
-   ICPPASTFunctionDeclarator newFunctionDeclarator(Consumer<ICPPASTFunctionDeclarator> also);
+    ICPPASTFunctionCallExpression newFunctionCallExpression(Consumer<ICPPASTFunctionCallExpression> also);
 
-   ICPPASTLambdaExpression newLambdaExpression(Consumer<ICPPASTLambdaExpression> also);
+    ICPPASTFunctionDeclarator newFunctionDeclarator(Consumer<ICPPASTFunctionDeclarator> also);
 
-   IASTSimpleDeclaration newSimpleDeclaration(Consumer<IASTSimpleDeclaration> also);
+    ICPPASTLambdaExpression newLambdaExpression(Consumer<ICPPASTLambdaExpression> also);
 
-   ICPPASTTemplateId newTemplateId(IASTName name, Consumer<ICPPASTTemplateId> also);
+    IASTSimpleDeclaration newSimpleDeclaration(Consumer<IASTSimpleDeclaration> also);
 
-   /* Enum Operator Factory Methods */
+    ICPPASTTemplateId newTemplateId(IASTName name, Consumer<ICPPASTTemplateId> also);
 
-   ICPPASTUnaryExpression newUnaryExpression(CPPUnaryOperator operator, IASTExpression operand);
+    /* Enum Operator Factory Methods */
 
-   ICPPASTBinaryExpression newBinaryExpression(CPPBinaryOperator op, IASTExpression expr1, IASTExpression expr2);
+    ICPPASTUnaryExpression newUnaryExpression(CPPUnaryOperator operator, IASTExpression operand);
 
-   ICPPASTBinaryExpression newBinaryExpression(CPPBinaryOperator op, IASTExpression expr1, IASTInitializerClause expr2);
+    ICPPASTBinaryExpression newBinaryExpression(CPPBinaryOperator op, IASTExpression expr1, IASTExpression expr2);
 
-   /* Magic Factory Methods */
+    ICPPASTBinaryExpression newBinaryExpression(CPPBinaryOperator op, IASTExpression expr1, IASTInitializerClause expr2);
 
-   /**
-    * Creates a new binary expression while automatically grouping the operands if necessary.
-    * 
-    * <pre>
-    * Examples: 
-    * 
-    * [a + b] * [10] -> [(a + b)] * [10]
-    * 
-    * [a ? b : c] = [d] -> [(a ? b : c)] = [d]
-    * 
-    * [a * b] * [c] -> no additional grouping
-    * </pre>
-    * 
-    * @param operator
-    *        The operator (one of {@link IASTBinaryExpression}{@code .op_...})
-    * @param operand1
-    *        The left operand
-    * @param operand2
-    *        The right operand
-    * @return A new binary expression with correct grouping.
-    */
-   IASTBinaryExpression newMagicPrecedenceBinaryExpression(CPPBinaryOperator operator, IASTExpression operand1, IASTInitializerClause operand2);
+    /* Magic Factory Methods */
 
-   /**
-    * Creates a new unary expression while automatically grouping the operands if necessary.
-    * 
-    * <pre>
-    * Example:
-    * 
-    * *[c++] -> *[(c++)]
-    * </pre>
-    * 
-    * @param operator
-    *        The operator (one of {@link IASTUnaryExpression}{@code .op_...})
-    * @param operand
-    *        The operand
-    * @return A new unary expression with correct grouping
-    */
-   IASTUnaryExpression newMagicPrecedenceUnaryExpression(CPPUnaryOperator operator, IASTExpression operand);
+    /**
+     * Creates a new binary expression while automatically grouping the operands if necessary.
+     *
+     * <pre>
+     * Examples:
+     *
+     * [a + b] * [10] -> [(a + b)] * [10]
+     *
+     * [a ? b : c] = [d] -> [(a ? b : c)] = [d]
+     *
+     * [a * b] * [c] -> no additional grouping
+     * </pre>
+     *
+     * @param operator
+     * The operator (one of {@link IASTBinaryExpression}{@code .op_...})
+     * @param operand1
+     * The left operand
+     * @param operand2
+     * The right operand
+     * @return A new binary expression with correct grouping.
+     */
+    IASTBinaryExpression newMagicPrecedenceBinaryExpression(CPPBinaryOperator operator, IASTExpression operand1, IASTInitializerClause operand2);
 
-   /**
-    * Creates a new conditional expression while automatically grouping the operands if necessary.
-    * 
-    * <pre>
-    * Examples: 
-    * 
-    * [a + b] * [10] -> [(a + b)] * [10]
-    * 
-    * [a] ? [b] : [c=d] ->
-    * </pre>
-    * 
-    * @param condition
-    * @param positive
-    * @param negative
-    * @return
-    */
-   IASTConditionalExpression newMagicPrefedenceConditionalExpression(IASTExpression condition, IASTExpression positive, IASTExpression negative);
+    /**
+     * Creates a new unary expression while automatically grouping the operands if necessary.
+     *
+     * <pre>
+     * Example:
+     *
+     * *[c++] -> *[(c++)]
+     * </pre>
+     *
+     * @param operator
+     * The operator (one of {@link IASTUnaryExpression}{@code .op_...})
+     * @param operand
+     * The operand
+     * @return A new unary expression with correct grouping
+     */
+    IASTUnaryExpression newMagicPrecedenceUnaryExpression(CPPUnaryOperator operator, IASTExpression operand);
+
+    /**
+     * Creates a new conditional expression while automatically grouping the operands if necessary.
+     *
+     * <pre>
+     * Examples:
+     *
+     * [a + b] * [10] -> [(a + b)] * [10]
+     *
+     * [a] ? [b] : [c=d] ->
+     * </pre>
+     *
+     * @param condition
+     * @param positive
+     * @param negative
+     * @return
+     */
+    IASTConditionalExpression newMagicPrefedenceConditionalExpression(IASTExpression condition, IASTExpression positive, IASTExpression negative);
 
 }

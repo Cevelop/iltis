@@ -31,204 +31,256 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.OperationCanceledException;
 
 import ch.hsr.ifs.iltis.core.core.ILTIS;
-import ch.hsr.ifs.iltis.cpp.core.wrappers.CxxModelsCache;
+import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
+import ch.hsr.ifs.iltis.cpp.core.resources.info.MarkerInfo;
 
 
 /**
  * Convenience implementation of checker that works on index-based AST of a
  * C/C++
  * program.
- * 
+ *
  * Clients may extend this class.
- * 
+ *
  * FIXME remove as soon as my changes are in the cdt
  */
 public abstract class AbstractIndexAstChecker extends AbstractCheckerWithProblemPreferences implements ICAstChecker, IRunnableInEditorChecker {
 
-   private CxxModelsCache modelCache;
+    private CxxModelsCache modelCache;
 
-   @Override
-   public synchronized boolean processResource(IResource resource) throws OperationCanceledException {
-      if (!shouldProduceProblems(resource)) return false;
-      if (!(resource instanceof IFile)) return true;
-      processFile((IFile) resource);
-      return false;
-   }
+    @Override
+    public synchronized boolean processResource(final IResource resource) throws OperationCanceledException {
+        if (!shouldProduceProblems(resource)) return false;
+        if (!(resource instanceof IFile)) return true;
+        processFile((IFile) resource);
+        return false;
+    }
 
-   private void processFile(IFile file) throws OperationCanceledException {
-      ICheckerInvocationContext context = getContext();
-      synchronized (context) {
-         modelCache = context.get(CxxModelsCache.class);
-         if (modelCache == null) {
-            ICElement celement = CoreModel.getDefault().create(file);
-            if (!(celement instanceof ITranslationUnit)) { return; }
-            modelCache = acquireModelCache((ITranslationUnit) celement);
-            context.add(modelCache);
-         }
-      }
-      try {
-         // Run the checker only if the index is fully initialized. Otherwise it may produce
-         // false positives.
-         if (modelCache.getIndex().isFullyInitialized()) {
-            IASTTranslationUnit ast = modelCache.getAST();
-            if (ast != null) {
-               synchronized (ast) {
-                  processAst(ast);
-               }
-            }
-         }
-      } catch (CoreException e) {
-         ILTIS.log(e);
-      } finally {
-         modelCache = null;
-      }
-   }
-
-   protected CxxModelsCache acquireModelCache(ITranslationUnit tu) {
-      return new CxxModelsCache(tu);
-   }
-
-   /*
-    * (non-Javadoc)
-    * @see IRunnableInEditorChecker#processModel(Object,
-    * ICheckerInvocationContext)
-    */
-   @Override
-   public synchronized void processModel(Object model, ICheckerInvocationContext context) {
-      if (model instanceof IASTTranslationUnit) {
-         IASTTranslationUnit ast = (IASTTranslationUnit) model;
-         // Run the checker only if the index was fully initialized when the file was parsed.
-         // Otherwise the checker may produce false positives.
-         if (ast.isBasedOnIncompleteIndex()) return;
-         setContext(context);
-         synchronized (context) {
+    private void processFile(final IFile file) throws OperationCanceledException {
+        final ICheckerInvocationContext context = getContext();
+        synchronized (context) {
             modelCache = context.get(CxxModelsCache.class);
             if (modelCache == null) {
-               modelCache = new CxxModelsCache(ast);
-               context.add(modelCache);
+                final ICElement celement = CoreModel.getDefault().create(file);
+                if (!(celement instanceof ITranslationUnit)) {
+                    return;
+                }
+                modelCache = acquireModelCache((ITranslationUnit) celement);
+                context.add(modelCache);
             }
-         }
-         CPPSemantics.pushLookupPoint(ast);
-         try {
-            processAst(ast);
-         } finally {
+        }
+        try {
+            // Run the checker only if the index is fully initialized. Otherwise it may produce
+            // false positives.
+            if (modelCache.getIndex().isFullyInitialized()) {
+                final IASTTranslationUnit ast = modelCache.getAST();
+                if (ast != null) {
+                    synchronized (ast) {
+                        processAst(ast);
+                    }
+                }
+            }
+        } catch (final CoreException e) {
+            ILTIS.log(e);
+        } finally {
             modelCache = null;
-            setContext(null);
-            CPPSemantics.popLookupPoint();
-         }
-      }
-   }
+        }
+    }
 
-   @Override
-   public boolean runInEditor() {
-      return true;
-   }
+    protected CxxModelsCache acquireModelCache(final ITranslationUnit tu) {
+        return new CxxModelsCache(tu);
+    }
 
-   public void reportProblem(String id, IASTNode astNode, Object... args) {
-      IProblemLocation loc = getProblemLocation(astNode);
-      if (loc != null) reportProblem(id, loc, args);
-   }
-
-   public void reportProblem(IProblem problem, IASTNode astNode, Object... args) {
-      IProblemLocation loc = getProblemLocation(astNode);
-      if (loc != null) reportProblem(problem, loc, args);
-   }
-
-   /**
-    * Checks if problem should be reported, in this case it will check line
-    * comments, later can add filters or what not.
-    * 
-    * @param problem
-    *        - problem kind
-    * @param loc
-    *        - location
-    * @param args
-    *        - arguments
-    * @since 3.4
-    */
-   @Override
-   protected boolean shouldProduceProblem(IProblem problem, IProblemLocation loc, Object... args) {
-      String suppressionComment = (String) getSuppressionCommentPreference(problem).getValue();
-      if (suppressionComment.isEmpty()) return super.shouldProduceProblem(problem, loc, args);
-      List<IASTComment> lineComments = getLineCommentsForLocation(loc);
-      for (IASTComment astComment : lineComments) {
-         if (astComment.getRawSignature().contains(suppressionComment)) return false;
-      }
-      return super.shouldProduceProblem(problem, loc, args);
-   }
-
-   protected List<IASTComment> getLineCommentsForLocation(IProblemLocation loc) {
-      ArrayList<IASTComment> lineComments = new ArrayList<>();
-      try {
-         IASTComment[] commentsArray = modelCache.getAST().getComments();
-         for (IASTComment comm : commentsArray) {
-            IASTFileLocation fileLocation = comm.getFileLocation();
-            if (fileLocation.getStartingLineNumber() == loc.getLineNumber()) {
-               String problemFile = loc.getFile().getLocation().toOSString();
-               String commentFile = fileLocation.getFileName();
-               if (problemFile.equals(commentFile)) {
-                  lineComments.add(comm);
-               }
+    /*
+     * (non-Javadoc)
+     * @see IRunnableInEditorChecker#processModel(Object,
+     * ICheckerInvocationContext)
+     */
+    @Override
+    public synchronized void processModel(final Object model, final ICheckerInvocationContext context) {
+        if (model instanceof IASTTranslationUnit) {
+            final IASTTranslationUnit ast = (IASTTranslationUnit) model;
+            // Run the checker only if the index was fully initialized when the file was parsed.
+            // Otherwise the checker may produce false positives.
+            if (ast.isBasedOnIncompleteIndex()) return;
+            setContext(context);
+            synchronized (context) {
+                modelCache = context.get(CxxModelsCache.class);
+                if (modelCache == null) {
+                    modelCache = new CxxModelsCache(ast);
+                    context.add(modelCache);
+                }
             }
-         }
-      } catch (OperationCanceledException | CoreException e) {
-         ILTIS.log(e);
-      }
-      return lineComments;
-   }
+            CPPSemantics.pushLookupPoint(ast);
+            try {
+                processAst(ast);
+            } finally {
+                modelCache = null;
+                setContext(null);
+                CPPSemantics.popLookupPoint();
+            }
+        }
+    }
 
-   protected IProblemLocation getProblemLocation(IASTNode astNode) {
-      IASTFileLocation astLocation = astNode.getFileLocation();
-      return getProblemLocation(astNode, astLocation);
-   }
+    @Override
+    public boolean runInEditor() {
+        return true;
+    }
 
-   private IProblemLocation getProblemLocation(IASTNode astNode, IASTFileLocation astLocation) {
-      int line = astLocation.getStartingLineNumber();
-      IProblemLocationFactory locFactory = getRuntime().getProblemLocationFactory();
-      if (enclosedInMacroExpansion(astNode) && astNode instanceof IASTName) {
-         IASTImageLocation imageLocation = ((IASTName) astNode).getImageLocation();
-         if (imageLocation != null) {
-            int start = imageLocation.getNodeOffset();
-            int end = start + imageLocation.getNodeLength();
-            return locFactory.createProblemLocation(getFile(), start, end, line);
-         }
-      }
-      // If the raw signature has more than one line, we highlight only the code
-      // related to the problem. However, if the problem is associated with a
-      // node representing a class definition, do not highlight the entire class
-      // definition, because that can result in many lines being highlighted.
-      if (astNode instanceof IASTCompositeTypeSpecifier) { return locFactory.createProblemLocation(getFile(), line); }
-      int start = astLocation.getNodeOffset();
-      int end = start + astLocation.getNodeLength();
-      return locFactory.createProblemLocation(getFile(), start, end, line);
-   }
+    public void reportProblem(final IProblemId<?> id, final IASTNode astNode, final MarkerInfo<?> info) {
+        final IProblemLocation loc = getProblemLocation(astNode);
+        if (loc != null) reportProblem(id.getId(), loc, info.toCodanProblemArgsArray());
+    }
 
-   protected static boolean enclosedInMacroExpansion(IASTNode node) {
-      IASTNodeLocation[] nodeLocations = node.getNodeLocations();
-      return nodeLocations.length == 1 && nodeLocations[0] instanceof IASTMacroExpansionLocation;
-   }
+    public void reportProblem(final IProblem problem, final IASTNode astNode, final MarkerInfo<?> info) {
+        final IProblemLocation loc = getProblemLocation(astNode);
+        if (loc != null) reportProblem(problem, loc, info.toCodanProblemArgsArray());
+    }
 
-   protected static boolean includesMacroExpansion(IASTNode node) {
-      for (IASTNodeLocation nodeLocation : node.getNodeLocations()) {
-         if (nodeLocation instanceof IASTMacroExpansionLocation) return true;
-      }
-      return false;
-   }
+    public void reportProblem(final IProblemId<?> id, final IASTNode astNode) {
+        reportProblem(id.getId(), astNode);
+    }
 
-   protected IFile getFile() {
-      return modelCache.getFile();
-   }
+    public void reportProblem(final IProblemId<?> problemId, final IProblemLocation loc) {
+        reportProblem(problemId.getId(), loc);
+    }
 
-   protected IProject getProject() {
-      IFile file = getFile();
-      return file == null ? null : file.getProject();
-   }
+    public void reportProblem(final IProblemId<?> problemId, final IProblemLocation loc, final MarkerInfo<?> info) {
+        reportProblem(problemId.getId(), loc, info.toCodanProblemArgsArray());
+    }
 
-   protected CxxModelsCache getModelCache() {
-      return modelCache;
-   }
+    /**
+     * @deprecated Use {@link #reportProblem(IProblemId, IProblemLocation, MarkerInfo))}.
+     */
+    @Deprecated
+    @Override
+    public final void reportProblem(final String problemId, final IProblemLocation loc, final Object... args) {
+        reportProblem(getProblemById(problemId, loc.getFile()), loc, args);
+    }
 
-   protected ICodanCommentMap getCommentMap() {
-      return modelCache.getCommentedNodeMap();
-   }
+    /**
+     * @deprecated Use {@link #reportProblem(IProblemId, IASTNode, MarkerInfo)}.
+     */
+    @Deprecated
+    public final void reportProblem(final IProblemId<?> id, final IASTNode astNode, final Object... args) {
+        reportProblem(id.getId(), astNode, args);
+    }
+
+    /**
+     * @deprecated Use {@link #reportProblem(IProblemId, IASTNode, MarkerInfo)}.
+     */
+    @Deprecated
+    public final void reportProblem(final String id, final IASTNode astNode, final Object... args) {
+        final IProblemLocation loc = getProblemLocation(astNode);
+        if (loc != null) reportProblem(id, loc, args);
+    }
+
+    /**
+     * @deprecated Use {@link #reportProblem(IProblem, IASTNode, MarkerInfo)}
+     */
+    @Deprecated
+    public final void reportProblem(final IProblem problem, final IASTNode astNode, final Object... args) {
+        final IProblemLocation loc = getProblemLocation(astNode);
+        if (loc != null) reportProblem(problem, loc, args);
+    }
+
+    /**
+     * Checks if problem should be reported, in this case it will check line
+     * comments, later can add filters or what not.
+     *
+     * @param problem
+     * - problem kind
+     * @param loc
+     * - location
+     * @param args
+     * - arguments
+     * @since 3.4
+     */
+    @Override
+    protected boolean shouldProduceProblem(final IProblem problem, final IProblemLocation loc, final Object... args) {
+        final String suppressionComment = (String) getSuppressionCommentPreference(problem).getValue();
+        if (suppressionComment.isEmpty()) return super.shouldProduceProblem(problem, loc, args);
+        final List<IASTComment> lineComments = getLineCommentsForLocation(loc);
+        for (final IASTComment astComment : lineComments) {
+            if (astComment.getRawSignature().contains(suppressionComment)) return false;
+        }
+        return super.shouldProduceProblem(problem, loc, args);
+    }
+
+    protected List<IASTComment> getLineCommentsForLocation(final IProblemLocation loc) {
+        final ArrayList<IASTComment> lineComments = new ArrayList<>();
+        try {
+            final IASTComment[] commentsArray = modelCache.getAST().getComments();
+            for (final IASTComment comm : commentsArray) {
+                final IASTFileLocation fileLocation = comm.getFileLocation();
+                if (fileLocation.getStartingLineNumber() == loc.getLineNumber()) {
+                    final String problemFile = loc.getFile().getLocation().toOSString();
+                    final String commentFile = fileLocation.getFileName();
+                    if (problemFile.equals(commentFile)) {
+                        lineComments.add(comm);
+                    }
+                }
+            }
+        } catch (OperationCanceledException | CoreException e) {
+            ILTIS.log(e);
+        }
+        return lineComments;
+    }
+
+    protected IProblemLocation getProblemLocation(final IASTNode astNode) {
+        final IASTFileLocation astLocation = astNode.getFileLocation();
+        return astLocation == null ? null : getProblemLocation(astNode, astLocation);
+    }
+
+    private IProblemLocation getProblemLocation(final IASTNode astNode, final IASTFileLocation astLocation) {
+        final int line = astLocation.getStartingLineNumber();
+        final IProblemLocationFactory locFactory = getRuntime().getProblemLocationFactory();
+        if (enclosedInMacroExpansion(astNode) && astNode instanceof IASTName) {
+            final IASTImageLocation imageLocation = ((IASTName) astNode).getImageLocation();
+            if (imageLocation != null) {
+                final int start = imageLocation.getNodeOffset();
+                final int end = start + imageLocation.getNodeLength();
+                return locFactory.createProblemLocation(getFile(), start, end, line);
+            }
+        }
+        // If the raw signature has more than one line, we highlight only the code
+        // related to the problem. However, if the problem is associated with a
+        // node representing a class definition, do not highlight the entire class
+        // definition, because that can result in many lines being highlighted.
+        if (astNode instanceof IASTCompositeTypeSpecifier) {
+            return locFactory.createProblemLocation(getFile(), line);
+        }
+        final int start = astLocation.getNodeOffset();
+        final int end = start + astLocation.getNodeLength();
+        return locFactory.createProblemLocation(getFile(), start, end, line);
+    }
+
+    protected static boolean enclosedInMacroExpansion(final IASTNode node) {
+        final IASTNodeLocation[] nodeLocations = node.getNodeLocations();
+        return nodeLocations.length == 1 && nodeLocations[0] instanceof IASTMacroExpansionLocation;
+    }
+
+    protected static boolean includesMacroExpansion(final IASTNode node) {
+        for (final IASTNodeLocation nodeLocation : node.getNodeLocations()) {
+            if (nodeLocation instanceof IASTMacroExpansionLocation) return true;
+        }
+        return false;
+    }
+
+    protected IFile getFile() {
+        return modelCache.getFile();
+    }
+
+    protected IProject getProject() {
+        final IFile file = getFile();
+        return file == null ? null : file.getProject();
+    }
+
+    protected CxxModelsCache getModelCache() {
+        return modelCache;
+    }
+
+    protected ICodanCommentMap getCommentMap() {
+        return modelCache.getCommentedNodeMap();
+    }
 }

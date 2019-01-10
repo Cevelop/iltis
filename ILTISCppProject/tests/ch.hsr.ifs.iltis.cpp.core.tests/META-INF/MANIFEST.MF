@@ -17,8 +17,10 @@ Require-Bundle:
  org.eclipse.cdt.codan.checkers.ui,
  org.eclipse.cdt.codan.core.tests,
  org.eclipse.cdt.codan.ui,
- org.eclipse.cdt.codan.ui.cxx
-Bundle-Version: 1.1.2.qualifier
+ org.eclipse.cdt.codan.ui.cxx,
+ org.eclipse.cdt.ui,
+ org.eclipse.collections
+Bundle-Version: 2.0.0.qualifier
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: ch.hsr.ifs.iltis.cpp.core.tests;singleton:=true
 Bundle-ClassPath: .

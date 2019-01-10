@@ -15,52 +15,52 @@ import ch.hsr.ifs.iltis.cpp.versionator.preferences.CPPVersionPreferenceConstant
 
 public class DefaultVersionSelector extends Composite {
 
-   private Button defaultVersionButton;
-   private Label  selectedDefaultVersionLabel;
+    private Button defaultVersionButton;
+    private Label  selectedDefaultVersionLabel;
 
-   private VersionSelectionCombo versionCombo;
+    private VersionSelectionCombo versionCombo;
 
-   public DefaultVersionSelector(Composite parent, final VersionSelectionCombo versionCombo, int style) {
-      super(parent, style);
+    public DefaultVersionSelector(Composite parent, final VersionSelectionCombo versionCombo, int style) {
+        super(parent, style);
 
-      this.versionCombo = versionCombo;
+        this.versionCombo = versionCombo;
 
-      setLayout(new GridLayout(1, false));
+        setLayout(new GridLayout(1, false));
 
-      defaultVersionButton = new Button(this, SWT.PUSH);
-      defaultVersionButton.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
-      defaultVersionButton.addSelectionListener(new SelectionAdapter() {
+        defaultVersionButton = new Button(this, SWT.PUSH);
+        defaultVersionButton.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
+        defaultVersionButton.addSelectionListener(new SelectionAdapter() {
 
-         @Override
-         public void widgetSelected(SelectionEvent e) {
-            Activator.getDefault().getPreferenceStore().setValue(CPPVersionPreferenceConstants.ELEVENATOR_VERSION_DEFAULT, versionCombo
-                  .getSelectedVersion().toString());
-            updateDefaultVersionButton();
-            updateDefaultVersionLabel();
-         }
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Activator.getDefault().getPreferenceStore().setValue(CPPVersionPreferenceConstants.ELEVENATOR_VERSION_DEFAULT, versionCombo
+                        .getSelectedVersion().toString());
+                updateDefaultVersionButton();
+                updateDefaultVersionLabel();
+            }
 
-      });
-      updateDefaultVersionButton();
+        });
+        updateDefaultVersionButton();
 
-      selectedDefaultVersionLabel = new Label(this, SWT.NONE);
-      selectedDefaultVersionLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
-      updateDefaultVersionLabel();
-   }
+        selectedDefaultVersionLabel = new Label(this, SWT.NONE);
+        selectedDefaultVersionLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
+        updateDefaultVersionLabel();
+    }
 
-   private void updateDefaultVersionLabel() {
-      String versionString = versionCombo.getSelectedVersion().getVersionString();
-      selectedDefaultVersionLabel.setText("Current Default Version is " + versionString);
-   }
+    private void updateDefaultVersionLabel() {
+        String versionString = versionCombo.getSelectedVersion().getVersionString();
+        selectedDefaultVersionLabel.setText("Current Default Version is " + versionString);
+    }
 
-   public void updateDefaultVersionButton() {
-      String versionString = versionCombo.getSelectedVersion().getVersionString();
-      defaultVersionButton.setText("Set " + versionString + " as Default Version");
+    public void updateDefaultVersionButton() {
+        String versionString = versionCombo.getSelectedVersion().getVersionString();
+        defaultVersionButton.setText("Set " + versionString + " as Default Version");
 
-      String storedDefaultVersionString = Activator.getDefault().getPreferenceStore().getString(
-            CPPVersionPreferenceConstants.ELEVENATOR_VERSION_DEFAULT);
-      String selectedDefaultVersionString = versionCombo.getSelectedVersion().toString();
-      boolean versionMatches = storedDefaultVersionString.equals(selectedDefaultVersionString);
-      defaultVersionButton.setEnabled(!versionMatches);
-   }
+        String storedDefaultVersionString = Activator.getDefault().getPreferenceStore().getString(
+                CPPVersionPreferenceConstants.ELEVENATOR_VERSION_DEFAULT);
+        String selectedDefaultVersionString = versionCombo.getSelectedVersion().toString();
+        boolean versionMatches = storedDefaultVersionString.equals(selectedDefaultVersionString);
+        defaultVersionButton.setEnabled(!versionMatches);
+    }
 
 }

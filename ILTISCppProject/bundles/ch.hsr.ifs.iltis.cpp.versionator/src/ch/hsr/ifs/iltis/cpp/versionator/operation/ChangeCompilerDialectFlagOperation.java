@@ -13,20 +13,22 @@ import ch.hsr.ifs.iltis.cpp.versionator.definition.IVersionModificationOperation
 
 public class ChangeCompilerDialectFlagOperation implements IVersionModificationOperation {
 
-   @Override
-   public void perform(IProject project, CPPVersion selectedVersion, boolean enabled) {
+    @Override
+    public void perform(IProject project, CPPVersion selectedVersion, boolean enabled) {
 
-      if (!enabled) { return; }
+        if (!enabled) {
+            return;
+        }
 
-      IManagedBuildInfo info = ManagedBuildManager.getBuildInfo(project);
-      IConfiguration[] configs = info.getManagedProject().getConfigurations();
-      for (IConfiguration config : configs) {
-         ITool[] tools = config.getToolsBySuperClassId("cdt.managedbuild.tool.gnu.cpp.compiler");
-         for (ITool tool : tools) {
-            IOption otherFlagOption = tool.getOptionById("gnu.cpp.compiler.option.dialect.flags");
-            String newValue = "-std=" + selectedVersion.getCompilerVersionString();
-            ManagedBuildManager.setOption(config, tool, otherFlagOption, newValue);
-         }
-      }
-   }
+        IManagedBuildInfo info = ManagedBuildManager.getBuildInfo(project);
+        IConfiguration[] configs = info.getManagedProject().getConfigurations();
+        for (IConfiguration config : configs) {
+            ITool[] tools = config.getToolsBySuperClassId("cdt.managedbuild.tool.gnu.cpp.compiler");
+            for (ITool tool : tools) {
+                IOption otherFlagOption = tool.getOptionById("gnu.cpp.compiler.option.dialect.flags");
+                String newValue = "-std=" + selectedVersion.getCompilerVersionString();
+                ManagedBuildManager.setOption(config, tool, otherFlagOption, newValue);
+            }
+        }
+    }
 }
