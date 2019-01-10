@@ -23,94 +23,95 @@ import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.cdttest.comparison.ASTCo
 
 class ASTNodeCollector {
 
-   private Job job;
+    private Job job;
 
-   private BlockingQueue<IASTNode> pipe = new LinkedBlockingQueue<>();
+    private BlockingQueue<IASTNode> pipe = new LinkedBlockingQueue<>();
 
-   private CallbackVisitor visitor = new CallbackVisitor(this::handleNode);
+    private CallbackVisitor visitor = new CallbackVisitor(this::handleNode);
 
-   private List<CommentRelation> commentRelations;
+    private List<CommentRelation> commentRelations;
 
-   private boolean abortASAP = false;
+    private boolean abortASAP = false;
 
-   private boolean compareComments;
+    private boolean compareComments;
 
-   private boolean visitingFinished = false;
+    private boolean visitingFinished = false;
 
-   private EOTNode eotNode;
+    private EOTNode eotNode;
 
-   ASTNodeCollector(IASTTranslationUnit ast, EnumSet<ComparisonArg> args) {
-      this.compareComments = args.contains(ComparisonArg.COMPARE_COMMENTS);
-      this.eotNode = new EOTNode(ast);
+    ASTNodeCollector(IASTTranslationUnit ast, EnumSet<ComparisonArg> args) {
+        this.compareComments = args.contains(ComparisonArg.COMPARE_COMMENTS);
+        this.eotNode = new EOTNode(ast);
 
-      if (compareComments) {
-         commentRelations = Stream.of(ast.getComments()).filter(IASTNode::isPartOfTranslationUnitFile).map(CommentRelation::new).collect(Collectors
-               .toList());
-      }
+        if (compareComments) {
+            commentRelations = Stream.of(ast.getComments()).filter(IASTNode::isPartOfTranslationUnitFile).map(CommentRelation::new).collect(Collectors
+                    .toList());
+        }
 
-      IPath filePath = new Path(ast.getContainingFilename());
+        IPath filePath = new Path(ast.getContainingFilename());
 
-      job = Job.create("Node collector on " + filePath.lastSegment(), mon -> {
-         ast.accept(visitor);
-         visitingFinished = true;
-      });
-
-      job.addJobChangeListener(new JobChangeAdapter() {
-
-         @Override
-         public void done(IJobChangeEvent event) {
+        job = Job.create("Node collector on " + filePath.lastSegment(), mon -> {
+            ast.accept(visitor);
             visitingFinished = true;
-            super.done(event);
-         }
+        });
 
-      });
+        job.addJobChangeListener(new JobChangeAdapter() {
 
-   }
+            @Override
+            public void done(IJobChangeEvent event) {
+                visitingFinished = true;
+                super.done(event);
+            }
 
-   public void schedule() {
-      job.schedule();
-   }
+        });
 
-   public void join() throws InterruptedException {
-      job.join();
-   }
+    }
 
-   public IASTNode poll() throws InterruptedException {
-      IASTNode node;
-      do {
-         if (visitingFinished && pipe.isEmpty()) {
-            node = eotNode;
-         } else {
-            node = pipe.poll();
-         }
-      } while (node == null);
-      return node;
-   }
+    public void schedule() {
+        job.schedule();
+    }
 
-   public void abort() {
-      this.abortASAP = true;
-   }
+    public void join() throws InterruptedException {
+        job.join();
+    }
 
-   public List<CommentRelation> getCommentRelations() {
-      return commentRelations;
-   }
+    public IASTNode poll() throws InterruptedException {
+        IASTNode node;
+        do {
+            if (visitingFinished && pipe.isEmpty()) {
+                node = eotNode;
+            } else {
+                node = pipe.poll();
+            }
+        } while (node == null);
+        return node;
+    }
 
-   private int handleNode(IASTNode node) {
-      // FIXME implement working test for isPartOfTranslationUnitFile()
-      if (!node.isPartOfTranslationUnitFile()) return ASTVisitor.PROCESS_SKIP;
-      try {
-         updateAllCommentRelations(commentRelations, node);
-         pipe.put(node);
-      } catch (InterruptedException e) {
-         e.printStackTrace();
-      }
-      return abortASAP ? ASTVisitor.PROCESS_ABORT : ASTVisitor.PROCESS_CONTINUE;
-   }
+    public void abort() {
+        this.abortASAP = true;
+    }
 
-   private void updateAllCommentRelations(List<CommentRelation> relations, IASTNode node) {
-      if (compareComments) {
-         relations.forEach((relation) -> relation.update(node));
-      }
-   }
+    public List<CommentRelation> getCommentRelations() {
+        return commentRelations;
+    }
+
+    private int handleNode(IASTNode node) {
+        // FIXME implement working test for isPartOfTranslationUnitFile()
+        /* If AST is not synthetic, check if node is part for the TU file. */
+        if (!node.isPartOfTranslationUnitFile() && !node.getContainingFilename().isEmpty()) return ASTVisitor.PROCESS_SKIP;
+        try {
+            updateAllCommentRelations(commentRelations, node);
+            pipe.put(node);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return abortASAP ? ASTVisitor.PROCESS_ABORT : ASTVisitor.PROCESS_CONTINUE;
+    }
+
+    private void updateAllCommentRelations(List<CommentRelation> relations, IASTNode node) {
+        if (compareComments) {
+            relations.forEach((relation) -> relation.update(node));
+        }
+    }
 
 }

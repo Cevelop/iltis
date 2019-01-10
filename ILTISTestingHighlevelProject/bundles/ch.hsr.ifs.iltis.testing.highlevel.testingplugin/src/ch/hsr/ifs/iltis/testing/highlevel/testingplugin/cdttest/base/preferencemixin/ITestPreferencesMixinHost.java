@@ -25,41 +25,41 @@ import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
  * setPreferencesEval=(P_CHAR_MAPPING_TO_FIXED|V_SIZE_16),(P_CHAR_PLATFORM_SIGNED_UNSIGNED|V_CHAR_PLATFORM_UNSIGNED)
  * //@main.cpp
  * char foo {42};
- * 
+ *
  * @author tstauber
  *
  */
 public interface ITestPreferencesMixinHost {
 
-   /**
-    * @author tstauber
-    *
-    * @return The {@code IPreferenceStore} containing the preferences that
-    *         shall be altered while testing.
-    *
-    */
-   public abstract IPreferenceStore initPrefs();
+    /**
+     * @author tstauber
+     *
+     * @return The {@code IPreferenceStore} containing the preferences that
+     * shall be altered while testing.
+     *
+     */
+    public abstract IPreferenceStore initPrefs();
 
-   /**
-    * @author tstauber
-    *
-    * @return The {@code Class} containing the static fields that contain the
-    *         {@code String}s representing the id's for the preferences.
-    *
-    */
-   public default Class<?> getPreferenceConstants(){
-      throw new ILTISException("If \"setPreferencesEval=\" is used, the method getPreferenceConstants() must be overridden");
-   }
-   
-   /**
-    * @author tstauber
-    *
-    * @return The {@code Class} containing the static fields that contain the
-    *         {@code String}s representing the values for the preferences.
-    *
-    */
-   public default Class<?> getValueConstants(){
-      return getPreferenceConstants();
-   }
+    /**
+     * @author tstauber
+     *
+     * @return The {@code Class} containing the static fields that contain the
+     * {@code String}s representing the id's for the preferences.
+     *
+     */
+    public default Class<?> getPreferenceConstants() {
+        throw new ILTISException("If \"setPreferencesEval=\" is used, the method getPreferenceConstants() must be overridden");
+    }
+
+    /**
+     * @author tstauber
+     *
+     * @return The {@code Class} containing the static fields that contain the
+     * {@code String}s representing the values for the preferences.
+     *
+     */
+    public default Class<?> getValueConstants() {
+        return getPreferenceConstants();
+    }
 
 }

@@ -1,47 +1,48 @@
 package ch.hsr.ifs.iltis.testing.highlevel.testingplugin.testsourcefile;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class RTSTest {
 
-   private String                    testName;
-   private Language                  language        = Language.CPP;
-   private ArrayList<TestSourceFile> testSourceFiles = new ArrayList<>();
+    private final String               testName;
+    private Language                   language        = Language.CPP;
+    private final List<TestSourceFile> testSourceFiles = new ArrayList<>();
 
-   public RTSTest(String name) {
-      this.testName = name;
-   }
+    public RTSTest(final String name) {
+        this.testName = name;
+    }
 
-   public ArrayList<TestSourceFile> getTestSourceFiles() {
-      return testSourceFiles;
-   }
+    public List<TestSourceFile> getTestSourceFiles() {
+        return testSourceFiles;
+    }
 
-   public String getName() {
-      return testName;
-   }
+    public String getName() {
+        return testName;
+    }
 
-   public void addFile(TestSourceFile file) {
-      testSourceFiles.add(file);
-   }
+    public void addTestFile(final TestSourceFile file) {
+        testSourceFiles.add(file);
+    }
 
-   public void setLanguage(final String language) {
-      this.language = Language.valueOf(language);
-   }
+    public void setLanguage(final String language) {
+        this.language = Language.valueOf(language);
+    }
 
-   public Language getLanguage() {
-      return language;
-   }
+    public Language getLanguage() {
+        return language;
+    }
 
-   public enum Language {
-      CPP("CPP"), C("C");
+    public enum Language {
+        CPP("CPP"), C("C");
 
-      String lang;
+        String lang;
 
-      Language(String lang) {
-         this.lang = lang;
-      }
+        Language(final String lang) {
+            this.lang = lang;
+        }
 
-   }
+    }
 
 }

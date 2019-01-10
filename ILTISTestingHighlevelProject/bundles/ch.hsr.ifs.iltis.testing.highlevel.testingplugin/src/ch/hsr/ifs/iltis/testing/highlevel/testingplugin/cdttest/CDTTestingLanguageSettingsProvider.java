@@ -33,8 +33,8 @@ import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.TestingPlugin;
  */
 public class CDTTestingLanguageSettingsProvider extends LanguageSettingsSerializableProvider {
 
-   public static final String PROVIDER_NAME = "CDTTestingLanguageSettingsProvider";
-   public static final String PROVIDER_ID   = TestingPlugin.PLUGIN_ID + ".cdtTestingLanguageSettingsProvider";
+    public static final String PROVIDER_NAME = "CDTTestingLanguageSettingsProvider";
+    public static final String PROVIDER_ID   = TestingPlugin.PLUGIN_ID + ".cdtTestingLanguageSettingsProvider";
 
    //@formatter:off
    private static final List<Integer> SUPPORTED_SETTING_KINDS = Arrays.asList(
@@ -49,15 +49,15 @@ public class CDTTestingLanguageSettingsProvider extends LanguageSettingsSerializ
    );
    //@formatter:on
 
-   public CDTTestingLanguageSettingsProvider() {
-      super(PROVIDER_NAME, PROVIDER_ID);
-   }
+    public CDTTestingLanguageSettingsProvider() {
+        super(PROVIDER_NAME, PROVIDER_ID);
+    }
 
-   @Override
-   public List<ICLanguageSettingEntry> getSettingEntries(ICConfigurationDescription cfgDescription, IResource resource, String languageId) {
-      IPath pathInProject = resource.getProjectRelativePath();
-      ICResourceDescription description = cfgDescription.getResourceDescription(pathInProject, false);
-      ICLanguageSetting[] languageSettings = getLanguageSettingsFor(description);
+    @Override
+    public List<ICLanguageSettingEntry> getSettingEntries(ICConfigurationDescription cfgDescription, IResource resource, String languageId) {
+        IPath pathInProject = resource.getProjectRelativePath();
+        ICResourceDescription description = cfgDescription.getResourceDescription(pathInProject, false);
+        ICLanguageSetting[] languageSettings = getLanguageSettingsFor(description);
 
       //@formatter:off
       return Arrays.stream(languageSettings)
@@ -72,26 +72,27 @@ public class CDTTestingLanguageSettingsProvider extends LanguageSettingsSerializ
          .map(this::processPath)
          .collect(Collectors.toList());
       //@formatter:on
-   }
+    }
 
-   private boolean isSupportedEntry(ICLanguageSetting s, Integer k) {
-      return (s.getSupportedEntryKinds() & k) != 0;
-   }
+    private boolean isSupportedEntry(ICLanguageSetting s, Integer k) {
+        return (s.getSupportedEntryKinds() & k) != 0;
+    }
 
-   private ICLanguageSettingEntry processPath(ICLanguageSettingEntry e) {
-      if(e.getKind() == ICSettingEntry.INCLUDE_PATH) {
-         if(!Paths.get(e.getValue()).isAbsolute()) {
-            return CDataUtil.createCIncludePathEntry(e.getValue(), e.getFlags() | ICSettingEntry.VALUE_WORKSPACE_PATH);
-         }
-      }
-      return e;
-   }
+    private ICLanguageSettingEntry processPath(ICLanguageSettingEntry e) {
+        if (e.getKind() == ICSettingEntry.INCLUDE_PATH) {
+            if (!Paths.get(e.getValue()).isAbsolute()) {
+                return CDataUtil.createCIncludePathEntry(e.getValue(), e.getFlags() | ICSettingEntry.VALUE_WORKSPACE_PATH);
+            }
+        }
+        return e;
+    }
 
-   private ICLanguageSetting[] getLanguageSettingsFor(ICResourceDescription description) {
-      if (description.getType() == ICSettingBase.SETTING_PROJECT || description
-            .getType() == ICSettingBase.SETTING_FOLDER) { return ((ICFolderDescription) description).getLanguageSettings(); }
+    private ICLanguageSetting[] getLanguageSettingsFor(ICResourceDescription description) {
+        if (description.getType() == ICSettingBase.SETTING_PROJECT || description.getType() == ICSettingBase.SETTING_FOLDER) {
+            return ((ICFolderDescription) description).getLanguageSettings();
+        }
 
-      return new ICLanguageSetting[0];
-   }
+        return new ICLanguageSetting[0];
+    }
 
 }

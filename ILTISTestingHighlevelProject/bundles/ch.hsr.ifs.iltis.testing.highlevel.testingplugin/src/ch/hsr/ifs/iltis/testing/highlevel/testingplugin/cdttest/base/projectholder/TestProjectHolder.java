@@ -51,315 +51,325 @@ import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
 import ch.hsr.ifs.iltis.core.core.resources.FileUtil;
 
 import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.cdttest.formatting.FormatterLoader;
-import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.testsourcefile.TestSourceFile;
 import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.testsourcefile.RTSTest.Language;
+import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.testsourcefile.TestSourceFile;
 
 
 public class TestProjectHolder extends AbstractProjectHolder implements ITestProjectHolder {
 
-   private static final String DEFAULT_INDEXER_TIMEOUT_SEC = "10";
-   private static final String INDEXER_TIMEOUT_PROPERTY    = "indexer.timeout";
-   protected static final int  INDEXER_TIMEOUT_SEC         = Integer.parseInt(System.getProperty(INDEXER_TIMEOUT_PROPERTY,
-         DEFAULT_INDEXER_TIMEOUT_SEC));
+    private static final String DEFAULT_INDEXER_TIMEOUT_SEC = "10";
+    private static final String INDEXER_TIMEOUT_PROPERTY    = "indexer.timeout";
+    protected static final int  INDEXER_TIMEOUT_SEC         = Integer.parseInt(System.getProperty(INDEXER_TIMEOUT_PROPERTY,
+            DEFAULT_INDEXER_TIMEOUT_SEC));
 
-   private boolean isExpectedProject;
+    private final boolean isExpectedProject;
 
-   private List<ICProject> referencedProjects = new ArrayList<>();
-   private List<IPath>     formattedDocuments = new ArrayList<>();
+    private final List<ICProject> referencedProjects = new ArrayList<>();
+    private final List<IPath>     formattedDocuments = new ArrayList<>();
 
-   private ArrayList<IPath>                        stagedExternalIncudePaths  = new ArrayList<>();
-   private ArrayList<IPath>                        stagedInternalIncludePaths = new ArrayList<>();
-   private ArrayList<ReferencedProjectDescription> stagedReferncedProjects    = new ArrayList<>();
-   private HashMap<String, String>                 stagedTestSourcesToImport  = new HashMap<>();
+    private final ArrayList<IPath>                        stagedExternalIncudePaths  = new ArrayList<>();
+    private final ArrayList<IPath>                        stagedInternalIncludePaths = new ArrayList<>();
+    private final ArrayList<ReferencedProjectDescription> stagedReferncedProjects    = new ArrayList<>();
+    private final HashMap<String, String>                 stagedTestSourcesToImport  = new HashMap<>();
 
-   public TestProjectHolder(String projectName, Language language, boolean isExpectedProject) {
-      this.projectName = projectName;
-      this.language = language;
-      this.isExpectedProject = isExpectedProject;
-   }
+    public TestProjectHolder(final String projectName, final Language language, final boolean isExpectedProject) {
+        this.projectName = projectName;
+        this.language = language;
+        this.isExpectedProject = isExpectedProject;
+    }
 
-   @Override
-   public void cleanupProjects() {
-      fileCache.clean();
-      //TODO(Tobias Stauber) cleanup
-      //      try {
-      //         fileManager.closeAllFiles();
-      //      } catch (CoreException | InterruptedException e) {
-      //         e.printStackTrace();
-      //      }
-      deleteProject(cProject);
-      referencedProjects.stream().forEach(this::deleteProject);
-   }
+    @Override
+    public void cleanupProjects() {
+        fileCache.clean();
+        //TODO(Tobias Stauber) cleanup
+        //      try {
+        //         fileManager.closeAllFiles();
+        //      } catch (CoreException | InterruptedException e) {
+        //         e.printStackTrace();
+        //      }
+        deleteProject(cProject);
+        referencedProjects.stream().forEach(this::deleteProject);
+    }
 
-   private void deleteProject(ICProject project) {
-      try {
-         project.getProject().delete(true, true, new NullProgressMonitor());
-      } catch (CoreException e) {
-         e.printStackTrace();
-      }
-   }
+    private void deleteProject(final ICProject project) {
+        try {
+            project.getProject().delete(true, true, new NullProgressMonitor());
+        } catch (final CoreException e) {
+            e.printStackTrace();
+        }
+    }
 
-   @Override
-   public ProjectHolderJob setupIndexAsync() {
-      return ProjectHolderJob.create("Setup index of project " + projectName, ITestProjectHolder.SETUP_INDEX_JOB_FAMILY, mon -> {
-         setupIndex();
-      });
-   }
+    @Override
+    public ProjectHolderJob setupIndexAsync() {
+        return ProjectHolderJob.create("Setup index of project " + projectName, ITestProjectHolder.SETUP_INDEX_JOB_FAMILY, mon -> {
+            setupIndex();
+        });
+    }
 
-   private void setupIndex() throws CoreException {
-      disposeCDTAstCache();
-      getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-      /* Does not seem to be needed */
-      //      ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor()); 
-      /* reindexing will happen automatically after call of setIndexerId */
-      CCorePlugin.getIndexManager().setIndexerId(getCProject(), IPDOMManager.ID_FAST_INDEXER);
-      referencedProjects.forEach(proj -> CCorePlugin.getIndexManager().setIndexerId(proj, IPDOMManager.ID_FAST_INDEXER));
-      ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
+    private void setupIndex() throws CoreException {
+        disposeCDTAstCache();
+        getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+        /* Does not seem to be needed */
+        //      ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
+        /* reindexing will happen automatically after call of setIndexerId */
+        CCorePlugin.getIndexManager().setIndexerId(getCProject(), IPDOMManager.ID_FAST_INDEXER);
+        referencedProjects.forEach(proj -> CCorePlugin.getIndexManager().setIndexerId(proj, IPDOMManager.ID_FAST_INDEXER));
+        ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 
-      boolean joined = CCorePlugin.getIndexManager().joinIndexer(IIndexManager.FOREVER, new NullProgressMonitor());
-      if (!joined) {
-         System.err.println("Join on indexer failed. " + projectName + "might fail.");
-         joined = CCorePlugin.getIndexManager().joinIndexer(IIndexManager.FOREVER, new NullProgressMonitor());
-         if (!joined) {
-            System.err.println("Second join on indexer failed.");
-         }
-      }
-      try {
-         Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_REFRESH, null);
-         assertTrue(CCorePlugin.getIndexManager().joinIndexer(INDEXER_TIMEOUT_SEC * 1000, new NullProgressMonitor())); //CCoreInternals.getPDOMManager()
-      } catch (final InterruptedException e) {
-         System.err.println("Wait for indexer has been interrupted.");
-      }
-   }
-
-   @SuppressWarnings("restriction")
-   private void disposeCDTAstCache() {
-      CUIPlugin.getDefault().getASTProvider().dispose();
-   }
-
-   @Override
-   public ITestProjectHolder stageAbsoluteExternalIncludePaths(final IPath... absolutePaths) {
-      stagedExternalIncudePaths.addAll(Arrays.asList(absolutePaths));
-      return this;
-   }
-
-   @Override
-   public ITestProjectHolder stageInternalIncludePaths(final IPath... projectRelativePaths) {
-      stagedInternalIncludePaths.addAll(Arrays.asList(projectRelativePaths));
-      return this;
-   }
-
-   @Override
-   public ITestProjectHolder setLanguage(Language language) {
-      this.language = language;
-      return this;
-   }
-
-   @Override
-   public ProjectHolderJob setupProjectReferencesAsync() {
-      return ProjectHolderJob.create("Setup members of project " + projectName, ITestProjectHolder.SETUP_PROJECT_REFERENCES_JOB_FAMILY, mon -> {
-         if (!referencedProjects.isEmpty()) {
-            final ICProjectDescription description = CCorePlugin.getDefault().getProjectDescription(getProject(), true);
-            for (final ICConfigurationDescription config : description.getConfigurations()) {
-               final Map<String, String> refMap = config.getReferenceInfo();
-               for (final ICProject refProject : referencedProjects) {
-                  refMap.put(refProject.getProject().getName(), "");
-               }
-               config.setReferenceInfo(refMap);
+        boolean joined = CCorePlugin.getIndexManager().joinIndexer(IIndexManager.FOREVER, new NullProgressMonitor());
+        if (!joined) {
+            System.err.println("Join on indexer failed. " + projectName + "might fail.");
+            joined = CCorePlugin.getIndexManager().joinIndexer(IIndexManager.FOREVER, new NullProgressMonitor());
+            if (!joined) {
+                System.err.println("Second join on indexer failed.");
             }
-            CCorePlugin.getDefault().setProjectDescription(getProject(), description);
-         }
-      });
-   }
+        }
+        try {
+            Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_REFRESH, null);
+            assertTrue(CCorePlugin.getIndexManager().joinIndexer(INDEXER_TIMEOUT_SEC * 1000, new NullProgressMonitor())); //CCoreInternals.getPDOMManager()
+        } catch (final InterruptedException e) {
+            System.err.println("Wait for indexer has been interrupted.");
+        }
+    }
 
-   @Override
-   public ProjectHolderJob setupIncludePathsAsync() {
-      return ProjectHolderJob.create("Adding include path dir to project " + projectName, ITestProjectHolder.ADD_INCLUDE_PATH_JOB_FAMILY, mon -> {
-         final int referencedProjectsOffset = stagedExternalIncudePaths.size() + stagedInternalIncludePaths.size();
-         final IPath[] pathsToAdd = new IPath[referencedProjectsOffset + referencedProjects.size()];
-         int i = 0;
-         /* Adds all the external include paths to the array */
-         for (; i < stagedExternalIncudePaths.size(); i++) {
-            final IPath externalAbsolutePath = stagedExternalIncudePaths.get(i);
-            final File folder = externalAbsolutePath.toFile();
-            if (!folder.exists()) {
-               System.err.println("Adding external include path dir " + externalAbsolutePath + " to test " + projectName + " which does not exist.");
+    @SuppressWarnings("restriction")
+    private void disposeCDTAstCache() {
+        CUIPlugin.getDefault().getASTProvider().dispose();
+    }
+
+    @Override
+    public ITestProjectHolder stageAbsoluteExternalIncludePaths(final IPath... absolutePaths) {
+        stagedExternalIncudePaths.addAll(Arrays.asList(absolutePaths));
+        return this;
+    }
+
+    @Override
+    public ITestProjectHolder stageInternalIncludePaths(final IPath... projectRelativePaths) {
+        stagedInternalIncludePaths.addAll(Arrays.asList(projectRelativePaths));
+        return this;
+    }
+
+    @Override
+    public ITestProjectHolder setLanguage(final Language language) {
+        this.language = language;
+        return this;
+    }
+
+    @Override
+    public ProjectHolderJob setupProjectReferencesAsync() {
+        return ProjectHolderJob.create("Setup members of project " + projectName, ITestProjectHolder.SETUP_PROJECT_REFERENCES_JOB_FAMILY, mon -> {
+            if (!referencedProjects.isEmpty()) {
+                final ICProjectDescription description = CCorePlugin.getDefault().getProjectDescription(getProject(), true);
+                for (final ICConfigurationDescription config : description.getConfigurations()) {
+                    final Map<String, String> refMap = config.getReferenceInfo();
+                    for (final ICProject refProject : referencedProjects) {
+                        refMap.put(refProject.getProject().getName(), "");
+                    }
+                    config.setReferenceInfo(refMap);
+                }
+                CCorePlugin.getDefault().setProjectDescription(getProject(), description);
             }
-            pathsToAdd[i] = externalAbsolutePath;
-         }
-         /* Adds all the internal include paths to the array */
-         for (int j = 0; j < stagedInternalIncludePaths.size(); i++, j++) {
-            final IPath inProjectAbsolutePath = makeProjectAbsolutePath(stagedInternalIncludePaths.get(j));
-            final File folder = inProjectAbsolutePath.toFile();
-            if (!folder.exists()) {
-               System.err.println("Adding external include path dir " + inProjectAbsolutePath.toString() + " to test " + projectName +
-                                  " which does not exist.");
+        });
+    }
+
+    @Override
+    public ProjectHolderJob setupIncludePathsAsync() {
+        return ProjectHolderJob.create("Adding include path dir to project " + projectName, ITestProjectHolder.ADD_INCLUDE_PATH_JOB_FAMILY, mon -> {
+            final int referencedProjectsOffset = stagedExternalIncudePaths.size() + stagedInternalIncludePaths.size();
+            final IPath[] pathsToAdd = new IPath[referencedProjectsOffset + referencedProjects.size()];
+            int i = 0;
+            /* Adds all the external include paths to the array */
+            for (; i < stagedExternalIncudePaths.size(); i++) {
+                final IPath externalAbsolutePath = stagedExternalIncudePaths.get(i);
+                final File folder = externalAbsolutePath.toFile();
+                if (!folder.exists()) {
+                    System.err.println("Adding external include path dir " + externalAbsolutePath + " to test " + projectName +
+                                       " which does not exist.");
+                }
+                pathsToAdd[i] = externalAbsolutePath;
             }
-            pathsToAdd[i] = inProjectAbsolutePath;
-         }
-         /* Adds all the referenced project include paths to the array */
-         for (int j = 0; j < referencedProjects.size(); i++, j++) {
-            final ICProject referencedProj = referencedProjects.get(j);
-            pathsToAdd[i] = referencedProj.getProject().getLocation();
-         }
-         stagedExternalIncudePaths.clear();
-         stagedInternalIncludePaths.clear();
-         addIncludeRefs(pathsToAdd, referencedProjectsOffset);
-         //TODO(Tobias Stauber) figure out why this is needed...
-         //         TestScannerProvider.sIncludes = Arrays.stream(pathsToAdd).map(IPath::toOSString).toArray(String[]::new);
-      });
-   }
+            /* Adds all the internal include paths to the array */
+            for (int j = 0; j < stagedInternalIncludePaths.size(); i++, j++) {
+                final IPath inProjectAbsolutePath = makeProjectAbsolutePath(stagedInternalIncludePaths.get(j));
+                final File folder = inProjectAbsolutePath.toFile();
+                if (!folder.exists()) {
+                    System.err.println("Adding external include path dir " + inProjectAbsolutePath.toString() + " to test " + projectName +
+                                       " which does not exist.");
+                }
+                pathsToAdd[i] = inProjectAbsolutePath;
+            }
+            /* Adds all the referenced project include paths to the array */
+            for (int j = 0; j < referencedProjects.size(); i++, j++) {
+                final ICProject referencedProj = referencedProjects.get(j);
+                pathsToAdd[i] = referencedProj.getProject().getLocation();
+            }
+            stagedExternalIncudePaths.clear();
+            stagedInternalIncludePaths.clear();
+            addIncludeRefs(pathsToAdd, referencedProjectsOffset);
+            //TODO(Tobias Stauber) figure out why this is needed...
+            //         TestScannerProvider.sIncludes = Arrays.stream(pathsToAdd).map(IPath::toOSString).toArray(String[]::new);
+        });
+    }
 
-   private void addIncludeRefs(final IPath[] pathsToAdd, final int indexOfFirstReferencedProject) {
-      try {
-         final IPathEntry[] allPathEntries = getCProject().getRawPathEntries();
-         final IPathEntry[] newPathEntries = new IPathEntry[allPathEntries.length + pathsToAdd.length];
-         System.arraycopy(allPathEntries, 0, newPathEntries, 0, allPathEntries.length);
-         int i = 0;
-         for (; i < indexOfFirstReferencedProject; i++) {
-            newPathEntries[allPathEntries.length + i] = CoreModel.newIncludeEntry(null, null, pathsToAdd[i],
-                  externalResourcesProjectIsSystemInclude());
-         }
-         for (int j = 0; i < pathsToAdd.length; i++, j++) {
-            newPathEntries[allPathEntries.length + i] = CoreModel.newIncludeEntry(null, pathsToAdd[j], null, false);
-         }
-         getCProject().setRawPathEntries(newPathEntries, new NullProgressMonitor());
-      } catch (final CModelException e) {
-         e.printStackTrace();
-      }
-   }
+    private void addIncludeRefs(final IPath[] pathsToAdd, final int indexOfFirstReferencedProject) {
+        try {
+            final IPathEntry[] allPathEntries = getCProject().getRawPathEntries();
+            final IPathEntry[] newPathEntries = new IPathEntry[allPathEntries.length + pathsToAdd.length];
+            System.arraycopy(allPathEntries, 0, newPathEntries, 0, allPathEntries.length);
+            int i = 0;
+            for (; i < indexOfFirstReferencedProject; i++) {
+                newPathEntries[allPathEntries.length + i] = CoreModel.newIncludeEntry(null, null, pathsToAdd[i],
+                        externalResourcesProjectIsSystemInclude());
+            }
+            for (int j = 0; i < pathsToAdd.length; i++, j++) {
+                newPathEntries[allPathEntries.length + i] = CoreModel.newIncludeEntry(null, pathsToAdd[j], null, false);
+            }
+            getCProject().setRawPathEntries(newPathEntries, new NullProgressMonitor());
+        } catch (final CModelException e) {
+            e.printStackTrace();
+        }
+    }
 
-   @Override
-   public ProjectHolderJob formatFileAsync(IPath path) {
-      return ProjectHolderJob.create("Formatting project " + projectName, ITestProjectHolder.FORMATT_FILE_JOB_FAMILY, mon -> {
-         if (!formattedDocuments.contains(path)) {
-            final IDocument doc = getDocument(getFile(path));
-            final Map<String, Object> options = new HashMap<>(cProject.getOptions(true));
+    @Override
+    public ProjectHolderJob formatFileAsync(final IPath path) {
+        return ProjectHolderJob.create("Formatting project " + projectName, ITestProjectHolder.FORMATT_FILE_JOB_FAMILY, mon -> {
+            if (!formattedDocuments.contains(path)) {
+                final IDocument doc = getDocument(getFile(path));
+                final Map<String, Object> options = new HashMap<>(cProject.getOptions(true));
+                try {
+                    final ITranslationUnit tu = CoreModelUtil.findTranslationUnitForLocation(path, cProject);
+                    options.put(DefaultCodeFormatterConstants.FORMATTER_TRANSLATION_UNIT, tu);
+                    final CodeFormatter formatter = ToolFactory.createCodeFormatter(options);
+                    if (doc.getLength() > 0) {
+                        final TextEdit te = formatter.format(CodeFormatter.K_TRANSLATION_UNIT, path.toOSString(), 0, doc.getLength(), 0, NL);
+                        te.apply(doc);
+                        formattedDocuments.add(path);
+                    }
+                } catch (CModelException | MalformedTreeException | BadLocationException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @Override
+    public ProjectHolderJob loadFormatterAsync() {
+        return ProjectHolderJob.create("Loading formatter for project " + projectName, ITestProjectHolder.LOAD_FORMATTER_JOB_FAMILY, mon -> {
+            FormatterLoader.loadFormatter(cProject);
+        });
+    }
+
+    @Override
+    public void importFiles() {
+        for (final URL url : stagedFilesToImport) {
+            final IFile iFile = getProject().getFile(url.getPath());
             try {
-               final ITranslationUnit tu = CoreModelUtil.findTranslationUnitForLocation(path, cProject);
-               options.put(DefaultCodeFormatterConstants.FORMATTER_TRANSLATION_UNIT, tu);
-               final CodeFormatter formatter = ToolFactory.createCodeFormatter(options);
-               if (doc.getLength() > 0) {
-                  final TextEdit te = formatter.format(CodeFormatter.K_TRANSLATION_UNIT, path.toOSString(), 0, doc.getLength(), 0, NL);
-                  te.apply(doc);
-                  formattedDocuments.add(path);
-               }
-            } catch (CModelException | MalformedTreeException | BadLocationException e) {
-               e.printStackTrace();
+                importFile(iFile, getProject(), url.openStream());
+            } catch (final IOException e) {
+                ILTISException.wrap(e).rethrowUnchecked();
             }
-         }
-      });
-   }
+        }
 
-   @Override
-   public ProjectHolderJob loadFormatterAsync() {
-      return ProjectHolderJob.create("Loading formatter for project " + projectName, ITestProjectHolder.LOAD_FORMATTER_JOB_FAMILY, mon -> {
-         FormatterLoader.loadFormatter(cProject);
-      });
-   }
+        for (final Entry<String, String> entry : stagedTestSourcesToImport.entrySet()) {
+            final IFile iFile = getProject().getFile(entry.getKey());
+            importFile(iFile, getProject(), new StringInputStream(entry.getValue()));
+        }
+    }
 
-   @Override
-   public void importFiles() {
-      for (URL url : stagedFilesToImport) {
-         IFile iFile = getProject().getFile(url.getPath());
-         try {
-            importFile(iFile, getProject(), url.openStream());
-         } catch (IOException e) {
-            ILTISException.wrap(e).rethrowUnchecked();
-         }
-      }
-
-      for (Entry<String, String> entry : stagedTestSourcesToImport.entrySet()) {
-         IFile iFile = getProject().getFile(entry.getKey());
-         importFile(iFile, getProject(), new StringInputStream(entry.getValue()));
-      }
-   }
-
-   @Override
-   public void stageTestSourceFilesForImport(Collection<TestSourceFile> files) {
-      for (TestSourceFile file : files) {
-         stagedTestSourcesToImport.put(file.getName(), isExpectedProject ? file.getExpectedSource() : file.getSource());
-      }
-   }
-
-   @Override
-   public ProjectHolderJob setupReferencedProjectsAsync() {
-      return ProjectHolderJob.create("Adding referenced project to project " + projectName, ITestProjectHolder.ADD_REFERENCED_PROJ_JOB_FAMILY,
-            mon -> setupReferencedProjects());
-   }
-
-   private void setupReferencedProjects() throws CoreException {
-      for (ReferencedProjectDescription pd : stagedReferncedProjects) {
-
-         final ICProject referencedCProject = createNewProject(pd.getProjectName() + (isExpectedProject ? "_expected" : "_current"), pd
-               .getLanguage());
-         for (TestSourceFile file : pd.getSourceFiles()) {
-            IProject referencedProject = referencedCProject.getProject();
-            importFile(referencedProject.getFile(file.getName()), referencedProject, new StringInputStream(isExpectedProject ? file
-                  .getExpectedSource() : file.getSource()));
-         }
-         this.referencedProjects.add(referencedCProject);
-      }
-   }
-
-   @Override
-   public void stageReferencedProjects(ReferencedProjectDescription... referencedProjects) {
-      for (ReferencedProjectDescription pd : referencedProjects) {
-         stagedReferncedProjects.add(pd);
-      }
-   }
-
-   protected void importFile(final IFile file, final IContainer root, final InputStream stream) {
-      FileUtil.createFolderWithParents(file, root);
-      if (file.exists()) {
-         System.err.println("Overwriting existing file which should not yet exist: " + file.getName());
-         try {
-            file.setContents(stream, true, false, new NullProgressMonitor());
-         } catch (CoreException e) {
-            ILTISException.wrap(e).rethrowUnchecked();
-         }
-      } else {
-         try {
-            if (!file.exists()) {
-               file.create(stream, true, new NullProgressMonitor());
+    @Override
+    public void stageTestSourceFilesForImport(final Collection<TestSourceFile> files) {
+        for (final TestSourceFile file : files) {
+            final String source = isExpectedProject ? file.getExpectedSource() : file.getSource();
+            if (shouldBeStaged(file)) {
+                stagedTestSourcesToImport.put(file.getName(), source);
             }
-         } catch (CoreException e) {
-            ILTISException.wrap(e).rethrowUnchecked();
-         }
-      }
-      //TODO(Tobias Stauber) clean after testing
-      //      fileManager.addFile(file);
-   }
+        }
+    }
 
-   /* -- Public Getters -- */
+    private boolean shouldBeStaged(final TestSourceFile file) {
+        return file.shouldBeKept() //
+               || (file.shouldBeDeleted() && !isExpectedProject) //
+               || (file.shouldBeCreated() && isExpectedProject);
+    }
 
-   @Override
-   public List<ICProject> getReferencedProjects() {
-      return referencedProjects;
-   }
+    @Override
+    public ProjectHolderJob setupReferencedProjectsAsync() {
+        return ProjectHolderJob.create("Adding referenced project to project " + projectName, ITestProjectHolder.ADD_REFERENCED_PROJ_JOB_FAMILY,
+                mon -> setupReferencedProjects());
+    }
 
-   @Override
-   public ICProject getCProject() {
-      return cProject;
-   }
+    private void setupReferencedProjects() throws CoreException {
+        for (final ReferencedProjectDescription pd : stagedReferncedProjects) {
 
-   @Override
-   public Optional<ICElement> getCElement(IPath path) {
-      try {
-         return Optional.ofNullable(getCProject().findElement(path));
-      } catch (CModelException ignored) {
-         return Optional.empty();
-      }
-   }
+            final ICProject referencedCProject = createNewProject(pd.getProjectName() + (isExpectedProject ? "_expected" : "_current"), pd
+                    .getLanguage());
+            for (final TestSourceFile file : pd.getSourceFiles()) {
+                final IProject referencedProject = referencedCProject.getProject();
+                importFile(referencedProject.getFile(file.getName()), referencedProject, new StringInputStream(isExpectedProject ? file
+                        .getExpectedSource() : file.getSource()));
+            }
+            this.referencedProjects.add(referencedCProject);
+        }
+    }
 
-   @Override
-   public Optional<ICElement> getCElement(IFile file) {
-      return getCElement(file.getLocation());
-   }
+    @Override
+    public void stageReferencedProjects(final ReferencedProjectDescription... referencedProjects) {
+        for (final ReferencedProjectDescription pd : referencedProjects) {
+            stagedReferncedProjects.add(pd);
+        }
+    }
 
-   @Override
-   public boolean externalResourcesProjectIsSystemInclude() {
-      return true;
-   }
+    protected void importFile(final IFile file, final IContainer root, final InputStream stream) {
+        FileUtil.createFolderWithParents(file, root);
+        if (file.exists()) {
+            System.err.println("Overwriting existing file which should not yet exist: " + file.getName());
+            try {
+                file.setContents(stream, true, false, new NullProgressMonitor());
+            } catch (final CoreException e) {
+                ILTISException.wrap(e).rethrowUnchecked();
+            }
+        } else {
+            try {
+                if (!file.exists()) {
+                    file.create(stream, true, new NullProgressMonitor());
+                }
+            } catch (final CoreException e) {
+                ILTISException.wrap(e).rethrowUnchecked();
+            }
+        }
+        //TODO(Tobias Stauber) clean after testing
+        //      fileManager.addFile(file);
+    }
+
+    /* -- Public Getters -- */
+
+    @Override
+    public List<ICProject> getReferencedProjects() {
+        return referencedProjects;
+    }
+
+    @Override
+    public ICProject getCProject() {
+        return cProject;
+    }
+
+    @Override
+    public Optional<ICElement> getCElement(final IPath path) {
+        try {
+            return Optional.ofNullable(getCProject().findElement(path));
+        } catch (final CModelException ignored) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<ICElement> getCElement(final IFile file) {
+        return getCElement(file.getLocation());
+    }
+
+    @Override
+    public boolean externalResourcesProjectIsSystemInclude() {
+        return true;
+    }
 
 }

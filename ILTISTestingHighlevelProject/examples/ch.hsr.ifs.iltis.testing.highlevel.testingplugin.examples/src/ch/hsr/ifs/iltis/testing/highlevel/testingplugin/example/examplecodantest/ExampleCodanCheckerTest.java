@@ -10,15 +10,15 @@ import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.example.examplecodantest
 
 public class ExampleCodanCheckerTest extends CDTTestingCheckerTest {
 
-   @Override
-   protected IProblemId getProblemId() {
-      return MyProblemId.EXAMPLE_ID;
-   }
+    @Override
+    protected IProblemId<?> getProblemId() {
+        return MyProblemId.EXAMPLE_ID;
+    }
 
-   @Test
-   public void runTest() throws Throwable {
-      int markerExpectedOnLine = 1;
-      assertMarkerLines(markerExpectedOnLine);
-      assertMarkerMessages(new String[] { "Declaration 'main' is wrong." });
-   }
+    @Test
+    public void runTest() throws Throwable {
+        int markerExpectedOnLine = 1;
+        assertMarkerLines(markerExpectedOnLine);
+        assertMarkerMessages(new String[] { "Declaration 'main' is wrong." });
+    }
 }

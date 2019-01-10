@@ -10,9 +10,9 @@ import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.tests.cdttest.tests.Norm
 
 @RunWith(Suite.class)
 // @formatter:off
-@SuiteClasses({ 
+@SuiteClasses({
    NormalizerTest.class,
-   ASTComparisonTest.class, 
+   ASTComparisonTest.class,
    })
 // @formatter:on
 public class PluginUITestSuiteAll {}

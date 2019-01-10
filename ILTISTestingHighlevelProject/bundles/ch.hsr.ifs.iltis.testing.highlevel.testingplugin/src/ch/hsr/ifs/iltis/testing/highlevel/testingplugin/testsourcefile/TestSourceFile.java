@@ -19,103 +19,131 @@ import org.eclipse.jface.text.TextSelection;
 
 /**
  * The representation of a test-source file
- * 
+ *
  * @author Tobias Stauber, Emanuel Graf, Lukas Felber
  *
  */
 public class TestSourceFile {
 
-   private static final String NL      = System.getProperty("line.separator");
-   private static final int    NOT_SET = -1;
+    private static enum Mode {
+        CREATE, //
+        DELETE, //
+        KEEP //
+    }
 
-   private final String             name;
-   private final StringBuilder      source = new StringBuilder();
-   private StringBuilder            expectedSource;
-   private Optional<ITextSelection> selection;
+    private static final String NL      = System.getProperty("line.separator");
+    private static final int    NOT_SET = -1;
 
-   private int selectionStart = NOT_SET;
-   private int selectionEnd   = NOT_SET;
+    private final String             name;
+    private final StringBuilder      source = new StringBuilder();
+    private Mode                     mode;
+    private StringBuilder            expectedSource;
+    private Optional<ITextSelection> selection;
 
-   /**
-    * Create a new test-source file
-    * 
-    * @param name
-    *        The name of the test-source file
-    */
-   public TestSourceFile(final String name) {
-      this.name = name;
-   }
+    private int selectionStart = NOT_SET;
+    private int selectionEnd   = NOT_SET;
 
-   public String getExpectedSource() {
-      if (expectedSource != null) {
-         return expectedSource.toString();
-      } else {
-         return getSource();
-      }
-   }
+    /**
+     * Create a new test-source file
+     *
+     * @param name
+     * The name of the test-source file
+     */
+    public TestSourceFile(final String name) {
+        this.name = name;
+        this.mode = Mode.KEEP;
+    }
 
-   public String getName() {
-      return name;
-   }
+    public String getExpectedSource() {
+        if (expectedSource != null) {
+            return expectedSource.toString();
+        } else {
+            return getSource();
+        }
+    }
 
-   @Override
-   public String toString() {
-      return getName();
-   }
+    public String getName() {
+        return name;
+    }
 
-   public String getSource() {
-      return source.toString();
-   }
+    @Override
+    public String toString() {
+        return getName();
+    }
 
-   int getSourceLengthOnWhichToAppend() {
-      return source.length() != 0 ? source.length() + NL.length() : getSource().length();
-   }
+    public String getSource() {
+        return source.toString();
+    }
 
-   void appendLineToSource(final String line) {
-      if (source.length() != 0) source.append(NL);
-      source.append(line);
-   }
+    int getSourceLengthOnWhichToAppend() {
+        return source.length() != 0 ? source.length() + NL.length() : getSource().length();
+    }
 
-   void appendLineToExpectedSource(final String line) {
-      if (expectedSource.length() != 0) expectedSource.append(NL);
-      expectedSource.append(line);
-   }
+    void appendLineToSource(final String line) {
+        if (source.length() != 0) source.append(NL);
+        source.append(line);
+    }
 
-   void setSelectionStart(int start) {
-      selectionStart = start;
-   }
+    void appendLineToExpectedSource(final String line) {
+        if (expectedSource.length() != 0) expectedSource.append(NL);
+        expectedSource.append(line);
+    }
 
-   void setSelectionEnd(int end) {
-      selectionEnd = end;
-   }
+    void setSelectionStart(final int start) {
+        selectionStart = start;
+    }
 
-   void setSelectionStartRelativeToNextLine(int start) {
-      selectionStart = start + getSourceLengthOnWhichToAppend();
-   }
+    void setSelectionEnd(final int end) {
+        selectionEnd = end;
+    }
 
-   void setSelectionEndRelativeToNextLine(int end) {
-      selectionEnd = end + getSourceLengthOnWhichToAppend();
-   }
+    void setSelectionStartRelativeToNextLine(final int start) {
+        selectionStart = start + getSourceLengthOnWhichToAppend();
+    }
 
-   public boolean hasSelection() {
-      return selectionStart != NOT_SET;
-   }
+    void setSelectionEndRelativeToNextLine(final int end) {
+        selectionEnd = end + getSourceLengthOnWhichToAppend();
+    }
 
-   public Optional<ITextSelection> getSelection() {
-      if (selection == null) {
-         if (selectionStart >= 0 && selectionEnd < 0) {
-            /* No selection end tag encountered -> assume end of source */
-            selection = Optional.of(new TextSelection(selectionStart, source.length() - selectionStart));
-         } else if (selectionStart < 0 || selectionEnd < 0) {
-            selection = Optional.empty();
-         } else {
-            selection = Optional.of(new TextSelection(selectionStart, selectionEnd - selectionStart));
-         }
-      }
-      return selection;
-   }
+    public void createFileMode() {
+        mode = Mode.CREATE;
+    }
 
-   public void initExpectedSource() {
-      expectedSource = new StringBuilder();
-   }
+    public boolean shouldBeCreated() {
+        return mode == Mode.CREATE;
+    }
+
+    public void deleteFileMode() {
+        mode = Mode.DELETE;
+    }
+
+    public boolean shouldBeDeleted() {
+        return mode == Mode.DELETE;
+    }
+
+    public boolean shouldBeKept() {
+        return mode == Mode.KEEP;
+    }
+
+    public boolean hasSelection() {
+        return selectionStart != NOT_SET;
+    }
+
+    public Optional<ITextSelection> getSelection() {
+        if (selection == null) {
+            if (selectionStart >= 0 && selectionEnd < 0) {
+                /* No selection end tag encountered -> assume end of source */
+                selection = Optional.of(new TextSelection(selectionStart, source.length() - selectionStart));
+            } else if (selectionStart < 0 || selectionEnd < 0) {
+                selection = Optional.empty();
+            } else {
+                selection = Optional.of(new TextSelection(selectionStart, selectionEnd - selectionStart));
+            }
+        }
+        return selection;
+    }
+
+    public void initExpectedSource() {
+        expectedSource = new StringBuilder();
+    }
 }

@@ -9,15 +9,14 @@ import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.example.examplerefactori
 
 public class ILTISExampleRefactoringModificationsTest extends CDTTestingRefactoringTest {
 
-   @Override
-   protected Refactoring createRefactoring() {
-      return new ILTISDummyRenameRefactoring(getPrimaryCElementFromCurrentProject().get(), getSelectionOfPrimaryTestFile(),
-            getCurrentCProject());
-   }
+    @Override
+    protected Refactoring createRefactoring() {
+        return new ILTISDummyRenameRefactoring(getPrimaryCElementFromCurrentProject().get(), getSelectionOfPrimaryTestFile(), getCurrentCProject());
+    }
 
-   @Test
-   public void runTest() throws Throwable {
-      openPrimaryTestFileInEditor();
-      runRefactoringAndAssertSuccess();
-   }
+    @Test
+    public void runTest() throws Throwable {
+        openPrimaryTestFileInEditor();
+        runRefactoringAndAssertSuccess();
+    }
 }

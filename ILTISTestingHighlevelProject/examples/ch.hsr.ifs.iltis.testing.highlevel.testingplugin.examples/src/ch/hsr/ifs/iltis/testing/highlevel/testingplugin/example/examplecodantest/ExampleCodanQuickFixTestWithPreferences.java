@@ -13,36 +13,36 @@ import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.example.examplecodantest
 
 public class ExampleCodanQuickFixTestWithPreferences extends CDTTestingQuickfixTestWithPreferences {
 
-   @Override
-   protected IProblemId getProblemId() {
-      return MyProblemId.EXAMPLE_ID;
-   }
+    @Override
+    protected IProblemId<?> getProblemId() {
+        return MyProblemId.EXAMPLE_ID;
+    }
 
-   @Test
-   public void runTest() throws Throwable {
-      runQuickfixAndAssertAllEqual();
-   }
+    @Test
+    public void runTest() throws Throwable {
+        runQuickfixAndAssertAllEqual();
+    }
 
-   @Override
-   protected IMarkerResolution createMarkerResolution() {
-      return new MyQuickFix();
-   }
+    @Override
+    protected IMarkerResolution createMarkerResolution() {
+        return new MyQuickFix();
+    }
 
-   @Override
-   public IPreferenceStore initPrefs() {
-      return TestingPlugin.getDefault().getPreferenceStore();
-   }
+    @Override
+    public IPreferenceStore initPrefs() {
+        return TestingPlugin.getDefault().getPreferenceStore();
+    }
 
-   @Override
-   public Class<?> getPreferenceConstants() {
-      return PrefConstants.class;
-   }
+    @Override
+    public Class<?> getPreferenceConstants() {
+        return PrefConstants.class;
+    }
 
-   // Can be anywhere in the project.
-   class PrefConstants {
+    // Can be anywhere in the project.
+    class PrefConstants {
 
-      public static final String P_PREF_FOO = TestingPlugin.PLUGIN_ID + ".preference.foo";
-      public static final String P_PREF_BAR = TestingPlugin.PLUGIN_ID + ".preference.bar";
-      public static final String P_PREF_BAZ = TestingPlugin.PLUGIN_ID + ".preference.baz";
-   };
+        public static final String P_PREF_FOO = TestingPlugin.PLUGIN_ID + ".preference.foo";
+        public static final String P_PREF_BAR = TestingPlugin.PLUGIN_ID + ".preference.bar";
+        public static final String P_PREF_BAZ = TestingPlugin.PLUGIN_ID + ".preference.baz";
+    };
 }
