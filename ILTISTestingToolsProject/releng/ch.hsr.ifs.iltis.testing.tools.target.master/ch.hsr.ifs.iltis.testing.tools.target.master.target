@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
-<!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="ILTIS Testing Tools for Photon" sequenceNumber="1531728301">
+<!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
+<target name="ILTIS Testing Tools for Photon" sequenceNumber="1547117489">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.equinox.launcher" version="0.0.0"/>
       <unit id="org.eclipse.jdt.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.ui.ide.application" version="0.0.0"/>
       <unit id="org.eclipse.cdt.sdk.feature.group" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/releases/photon"/>
+      <repository location="http://download.eclipse.org/releases/2018-12"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
-      <unit id="ch.hsr.ifs.iltis.core.core.feature.feature.group" version="1.1.1.201807131723"/>
+      <unit id="ch.hsr.ifs.iltis.core.core.feature.feature.group" version="2.0.0.201901091336"/>
       <repository location="https://www.cevelop.com/iltis"/>
     </location>
   </locations>
