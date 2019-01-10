@@ -9,9 +9,9 @@ import ch.hsr.ifs.iltis.testing.tools.showoffset.ShowOffset;
 
 public class PrintTextSelectionHandler extends AbstractHandler {
 
-   @Override
-   public Object execute(ExecutionEvent event) throws ExecutionException {
-      new ShowOffset().run();
-      return null;
-   }
+    @Override
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        new ShowOffset().run();
+        return null;
+    }
 }

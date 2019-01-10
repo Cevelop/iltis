@@ -5,11 +5,11 @@ import org.eclipse.jface.text.Position;
 
 public interface Node {
 
-   Position getPosition();
+    Position getPosition();
 
-   boolean hasChildren();
+    boolean hasChildren();
 
-   Node[] getChildren();
+    Node[] getChildren();
 
-   Object getParent();
+    Object getParent();
 }

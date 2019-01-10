@@ -10,9 +10,9 @@ import ch.hsr.ifs.iltis.testing.tools.showoffset.Select;
 
 public class GoToSelectionHanlder extends AbstractHandler {
 
-   @Override
-   public Object execute(ExecutionEvent event) throws ExecutionException {
-      new Select().run(HandlerUtil.getActiveWorkbenchWindow(event));
-      return null;
-   }
+    @Override
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        new Select().run(HandlerUtil.getActiveWorkbenchWindow(event));
+        return null;
+    }
 }

@@ -133,5 +133,24 @@
             super="org.eclipse.ui.workbench.texteditor.warning">
       </type>
    </extension>
+   
+   <!-- Preferences -->
+
+    <extension
+          id="preferences"
+          name="Test file editor preferences"
+          point="org.eclipse.core.runtime.preferences">
+        <initializer
+            class="name.graf.emanuel.testfileeditor.preferences.PreferenceInitializer"/>
+	</extension>
+	
+    <extension
+          point="org.eclipse.ui.preferencePages">
+        <page
+              category="org.eclipse.jdt.ui.preferences.JavaBasePreferencePage"
+              class="name.graf.emanuel.testfileeditor.preferences.PropertyAndPreferencePage"
+              id="name.graf.emanuel.testfileeditor.preferences.PropertyAndPreferencePage"
+              name="Test-File Editor"/>
+    </extension>
 
 </plugin>
