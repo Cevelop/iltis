@@ -9,27 +9,26 @@ import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
 
 class ExceptionTest {
 
-   @Rule
-   @JvmField
-   val thrown = ExpectedException.none();
+	@Rule
+	@JvmField
+	val thrown = ExpectedException.none();
 
-   @Test
-   fun preservesExceptionMessage() {
-      thrown.expect(ILTISException::class.java);
-      thrown.expectMessage("Invalid XYZ");
-      throw ILTISException("Invalid XYZ").rethrowUnchecked();
-   }
+	@Test
+	fun preservesExceptionMessage() {
+		thrown.expect(ILTISException::class.java);
+		thrown.expectMessage("Invalid XYZ");
+		throw ILTISException("Invalid XYZ").rethrowUnchecked();
+	}
 
-   @Test
-   fun rethrowNestedExceptionWorks() {
-      thrown.expect(IllegalArgumentException::class.java);
-      thrown.expectMessage("Number not in range");
+	@Test
+	fun rethrowNestedExceptionWorks() {
+		thrown.expect(IllegalArgumentException::class.java);
+		thrown.expectMessage("Number not in range");
 
-      try {
-         throw ILTISException(IllegalArgumentException("Number not in range"));
-      }
-      catch (e1: ILTISException) {
-         e1.rethrow();
-      }
-   }
+		try {
+			throw ILTISException(IllegalArgumentException("Number not in range"));
+		} catch (e1: ILTISException) {
+			e1.rethrow();
+		}
+	}
 }

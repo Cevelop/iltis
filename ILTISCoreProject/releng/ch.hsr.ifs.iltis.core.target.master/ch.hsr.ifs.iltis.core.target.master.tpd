@@ -1,23 +1,20 @@
-target "ILTIS-CORE for Eclipse Photon" with source requirements
+target "ILTIS-CORE for Eclipse 2018-12" with source requirements
 
-location "http://download.eclipse.org/releases/photon" {
-	org.eclipse.emf.common.ui.feature.group lazy
-	org.eclipse.equinox.launcher lazy
-	org.eclipse.core.resources lazy
-	org.eclipse.ui.ide.application lazy
-	org.junit.jupiter.api lazy
-	org.junit.platform.suite.api lazy
-	org.junit.platform.runner lazy
-	org.junit.platform.launcher lazy
-	org.junit.platform.commons lazy
-	org.junit.jupiter.engine lazy
-	org.junit.platform.engine lazy
-	org.junit.vintage.engine lazy
+location "http://download.eclipse.org/releases/2018-12" {
+	org.eclipse.emf.common.ui.feature.group 2.15
+	org.eclipse.equinox.launcher 1.5.200
+	org.eclipse.core.resources 3.13.200
+	org.eclipse.ui.ide.application 1.3.100
+	org.junit.jupiter.api 5.3.1
+	org.junit.jupiter.engine 5.3.1
+	org.junit.platform.suite.api 1.3.1
+	org.junit.platform.runner 1.3.1
+	org.junit.platform.launcher 1.3.1
+	org.junit.platform.commons 1.3.1
+	org.junit.platform.engine 1.3.1
+	org.junit.vintage.engine 5.3.1
+	org.eclipse.pde.api.tools.annotations 1.1.200
 }
-
-//location "https://cevelop.com/iltis"{
-//	ch.hsr.ifs.iltis.testing.core.core.feature.feature.group 1.1.1
-//}
 
 location "http://download.eclipse.org/collections/9.2.0/repository/" {
 	org.eclipse.collections.feature.feature.group 9.2.0

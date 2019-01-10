@@ -1,21 +1,21 @@
 package ch.hsr.ifs.iltis.core.core.functional.functions;
 
 /**
- * Like a {@linkplain Consumer}, but curryable
- * 
+ * Like a {@linkplain java.util.function.Consumer}, but curryable
+ *
  * @author tstauber
- * 
+ *
  * @see Consumer
  *
- * @param <P>
- *        The type of the argument
+ * @param <T>
+ * The type of the argument
  */
 @FunctionalInterface
 public interface Consumer<T> extends java.util.function.Consumer<T> {
 
-   default Runnable curry(T param) {
-      return new CurriedRunnable<T>(param, this);
-   }
+    default Runnable curry(final T param) {
+        return new CurriedRunnable<>(param, this);
+    }
 
 }
 
@@ -23,16 +23,16 @@ public interface Consumer<T> extends java.util.function.Consumer<T> {
 
 class CurriedRunnable<T> implements Runnable {
 
-   private T           param;
-   private Consumer<T> fun;
+    private final T           param;
+    private final Consumer<T> fun;
 
-   protected CurriedRunnable(T param, Consumer<T> fun) {
-      this.param = param;
-      this.fun = fun;
-   }
+    protected CurriedRunnable(final T param, final Consumer<T> fun) {
+        this.param = param;
+        this.fun = fun;
+    }
 
-   @Override
-   public void run() {
-      fun.accept(param);
-   }
+    @Override
+    public void run() {
+        fun.accept(param);
+    }
 }

@@ -7,14 +7,15 @@ import java.io.OutputStream;
 
 public class StringOutputStream extends OutputStream {
 
-   private ByteArrayOutputStream stream;
+    private ByteArrayOutputStream stream;
 
-   @Override
-   public void write(int b) throws IOException {
-      stream.write(b);
-   }
+    @Override
+    public void write(final int b) throws IOException {
+        stream.write(b);
+    }
 
-   public String toString() {
-      return stream.toString();
-   }
+    @Override
+    public String toString() {
+        return stream.toString();
+    }
 }

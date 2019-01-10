@@ -9,7 +9,7 @@ stages:
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
   GIT_SUBMODULE_STRATEGY: "normal"
-  SWT_GTK3: "0"
+  SWT_GTK3: "1"
   P2_ENABLE_COMPOSITE: "1"
   P2_COMPOSITE_NAME: "ILTIS"
   P2_ROOT_BASE: "/var/www/iltis"
@@ -43,6 +43,8 @@ Build Signed:
   artifacts:
     paths:
       - ./*/*/*/target/repository/**
+      - ./*/*/*/*/*/*/.metadata/.log
+    when: always
 
 Build Unsigned:
   <<: *BUILD_COMMON
@@ -66,6 +68,8 @@ Deploy:
   dependencies:
     - Build Signed
   script:
-    - "export P2_ROOT=${P2_ROOT_BASE}$( (echo ${CI_COMMIT_REF_NAME} | grep develop &>/dev/null) && echo '-unstable')"
+    - "export P2_ROOT_TOP=${P2_ROOT_BASE}$( (echo ${CI_COMMIT_REF_NAME} | grep develop &>/dev/null) && echo '-unstable')"
+    - "export P2_ROOT=${P2_ROOT_TOP}/$(git describe --abbrev=0 | sed -n 's/v\\([0-9]\\+\\.[0-9]\\+\\)\\..*/\\1/p')"
     - "export P2_COMPOSITE_VERSION=$(sed -n 's/[ \\t]*<version>\\([0-9]\\.[0-9]\\.[0-9]\\)-SNAPSHOT<\\/version>/\\1/p' *Project/**/*.update/pom.xml | head -1)"
     - "./tools/ci/deploy"
+    - "./tools/ci/update-nested"

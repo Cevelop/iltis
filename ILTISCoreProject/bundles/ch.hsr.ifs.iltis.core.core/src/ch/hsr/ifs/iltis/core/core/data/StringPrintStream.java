@@ -5,18 +5,19 @@ import java.io.PrintStream;
 
 public class StringPrintStream extends PrintStream {
 
-   private StringOutputStream stream;
+    private final StringOutputStream stream;
 
-   private StringPrintStream(StringOutputStream stream) {
-      super(stream);
-      this.stream = stream;
-   }
+    private StringPrintStream(final StringOutputStream stream) {
+        super(stream);
+        this.stream = stream;
+    }
 
-   public String toString() {
-      return stream.toString();
-   }
+    @Override
+    public String toString() {
+        return stream.toString();
+    }
 
-   public static StringPrintStream createNew() {
-      return new StringPrintStream(new StringOutputStream());
-   }
+    public static StringPrintStream createNew() {
+        return new StringPrintStream(new StringOutputStream());
+    }
 }

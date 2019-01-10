@@ -7,9 +7,9 @@ package ch.hsr.ifs.iltis.core.core.data;
  */
 public class Wrapper<T> {
 
-   public T wrapped;
+    public T wrapped;
 
-   public Wrapper(final T target) {
-      wrapped = target;
-   }
+    public Wrapper(final T target) {
+        wrapped = target;
+    }
 }

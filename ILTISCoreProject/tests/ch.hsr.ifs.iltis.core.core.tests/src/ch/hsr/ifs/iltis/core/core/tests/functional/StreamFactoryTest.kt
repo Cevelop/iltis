@@ -12,26 +12,26 @@ import ch.hsr.ifs.iltis.core.core.functional.StreamFactory
 
 class StreamFactoryTest {
 
-   @Test
-   fun `stream() factory function produces valid stream from Enumeration`() {
-	   
-      val source = Vector<String>();
-      source.add("foo");
-      source.add("bar");
-      source.add("baz");
+	@Test
+	fun `stream() factory function produces valid stream from Enumeration`() {
 
-      val expected = "foo-bar-baz";
-      val actual = StreamFactory.stream(source.elements()).collect(Collectors.joining("-"));
-      assertEquals(expected, actual);
-   }
+		val source = Vector<String>();
+		source.add("foo");
+		source.add("bar");
+		source.add("baz");
 
-   @Test
-   fun `stream() factory function produces valid stream from Iterator`() {
-      val source =arrayListOf("foo", "bar", "baz")
+		val expected = "foo-bar-baz";
+		val actual = StreamFactory.stream(source.elements()).collect(Collectors.joining("-"));
+		assertEquals(expected, actual);
+	}
 
-      val expected = "foo-bar-baz";
-      val actual = StreamFactory.stream(source.iterator()).collect(Collectors.joining("-"));
-      assertEquals(expected, actual);
-   }
+	@Test
+	fun `stream() factory function produces valid stream from Iterator`() {
+		val source = arrayListOf("foo", "bar", "baz")
+
+		val expected = "foo-bar-baz";
+		val actual = StreamFactory.stream(source.iterator()).collect(Collectors.joining("-"));
+		assertEquals(expected, actual);
+	}
 
 }

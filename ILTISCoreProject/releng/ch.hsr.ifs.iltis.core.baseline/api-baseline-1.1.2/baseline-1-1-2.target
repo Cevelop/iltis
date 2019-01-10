@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><?pde?>
+<!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
+<target name="ILTIS-CORE Baseline 1.1.2" sequenceNumber="1536751829">
+  <locations>
+	  <location path="${project_loc}/api-baseline-1.1.2/plugins" type="Directory"/>
+  </locations>
+</target>
