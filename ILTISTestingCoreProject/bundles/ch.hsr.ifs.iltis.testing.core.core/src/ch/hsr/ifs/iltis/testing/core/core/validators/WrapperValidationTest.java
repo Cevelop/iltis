@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  * A validator for wrapped classes.
  *
  * @author tstauber
- *
+ * @since 1.0
  */
 public class WrapperValidationTest {
 
@@ -88,6 +88,9 @@ public class WrapperValidationTest {
         return wrappeeMethod.isAnnotationPresent(Deprecated.class);
     }
 
+    /**
+     * @since 2.0
+     */
     protected static String getMethodSignature(Method m) {
         return "@Override\npublic " + m.getReturnType().getSimpleName() + " " + generateSignature(m) + " {\n   return " + m.getDeclaringClass()
                 .getName() + "." + generateCall(m) + ";\n}";
