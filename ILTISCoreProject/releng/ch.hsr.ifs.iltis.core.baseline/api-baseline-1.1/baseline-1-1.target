@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><?pde?><!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform --><target name="ILTIS-CORE Baseline 1.1" sequenceNumber="1531499243">
+	<locations>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<unit id="ch.hsr.ifs.iltis.core.core.feature.feature.group" version="0.0.0"/>
+			<unit id="ch.hsr.ifs.iltis.core.kotlin.feature.feature.group" version="0.0.0"/>
+			<repository location="https://cevelop.com/iltis/1.1"/>
+		</location>
+	</locations>
+</target>
