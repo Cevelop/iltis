@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><?pde?><!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform --><target name="ILTIS-CORE Baseline 2.0" sequenceNumber="1531499243">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><?pde?><!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform --><target name="ILTIS-CORE Baseline" sequenceNumber="1531499243">
 	<locations>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-			<repository location="https://cevelop.com/iltis/2.0"/>
-			<unit id="ch.hsr.ifs.iltis.core.kotlin.feature.feature.group" version="0.0.0"/>
-			<unit id="ch.hsr.ifs.iltis.core.core.feature.feature.group" version="0.0.0"/>
+			<unit id="ch.hsr.ifs.iltis.core.core.feature.feature.group" version="2.0.0.201901091336"/>
+			<unit id="ch.hsr.ifs.iltis.core.core.feature.source.feature.group" version="2.0.0.201901091336"/>
+			<unit id="ch.hsr.ifs.iltis.core.kotlin.feature.feature.group" version="2.0.0.201901091336"/>
+			<repository location="https://cevelop.com/iltis"/>
 		</location>
 	</locations>
 </target>
