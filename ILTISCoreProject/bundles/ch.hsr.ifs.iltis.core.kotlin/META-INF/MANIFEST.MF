@@ -6,8 +6,9 @@ Bundle-Version: 2.0.0.qualifier
 Bundle-Vendor: IFS Institute for Software
 Automatic-Module-Name: ch.hsr.ifs.iltis.core.kotlin
 Bundle-ClassPath: annotations-13.0.jar,
- kotlin-stdlib-1.3.0.jar,
- kotlin-stdlib-common-1.3.0.jar
+ kotlin-reflect-1.3.11.jar,
+ kotlin-stdlib-1.3.11.jar,
+ kotlin-stdlib-common-1.3.11.jar
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: kotlin,
  kotlin.annotation,
