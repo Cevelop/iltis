@@ -96,9 +96,10 @@ class ASTNodeCollector {
     }
 
     private int handleNode(IASTNode node) {
-        // FIXME implement working test for isPartOfTranslationUnitFile()
+        // FIXME(tstauber - Jan 23, 2019)  could this predicate somehow be replaced by ASTComparison::isPartOfTUFileOrSynthetic
         /* If AST is not synthetic, check if node is part for the TU file. */
-        if (!node.isPartOfTranslationUnitFile() && !node.getContainingFilename().isEmpty()) return ASTVisitor.PROCESS_SKIP;
+        if (!(node.isPartOfTranslationUnitFile() && node.getContainingFilename().equals(node.getTranslationUnit().getContainingFilename())) && !node
+                .getContainingFilename().isEmpty()) return ASTVisitor.PROCESS_SKIP;
         try {
             updateAllCommentRelations(commentRelations, node);
             pipe.put(node);
