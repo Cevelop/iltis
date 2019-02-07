@@ -118,8 +118,14 @@ public abstract class WizardRefactoringStarterMenuHandler<WizardType extends Ref
             final int result = getRefactoringOpenOperation(getRefactoringWizard(refactoring)).run(shell, refactoring.getName());
             switch (result) {
             case IDialogConstants.CANCEL_ID:
-            case RefactoringWizardOpenOperation.INITIAL_CONDITION_CHECKING_FAILED:
+            case RefactoringWizardOpenOperation.INITIAL_CONDITION_CHECKING_FAILED: {
+                try {
+                    refactoring.getContext().dispose();
+                } catch (IllegalStateException e) {
+                    // Ignore
+                }
                 ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
+            }
             }
         } catch (InterruptedException | CoreException e) {
             e.printStackTrace();
