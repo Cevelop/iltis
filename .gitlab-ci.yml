@@ -35,7 +35,7 @@ Build Signed:
   <<: *BUILD_COMMON
   image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-release:latest
   only:
-    - master
+    - tags
     - develop
     - /^release\/.*$/
   variables:
@@ -48,7 +48,7 @@ Build Unsigned:
   <<: *BUILD_COMMON
   image: gitlab.dev.ifs.hsr.ch:45023/cevelop/docker-tycho-build:latest
   except:
-    - master
+    - tags
     - develop
     - /^release\/.*$/
 
@@ -62,7 +62,7 @@ Deploy:
   cache: {}
   only:
     - develop
-    - master
+    - tags
   dependencies:
     - Build Signed
   script:
