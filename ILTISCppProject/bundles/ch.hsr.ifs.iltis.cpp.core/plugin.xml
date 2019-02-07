@@ -1,7 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="ch.hsr.ifs.iltis.cpp.core.infoMarkerResolution" 
-   					name="Info Marker Resolution" 
-   					schema="schema/ch.hsr.ifs.iltis.cpp.core.infoMarkerResolution.exsd"/>
+    <extension-point id="ch.hsr.ifs.iltis.cpp.core.infoMarkerResolution" 
+                     name="Info Marker Resolution" 
+                     schema="schema/ch.hsr.ifs.iltis.cpp.core.infoMarkerResolution.exsd"/>
+
+    <!--
+    MOF:
+        Yes, we do redefine a JDT menu. CDT reuses some of the JDT menus, so we need to do so too.
+        However, some of the menus are still using the depreciated Action infrastructure, so we
+        need to redefine the menu for use with regular Eclipse menus. Don't worry, this works.
+    -->
+    <extension point="org.eclipse.ui.menus">
+        <menuContribution locationURI="menu:org.eclipse.ui.main.menu?after=edit">
+            <menu id="org.eclipse.jdt.ui.refactoring.menu"
+                  label="Refactor">
+                <separator name="reorgGroup" visible="true"/>
+                <separator name="codingGroup" visible="true"/>
+                <separator name="reorgGroup2" visible="true"/>
+                <separator name="typeGroup" visible="true"/>
+                <separator name="typeGroup2" visible="true"/>
+                <separator name="codingGroup2" visible="true"/>
+                <separator name="typeGroup3" visible="true"/>
+                <separator name="historyGroup" visible="true"/>
+            </menu>
+        </menuContribution>
+    </extension>
 </plugin>
