@@ -397,7 +397,7 @@ public class ASTComparison {
             final ICPPASTDeclSpecifier a = as(actual);
             if (e.isConst() != a.isConst() || e.isVirtual() != a.isVirtual() || e.isVolatile() != a.isVolatile() || e.isConstexpr() != a
                     .isConstexpr() || e.isExplicit() != a.isExplicit() || e.isFriend() != a.isFriend() || e.isRestrict() != a.isRestrict() || e
-                            .isThreadLocal() != a.isThreadLocal() || e.getStorageClass() != a.getStorageClass()) {
+                            .isThreadLocal() != a.isThreadLocal() || e.getStorageClass() != a.getStorageClass() || e.isInline() != a.isInline()) {
                 return false;
             }
 
@@ -462,7 +462,7 @@ public class ASTComparison {
                 final ICPPASTLambdaExpression et = as(expected);
                 final ICPPASTLambdaExpression at = as(actual);
                 return et.getCaptureDefault() == at.getCaptureDefault();
-            } else if (expected instanceof IASTTypeIdExpression){
+            } else if (expected instanceof IASTTypeIdExpression) {
                 final IASTTypeIdExpression et = as(expected);
                 final IASTTypeIdExpression at = as(actual);
                 return et.getOperator() == at.getOperator();
