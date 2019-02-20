@@ -24,7 +24,8 @@ Require-Bundle: org.eclipse.cdt.codan.ui,
  org.eclipse.ui.editors,
  ch.hsr.ifs.iltis.testing.core.core,
  org.eclipse.collections,
- org.eclipse.text
+ org.eclipse.text,
+ org.eclipse.cdt.managedbuilder.core
 Export-Package: ch.hsr.ifs.iltis.cpp.core.ast;uses:="org.eclipse.cdt.core.dom.ast.cpp,org.eclipse.cdt.core.dom.ast",
  ch.hsr.ifs.iltis.cpp.core.ast.cache;
   uses:="org.eclipse.cdt.core.dom.ast,
@@ -58,6 +59,7 @@ Export-Package: ch.hsr.ifs.iltis.cpp.core.ast;uses:="org.eclipse.cdt.core.dom.as
    ch.hsr.ifs.iltis.cpp.core.ast.visitor,
    org.eclipse.cdt.core.dom.ast.c,
    ch.hsr.ifs.iltis.core.core.functional.functions",
+ ch.hsr.ifs.iltis.cpp.core.buildconfiguration,
  ch.hsr.ifs.iltis.cpp.core.codan.marker;
   uses:="org.eclipse.ui,
    org.eclipse.osgi.util,
