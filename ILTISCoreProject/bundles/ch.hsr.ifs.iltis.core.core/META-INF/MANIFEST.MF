@@ -3,7 +3,7 @@ Automatic-Module-Name: ch.hsr.ifs.iltis.core.core
 Bundle-ManifestVersion: 2
 Bundle-Name: ILTIS CORE
 Bundle-SymbolicName: ch.hsr.ifs.iltis.core.core;singleton:=true
-Bundle-Version: 2.0.0.qualifier
+Bundle-Version: 3.0.0.qualifier
 Bundle-Vendor: IFS Institute for Software
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.ui.workbench,
@@ -20,6 +20,7 @@ Require-Bundle: org.eclipse.ui.workbench,
 Export-Package: ch.hsr.ifs.iltis.core.core;uses:="org.osgi.framework,org.eclipse.core.runtime",
  ch.hsr.ifs.iltis.core.core.arrays;uses:="ch.hsr.ifs.iltis.core.core.functional.functions",
  ch.hsr.ifs.iltis.core.core.collections;uses:="org.eclipse.collections.api.map,ch.hsr.ifs.iltis.core.core.functional.functions",
+ ch.hsr.ifs.iltis.core.core.collections.maps,
  ch.hsr.ifs.iltis.core.core.data;uses:="ch.hsr.ifs.iltis.core.core.functional.functions",
  ch.hsr.ifs.iltis.core.core.exception;uses:="ch.hsr.ifs.iltis.core.core.functional.functions",
  ch.hsr.ifs.iltis.core.core.functional;uses:="ch.hsr.ifs.iltis.core.core.data,ch.hsr.ifs.iltis.core.core.functional.functions",
