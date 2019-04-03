@@ -25,7 +25,7 @@ import org.eclipse.collections.impl.tuple.Tuples;
  * @param <ValueType>
  * The value-type used.
  * 
- * @since 3.0
+ * @since 2.1
  */
 public class TypeMap<TypeBound, ValueType extends Object> implements Map<Class<? extends TypeBound>, ValueType> {
 

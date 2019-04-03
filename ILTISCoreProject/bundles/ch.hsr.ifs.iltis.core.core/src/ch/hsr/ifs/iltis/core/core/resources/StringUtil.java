@@ -126,7 +126,7 @@ public class StringUtil {
      * Used for indentation if the stringGenerator produces multi-line strings whose lines should be indented the same as the separator.
      * @return
      * 
-     * @since 3.0
+     * @since 2.1
      */
     public static <O> String toString(final Iterable<O> it, final String prefix, final String separator, final String postfix,
             final Function<O, String> stringGenerator, final Function<String, String> separatorLinePadding) {
@@ -186,7 +186,7 @@ public class StringUtil {
      * the integer
      * @return The correct English ordinal.
      * 
-     * @since 3.0
+     * @since 2.1
      */
     public static String toOrdinal(int i) {
         String[] sufixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
@@ -215,7 +215,7 @@ public class StringUtil {
      * The generator used to create the padding for the last line
      * (takes precedence over the paddingGenerator if only two lines are present)
      * 
-     * @since 3.0
+     * @since 2.1
      */
     public static String preprendPaddingPerLine(String input, Function<String, String> firstLinePaddingGenerator,
             Function<String, String> paddingGenerator, Function<String, String> lastLinePaddingGenerator) {

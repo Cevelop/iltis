@@ -140,7 +140,7 @@ public class FileUtil {
      * The original files {@code URI}
      *
      * @return the File
-     * @since 3.0
+     * @since 2.1
      */
     public static File toFile(final URI fileURI) {
         return toFile(toIFile(fileURI));

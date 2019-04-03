@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  * @param <Bound>
  * The upper bound for the accepted types (exp. IASTNode)
  * 
- * @since 3.0
+ * @since 2.1
  */
 public class TypeToConsumerMap<Bound> {
 

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/ch.hsr.ifs.iltis.core.core.feature_2.0.0.qualifier-sources-feature.jar" id="ch.hsr.ifs.iltis.core.core.feature.source" version="2.0.0.qualifier">
+   <feature url="features/ch.hsr.ifs.iltis.core.core.feature_2.1.0.qualifier-sources-feature.jar" id="ch.hsr.ifs.iltis.core.core.feature.source" version="2.1.0.qualifier">
       <category name="ch.hsr.ifs.iltis.dev"/>
    </feature>
-   <feature url="features/ch.hsr.ifs.iltis.core.core.feature_2.0.0.qualifier.jar" id="ch.hsr.ifs.iltis.core.core.feature" version="2.0.0.qualifier">
+   <feature url="features/ch.hsr.ifs.iltis.core.core.feature_2.1.0.qualifier.jar" id="ch.hsr.ifs.iltis.core.core.feature" version="2.1.0.qualifier">
       <category name="ch.hsr.ifs.iltis"/>
    </feature>
-   <feature url="features/ch.hsr.ifs.iltis.core.kotlin.feature_2.0.0.qualifier.jar" id="ch.hsr.ifs.iltis.core.kotlin.feature" version="2.0.0.qualifier">
+   <feature url="features/ch.hsr.ifs.iltis.core.kotlin.feature_2.1.0.qualifier.jar" id="ch.hsr.ifs.iltis.core.kotlin.feature" version="2.1.0.qualifier">
       <category name="ch.hsr.ifs.iltis"/>
    </feature>
    <category-def name="ch.hsr.ifs.iltis" label="ILTIS">
