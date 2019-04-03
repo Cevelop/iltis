@@ -16,6 +16,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.pde.api.tools.annotations.NoExtend;
+import org.eclipse.pde.api.tools.annotations.NoInstantiate;
 
 import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
 
@@ -32,8 +34,9 @@ import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
  * @author tstauber
  *
  */
-@SuppressWarnings("unused")
-public abstract class FileUtil {
+@NoExtend
+@NoInstantiate
+public class FileUtil {
 
     /* IFile */
 
@@ -137,8 +140,9 @@ public abstract class FileUtil {
      * The original files {@code URI}
      *
      * @return the File
+     * @since 3.0
      */
-    private static File toFile(final URI fileURI) {
+    public static File toFile(final URI fileURI) {
         return toFile(toIFile(fileURI));
     }
 

@@ -4,6 +4,8 @@ import java.net.URI;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.pde.api.tools.annotations.NoExtend;
+import org.eclipse.pde.api.tools.annotations.NoInstantiate;
 
 
 /**
@@ -16,7 +18,9 @@ import org.eclipse.core.runtime.Path;
  *
  * @author tstauber
  */
-public abstract class ProjectUtil {
+@NoExtend
+@NoInstantiate
+public class ProjectUtil {
 
     /**
      * Checks if a file URI is part of a project

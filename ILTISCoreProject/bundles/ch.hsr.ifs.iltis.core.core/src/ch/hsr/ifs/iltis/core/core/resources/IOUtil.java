@@ -18,6 +18,8 @@ import java.util.Collection;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.pde.api.tools.annotations.NoExtend;
+import org.eclipse.pde.api.tools.annotations.NoInstantiate;
 
 
 /**
@@ -27,7 +29,9 @@ import org.eclipse.core.runtime.CoreException;
  * @author tstauber
  *
  */
-public abstract class IOUtil {
+@NoExtend
+@NoInstantiate
+public class IOUtil {
 
     public static class FileIO {
 
