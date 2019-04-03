@@ -18,7 +18,6 @@ import ch.hsr.ifs.iltis.core.core.functional.functions.Function;
  * A utility class which offers convenience methods for Strings
  *
  * @author tstauber
- * @noextend This class is not intended to be subclassed by clients.
  */
 @NoExtend
 @NoInstantiate
