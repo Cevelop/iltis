@@ -12,7 +12,7 @@ import ch.hsr.ifs.iltis.core.core.arrays.ArrayUtil;
 /**
  * An abstract project nature. Provides static methods for adding and removing natures.
  * 
- * @since 2.0
+ * @since 3.0
  */
 public abstract class AbstractProjectNature implements IProjectNature {
 
