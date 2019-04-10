@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="ILTIS Testing C++ for Photon (Develop)" sequenceNumber="1554294381">
+<target name="ILTIS Testing C++ for Photon (Develop)" sequenceNumber="1554707262">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.equinox.launcher" version="0.0.0"/>
+      <repository location="http://download.eclipse.org/releases/2019-03"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.cdt.sdk" version="0.0.0"/>
       <unit id="org.eclipse.cdt.core" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/releases/2019-03"/>
+      <repository location="http://download.eclipse.org/tools/cdt/releases/9.7/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="ch.hsr.ifs.iltis.core.core.feature.source.feature.group" version="0.0.0"/>
