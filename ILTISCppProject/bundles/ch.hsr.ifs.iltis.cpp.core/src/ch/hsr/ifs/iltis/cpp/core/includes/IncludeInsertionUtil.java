@@ -20,7 +20,7 @@ import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.MultiTextEdit;
 
 import ch.hsr.ifs.iltis.core.core.resources.FileUtil;
-import ch.hsr.ifs.iltis.cpp.core.ast.utilities.ITranslationUnitUtil;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.ASTTranslationUnitUtil;
 import ch.hsr.ifs.iltis.cpp.core.includes.IncludeDirective.IncludeType;
 import ch.hsr.ifs.iltis.cpp.core.preprocessor.PreprocessorScope;
 import ch.hsr.ifs.iltis.cpp.core.preprocessor.PreprocessorStatementUtil;
@@ -249,7 +249,7 @@ public class IncludeInsertionUtil {
 
         final IFile file = ast.getOriginatingTranslationUnit().getFile();
 
-        final MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap = ITranslationUnitUtil.createLinenoOffsetContentMap(ast
+        final MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap = ASTTranslationUnitUtil.createLinenoOffsetContentMap(ast
                 .getOriginatingTranslationUnit());
 
         final TextFileChange change = new TextFileChange("Add include(s)", file);
@@ -294,7 +294,7 @@ public class IncludeInsertionUtil {
                     if (((IASTPreprocessorIncludeStatement) prevStmt).isSystemInclude() != (firstIncludeType == IncludeType.SYSTEM)) {
                         includeStmt.insert(0, lineSeparator);
                     }
-                    if (!ITranslationUnitUtil.isFollowedByAWhitespaceLine(prevStmt, linenoOffsetContentMap)) {
+                    if (!ASTTranslationUnitUtil.isFollowedByAWhitespaceLine(prevStmt, linenoOffsetContentMap)) {
                         includeStmt.append(lineSeparator);
                     }
                 } else if (insertBeforeNextStatement) {
@@ -302,15 +302,15 @@ public class IncludeInsertionUtil {
                     if (((IASTPreprocessorIncludeStatement) nextStmt).isSystemInclude() != (lastIncludeType == IncludeType.SYSTEM)) {
                         includeStmt.append(lineSeparator);
                     }
-                    if (!ITranslationUnitUtil.isLeadByAWhitespaceLine(nextStmt, linenoOffsetContentMap)) {
+                    if (!ASTTranslationUnitUtil.isLeadByAWhitespaceLine(nextStmt, linenoOffsetContentMap)) {
                         includeStmt.insert(0, lineSeparator);
                     }
                     offset = PreprocessorStatementUtil.getOffsetToInsertBefore(nextStatement);
                 } else {
-                    if (!ITranslationUnitUtil.isFollowedByAWhitespaceLine(prevStmt, linenoOffsetContentMap)) {
+                    if (!ASTTranslationUnitUtil.isFollowedByAWhitespaceLine(prevStmt, linenoOffsetContentMap)) {
                         includeStmt.append(lineSeparator);
                     }
-                    if (!ITranslationUnitUtil.isLeadByAWhitespaceLine(nextStmt, linenoOffsetContentMap)) {
+                    if (!ASTTranslationUnitUtil.isLeadByAWhitespaceLine(nextStmt, linenoOffsetContentMap)) {
                         includeStmt.insert(0, lineSeparator);
                     }
                 }
@@ -319,7 +319,7 @@ public class IncludeInsertionUtil {
                         .isSystemInclude() == (firstIncludeType == IncludeType.SYSTEM))) {
                     includeStmt.insert(0, lineSeparator);
                 }
-                if (ITranslationUnitUtil.lineNcontainsOnlyWhitespace(0, linenoOffsetContentMap)) {
+                if (ASTTranslationUnitUtil.lineNcontainsOnlyWhitespace(0, linenoOffsetContentMap)) {
                     includeStmt.append(lineSeparator);
                 }
             }

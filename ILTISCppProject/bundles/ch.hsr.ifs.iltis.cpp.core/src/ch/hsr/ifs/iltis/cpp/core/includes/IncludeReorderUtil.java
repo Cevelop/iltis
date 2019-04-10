@@ -23,7 +23,7 @@ import org.eclipse.text.edits.MultiTextEdit;
 
 import ch.hsr.ifs.iltis.core.core.collections.CollectionUtil;
 import ch.hsr.ifs.iltis.core.core.resources.FileUtil;
-import ch.hsr.ifs.iltis.cpp.core.ast.utilities.ITranslationUnitUtil;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.ASTTranslationUnitUtil;
 import ch.hsr.ifs.iltis.cpp.core.preprocessor.PreprocessorScope;
 import ch.hsr.ifs.iltis.cpp.core.preprocessor.PreprocessorStatementUtil;
 
@@ -94,7 +94,7 @@ public class IncludeReorderUtil {
         final MultiTextEdit multiEdit = new MultiTextEdit();
         change.setEdit(multiEdit);
 
-        final MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap = ITranslationUnitUtil.createLinenoOffsetContentMap(ast
+        final MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap = ASTTranslationUnitUtil.createLinenoOffsetContentMap(ast
                 .getOriginatingTranslationUnit());
 
         rootScope.forEachDownWith((s, c) -> IncludeReorderUtil.createMoveEdits(s, c, FileUtil.getLineSeparator(file), linenoOffsetContentMap),
@@ -114,8 +114,8 @@ public class IncludeReorderUtil {
         int insertOffset = PreprocessorStatementUtil.getOffsetToInsertAfter(previousStatement, linenoOffsetContentMap);
 
         if (previousStatement.isPresent()) {
-            if (ITranslationUnitUtil.isFollowedByAWhitespaceLine(previousStatement.get(), linenoOffsetContentMap)) {
-                insertOffset = ITranslationUnitUtil.getOffsetOfNextLine(previousStatement.get().getFileLocation().getEndingLineNumber() + 1,
+            if (ASTTranslationUnitUtil.isFollowedByAWhitespaceLine(previousStatement.get(), linenoOffsetContentMap)) {
+                insertOffset = ASTTranslationUnitUtil.getOffsetOfNextLine(previousStatement.get().getFileLocation().getEndingLineNumber() + 1,
                         linenoOffsetContentMap);
             } else {
                 change.addEdit(new InsertEdit(insertOffset, lineSep));
@@ -145,8 +145,8 @@ public class IncludeReorderUtil {
             final MoveSourceEdit sourceEdit = new MoveSourceEdit(fileLocation.getNodeOffset(), fileLocation.getNodeLength() + lineSep.length());
             change.addEdit(sourceEdit);
             change.addEdit(new MoveTargetEdit(offset, sourceEdit));
-            if (ITranslationUnitUtil.isFollowedByAWhitespaceLine(it, linenoOffsetContentMap)) {
-                ITranslationUnitUtil.getOffsetAndLenghtOfLine(fileLocation.getEndingLineNumber(), linenoOffsetContentMap).ifPresent(p -> change
+            if (ASTTranslationUnitUtil.isFollowedByAWhitespaceLine(it, linenoOffsetContentMap)) {
+                ASTTranslationUnitUtil.getOffsetAndLenghtOfLine(fileLocation.getEndingLineNumber(), linenoOffsetContentMap).ifPresent(p -> change
                         .addEdit(new DeleteEdit(p.getOne(), p.getTwo())));
             }
         }, insertOffset);
@@ -160,8 +160,8 @@ public class IncludeReorderUtil {
                     .length());
             change.addEdit(sourceEdit);
             change.addEdit(new MoveTargetEdit(offset, sourceEdit));
-            if (ITranslationUnitUtil.isFollowedByAWhitespaceLine(it, linenoOffsetContentMap)) {
-                ITranslationUnitUtil.getOffsetAndLenghtOfLine(it.getFileLocation().getEndingLineNumber(), linenoOffsetContentMap).ifPresent(
+            if (ASTTranslationUnitUtil.isFollowedByAWhitespaceLine(it, linenoOffsetContentMap)) {
+                ASTTranslationUnitUtil.getOffsetAndLenghtOfLine(it.getFileLocation().getEndingLineNumber(), linenoOffsetContentMap).ifPresent(
                         p -> change.addEdit(new DeleteEdit(p.getOne(), p.getTwo())));
             }
         }, insertOffset);
@@ -171,7 +171,7 @@ public class IncludeReorderUtil {
 
     private static void insertEmptyLineAfterNodeIfNeccessary(final TextFileChange change, final String lineSep,
             final MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap, final IASTPreprocessorIncludeStatement s) {
-        if (!ITranslationUnitUtil.isFollowedByAWhitespaceLine(s, linenoOffsetContentMap)) {
+        if (!ASTTranslationUnitUtil.isFollowedByAWhitespaceLine(s, linenoOffsetContentMap)) {
             insertEmptyLineAfterNode(s, change, lineSep, linenoOffsetContentMap);
         }
     }

@@ -3,6 +3,7 @@ package ch.hsr.ifs.iltis.cpp.core.ast.visitor.composite;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Set;
@@ -41,6 +42,7 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateParameter;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTVirtSpecifier;
 
 import ch.hsr.ifs.iltis.core.core.functional.functions.Function2;
+import ch.hsr.ifs.iltis.core.core.resources.StringUtil;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
 import ch.hsr.ifs.iltis.cpp.core.ast.visitor.SimpleVisitor;
 
@@ -51,6 +53,8 @@ import ch.hsr.ifs.iltis.cpp.core.ast.visitor.SimpleVisitor;
  *
  */
 public class VisitorComposite<ProblemId extends IProblemId<ProblemId>, ArgType> extends SimpleVisitor<ProblemId, ArgType> {
+
+    private final Collection<SimpleVisitor<?, ArgType>> allChildVisitors;
 
     private final List<SimpleVisitor<?, ArgType>>                          visitors;
     private final List<SimpleVisitor<?, ArgType>>                          visitorsThatAborted;
@@ -66,6 +70,7 @@ public class VisitorComposite<ProblemId extends IProblemId<ProblemId>, ArgType> 
 
     public VisitorComposite(final Collection<SimpleVisitor<?, ArgType>> subVisitors) {
         super(null);
+        allChildVisitors = Collections.unmodifiableCollection(subVisitors);
         visitors = subVisitors.stream().filter(SimpleVisitor::isEnabled).collect(Collectors.toList());
         listFactory = ignored -> new ArrayList<>(visitors.size());
         cache = new VisitorCache<>(visitors.size());
@@ -213,11 +218,13 @@ public class VisitorComposite<ProblemId extends IProblemId<ProblemId>, ArgType> 
     /**
      * After returning from the subtree and leaving the node, all visitors which skipped the subtree are re-enabled.
      */
-    private int processLeave(final IASTNode node) {
+    private <Node extends IASTNode> int processLeave(final Class<? super Node> nodeType, final Node node,
+            final Function2<ASTVisitor, Node, Integer> leaveFunction) {
+        visitors.stream().filter(v -> !v.isInCompositeSkipMode()).forEach(v -> leaveFunction.apply(v, node));
         final ArrayList<SimpleVisitor<?, ArgType>> skipped = visitorsToSkipForSubnodes.remove(node);
         if (skipped != null) {
-            visitors.addAll(skipped);
-            visitors.forEach(SimpleVisitor::exitCompositeSkipMode);
+            //            visitors.addAll(skipped); //TODO I assume this breaks the code
+            skipped.forEach(SimpleVisitor::exitCompositeSkipMode);
         }
 
         return PROCESS_CONTINUE;
@@ -249,9 +256,21 @@ public class VisitorComposite<ProblemId extends IProblemId<ProblemId>, ArgType> 
         return visitors.stream().flatMap(visitor -> visitor.getProblemIds().stream()).collect(Collectors.toSet());
     }
 
-    public <Node extends IASTNode> int doVisitForNode(final Class<?> nodeType, final Node node, final Function2<ASTVisitor, Node, Integer> function) {
+    /**
+     * Calls visit on all the enabled visitors.
+     * 
+     * @param nodeType
+     * The node-type (Required for JVM to resolve the {@link #visit} overload)
+     * @param node
+     * The node to pass to the {@link #visit} method
+     * @param visitFunction
+     * (Required for JVM to know which overload to take (to avoid having to use MethodHandles (brought speedup of x3)))
+     * @return
+     */
+    public <Node extends IASTNode> int doVisitForNode(final Class<? super Node> nodeType, final Node node,
+            final Function2<ASTVisitor, Node, Integer> visitFunction) {
         //TODO Think about using one thread/job per composite to handle the nodes... this would mean to change the handling of processResult
-        cache.getCache(nodeType).stream().filter(v -> !v.isInCompositeSkipMode()).forEach(v -> processResult(function.apply(v, node), node, v));
+        cache.getCache(nodeType).stream().filter(v -> !v.isInCompositeSkipMode()).forEach(v -> processResult(visitFunction.apply(v, node), node, v));
         return getCurrentResult();
     }
 
@@ -387,131 +406,136 @@ public class VisitorComposite<ProblemId extends IProblemId<ProblemId>, ArgType> 
 
     @Override
     public final int leave(final IASTTranslationUnit tu) {
-        return processLeave(tu);
+        return processLeave(IASTTranslationUnit.class, tu, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final IASTName name) {
-        return processLeave(name);
+        return processLeave(IASTName.class, name, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final IASTDeclaration declaration) {
-        return processLeave(declaration);
+        return processLeave(IASTDeclaration.class, declaration, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final IASTInitializer initializer) {
-        return processLeave(initializer);
+        return processLeave(IASTInitializer.class, initializer, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final IASTParameterDeclaration parameterDeclaration) {
-        return processLeave(parameterDeclaration);
+        return processLeave(IASTParameterDeclaration.class, parameterDeclaration, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final IASTDeclarator declarator) {
-        return processLeave(declarator);
+        return processLeave(IASTDeclarator.class, declarator, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final IASTDeclSpecifier declSpec) {
-        return processLeave(declSpec);
+        return processLeave(IASTDeclSpecifier.class, declSpec, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final IASTArrayModifier arrayModifier) {
-        return processLeave(arrayModifier);
+        return processLeave(IASTArrayModifier.class, arrayModifier, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final IASTPointerOperator ptrOperator) {
-        return processLeave(ptrOperator);
+        return processLeave(IASTPointerOperator.class, ptrOperator, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final IASTAttribute attribute) {
-        return processLeave(attribute);
+        return processLeave(IASTAttribute.class, attribute, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final IASTAttributeSpecifier specifier) {
-        return processLeave(specifier);
+        return processLeave(IASTAttributeSpecifier.class, specifier, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final IASTToken token) {
-        return processLeave(token);
+        return processLeave(IASTToken.class, token, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final IASTExpression expression) {
-        return processLeave(expression);
+        return processLeave(IASTExpression.class, expression, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final IASTStatement statement) {
-        return processLeave(statement);
+        return processLeave(IASTStatement.class, statement, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final IASTTypeId typeId) {
-        return processLeave(typeId);
+        return processLeave(IASTTypeId.class, typeId, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final IASTEnumerator enumerator) {
-        return processLeave(enumerator);
+        return processLeave(IASTEnumerator.class, enumerator, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final IASTProblem problem) {
-        return processLeave(problem);
+        return processLeave(IASTProblem.class, problem, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final ICPPASTBaseSpecifier baseSpecifier) {
-        return processLeave(baseSpecifier);
+        return processLeave(ICPPASTBaseSpecifier.class, baseSpecifier, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final ICPPASTNamespaceDefinition namespaceDefinition) {
-        return processLeave(namespaceDefinition);
+        return processLeave(ICPPASTNamespaceDefinition.class, namespaceDefinition, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final ICPPASTTemplateParameter templateParameter) {
-        return processLeave(templateParameter);
+        return processLeave(ICPPASTTemplateParameter.class, templateParameter, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final ICPPASTCapture capture) {
-        return processLeave(capture);
+        return processLeave(ICPPASTCapture.class, capture, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final ICASTDesignator designator) {
-        return processLeave(designator);
+        return processLeave(ICASTDesignator.class, designator, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final ICPPASTDesignator designator) {
-        return processLeave(designator);
+        return processLeave(ICPPASTDesignator.class, designator, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final ICPPASTVirtSpecifier virtSpecifier) {
-        return processLeave(virtSpecifier);
+        return processLeave(ICPPASTVirtSpecifier.class, virtSpecifier, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final ICPPASTClassVirtSpecifier virtSpecifier) {
-        return processLeave(virtSpecifier);
+        return processLeave(ICPPASTClassVirtSpecifier.class, virtSpecifier, ASTVisitor::leave);
     }
 
     @Override
     public final int leave(final ICPPASTDecltypeSpecifier decltypeSpecifier) {
-        return processLeave(decltypeSpecifier);
+        return processLeave(ICPPASTDecltypeSpecifier.class, decltypeSpecifier, ASTVisitor::leave);
+    }
+
+    public String toString() {
+        return getClass().getSimpleName() + " [" + (isEnabled() ? "enabled" : "disabled") + "]  consisting of: \n" + //
+               StringUtil.toString(allChildVisitors, "-> ", "\n-> ", "\n", Object::toString, l -> "   ");
     }
 }

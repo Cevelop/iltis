@@ -25,6 +25,7 @@ import org.eclipse.ui.services.IDisposable;
  * Cache data models for resource so checkers can share it
  *
  */
+@SuppressWarnings("restriction")
 public class CxxModelsCache implements ICodanDisposable {
 
     private final IFile                                                  file;

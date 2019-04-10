@@ -48,8 +48,8 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTUnaryExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPNodeFactory;
 
 import ch.hsr.ifs.iltis.core.core.functional.functions.Consumer;
-import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.CPPBinaryOperator;
-import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.CPPUnaryOperator;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.ICPPBinaryOperator;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.ICPPUnaryOperator;
 
 
 public interface IBetterFactory extends ICPPNodeFactory {
@@ -213,11 +213,20 @@ public interface IBetterFactory extends ICPPNodeFactory {
 
     /* Enum Operator Factory Methods */
 
-    ICPPASTUnaryExpression newUnaryExpression(CPPUnaryOperator operator, IASTExpression operand);
+    /**
+     * @since 3.0
+     */
+    ICPPASTUnaryExpression newUnaryExpression(ICPPUnaryOperator operator, IASTExpression operand);
 
-    ICPPASTBinaryExpression newBinaryExpression(CPPBinaryOperator op, IASTExpression expr1, IASTExpression expr2);
+    /**
+     * @since 3.0
+     */
+    ICPPASTBinaryExpression newBinaryExpression(ICPPBinaryOperator op, IASTExpression expr1, IASTExpression expr2);
 
-    ICPPASTBinaryExpression newBinaryExpression(CPPBinaryOperator op, IASTExpression expr1, IASTInitializerClause expr2);
+    /**
+     * @since 3.0
+     */
+    ICPPASTBinaryExpression newBinaryExpression(ICPPBinaryOperator op, IASTExpression expr1, IASTInitializerClause expr2);
 
     /* Magic Factory Methods */
 
@@ -241,8 +250,10 @@ public interface IBetterFactory extends ICPPNodeFactory {
      * @param operand2
      * The right operand
      * @return A new binary expression with correct grouping.
+     * 
+     * @since 3.0
      */
-    IASTBinaryExpression newMagicPrecedenceBinaryExpression(CPPBinaryOperator operator, IASTExpression operand1, IASTInitializerClause operand2);
+    IASTBinaryExpression newMagicPrecedenceBinaryExpression(ICPPBinaryOperator operator, IASTExpression operand1, IASTInitializerClause operand2);
 
     /**
      * Creates a new unary expression while automatically grouping the operands if necessary.
@@ -258,8 +269,10 @@ public interface IBetterFactory extends ICPPNodeFactory {
      * @param operand
      * The operand
      * @return A new unary expression with correct grouping
+     * 
+     * @since 3.0
      */
-    IASTUnaryExpression newMagicPrecedenceUnaryExpression(CPPUnaryOperator operator, IASTExpression operand);
+    IASTUnaryExpression newMagicPrecedenceUnaryExpression(ICPPUnaryOperator operator, IASTExpression operand);
 
     /**
      * Creates a new conditional expression while automatically grouping the operands if necessary.

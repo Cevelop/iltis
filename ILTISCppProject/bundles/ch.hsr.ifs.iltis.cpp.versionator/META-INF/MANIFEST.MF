@@ -19,7 +19,12 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.cdt.codan.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: ch.hsr.ifs.iltis.cpp.versionator,
- ch.hsr.ifs.iltis.cpp.versionator.definition
+Export-Package: ch.hsr.ifs.iltis.cpp.versionator;
+  uses:="org.osgi.framework,
+   org.eclipse.core.runtime,
+   org.eclipse.jface.operation,
+   ch.hsr.ifs.iltis.cpp.versionator.definition,
+   org.eclipse.ui.plugin",
+ ch.hsr.ifs.iltis.cpp.versionator.definition;uses:="org.eclipse.core.resources"
 Bundle-Vendor: IFS Institute for Software
 Automatic-Module-Name: ch.hsr.ifs.iltis.cpp.versionator

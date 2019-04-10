@@ -1,4 +1,4 @@
-package ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators;
+package ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.internal;
 
 import org.eclipse.cdt.core.dom.ast.IASTArraySubscriptExpression;
 import org.eclipse.cdt.core.dom.ast.IASTBinaryExpression;
@@ -8,24 +8,31 @@ import org.eclipse.cdt.core.dom.ast.IASTExpressionList;
 import org.eclipse.cdt.core.dom.ast.IASTTypeIdExpression;
 import org.eclipse.cdt.core.dom.ast.IASTUnaryExpression;
 
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.ICPPBinaryOperator;
 import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.ICPPOperator.Associativity;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.ICPPOtherOperators.ICPPArraySubscriptOperator;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.ICPPOtherOperators.ICPPCommaOperator;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.ICPPOtherOperators.ICPPConditionalOperator;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.ICPPOtherOperators.ICPPFunctionCall;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.ICPPOtherOperators.ICPPTypeIdOperator;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.ICPPUnaryOperator;
 
 
 /**
- * Mapping for operators different from {@link IASTBinaryExpression}.
+ * Mapping for operators different from {@link IASTBinaryExpression} and {@link IASTUnaryExpression}.
  *
  * @author tstauber
  *
  */
 public class CPPOtherOperators {
 
-    public static CPPConditionalOperator    CONDITIONAL     = new CPPConditionalOperator(160, Associativity.NOTATIONAL_RIGHT);
-    public static CPPCommaOperator          COMMA_OPERATOR  = new CPPCommaOperator(170, Associativity.NOTATIONAL_LEFT);
-    public static CPPTypeIdOperator         TYPEID          = new CPPTypeIdOperator(17, Associativity.NOTATIONAL_LEFT);
-    public static CPPArraySubscriptOperator ARRAY_SUBSCRIPT = new CPPArraySubscriptOperator(20, Associativity.NOTATIONAL_LEFT);
-    public static CPPFunctionCall           FUNCTION_CALL   = new CPPFunctionCall(20, Associativity.NOTATIONAL_LEFT);
+    public static ICPPConditionalOperator    CONDITIONAL     = new CPPConditionalOperator(160, Associativity.NOTATIONAL_RIGHT);
+    public static ICPPCommaOperator          COMMA_OPERATOR  = new CPPCommaOperator(170, Associativity.NOTATIONAL_LEFT);
+    public static ICPPTypeIdOperator         TYPEID          = new CPPTypeIdOperator(17, Associativity.NOTATIONAL_LEFT);
+    public static ICPPArraySubscriptOperator ARRAY_SUBSCRIPT = new CPPArraySubscriptOperator(20, Associativity.NOTATIONAL_LEFT);
+    public static ICPPFunctionCall           FUNCTION_CALL   = new CPPFunctionCall(20, Associativity.NOTATIONAL_LEFT);
 
-    public static class CPPConditionalOperator implements ICPPOperator {
+    public static class CPPConditionalOperator implements ICPPConditionalOperator {
 
         private final int           relativePrecedence;
         private final Associativity associativity;
@@ -45,10 +52,12 @@ public class CPPOtherOperators {
             return relativePrecedence;
         }
 
+        @Override
         public boolean conditionalOperandNeedsWraping(final IASTExpression conditionalOperand) {
             return operandNeedsWraping(conditionalOperand, ExprOperandPos.LHS);
         }
 
+        @Override
         public boolean elseOperandNeedsWraping(final IASTExpression elseOperand) {
             return operandNeedsWraping(elseOperand, ExprOperandPos.RHS);
         }
@@ -61,9 +70,9 @@ public class CPPOtherOperators {
             } else if (operand instanceof IASTTypeIdExpression) {
                 return getRelativePrecedence() <= TYPEID.getRelativePrecedence();
             } else if (operand instanceof IASTUnaryExpression) {
-                return getRelativePrecedence() <= CPPUnaryOperator.getForUnaryExpr((IASTUnaryExpression) operand).getRelativePrecedence();
+                return getRelativePrecedence() <= ICPPUnaryOperator.getForUnaryExpr((IASTUnaryExpression) operand).getRelativePrecedence();
             } else if (operand instanceof IASTBinaryExpression) {
-                final int p = getRelativePrecedence() - CPPBinaryOperator.getForBinaryExpr((IASTBinaryExpression) operand).getRelativePrecedence();
+                final int p = getRelativePrecedence() - ICPPBinaryOperator.getForBinaryExpr((IASTBinaryExpression) operand).getRelativePrecedence();
                 if (p > 0) {
                     return true;
                 } else if (p < 0) {
@@ -90,9 +99,14 @@ public class CPPOtherOperators {
         private enum ExprOperandPos {
             LHS, RHS;
         }
+
+        @Override
+        public boolean isAssigment() {
+            return false;
+        }
     }
 
-    public static class CPPCommaOperator implements ICPPOperator {
+    public static class CPPCommaOperator implements ICPPCommaOperator {
 
         private final int           relativePrecedence;
         private final Associativity associativity;
@@ -112,9 +126,14 @@ public class CPPOtherOperators {
             return relativePrecedence;
         }
 
+        @Override
+        public boolean isAssigment() {
+            return false;
+        }
+
     }
 
-    public static class CPPFunctionCall implements ICPPOperator {
+    public static class CPPFunctionCall implements ICPPFunctionCall {
 
         private final int           relativePrecedence;
         private final Associativity associativity;
@@ -134,9 +153,14 @@ public class CPPOtherOperators {
             return relativePrecedence;
         }
 
+        @Override
+        public boolean isAssigment() {
+            return false;
+        }
+
     }
 
-    public static class CPPTypeIdOperator implements ICPPOperator {
+    public static class CPPTypeIdOperator implements ICPPTypeIdOperator {
 
         private final int           relativePrecedence;
         private final Associativity associativity;
@@ -156,9 +180,14 @@ public class CPPOtherOperators {
             return relativePrecedence;
         }
 
+        @Override
+        public boolean isAssigment() {
+            return false;
+        }
+
     }
 
-    public static class CPPArraySubscriptOperator implements ICPPOperator {
+    public static class CPPArraySubscriptOperator implements ICPPArraySubscriptOperator {
 
         private final int           relativePrecedence;
         private final Associativity associativity;
@@ -178,6 +207,10 @@ public class CPPOtherOperators {
             return relativePrecedence;
         }
 
-    }
+        @Override
+        public boolean isAssigment() {
+            return false;
+        }
 
+    }
 }
