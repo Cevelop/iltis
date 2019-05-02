@@ -1,6 +1,7 @@
 package ch.hsr.ifs.iltis.core.core.functional.functions;
 
 import java.util.Comparator;
+import java.util.function.Predicate;
 
 
 /**
@@ -18,6 +19,7 @@ import java.util.Comparator;
 public interface Equals<T1, T2> {
 
     /* Equality methods */
+    
     /**
      * Canned method to test for reference equality
      * 
@@ -36,6 +38,24 @@ public interface Equals<T1, T2> {
      */
     public static <T1, T2> boolean refEq(final T1 l, final T2 r) {
         return l == r;
+    }
+
+
+    /**
+     * Creates a {@link Predicate} using {@link ==} to test the other values.
+     * 
+     * @param <T1>
+     * The type of the left value.
+     * @param <T2>
+     * The type of the right value.
+     * @param left
+     * The fixed left value.
+     * @return A {@link Predicate} returning {@code true} iff left is the same object as the value the predicate is called with.
+     * 
+     * @since 2.1
+     */
+    public static <T1, T2> Predicate<T2> genRefEq(final T1 left) {
+        return (T2 right) -> left == right;
     }
 
     /**
