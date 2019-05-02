@@ -1,8 +1,10 @@
 package ch.hsr.ifs.iltis.cpp.core.collections;
 
 import java.util.Collection;
+import java.util.function.BiPredicate;
 
 import org.eclipse.cdt.core.dom.ast.IASTNode;
+import org.eclipse.collections.api.list.MutableList;
 
 
 /**
@@ -44,4 +46,14 @@ public interface IASTNodeCollection<T extends IASTNode> extends Collection<T> {
      * @return {@code true} iff all nodes in {@code nodes} are enveloped by the nodes in this collection
      */
     public boolean envelopsAll(IASTNode... nodes);
+
+    /**
+     * Splits this IASTNodeCollection into multiple collections depending on the splitCondition.
+     * 
+     * @param splitCondition
+     * The condition which leads to the collection being split iff it tests positively.
+     * @return A list of IASTNodeCollection. Contains at least one IASTNodeCollection. All IASTNodeCollections combined contain all the nodes from the
+     * original IASTNodeCollection.
+     */
+    public <X extends IASTNodeCollection<T>> MutableList<X> splitRelative(BiPredicate<? super T, ? super T> splitCondition);
 }
