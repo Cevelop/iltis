@@ -51,7 +51,7 @@ public abstract class CollectionUtil {
      */
     @SafeVarargs
     public static <T> List<T> list(final T... elements) {
-        return asList(elements);
+        return new ArrayList<>(asList(elements));
     }
 
     /**
