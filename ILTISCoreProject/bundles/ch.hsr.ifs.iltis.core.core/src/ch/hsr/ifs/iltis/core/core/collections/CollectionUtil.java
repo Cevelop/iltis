@@ -51,7 +51,23 @@ public abstract class CollectionUtil {
      */
     @SafeVarargs
     public static <T> List<T> list(final T... elements) {
-        return new ArrayList<>(asList(elements));
+        return asList(elements);
+    }
+
+    /**
+     * Used for implicit creation of a Set from varargs
+     *
+     * @param <T>
+     * The {@code Set} element type
+     * @param elements
+     * The elements from which to create the set
+     * @return A {@link Set}
+     * 
+     * @since 2.1
+     */
+    @SafeVarargs
+    public static <T> Set<T> set(final T... elements) {
+        return new HashSet<T>(asList(elements));
     }
 
     /**
