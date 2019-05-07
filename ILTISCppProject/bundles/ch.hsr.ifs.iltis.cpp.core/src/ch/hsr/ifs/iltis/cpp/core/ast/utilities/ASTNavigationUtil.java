@@ -385,7 +385,7 @@ public class ASTNavigationUtil {
      */
     public static IASTDeclaration findFirstParentDeclaration(final IASTNode node) {
         for (IASTNode parent = node.getParent(); parent != null; parent = parent.getParent()) {
-            if (parent instanceof IASTStatement) return (IASTDeclaration) parent;
+            if (parent instanceof IASTDeclaration) return (IASTDeclaration) parent;
         }
         return null;
     }
