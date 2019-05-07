@@ -16,6 +16,13 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 
 
+/**
+ * Configures a managed build process
+ * 
+ * @author tstauber
+ * @since 3.0
+ * 
+ */
 public class BuildConfigurator {
 
     private IProject project;

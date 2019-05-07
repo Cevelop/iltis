@@ -12,12 +12,12 @@ import org.eclipse.collections.api.list.MutableList;
  *
  * @author tstauber
  *
- * @param <T>
+ * @param <NodeType>
  * A type of IASTNode
  * 
  * @since 1.1
  */
-public interface IASTNodeCollection<T extends IASTNode> extends Collection<T> {
+public interface IASTNodeCollection<NodeType extends IASTNode> extends Collection<NodeType> {
 
     /**
      * Checks is the node is contained in one of the nodes stored in this list.
@@ -54,6 +54,9 @@ public interface IASTNodeCollection<T extends IASTNode> extends Collection<T> {
      * The condition which leads to the collection being split iff it tests positively.
      * @return A list of IASTNodeCollection. Contains at least one IASTNodeCollection. All IASTNodeCollections combined contain all the nodes from the
      * original IASTNodeCollection.
+     * 
+     * @since 3.0
      */
-    public <X extends IASTNodeCollection<T>> MutableList<X> splitRelative(BiPredicate<? super T, ? super T> splitCondition);
+    public MutableList<? extends IASTNodeCollection<? extends NodeType>> splitRelative(
+            BiPredicate<? super NodeType, ? super NodeType> splitCondition);
 }

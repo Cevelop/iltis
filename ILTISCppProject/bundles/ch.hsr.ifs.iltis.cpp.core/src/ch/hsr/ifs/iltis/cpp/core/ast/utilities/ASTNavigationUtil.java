@@ -20,7 +20,8 @@ import org.eclipse.collections.impl.utility.ArrayIterate;
 
 import ch.hsr.ifs.iltis.core.core.arrays.ArrayUtil;
 import ch.hsr.ifs.iltis.cpp.core.ast.stream.ASTNodeStreams;
-import ch.hsr.ifs.iltis.cpp.core.collections.IASTNodeCollection;
+import ch.hsr.ifs.iltis.cpp.core.collections.IASTNodeList;
+import ch.hsr.ifs.iltis.cpp.core.collections.IASTNodeSet;
 import ch.hsr.ifs.iltis.cpp.core.wrappers.CPPVisitor;
 
 
@@ -77,17 +78,28 @@ public class ASTNavigationUtil {
     }
 
     /**
-     * Splits the {@link IASTNodeCollection} for the nodes first parent statement's subsequence. Thereby, containment is considered subsequent.
+     * Splits the {@link IASTNodeSet} for the nodes first parent statement's subsequence. Thereby, containment is considered subsequent.
      * 
      * @param <T>
      * The node type.
-     * @param <COL>
-     * The {@link IASTNodeCollection} type.
      * @param nodes
-     * The collection of nodes to split.
-     * @return A list containing the node collections.
+     * The set of nodes to split.
+     * @return A list containing the node sets.
      */
-    public static <T extends IASTNode, COL extends IASTNodeCollection<T>> MutableList<COL> splitByStatementSubsequence(COL nodes) {
+    public static <T extends IASTNode> MutableList<? extends IASTNodeSet<T>> splitByStatementSubsequence(IASTNodeSet<T> nodes) {
+        return nodes.splitRelative((l, r) -> !areSubsequentOrContained(l, r));
+    }
+
+    /**
+     * Splits the {@link IASTNodeList} for the nodes first parent statement's subsequence. Thereby, containment is considered subsequent.
+     * 
+     * @param <T>
+     * The node type.
+     * @param nodes
+     * The list of nodes to split.
+     * @return A list containing the node lists.
+     */
+    public static <T extends IASTNode> MutableList<? extends IASTNodeList<T>> splitByStatementSubsequence(IASTNodeList<T> nodes) {
         return nodes.splitRelative((l, r) -> !areSubsequentOrContained(l, r));
     }
 

@@ -70,9 +70,9 @@ public class IASTNodeSet<NodeType extends IASTNode> extends TreeSortedSet<NodeTy
     public MutableList<? extends IASTNodeSet<NodeType>> splitRelative(BiPredicate<? super NodeType, ? super NodeType> splitCondition) {
 
         if (size() <= 1) return Lists.mutable.of(this);
-        
+
         MutableList<IASTNodeSet<NodeType>> lists = Lists.mutable.of(new IASTNodeSet<>());
-        
+
         final Iterator<NodeType> leftIter = iterator();
         final Iterator<NodeType> rightIter = iterator();
         rightIter.next();

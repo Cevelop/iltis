@@ -9,8 +9,18 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
+import org.eclipse.pde.api.tools.annotations.NoExtend;
+import org.eclipse.pde.api.tools.annotations.NoInstantiate;
 
 
+/**
+ * Utility for creating relational {@link IASTNode} {@link Stream<IASTNode>}
+ * 
+ * @since 3.0
+ * @noextend This class is not intended to be subclassed by clients.
+ */
+@NoExtend
+@NoInstantiate
 public class ASTNodeStreams {
 
     private ASTNodeStreams() {}
@@ -23,7 +33,7 @@ public class ASTNodeStreams {
      * @return A sequential node stream.
      */
     public static Stream<IASTNode> parentNodeStream(IASTNode from) {
-        return conditionalParentNodeStream(from, ignore -> true);
+        return conditionalParentNodeStream(from, ignore -> false);
     }
 
     /**

@@ -48,12 +48,12 @@ public class IASTNodeList<NodeType extends IASTNode> extends FastList<NodeType> 
 
     @Override
     @SuppressWarnings("unchecked")
-    public MutableList<IASTNodeList<NodeType>> splitRelative(BiPredicate<? super NodeType, ? super NodeType> splitCondition) {
+    public MutableList<? extends IASTNodeList<NodeType>> splitRelative(BiPredicate<? super NodeType, ? super NodeType> splitCondition) {
 
         if (size() <= 1) return Lists.mutable.of(this);
-        
+
         MutableList<IASTNodeList<NodeType>> lists = Lists.mutable.of(new IASTNodeList<>());
-        
+
         final Iterator<NodeType> leftIter = iterator();
         final Iterator<NodeType> rightIter = iterator();
         rightIter.next();
@@ -65,7 +65,7 @@ public class IASTNodeList<NodeType extends IASTNode> extends FastList<NodeType> 
                 NodeType left = leftIter.next();
                 NodeType right = rightIter.next();
                 lists.getLast().add(left);
-                if (splitCondition.test(left, right)) lists.add(new IASTNodeList<>());
+                if (splitCondition.test(left, right)) lists.add(new IASTNodeList<NodeType>());
             }
         }
         return lists;
