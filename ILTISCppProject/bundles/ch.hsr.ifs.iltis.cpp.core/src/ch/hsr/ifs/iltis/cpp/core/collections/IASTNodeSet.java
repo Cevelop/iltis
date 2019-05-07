@@ -67,7 +67,7 @@ public class IASTNodeSet<NodeType extends IASTNode> extends TreeSortedSet<NodeTy
 
     @SuppressWarnings("unchecked")
     @Override
-    public MutableList<? extends IASTNodeSet<NodeType>> splitRelative(BiPredicate<? super NodeType, ? super NodeType> splitCondition) {
+    public MutableList<IASTNodeSet<NodeType>> splitRelative(BiPredicate<? super NodeType, ? super NodeType> splitCondition) {
 
         if (size() <= 1) return Lists.mutable.of(this);
 

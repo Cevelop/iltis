@@ -48,7 +48,7 @@ public class IASTNodeList<NodeType extends IASTNode> extends FastList<NodeType> 
 
     @Override
     @SuppressWarnings("unchecked")
-    public MutableList<? extends IASTNodeList<NodeType>> splitRelative(BiPredicate<? super NodeType, ? super NodeType> splitCondition) {
+    public MutableList<IASTNodeList<NodeType>> splitRelative(BiPredicate<? super NodeType, ? super NodeType> splitCondition) {
 
         if (size() <= 1) return Lists.mutable.of(this);
 

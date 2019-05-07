@@ -99,7 +99,7 @@ public class ASTNavigationUtil {
      * The list of nodes to split.
      * @return A list containing the node lists.
      */
-    public static <T extends IASTNode> MutableList<? extends IASTNodeList<T>> splitByStatementSubsequence(IASTNodeList<T> nodes) {
+    public static <T extends IASTNode> MutableList<IASTNodeList<T>> splitByStatementSubsequence(IASTNodeList<T> nodes) {
         return nodes.splitRelative((l, r) -> !areSubsequentOrContained(l, r));
     }
 
