@@ -4,6 +4,7 @@ import org.eclipse.cdt.core.dom.ast.IASTArrayDeclarator;
 import org.eclipse.cdt.core.dom.ast.IASTDeclarator;
 import org.eclipse.cdt.core.dom.ast.IBinding;
 import org.eclipse.cdt.core.dom.ast.IPointerType;
+import org.eclipse.cdt.core.dom.ast.IType;
 import org.eclipse.cdt.core.dom.ast.IVariable;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPMethod;
 
@@ -35,6 +36,29 @@ public class ASTDeclaratorUtil {
             return ((IVariable) declBinding).getType() instanceof IPointerType;
         } else if (declBinding instanceof ICPPMethod) {
             return ((ICPPMethod) declBinding).getType().getReturnType() instanceof IPointerType;
+        }
+
+        return false;
+    }
+
+    public static boolean isPointerOrRefType(final IASTDeclarator declarator) {
+        if (declarator == null) return false;
+
+        if (declarator instanceof IASTArrayDeclarator) {
+            final IASTArrayDeclarator arrayDecl = (IASTArrayDeclarator) declarator;
+            return arrayDecl.getPointerOperators().length > 0;
+        }
+
+        if (declarator.getPointerOperators().length > 0) return true;
+
+        final IBinding declBinding = declarator.getName().resolveBinding();
+
+        if (declBinding instanceof IVariable) {
+            final IType type = ((IVariable) declBinding).getType();
+            return ASTTypeUtil.hasPointerOrRefType(type);
+        } else if (declBinding instanceof ICPPMethod) {
+            final IType type = ((ICPPMethod) declBinding).getType().getReturnType();
+            return ASTTypeUtil.hasPointerOrRefType(type);
         }
 
         return false;
