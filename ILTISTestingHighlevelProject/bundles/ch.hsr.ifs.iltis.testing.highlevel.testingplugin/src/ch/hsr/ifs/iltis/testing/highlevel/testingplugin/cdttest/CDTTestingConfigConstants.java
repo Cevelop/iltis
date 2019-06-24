@@ -116,6 +116,28 @@ public final class CDTTestingConfigConstants {
      */
     public static final String MARKER_LINES = "markerLines";
 
+    /**
+     * This tag is used to tell a {@link SourceFileBaseTest} to skip a test.
+     *
+     * Usage:
+     * <pre>
+     * {@code
+     * //! Sentence describing this test
+     * //@.config
+     * skipTest=true
+     * //@foo.h
+     * ...
+     * //@main.cpp
+     * ....
+     * }
+     * </pre>
+     *
+     * This is a boolean tag with either {@code true} or {@code false} as values.
+     *
+     * Default: {@code false}.
+     */
+    public static final String SKIP_TEST = "skip";
+
     private CDTTestingConfigConstants() {}
 
 }
