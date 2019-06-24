@@ -82,8 +82,8 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
     @Override
     @Before
     public void setUp() throws Exception {
-        assumeFalse("SKIPPING the Test.", skipTest);
         super.setUp();
+        assumeFalse("SKIPPING the Test.", skipTest);
     }
 
     /**
