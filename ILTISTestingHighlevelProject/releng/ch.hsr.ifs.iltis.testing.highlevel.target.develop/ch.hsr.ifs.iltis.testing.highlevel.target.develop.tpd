@@ -11,7 +11,7 @@ location "https://www.cevelop.com/iltis-unstable" {
 	ch.hsr.ifs.iltis.testing.cpp.feature.feature.group lazy
 }
 
-location "http://download.eclipse.org/tools/orbit/downloads/drops/R20180606145124/repository/" {
+location "http://download.eclipse.org/tools/orbit/downloads/drops/R20190602212107/repository/" {
 	org.mockito lazy
 }
 
