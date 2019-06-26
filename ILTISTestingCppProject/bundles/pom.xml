@@ -6,7 +6,7 @@
     <parent>
         <groupId>ch.hsr.ifs.iltis.testing.cpp</groupId>
         <artifactId>ch.hsr.ifs.iltis.testing.cpp.root</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
+        <version>2.2.0-SNAPSHOT</version>
     </parent>
     <modules>
         <module>ch.hsr.ifs.iltis.testing.cpp.core</module>
