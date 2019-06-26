@@ -1,6 +1,6 @@
 target "ILTIS Testing Core" with requirements
 
-location "http://download.eclipse.org/releases/2018-12" {
+location "http://download.eclipse.org/releases/2019-06" {
 	org.eclipse.equinox.launcher lazy
 	org.junit 4.12
 }

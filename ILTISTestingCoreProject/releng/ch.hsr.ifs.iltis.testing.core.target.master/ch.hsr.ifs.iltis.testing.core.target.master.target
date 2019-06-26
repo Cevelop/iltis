@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="ILTIS Testing Core" sequenceNumber="1547112538">
+<target name="ILTIS Testing Core" sequenceNumber="1561552225">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.equinox.launcher" version="0.0.0"/>
       <unit id="org.junit" version="4.12.0.v201504281640"/>
-      <repository location="http://download.eclipse.org/releases/2018-12"/>
+      <repository location="http://download.eclipse.org/releases/2019-06"/>
     </location>
   </locations>
 </target>
