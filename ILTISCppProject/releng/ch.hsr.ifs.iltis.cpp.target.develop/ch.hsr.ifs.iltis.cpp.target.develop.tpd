@@ -5,7 +5,6 @@ location "http://download.eclipse.org/releases/2019-06" {
 	org.eclipse.ui.ide.application lazy
 }
 
-//TODO why is not the cdt bundle in http://download.eclipse.org/releases/2018-09 used?
 location "http://download.eclipse.org/tools/cdt/releases/9.8" {
 	org.eclipse.cdt.sdk lazy
 }

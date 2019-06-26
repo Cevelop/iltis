@@ -2,7 +2,7 @@
 <feature
       id="ch.hsr.ifs.iltis.cpp.core.feature"
       label="ILTIS CPP Core"
-      version="3.0.0.qualifier"
+      version="3.1.0.qualifier"
       provider-name="IFS Institute for Software">
 
    <description url="http://www.example.com/description">
