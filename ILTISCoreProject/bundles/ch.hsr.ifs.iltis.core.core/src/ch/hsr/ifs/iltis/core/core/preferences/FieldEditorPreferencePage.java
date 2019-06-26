@@ -52,7 +52,6 @@ public abstract class FieldEditorPreferencePage extends org.eclipse.jface.prefer
      * Subclasses must implement.
      *
      * @return the {@code IPropertyAndPreferenceHelper}
-     * @noreference This method is not intended to be referenced by clients. Use {@link #getPropertyAndPreferenceHelper()} instead.
      */
     @NoReference
     abstract protected IPropertyAndPreferenceHelper createPropertyAndPreferenceHelper();

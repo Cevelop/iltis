@@ -2,7 +2,7 @@
 <feature
       id="ch.hsr.ifs.iltis.core.core.feature"
       label="ILTIS CORE Core"
-      version="2.0.0.qualifier"
+      version="2.2.0.qualifier"
       provider-name="IFS Institute for Software">
 
    <description url="http://www.example.com/description">

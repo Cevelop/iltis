@@ -7,6 +7,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.pde.api.tools.annotations.NoExtend;
+import org.eclipse.pde.api.tools.annotations.NoInstantiate;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
@@ -16,6 +18,8 @@ import org.osgi.service.prefs.Preferences;
  *
  * @author tstauber
  */
+@NoExtend
+@NoInstantiate
 public class WorkspaceUtil {
 
     /**
