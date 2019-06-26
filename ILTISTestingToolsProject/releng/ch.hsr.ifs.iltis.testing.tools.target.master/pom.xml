@@ -4,7 +4,7 @@
     <parent>
         <groupId>ch.hsr.ifs.iltis.testing.tools</groupId>
         <artifactId>ch.hsr.ifs.iltis.testing.tools.releng</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
+        <version>2.2.0-SNAPSHOT</version>
     </parent>
     <artifactId>ch.hsr.ifs.iltis.testing.tools.target.master</artifactId>
     <packaging>eclipse-target-definition</packaging>
