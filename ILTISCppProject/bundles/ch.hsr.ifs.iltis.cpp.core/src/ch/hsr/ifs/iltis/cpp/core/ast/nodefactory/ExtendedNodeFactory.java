@@ -60,9 +60,9 @@ import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPNodeFactory;
 
 import ch.hsr.ifs.iltis.core.core.collections.CollectionUtil;
 import ch.hsr.ifs.iltis.core.core.functional.functions.Consumer;
-import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.CPPBinaryOperator;
-import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.CPPOtherOperators;
-import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.CPPUnaryOperator;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.ICPPBinaryOperator;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.ICPPUnaryOperator;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.internal.CPPOtherOperators;
 import ch.hsr.ifs.iltis.cpp.core.util.constants.CommonCPPConstants;
 
 
@@ -557,24 +557,24 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
     /* Enum Operator Factory Methods */
 
     @Override
-    public ICPPASTUnaryExpression newUnaryExpression(final CPPUnaryOperator operator, final IASTExpression operand) {
+    public ICPPASTUnaryExpression newUnaryExpression(final ICPPUnaryOperator operator, final IASTExpression operand) {
         return newUnaryExpression(operator.getCDTOperator(), operand);
     }
 
     @Override
-    public ICPPASTBinaryExpression newBinaryExpression(final CPPBinaryOperator op, final IASTExpression expr1, final IASTExpression expr2) {
+    public ICPPASTBinaryExpression newBinaryExpression(final ICPPBinaryOperator op, final IASTExpression expr1, final IASTExpression expr2) {
         return newBinaryExpression(op.getCDTOperator(), expr1, expr2);
     }
 
     @Override
-    public ICPPASTBinaryExpression newBinaryExpression(final CPPBinaryOperator op, final IASTExpression expr1, final IASTInitializerClause expr2) {
+    public ICPPASTBinaryExpression newBinaryExpression(final ICPPBinaryOperator op, final IASTExpression expr1, final IASTInitializerClause expr2) {
         return newBinaryExpression(op.getCDTOperator(), expr1, expr2);
     }
 
     /* Magic Factory Methods */
 
     @Override
-    public IASTUnaryExpression newMagicPrecedenceUnaryExpression(final CPPUnaryOperator op, final IASTExpression operand) {
+    public IASTUnaryExpression newMagicPrecedenceUnaryExpression(final ICPPUnaryOperator op, final IASTExpression operand) {
         if (op.operandNeedsWraping(operand)) {
             return newUnaryExpression(op, newUnaryExpression(IASTUnaryExpression.op_bracketedPrimary, operand));
         } else {
@@ -583,7 +583,7 @@ public class ExtendedNodeFactory extends CPPNodeFactory implements IBetterFactor
     }
 
     @Override
-    public IASTBinaryExpression newMagicPrecedenceBinaryExpression(final CPPBinaryOperator binaryOperator, final IASTExpression operand1,
+    public IASTBinaryExpression newMagicPrecedenceBinaryExpression(final ICPPBinaryOperator binaryOperator, final IASTExpression operand1,
             final IASTInitializerClause operand2) {
         final boolean leftOperandNeedsWraping = binaryOperator.leftOperandNeedsWraping(operand1);
         final boolean rightOperandNeedsWraping = binaryOperator.rightOperandNeedsWraping(operand2);

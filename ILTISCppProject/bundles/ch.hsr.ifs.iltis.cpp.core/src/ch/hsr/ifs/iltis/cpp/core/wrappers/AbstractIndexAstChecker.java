@@ -96,6 +96,7 @@ public abstract class AbstractIndexAstChecker extends AbstractCheckerWithProblem
      * @see IRunnableInEditorChecker#processModel(Object,
      * ICheckerInvocationContext)
      */
+    @SuppressWarnings("restriction")
     @Override
     public synchronized void processModel(final Object model, final ICheckerInvocationContext context) {
         if (model instanceof IASTTranslationUnit) {

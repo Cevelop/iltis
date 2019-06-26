@@ -1,9 +1,13 @@
 package ch.hsr.ifs.iltis.cpp.core.collections;
 
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.function.BiPredicate;
 
 import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.collections.api.block.predicate.Predicate;
+import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.list.mutable.FastList;
 import org.eclipse.collections.impl.utility.ArrayIterate;
 import org.eclipse.collections.impl.utility.Iterate;
@@ -15,7 +19,7 @@ import org.eclipse.collections.impl.utility.Iterate;
  * @author tstauber
  * @since 1.1
  */
-public class IASTNodeList<T extends IASTNode> extends FastList<T> implements IASTNodeCollection<T> {
+public class IASTNodeList<NodeType extends IASTNode> extends FastList<NodeType> implements IASTNodeCollection<NodeType> {
 
     public IASTNodeList() {}
 
@@ -23,7 +27,7 @@ public class IASTNodeList<T extends IASTNode> extends FastList<T> implements IAS
         super(initialCapacity);
     }
 
-    public IASTNodeList(final Collection<? extends T> source) {
+    public IASTNodeList(final Collection<? extends NodeType> source) {
         super(source);
     }
 
@@ -42,10 +46,35 @@ public class IASTNodeList<T extends IASTNode> extends FastList<T> implements IAS
         return ArrayIterate.allSatisfy(nodes, this::envelops);
     }
 
-    /* From FastList */
+    @Override
+    @SuppressWarnings("unchecked")
+    public MutableList<IASTNodeList<NodeType>> splitRelative(BiPredicate<? super NodeType, ? super NodeType> splitCondition) {
+
+        if (size() <= 1) return Lists.mutable.of(this);
+
+        MutableList<IASTNodeList<NodeType>> lists = Lists.mutable.of(new IASTNodeList<>());
+
+        final Iterator<NodeType> leftIter = iterator();
+        final Iterator<NodeType> rightIter = iterator();
+        rightIter.next();
+
+        while (leftIter.hasNext()) {
+            if (!rightIter.hasNext()) {
+                lists.getLast().add(leftIter.next());
+            } else {
+                NodeType left = leftIter.next();
+                NodeType right = rightIter.next();
+                lists.getLast().add(left);
+                if (splitCondition.test(left, right)) lists.add(new IASTNodeList<NodeType>());
+            }
+        }
+        return lists;
+    }
+
+    /* From IASTNodeList */
 
     @Override
-    public IASTNodeList<T> reject(final Predicate<? super T> predicate) {
+    public IASTNodeList<NodeType> reject(final Predicate<? super NodeType> predicate) {
         return this.reject(predicate, new IASTNodeList<>());
     }
 

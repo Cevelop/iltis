@@ -1,9 +1,11 @@
 package ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators;
 
 /**
- * An interface implemented by the iltis mapping for C++ operators.
+ * An interface providing a mapping for the unwieldy {@code int op_XYZ} constants representing operators in cdt.
  *
  * @author tstauber
+ * 
+ * @noimplement This interface is not intended to be implemented by clients.
  *
  */
 public interface ICPPOperator {
@@ -24,5 +26,14 @@ public interface ICPPOperator {
     public static enum Associativity {
         NOTATIONAL_NONE, NOTATIONAL_LEFT, NOTATIONAL_RIGHT, MATHEMATICAL;
     }
+
+    /**
+     * Used to test if an operator is an assignment operator. Assignment includes the impure assignment operators like +=, ++, and --.
+     * 
+     * @return {@code true} iff the operator is an assignment operator
+     * 
+     * @since 3.0
+     */
+    public boolean isAssigment();
 
 }

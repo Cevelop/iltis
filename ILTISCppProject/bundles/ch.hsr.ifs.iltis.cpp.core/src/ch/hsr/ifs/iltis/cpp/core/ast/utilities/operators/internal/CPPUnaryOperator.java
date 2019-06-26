@@ -1,4 +1,4 @@
-package ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators;
+package ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.internal;
 
 import org.eclipse.cdt.core.dom.ast.IASTArraySubscriptExpression;
 import org.eclipse.cdt.core.dom.ast.IASTBinaryExpression;
@@ -9,36 +9,41 @@ import org.eclipse.cdt.core.dom.ast.IASTInitializerClause;
 import org.eclipse.cdt.core.dom.ast.IASTTypeIdExpression;
 import org.eclipse.cdt.core.dom.ast.IASTUnaryExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTSimpleTypeConstructorExpression;
-import org.eclipse.collections.impl.utility.ArrayIterate;
+
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.ICPPBinaryOperator;
+import ch.hsr.ifs.iltis.cpp.core.ast.utilities.operators.ICPPUnaryOperator;
 
 
-public enum CPPUnaryOperator implements ICPPOperator {
+public enum CPPUnaryOperator implements ICPPUnaryOperator {
 
-    BRACKETED_PRIMARY(15, IASTUnaryExpression.op_bracketedPrimary), //
-    NOEXCEPT(17, IASTUnaryExpression.op_noexcept), //
-    POSTFIX_INCR(20, IASTUnaryExpression.op_postFixIncr), //
-    POSTFIX_DECR(20, IASTUnaryExpression.op_postFixDecr), //
-    PREFIX_INCR(30, IASTUnaryExpression.op_prefixIncr), //
-    PREFIX_DECR(30, IASTUnaryExpression.op_prefixDecr), //
-    PLUS(30, IASTUnaryExpression.op_plus), //
-    MINUS(30, IASTUnaryExpression.op_minus), //
-    NOT(30, IASTUnaryExpression.op_not), //
-    TILDE(30, IASTUnaryExpression.op_tilde), //
-    STAR(30, IASTUnaryExpression.op_star), //
-    AMPER(30, IASTUnaryExpression.op_amper), //
-    SIZEOF(30, IASTUnaryExpression.op_sizeof), //
-    SIZEOF_PARAMETER_PACK(30, IASTUnaryExpression.op_sizeofParameterPack), //
-    TYPEID(30, IASTUnaryExpression.op_typeid), //
-    THROW(160, IASTUnaryExpression.op_throw);
+    BRACKETED_PRIMARY(15, IASTUnaryExpression.op_bracketedPrimary, false), //
+    NOEXCEPT(17, IASTUnaryExpression.op_noexcept, false), //
+    POSTFIX_INCR(20, IASTUnaryExpression.op_postFixIncr, true), //
+    POSTFIX_DECR(20, IASTUnaryExpression.op_postFixDecr, true), //
+    PREFIX_INCR(30, IASTUnaryExpression.op_prefixIncr, true), //
+    PREFIX_DECR(30, IASTUnaryExpression.op_prefixDecr, true), //
+    PLUS(30, IASTUnaryExpression.op_plus, false), //
+    MINUS(30, IASTUnaryExpression.op_minus, false), //
+    NOT(30, IASTUnaryExpression.op_not, false), //
+    TILDE(30, IASTUnaryExpression.op_tilde, false), //
+    STAR(30, IASTUnaryExpression.op_star, false), //
+    AMPER(30, IASTUnaryExpression.op_amper, false), //
+    SIZEOF(30, IASTUnaryExpression.op_sizeof, false), //
+    SIZEOF_PARAMETER_PACK(30, IASTUnaryExpression.op_sizeofParameterPack, false), //
+    TYPEID(30, IASTUnaryExpression.op_typeid, false), //
+    THROW(160, IASTUnaryExpression.op_throw, false);
 
-    private int relativePrecedence;
-    private int equivalentCDTOp;
+    private int     relativePrecedence;
+    private int     equivalentCDTOp;
+    private boolean isAssignment;
 
-    private CPPUnaryOperator(final int relativePrecedence, final int equivalentCDTOp) {
+    private CPPUnaryOperator(final int relativePrecedence, final int equivalentCDTOp, final boolean isAssignment) {
         this.relativePrecedence = relativePrecedence;
         this.equivalentCDTOp = equivalentCDTOp;
+        this.isAssignment = isAssignment;
     }
 
+    @Override
     public int getCDTOperator() {
         return equivalentCDTOp;
     }
@@ -53,15 +58,16 @@ public enum CPPUnaryOperator implements ICPPOperator {
         return relativePrecedence;
     }
 
+    @Override
     public boolean operandNeedsWraping(final IASTInitializerClause operand) {
         if (operand instanceof ICPPASTSimpleTypeConstructorExpression) {
             return false;
         } else if (operand instanceof IASTFunctionCallExpression) {
             return getRelativePrecedence() <= CPPOtherOperators.FUNCTION_CALL.getRelativePrecedence();
         } else if (operand instanceof IASTBinaryExpression) {
-            return getRelativePrecedence() <= CPPBinaryOperator.getForBinaryExpr((IASTBinaryExpression) operand).getRelativePrecedence();
+            return getRelativePrecedence() <= ICPPBinaryOperator.getForBinaryExpr((IASTBinaryExpression) operand).getRelativePrecedence();
         } else if (operand instanceof IASTUnaryExpression) {
-            return getRelativePrecedence() <= CPPUnaryOperator.getForUnaryExpr((IASTUnaryExpression) operand).getRelativePrecedence();
+            return getRelativePrecedence() <= ICPPUnaryOperator.getForUnaryExpr((IASTUnaryExpression) operand).getRelativePrecedence();
         } else if (operand instanceof IASTExpressionList) {
             return getRelativePrecedence() <= CPPOtherOperators.COMMA_OPERATOR.getRelativePrecedence();
         } else if (operand instanceof IASTConditionalExpression) {
@@ -75,12 +81,9 @@ public enum CPPUnaryOperator implements ICPPOperator {
         }
     }
 
-    public static CPPUnaryOperator getForCDTOperator(final int unaryOperator) {
-        return ArrayIterate.detect(values(), v -> v.equivalentCDTOp == unaryOperator);
-    }
-
-    public static CPPUnaryOperator getForUnaryExpr(final IASTUnaryExpression expr) {
-        return getForCDTOperator(expr.getOperator());
+    @Override
+    public boolean isAssigment() {
+        return isAssignment;
     }
 
 }

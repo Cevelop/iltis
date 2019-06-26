@@ -12,6 +12,7 @@ import org.eclipse.cdt.codan.core.model.IChecker;
 import org.eclipse.cdt.codan.core.model.IProblem;
 import org.eclipse.cdt.core.dom.ast.ASTVisitor;
 
+import ch.hsr.ifs.iltis.core.core.resources.StringUtil;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.SimpleChecker;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.IProblemId;
 import ch.hsr.ifs.iltis.cpp.core.ast.checker.helper.ISimpleReporter;
@@ -130,6 +131,41 @@ public abstract class SimpleVisitor<ProblemId extends IProblemId<ProblemId>, Arg
         final Set<String> codanProblems = CodanRuntime.getInstance().getCheckersRegistry().getRefProblems((IChecker) reporter).parallelStream()
                 .filter(IProblem::isEnabled).map(IProblem::getId).collect(Collectors.toSet());
         return getProblemIds().stream().filter(ipid -> codanProblems.contains(ipid.getId())).collect(Collectors.toSet());
+    }
+
+    public String toString() {
+        return getClass().getSimpleName() + " [" + (isEnabled() ? "enabled" : "disabled") + "] \n" + //
+               "   ProblemIds: \n" + //
+               StringUtil.toString(getProblemIds(), "    -> ", "\n    -> ", "\n", Object::toString) + //
+               "   Visits: \n" + //
+               StringUtil.toString(generateListOfVisitedNodeTypes(), "    -> ", "\n    -> ", "\n", Object::toString);//
+    }
+
+    private List<String> generateListOfVisitedNodeTypes() {
+        final List<String> lst = new ArrayList<>(22);
+        if (shouldVisitArrayModifiers) lst.add("Array Modifiers");//
+        if (shouldVisitBaseSpecifiers) lst.add("Base Specifiers");//
+        if (shouldVisitCaptures) lst.add("Captures");//
+        if (shouldVisitDeclarations) lst.add("Declarations");//
+        if (shouldVisitDeclarators) lst.add("Declarators");//
+        if (shouldVisitDeclSpecifiers) lst.add("Decl Specifiers");//
+        if (shouldVisitDesignators) lst.add("Designators");//
+        if (shouldVisitEnumerators) lst.add("Enumerators");//
+        if (shouldVisitExpressions) lst.add("Expressions");//
+        if (shouldVisitInitializers) lst.add("Initializers");//
+        if (shouldVisitNames) lst.add("Names");//
+        if (shouldVisitNamespaces) lst.add("Namespaces");//
+        if (shouldVisitParameterDeclarations) lst.add("Parameter Declarations");//
+        if (shouldVisitPointerOperators) lst.add("Pointer Operators");//
+        if (shouldVisitAttributes) lst.add("Attributes");//
+        if (shouldVisitProblems) lst.add("Problems");//
+        if (shouldVisitStatements) lst.add("Statements");//
+        if (shouldVisitTemplateParameters) lst.add("Template Parameters");//
+        if (shouldVisitTranslationUnit) lst.add("Translation Units");//
+        if (shouldVisitTypeIds) lst.add("Type Ids");//
+        if (shouldVisitVirtSpecifiers) lst.add("Virt Specifiers");//
+        if (shouldVisitDecltypeSpecifiers) lst.add("Decltype Specifiers");//
+        return lst;
     }
 
 }

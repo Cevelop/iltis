@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><?pde?><!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform --><target name="ILTIS CPP Baseline" sequenceNumber="9999999999">
   <locations>
 	  <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="false" type="InstallableUnit">
-		  <unit id="ch.hsr.ifs.iltis.cpp.core.feature.feature.group" version="2.0.0.201901101206"/>
-		  <unit id="ch.hsr.ifs.iltis.cpp.core.feature.source.feature.group" version="2.0.0.201901101206"/>
-		  <unit id="ch.hsr.ifs.iltis.cpp.versionator.feature.feature.group" version="2.0.0.201901101206"/>
-		  <unit id="ch.hsr.ifs.iltis.cpp.versionator.feature.source.feature.group" version="2.0.0.201901101206"/>
+		  <unit id="ch.hsr.ifs.iltis.cpp.core.feature.feature.group" version="2.0.2.201902071342"/>
+		  <unit id="ch.hsr.ifs.iltis.cpp.core.feature.source.feature.group" version="2.0.2.201902071342"/>
+		  <unit id="ch.hsr.ifs.iltis.cpp.versionator.feature.feature.group" version="2.0.2.201902071342"/>
+		  <unit id="ch.hsr.ifs.iltis.cpp.versionator.feature.source.feature.group" version="2.0.2.201902071342"/>
 		  <repository location="https://cevelop.com/iltis"/>
 	  </location>
   </locations>

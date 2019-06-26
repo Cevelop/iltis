@@ -12,7 +12,16 @@ import org.eclipse.collections.impl.tuple.Tuples;
 import ch.hsr.ifs.iltis.core.core.resources.StringUtil;
 
 
-public class ITranslationUnitUtil {
+/**
+ * 
+ * @author tstauber
+ * 
+ * @noextend This class is not intended to be subclassed by clients.
+ * 
+ * @since 3.0
+ *
+ */
+public class ASTTranslationUnitUtil extends ASTNodeUtil {
 
     /**
      * Crates a map indexed by line number, containing pairs of line-start-offset and line-content.
@@ -47,7 +56,7 @@ public class ITranslationUnitUtil {
      * @return {@code true} iff the line before the line on which the node starts consists only of whitespace.
      */
     public static boolean isLeadByAWhitespaceLine(final IASTNode node, final MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap) {
-        return ITranslationUnitUtil.lineNcontainsOnlyWhitespace(node.getFileLocation().getStartingLineNumber(), linenoOffsetContentMap);
+        return ASTTranslationUnitUtil.lineNcontainsOnlyWhitespace(node.getFileLocation().getStartingLineNumber(), linenoOffsetContentMap);
     }
 
     /**
@@ -60,7 +69,7 @@ public class ITranslationUnitUtil {
      * @return {@code true} iff the line after the line on which the node ends consists only of whitespace.
      */
     public static boolean isFollowedByAWhitespaceLine(final IASTNode node, final MutableMap<Integer, Pair<Integer, char[]>> linenoOffsetContentMap) {
-        return ITranslationUnitUtil.lineNcontainsOnlyWhitespace(node.getFileLocation().getEndingLineNumber(), linenoOffsetContentMap);
+        return ASTTranslationUnitUtil.lineNcontainsOnlyWhitespace(node.getFileLocation().getEndingLineNumber(), linenoOffsetContentMap);
     }
 
     /**

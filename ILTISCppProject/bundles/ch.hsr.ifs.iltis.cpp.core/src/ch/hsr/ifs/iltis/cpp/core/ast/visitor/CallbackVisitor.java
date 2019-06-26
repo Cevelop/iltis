@@ -39,6 +39,7 @@ public class CallbackVisitor extends ASTVisitor {
     public CallbackVisitor(final Function<IASTNode, Integer> callback) {
         super(true);
         this.callback = callback;
+        this.includeInactiveNodes = true;
     }
 
     @Override
