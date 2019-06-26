@@ -8,12 +8,12 @@
 		<relativePath>../</relativePath>
 		<groupId>ch.hsr.ifs.iltis.cpp</groupId>
 		<artifactId>ch.hsr.ifs.iltis.cpp.releng</artifactId>
-		<version>3.0.0-SNAPSHOT</version>
+		<version>3.1.0-SNAPSHOT</version>
 	</parent>
 
 	<groupId>ch.hsr.ifs.iltis.cpp</groupId>
 	<artifactId>ch.hsr.ifs.iltis.cpp.target.master</artifactId>
-	<version>3.0.0-SNAPSHOT</version>
+	<version>3.1.0-SNAPSHOT</version>
 	<packaging>eclipse-target-definition</packaging>
 
 </project>
