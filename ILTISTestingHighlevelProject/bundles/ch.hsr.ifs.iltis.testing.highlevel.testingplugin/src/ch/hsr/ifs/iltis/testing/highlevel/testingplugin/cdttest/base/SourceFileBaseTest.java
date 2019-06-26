@@ -14,6 +14,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeFalse;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,14 +32,13 @@ import org.eclipse.cdt.core.model.CoreModelUtil;
 import org.eclipse.cdt.core.model.ICElement;
 import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.ITextSelection;
+import org.junit.Before;
 import org.osgi.framework.FrameworkUtil;
 
 import ch.hsr.ifs.iltis.core.core.data.StringInputStream;
-import ch.hsr.ifs.iltis.core.core.exception.ILTISException;
 
 import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.cdttest.CDTTestingConfigConstants;
 import ch.hsr.ifs.iltis.testing.highlevel.testingplugin.cdttest.base.projectholder.IProjectHolder;
@@ -75,7 +75,16 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
      */
     protected LinkedHashMap<String, TestSourceFile> testFiles = new LinkedHashMap<>();
 
+    private boolean skipTest = false;
+
     private boolean calledConfigureTest = false;
+
+    @Override
+    @Before
+    public void setUp() throws Exception {
+        super.setUp();
+        assumeFalse("SKIPPING the Test.", skipTest);
+    }
 
     /**
      * Loads config, loads selections, and populates the testFiles map form the passed files.
@@ -133,6 +142,7 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
      * @noreference Do not call this method directly
      */
     protected void configureTest(final Properties properties) {
+        skipTest = Boolean.valueOf(properties.getProperty(CDTTestingConfigConstants.SKIP_TEST, "false"));
         this.calledConfigureTest = true;
     };
 
@@ -297,7 +307,7 @@ public abstract class SourceFileBaseTest extends ProjectHolderBaseTest {
      * @return The comparison parameters to use
      */
     protected int getASTComparisonParameters() {
-        return 0 /* Default value equivalent to no special style */ ;
+        return ITranslationUnit.AST_PARSE_INACTIVE_CODE;
     }
 
     /**

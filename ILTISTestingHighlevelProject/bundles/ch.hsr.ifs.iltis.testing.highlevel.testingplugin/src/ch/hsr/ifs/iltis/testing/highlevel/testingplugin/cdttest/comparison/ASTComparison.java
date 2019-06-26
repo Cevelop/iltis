@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 
 import org.eclipse.cdt.core.dom.ast.IASTArrayModifier;
 import org.eclipse.cdt.core.dom.ast.IASTAttribute;
+import org.eclipse.cdt.core.dom.ast.IASTAttributeList;
 import org.eclipse.cdt.core.dom.ast.IASTConditionalExpression;
 import org.eclipse.cdt.core.dom.ast.IASTDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTExpression;
@@ -34,6 +35,7 @@ import org.eclipse.cdt.core.dom.ast.IASTSimpleDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTStatement;
 import org.eclipse.cdt.core.dom.ast.IASTToken;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
+import org.eclipse.cdt.core.dom.ast.IASTTypeIdExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTAliasDeclaration;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTArraySubscriptExpression;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTAttribute;
@@ -249,6 +251,7 @@ public class ASTComparison {
         return Stream.of(ast.getIncludeDirectives()).filter(ASTComparison::isPartOfNonSyntheticTuFile);
     }
 
+    //TODO think about naming, as it is opposite of isPartOfTUFileOrSynthetic
     protected static boolean isPartOfNonSyntheticTuFile(IASTNode node) {
         if (!(node instanceof ASTNode)) return node.isPartOfTranslationUnitFile();
         IASTTranslationUnit ast = node.getTranslationUnit();
@@ -315,7 +318,12 @@ public class ASTComparison {
      * @return Those children which are either part of the TU file or are purely synthetic.
      */
     private static Stream<IASTNode> getFilteredChildren(final IASTNode node) {
-        return Stream.of(node.getChildren()).filter(n -> n.isPartOfTranslationUnitFile() || n.getContainingFilename().isEmpty());
+        return Stream.of(node.getChildren()).filter(ASTComparison::isPartOfTUFileOrSynthetic);
+    }
+
+    public static boolean isPartOfTUFileOrSynthetic(final IASTNode node) {
+        return node.isPartOfTranslationUnitFile() && node.getContainingFilename().equals(node.getTranslationUnit().getContainingFilename()) || node
+                .getContainingFilename().isEmpty();
     }
 
     private static <T extends IASTNode> boolean typeSensitiveNodeEquals(final T expected, final T actual, final EnumSet<ComparisonArg> args) {
@@ -389,7 +397,7 @@ public class ASTComparison {
             final ICPPASTDeclSpecifier a = as(actual);
             if (e.isConst() != a.isConst() || e.isVirtual() != a.isVirtual() || e.isVolatile() != a.isVolatile() || e.isConstexpr() != a
                     .isConstexpr() || e.isExplicit() != a.isExplicit() || e.isFriend() != a.isFriend() || e.isRestrict() != a.isRestrict() || e
-                            .isThreadLocal() != a.isThreadLocal() || e.getStorageClass() != a.getStorageClass()) {
+                            .isThreadLocal() != a.isThreadLocal() || e.getStorageClass() != a.getStorageClass() || e.isInline() != a.isInline()) {
                 return false;
             }
 
@@ -454,6 +462,10 @@ public class ASTComparison {
                 final ICPPASTLambdaExpression et = as(expected);
                 final ICPPASTLambdaExpression at = as(actual);
                 return et.getCaptureDefault() == at.getCaptureDefault();
+            } else if (expected instanceof IASTTypeIdExpression) {
+                final IASTTypeIdExpression et = as(expected);
+                final IASTTypeIdExpression at = as(actual);
+                return et.getOperator() == at.getOperator();
             } else if (expected instanceof ICPPASTFunctionCallExpression || expected instanceof ICPPASTSimpleTypeConstructorExpression ||
                        expected instanceof ICPPASTLambdaExpression || expected instanceof ICPPASTPackExpansionExpression ||
                        expected instanceof IASTIdExpression || expected instanceof ICPPASTArraySubscriptExpression ||
@@ -525,6 +537,7 @@ public class ASTComparison {
                 /* Relevant information is contained in the children */
                 return defaultHandler(expected, actual, args);
             }
+            //TODO insert support for MSVC Attributes
         } else if (expected instanceof ICPPASTAttribute) {
             final ICPPASTAttribute et = as(expected);
             final ICPPASTAttribute at = as(actual);
@@ -534,6 +547,10 @@ public class ASTComparison {
             final IASTAttribute et = as(expected);
             final IASTAttribute at = as(actual);
             return tokenEquals(et.getArgumentClause(), at.getArgumentClause()) && compareNullable(et.getName(), at.getName());
+        } else if (expected instanceof IASTAttributeList) {
+            final IASTAttributeList et = as(expected);
+            final IASTAttributeList at = as(actual);
+            return et.getAttributes().length == at.getAttributes().length;
         } else {
             /* OTHER */
             if (expected instanceof IASTTranslationUnit || expected instanceof IASTArrayModifier || expected instanceof IASTInitializer) {
@@ -871,6 +888,11 @@ public class ASTComparison {
             if (isUnequal()) {
                 fun.accept(this);
             }
+        }
+
+        @Override
+        public String toString() {
+            return state.toString();
         }
     }
 

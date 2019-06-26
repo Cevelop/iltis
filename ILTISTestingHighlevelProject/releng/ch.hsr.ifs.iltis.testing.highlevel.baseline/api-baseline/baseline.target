@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><?pde version="3.8"?><target name="ILTIS Testing Highlevel Baseline">
+	<locations>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<unit id="ch.hsr.ifs.iltis.testing.highlevel.examples.feature.feature.group" version="2.0.0.201901101229"/>
+			<unit id="ch.hsr.ifs.iltis.testing.highlevel.feature.feature.group" version="2.0.0.201901101229"/>
+			<unit id="ch.hsr.ifs.iltis.testing.highlevel.feature.source.feature.group" version="2.0.0.201901101229"/>
+			<repository location="https://www.cevelop.com/iltis"/>
+		</location>
+	</locations>
+</target>

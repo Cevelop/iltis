@@ -294,8 +294,12 @@ public class TestProjectHolder extends AbstractProjectHolder implements ITestPro
 
     @Override
     public ProjectHolderJob setupReferencedProjectsAsync() {
-        return ProjectHolderJob.create("Adding referenced project to project " + projectName, ITestProjectHolder.ADD_REFERENCED_PROJ_JOB_FAMILY,
-                mon -> setupReferencedProjects());
+        return ProjectHolderJob.create( //
+                "Adding referenced project to project " + projectName, //
+                ITestProjectHolder.ADD_REFERENCED_PROJ_JOB_FAMILY, //
+                mon -> {
+                    setupReferencedProjects();
+                });
     }
 
     private void setupReferencedProjects() throws CoreException {

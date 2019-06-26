@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="ILTIS Testing Highlevel (Develop)" sequenceNumber="1546865965">
+<target name="ILTIS Testing Highlevel (Develop)" sequenceNumber="1561366531">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.equinox.launcher" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/releases/2018-12"/>
+      <unit id="org.eclipse.core.runtime" version="0.0.0"/>
+      <unit id="org.eclipse.core.resources" version="0.0.0"/>
+      <repository location="http://download.eclipse.org/releases/2019-06"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="ch.hsr.ifs.iltis.cpp.core.feature.feature.group" version="0.0.0"/>
@@ -14,11 +16,11 @@
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.mockito" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20180606145124/repository/"/>
+      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20190602212107/repository/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.cdt.testing.feature.group" version="0.0.0"/>
-      <repository location="https://hudson.eclipse.org/cdt/job/cdt-9.6/lastSuccessfulBuild/artifact/releng/org.eclipse.cdt.testing.repo/target/repository/"/>
+      <repository location="https://ci.eclipse.org/cdt/job/cdt-9.8/lastSuccessfulBuild/artifact/releng/org.eclipse.cdt.testing.repo/target/repository/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.collections.feature.feature.group" version="0.0.0"/>
