@@ -1,12 +1,12 @@
 target "ILTIS CPP" with requirements
 
 location "http://download.eclipse.org/releases/2019-06" {
-	org.eclipse.equinox.launcher lazy
+	org.eclipse.equinox.launcher 1.5.400
 	org.eclipse.ui.ide.application 1.3.300
 }
 
 location "http://download.eclipse.org/tools/cdt/releases/9.8" {
-	org.eclipse.cdt.sdk 9.8.0
+	org.eclipse.cdt.sdk 9.8.1
 }
 
 location "http://download.eclipse.org/tools/orbit/downloads/drops/R20190602212107/repository/" {
@@ -20,7 +20,7 @@ location "https://ci.eclipse.org/cdt/job/cdt-9.8/lastSuccessfulBuild/artifact/re
 location "https://www.cevelop.com/iltis" {
 	ch.hsr.ifs.iltis.core.core.feature.feature.group 2.3.0
 	ch.hsr.ifs.iltis.testing.core.core.feature.feature.group 2.2.0
-	ch.hsr.ifs.iltis.testing.cpp.feature.feature.group 2.2.0
+	ch.hsr.ifs.iltis.testing.cpp.feature.feature.group 2.2.1
 }
 
 location "http://download.eclipse.org/collections/9.2.0/repository/" {
