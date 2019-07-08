@@ -1,7 +1,7 @@
 target "ILTIS Testing Highlevel" with requirements
 
 location "http://download.eclipse.org/releases/2019-06" {
-	org.eclipse.equinox.launcher lazy
+	org.eclipse.equinox.launcher 1.5.400
 	org.eclipse.core.runtime 3.15.300
 	org.eclipse.core.resources 3.13.400
 }
@@ -19,6 +19,6 @@ location "http://download.eclipse.org/collections/9.2.0/repository/" {
 }
 
 location "https://www.cevelop.com/iltis" {
-	ch.hsr.ifs.iltis.cpp.core.feature.feature.group 3.1.0
-	ch.hsr.ifs.iltis.testing.cpp.feature.feature.group 2.2.0
+	ch.hsr.ifs.iltis.cpp.core.feature.feature.group 3.1.1
+	ch.hsr.ifs.iltis.testing.cpp.feature.feature.group 2.2.1
 }
