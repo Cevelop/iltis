@@ -1,12 +1,12 @@
 target "ILTIS Testing C++ for 2019-06" with source requirements
 
 location "http://download.eclipse.org/releases/2019-06" {
-	org.eclipse.equinox.launcher lazy
+	org.eclipse.equinox.launcher 1.5.400
 }
 
 location "http://download.eclipse.org/tools/cdt/releases/9.8/" {
-	org.eclipse.cdt.sdk 9.8.0
-	org.eclipse.cdt.core 6.8.0
+	org.eclipse.cdt.sdk 9.8.1
+	org.eclipse.cdt.core 6.8.1
 }
 
 location "https://ci.eclipse.org/cdt/job/cdt-9.8/lastSuccessfulBuild/artifact/releng/org.eclipse.cdt.testing.repo/target/repository/" {
