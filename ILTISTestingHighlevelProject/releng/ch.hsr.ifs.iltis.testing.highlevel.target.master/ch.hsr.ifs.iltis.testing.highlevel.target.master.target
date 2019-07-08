@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="ILTIS Testing Highlevel" sequenceNumber="1561560285">
+<target name="ILTIS Testing Highlevel" sequenceNumber="1562583996">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
-      <unit id="org.eclipse.equinox.launcher" version="0.0.0"/>
+      <unit id="org.eclipse.equinox.launcher" version="1.5.400.v20190515-0925"/>
       <unit id="org.eclipse.core.runtime" version="3.15.300.v20190508-0543"/>
       <unit id="org.eclipse.core.resources" version="3.13.400.v20190505-1655"/>
       <repository location="http://download.eclipse.org/releases/2019-06"/>
@@ -22,8 +22,8 @@
       <repository location="http://download.eclipse.org/collections/9.2.0/repository/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
-      <unit id="ch.hsr.ifs.iltis.cpp.core.feature.feature.group" version="3.1.0.201906261404"/>
-      <unit id="ch.hsr.ifs.iltis.testing.cpp.feature.feature.group" version="2.2.0.201906261314"/>
+      <unit id="ch.hsr.ifs.iltis.cpp.core.feature.feature.group" version="3.1.1.201907080927"/>
+      <unit id="ch.hsr.ifs.iltis.testing.cpp.feature.feature.group" version="2.2.1.201907080906"/>
       <repository location="https://www.cevelop.com/iltis"/>
     </location>
   </locations>
