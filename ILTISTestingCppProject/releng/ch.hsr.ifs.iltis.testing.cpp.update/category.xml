@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/ch.hsr.ifs.iltis.testing.cpp.feature_2.2.0.qualifier-sources-feature.jar" id="ch.hsr.ifs.iltis.testing.cpp.feature.source" version="2.2.0.qualifier">
+   <feature url="features/ch.hsr.ifs.iltis.testing.cpp.feature_2.2.1.qualifier-sources-feature.jar" id="ch.hsr.ifs.iltis.testing.cpp.feature.source" version="2.2.1.qualifier">
       <category name="ch.hsr.ifs.iltis.testing.cpp"/>
    </feature>
-   <feature url="features/ch.hsr.ifs.iltis.testing.cpp.feature_2.2.0.qualifier.jar" id="ch.hsr.ifs.iltis.testing.cpp.feature" version="2.2.0.qualifier">
+   <feature url="features/ch.hsr.ifs.iltis.testing.cpp.feature_2.2.1.qualifier.jar" id="ch.hsr.ifs.iltis.testing.cpp.feature" version="2.2.1.qualifier">
       <category name="ch.hsr.ifs.iltis.testing.cpp"/>
    </feature>
    <category-def name="ch.hsr.ifs.iltis.testing" label="ILTIS Testing">
