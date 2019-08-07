@@ -27,7 +27,7 @@ Tobias Stauber &lt;tobias.stauber@hsr.ch&gt;
 - initial API and implementation
    </copyright>
 
-   <license url="">
+   <license url="https://www.cevelop.com/license">
       Cevelop License Agreement
 
 This is a legal agreement between you, the end user, and Hochschule für Technik
@@ -93,7 +93,7 @@ Switzerland
    </license>
 
    <url>
-      <update label="ILTIS Update Site" url="https://www.cevelop.com/iltis/latest"/>
+      <update label="ILTIS Update Site" url="https://www.cevelop.com/iltis/"/>
    </url>
 
    <plugin
