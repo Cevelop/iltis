@@ -9,3 +9,10 @@ Bundle-SymbolicName: ch.hsr.ifs.iltis.core.core.tests;singleton:=true
 Bundle-ClassPath: .
 Bundle-Vendor: IFS Institut for Software
 Require-Bundle: org.junit
+Export-Package: ch.hsr.ifs.iltis.core.core.tests;x-internal:=true,
+ ch.hsr.ifs.iltis.core.core.tests.arrays;x-internal:=true,
+ ch.hsr.ifs.iltis.core.core.tests.collections;x-internal:=true,
+ ch.hsr.ifs.iltis.core.core.tests.data;x-internal:=true,
+ ch.hsr.ifs.iltis.core.core.tests.exception;x-internal:=true,
+ ch.hsr.ifs.iltis.core.core.tests.functional;x-internal:=true,
+ ch.hsr.ifs.iltis.core.core.tests.resources;x-internal:=true
