@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="ILTIS Testing Highlevel" sequenceNumber="1562583996">
+<target name="ILTIS Testing Highlevel for 2019-09" sequenceNumber="1570009779">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
-      <unit id="org.eclipse.equinox.launcher" version="1.5.400.v20190515-0925"/>
-      <unit id="org.eclipse.core.runtime" version="3.15.300.v20190508-0543"/>
-      <unit id="org.eclipse.core.resources" version="3.13.400.v20190505-1655"/>
-      <repository location="http://download.eclipse.org/releases/2019-06"/>
+      <unit id="org.eclipse.equinox.launcher" version="1.5.500.v20190715-1310"/>
+      <unit id="org.eclipse.core.runtime" version="3.16.0.v20190823-1314"/>
+      <unit id="org.eclipse.core.resources" version="3.13.500.v20190819-0800"/>
+      <repository location="http://download.eclipse.org/releases/2019-09"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.mockito" version="2.23.0.v20190527-1420"/>
@@ -15,15 +15,15 @@
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.cdt.testing.feature.group" version="0.0.0"/>
-      <repository location="https://ci.eclipse.org/cdt/job/cdt-9.8/lastSuccessfulBuild/artifact/releng/org.eclipse.cdt.testing.repo/target/repository/"/>
+      <repository location="https://ci.eclipse.org/cdt/job/cdt-9.9/lastSuccessfulBuild/artifact/releng/org.eclipse.cdt.testing.repo/target/repository/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.collections.feature.feature.group" version="9.2.0.v20180518-1448"/>
       <repository location="http://download.eclipse.org/collections/9.2.0/repository/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="false" includeConfigurePhase="false" type="InstallableUnit">
-      <unit id="ch.hsr.ifs.iltis.cpp.core.feature.feature.group" version="3.1.1.201907080927"/>
-      <unit id="ch.hsr.ifs.iltis.testing.cpp.feature.feature.group" version="2.2.1.201907080906"/>
+      <unit id="ch.hsr.ifs.iltis.cpp.core.feature.feature.group" version="3.2.0.201910020925"/>
+      <unit id="ch.hsr.ifs.iltis.testing.cpp.feature.feature.group" version="2.3.0.201910020754"/>
       <repository location="https://www.cevelop.com/iltis"/>
     </location>
   </locations>
