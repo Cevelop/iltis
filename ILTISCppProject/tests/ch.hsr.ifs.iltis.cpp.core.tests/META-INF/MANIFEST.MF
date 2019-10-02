@@ -20,7 +20,7 @@ Require-Bundle:
  org.eclipse.cdt.codan.ui.cxx,
  org.eclipse.cdt.ui,
  org.eclipse.collections
-Bundle-Version: 3.1.1.qualifier
+Bundle-Version: 3.2.0.qualifier
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: ch.hsr.ifs.iltis.cpp.core.tests;singleton:=true
 Bundle-ClassPath: .
