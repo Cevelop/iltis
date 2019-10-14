@@ -3,14 +3,20 @@ target "ILTIS CPP (Develop)" with source requirements
 location "http://download.eclipse.org/releases/2019-09" {
 	org.eclipse.equinox.launcher lazy
 	org.eclipse.ui.ide.application lazy
+	org.eclipse.sdk.ide lazy
+	
+	org.eclipse.swtbot.feature.group lazy
+	org.eclipse.swtbot.eclipse.feature.group lazy
+	org.eclipse.swtbot.generator.feature.feature.group lazy
 }
 
 location "http://download.eclipse.org/tools/cdt/releases/9.9" {
 	org.eclipse.cdt.sdk lazy
 }
 
-location "http://download.eclipse.org/tools/orbit/downloads/drops/R20190602212107/repository/" {
+location "http://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/" {
 	org.mockito lazy
+	javax.xml.stream lazy
 }
 
 location "https://ci.eclipse.org/cdt/job/cdt-9.9/lastSuccessfulBuild/artifact/releng/org.eclipse.cdt.testing.repo/target/repository/" {

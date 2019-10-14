@@ -12,6 +12,7 @@
 
 	<modules>
 		<module>ch.hsr.ifs.iltis.cpp.core.tests</module>
+		<module>ch.hsr.ifs.iltis.cpp.versionator.tests</module>
 	</modules>
 
 	<properties>
@@ -93,6 +94,8 @@
 							<includes>
 								<include>**/SWTBotTestSuiteAll.java</include>
 							</includes>
+							<product>org.eclipse.platform.ide</product>
+							<application>org.eclipse.ui.ide.workbench</application>
 						</configuration>
 					</execution>
 				</executions>

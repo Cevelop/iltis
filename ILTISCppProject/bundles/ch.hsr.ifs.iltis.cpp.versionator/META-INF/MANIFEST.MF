@@ -16,7 +16,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.cdt.core,
  org.eclipse.cdt.managedbuilder.core,
  org.eclipse.cdt.codan.ui,
- org.eclipse.cdt.codan.core
+ org.eclipse.cdt.codan.core,
+ org.eclipse.core.commands,
+ ch.hsr.ifs.iltis.core.kotlin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: ch.hsr.ifs.iltis.cpp.versionator;

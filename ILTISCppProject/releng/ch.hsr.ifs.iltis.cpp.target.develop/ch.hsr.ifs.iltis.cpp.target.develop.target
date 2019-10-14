@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="ILTIS CPP (Develop)" sequenceNumber="1570007491">
+<target name="ILTIS CPP (Develop)" sequenceNumber="1571044430">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.equinox.launcher" version="0.0.0"/>
       <unit id="org.eclipse.ui.ide.application" version="0.0.0"/>
+      <unit id="org.eclipse.sdk.ide" version="0.0.0"/>
+      <unit id="org.eclipse.swtbot.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.swtbot.eclipse.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.swtbot.generator.feature.feature.group" version="0.0.0"/>
       <repository location="http://download.eclipse.org/releases/2019-09"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
@@ -14,7 +18,8 @@
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.mockito" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20190602212107/repository/"/>
+      <unit id="javax.xml.stream" version="0.0.0"/>
+      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.cdt.testing.feature.group" version="0.0.0"/>
