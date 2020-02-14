@@ -3,7 +3,7 @@ Automatic-Module-Name: ch.hsr.ifs.iltis.core.core.tests
 Bundle-Name: ILTIS Core Unit Tests
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Fragment-Host: ch.hsr.ifs.iltis.core.core
-Bundle-Version: 2.4.0.qualifier
+Bundle-Version: 2.5.0.qualifier
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: ch.hsr.ifs.iltis.core.core.tests;singleton:=true
 Bundle-ClassPath: .
