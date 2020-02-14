@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Versionator Plug-in
 Bundle-SymbolicName: ch.hsr.ifs.iltis.cpp.versionator;singleton:=true
-Bundle-Version: 3.2.0.qualifier
+Bundle-Version: 3.3.0.qualifier
 Bundle-Activator: ch.hsr.ifs.iltis.cpp.versionator.Activator
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
@@ -16,7 +16,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.cdt.core,
  org.eclipse.cdt.managedbuilder.core,
  org.eclipse.cdt.codan.ui,
- org.eclipse.cdt.codan.core
+ org.eclipse.cdt.codan.core,
+ org.eclipse.core.commands,
+ ch.hsr.ifs.iltis.core.kotlin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: ch.hsr.ifs.iltis.cpp.versionator;
