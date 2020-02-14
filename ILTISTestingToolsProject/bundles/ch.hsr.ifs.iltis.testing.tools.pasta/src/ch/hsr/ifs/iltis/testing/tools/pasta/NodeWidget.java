@@ -8,6 +8,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.cdt.core.dom.ast.IASTImplicitName;
 import org.eclipse.cdt.core.dom.ast.IASTImplicitNameOwner;
@@ -303,14 +304,57 @@ public class NodeWidget extends Composite {
     }
 
     private void makeAccessible(final Field field) {
+        Optional<Field> modifierField = getModifiersField();
+
+        if (!modifierField.isPresent()) {
+            PastaPlugin.log("Field.class: 'modifiers' field not found!");
+            return;
+        }
+
         try {
             field.setAccessible(true);
-            final Field modifierField = Field.class.getDeclaredField("modifiers");
-            modifierField.setAccessible(true);
-            modifierField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+            modifierField.get().setAccessible(true);
+            modifierField.get().setInt(field, field.getModifiers() & ~Modifier.FINAL);
         } catch (final Exception e) {
             PastaPlugin.log(e);
         }
+    }
+
+    private Optional<Field> getModifiersField() {
+        try {
+            return Optional.ofNullable(Field.class.getDeclaredField("modifiers"));
+        } catch (final Exception e) {
+            // Starting with Java 12 this is no longer supported.
+            // see: https://mail.openjdk.java.net/pipermail/core-libs-dev/2018-November/056486.html
+            // and: https://github.com/powermock/powermock/issues/939
+            return getModifiersFieldPostJava11();
+        }
+    }
+
+    private Optional<Field> getModifiersFieldPostJava11() {
+        // This can be changed when we start requiring Java9+ using MethodHandle and VarHandle
+        // See: https://github.com/powermock/powermock/pull/1010
+        // Currently produces:
+        // WARNING: An illegal reflective access operation has occurred
+        // WARNING: Illegal reflective access by ch.hsr.ifs.iltis.testing.tools.pasta.NodeWidget (file:iltis-testing-tools/ILTISTestingToolsProject/bundles/ch.hsr.ifs.iltis.testing.tools.pasta/) to method java.lang.Class.getDeclaredFields0(boolean)
+        // WARNING: Please consider reporting this to the maintainers of ch.hsr.ifs.iltis.testing.tools.pasta.NodeWidget
+        // WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+        // WARNING: All illegal access operations will be denied in a future release
+        try {
+            final Method getDeclaredFields0 = Class.class.getDeclaredMethod("getDeclaredFields0", boolean.class);
+            boolean accessibleBeforeSet = getDeclaredFields0.isAccessible();
+            getDeclaredFields0.setAccessible(true);
+            Field[] fields = (Field[]) getDeclaredFields0.invoke(Field.class, false);
+            getDeclaredFields0.setAccessible(accessibleBeforeSet);
+            for (Field field : fields) {
+                if ("modifiers".equals(field.getName())) {
+                    return Optional.ofNullable(field);
+                }
+            }
+        } catch (final Exception e) {
+            PastaPlugin.log(e);
+        }
+        return Optional.empty();
     }
 
     private void expandFirstLevel() {
