@@ -1,0 +1,21 @@
+target "ILTIS Development" with source requirements
+
+location "http://download.eclipse.org/releases/2019-12" {
+	org.eclipse.emf.common.ui.feature.group lazy
+	org.eclipse.equinox.launcher lazy
+	org.eclipse.core.resources lazy
+	org.eclipse.ui.ide.application lazy
+	org.junit.jupiter.api lazy
+	org.junit.platform.suite.api lazy
+	org.junit.platform.runner lazy
+	org.junit.platform.launcher lazy
+	org.junit.platform.commons lazy
+	org.junit.jupiter.engine lazy
+	org.junit.platform.engine lazy
+	org.junit.vintage.engine lazy
+	org.eclipse.pde.api.tools.annotations lazy
+}
+
+location "http://download.eclipse.org/collections/9.2.0/repository/" {
+	org.eclipse.collections.feature.feature.group lazy
+}
