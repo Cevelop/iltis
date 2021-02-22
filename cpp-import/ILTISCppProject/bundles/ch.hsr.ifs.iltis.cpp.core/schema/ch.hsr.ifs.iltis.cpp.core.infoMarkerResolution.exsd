@@ -1,0 +1,157 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="ch.hsr.ifs.iltis.cpp.core" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="ch.hsr.ifs.iltis.cpp.core" id="infoMarkerResolution" name="Info Marker Resolution"/>
+      </appinfo>
+      <documentation>
+         Like a classic Marker Resolution, but allows to use a MarkerInfo generated from the IMarker.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="resolution"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="resolution">
+      <annotation>
+         <documentation>
+            A marker resolution supporting labels
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="info"/>
+         </sequence>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Class that implements ILabeledMarkerResolution and provides a fix for the given problems
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":ch.hsr.ifs.iltis.cpp.core.codan.marker.IInfoMarkerResolution"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="problemId" type="string">
+            <annotation>
+               <documentation>
+                  Problem id of the problem for which quick fix is defined
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="identifier" basedOn="org.eclipse.cdt.codan.core.checkers/checker/problem/@id"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="messagePattern" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="info">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The class representing the MarkerInfo of this resolution
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="ch.hsr.ifs.iltis.cpp.core.ui.refactoring.MarkerInfo:"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         1.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         &lt;extension
+ id=&quot;com.cevelop.ifs.markerResolution&quot;
+ name=&quot;Marker Resolution&quot;
+ point=&quot;ch.hsr.ifs.iltis.cpp.LabeledMarkerResolution&quot;&gt;
+ &lt;resolution
+  class=&quot;com.cevelop.ifs.quickfixes.IntQuickFix&quot;
+  problemId=&quot;com.cevelop.ifs.problems.variables&quot;
+  labelText=&quot;You could change this variable to a cstdint type&quot;/&gt;
+ &lt;resolution
+  class=&quot;com.cevelop.ifs.quickfixes.IntQuickFix&quot;
+  problemId=&quot;com.cevelop.ifs.problems.functions&quot;
+  labelText=&quot;You could change this function to return a cstdint type&quot;/&gt;
+&lt;/extension&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+
+</schema>

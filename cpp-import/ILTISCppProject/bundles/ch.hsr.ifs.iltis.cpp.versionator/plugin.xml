@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+    <extension-point 
+        id="ch.hsr.ifs.iltis.cpp.versionator.versionmodification" 
+        name="Version Modification Operations" 
+        schema="schema/ch.hsr.ifs.iltis.cpp.versionator.versionmodification.exsd"/>
+
+    <extension
+        point="org.eclipse.core.expressions.definitions">
+
+      <definition
+            id="ch.hsr.ifs.iltis.cpp.versionator.expression.isCXXProject">
+         <iterate
+               ifEmpty="false">
+            <adapt type="org.eclipse.core.resources.IResource">
+             <test
+                   property="org.eclipse.core.resources.projectNature"
+                   value="org.eclipse.cdt.core.ccnature">
+             </test>
+          </adapt>
+         </iterate>
+      </definition>
+    </extension>
+
+    <extension
+        id="ch.hsr.ifs.iltis.cpp.versionator.prefs.selection"
+        name="Version Selection"
+        point="org.eclipse.core.runtime.preferences">
+        <initializer
+                class="ch.hsr.ifs.iltis.cpp.versionator.preferences.CPPVersionPreferenceInitializer"/>
+    </extension>
+
+    <extension
+        point="org.eclipse.ui.commands">
+        <command
+                categoryId="org.eclipse.ui.category.project"
+                description="%command.changeStandardVersion.description"
+                id="ch.hsr.ifs.iltis.cpp.versionator.command.changeStandardVersion"
+                name="%command.changeStandardVersion.name"></command>
+    </extension>
+
+    <extension
+          point="org.eclipse.ui.handlers">
+       <handler
+             class="ch.hsr.ifs.iltis.cpp.versionator.handler.ChangeStandardVersionHandler"
+             commandId="ch.hsr.ifs.iltis.cpp.versionator.command.changeStandardVersion">
+       </handler>
+    </extension>
+
+    <extension
+            point="org.eclipse.ui.keywords">
+        <keyword
+                id="ch.hsr.ifs.iltis.cpp.versionator.keyword.version"
+                label="%preferenceKeywords.version"/>
+    </extension>
+
+    <extension
+            point="org.eclipse.ui.menus">
+        <menuContribution
+                allPopups="false"
+                locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
+            <command
+                  commandId="ch.hsr.ifs.iltis.cpp.versionator.command.changeStandardVersion"
+                  label="%command.changeStandardVersion.name"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <reference
+                        definitionId="ch.hsr.ifs.iltis.cpp.versionator.expression.isCXXProject">
+                  </reference>
+               </visibleWhen>
+            </command>
+        </menuContribution>
+    </extension>
+
+    <extension
+            point="org.eclipse.ui.preferencePages">
+        <page
+                category="org.eclipse.cdt.ui.preferences.CPluginPreferencePage"
+                class="ch.hsr.ifs.iltis.cpp.versionator.preferences.CPPVersionSelectionPreferencePage"
+                id="ch.hsr.ifs.iltis.cpp.versionator.preferences.CPPVersionSelectionPreferencePage"
+                name="%preferencePage.version.name">
+            <keywordReference
+                    id="ch.hsr.ifs.iltis.cpp.versionator.keyword.version"/>
+            <keywordReference
+                    id="org.eclipse.cdt.ui.common"/>
+        </page>
+    </extension>
+
+    <extension point="org.eclipse.cdt.managedbuilder.ui.newWizardPages">
+        <wizardPage
+                ID="ch.hsr.ifs.iltis.cpp.versionator.wizardpage.version"
+                operationClass="ch.hsr.ifs.iltis.cpp.versionator.SelectVersionOperation"
+                pageClass="ch.hsr.ifs.iltis.cpp.versionator.view.SelectVersionWizardPage">
+
+            <!-- IDs for Cygwin GCC toolchain -->
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.cygwin.exe.debug"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.cygwin.exe.release"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.cygwin.so.debug"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.cygwin.so.release"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.cygwin.lib.debug"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.cygwin.lib.release"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.cygwin.base"/>
+
+            <!-- IDs for Linux GCC toolchain -->
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.exe.debug"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.exe.release"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.so.debug"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.so.release"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.lib.debug"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.lib.release"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.base"/>
+
+            <!-- IDs for MacOSX GCC toolchain -->
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.macosx.exe.debug"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.macosx.exe.release"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.macosx.so.debug"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.macosx.so.release"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.macosx.lib.debug"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.macosx.lib.release"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.macosx.base"/>
+
+            <!-- IDs for MinGW GCC toolchain -->
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.mingw.exe.debug"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.mingw.exe.release"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.mingw.so.debug"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.mingw.so.release"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.mingw.lib.debug"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.mingw.lib.release"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.mingw.base"/>
+
+            <!-- IDs for Solaris GCC toolchain -->
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.solaris.exe.debug"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.solaris.exe.release"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.solaris.so.debug"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.solaris.so.release"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.solaris.lib.debug"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.solaris.lib.release"/>
+            <toolchain toolchainID="cdt.managedbuild.toolchain.gnu.solaris.base"/>
+            
+            <nature natureID="org.eclipse.cdt.core.ccnature"/>
+        </wizardPage>
+    </extension>
+
+    <extension
+            point="ch.hsr.ifs.iltis.cpp.versionator.versionmodification">
+        <ALL_VERSIONS>
+            <versionModification
+                    checkedByDefault="true"
+                    name="Set Dialect Compiler Flag"
+                    operationClass="ch.hsr.ifs.iltis.cpp.versionator.operation.ChangeCompilerDialectFlagOperation"/>
+            <versionModification
+                    checkedByDefault="true"
+                    name="Set Disable Attribute Warning Compiler Flag"
+                    operationClass="ch.hsr.ifs.iltis.cpp.versionator.operation.ChangeCompilerAttributeWarningsFlagOperation"/>
+            <versionModification
+                    checkedByDefault="true"
+                    name="Set Index Flag"
+                    operationClass="ch.hsr.ifs.iltis.cpp.versionator.operation.ChangeIndexFlagOperation"/>
+        </ALL_VERSIONS>
+    </extension>
+
+</plugin>

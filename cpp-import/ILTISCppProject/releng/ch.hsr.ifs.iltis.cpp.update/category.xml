@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/ch.hsr.ifs.iltis.cpp.core.feature_3.3.0.qualifier-sources-feature.jar" id="ch.hsr.ifs.iltis.cpp.core.feature.source" version="3.3.0.qualifier">
+      <category name="ch.hsr.ifs.iltis.dev"/>
+   </feature>
+   <feature url="features/ch.hsr.ifs.iltis.cpp.versionator.feature_3.3.0.qualifier-sources-feature.jar" id="ch.hsr.ifs.iltis.cpp.versionator.feature.source" version="3.3.0.qualifier">
+      <category name="ch.hsr.ifs.iltis.dev"/>
+   </feature>
+   
+   <feature url="features/ch.hsr.ifs.iltis.cpp.core.feature_3.3.0.qualifier.jar" id="ch.hsr.ifs.iltis.cpp.core.feature" version="3.3.0.qualifier">
+      <category name="ch.hsr.ifs.iltis"/>
+   </feature>
+   <feature url="features/ch.hsr.ifs.iltis.cpp.versionator.feature_3.3.0.qualifier.jar" id="ch.hsr.ifs.iltis.cpp.versionator.feature" version="3.3.0.qualifier">
+      <category name="ch.hsr.ifs.iltis"/>
+   </feature>
+   
+   <category-def name="ch.hsr.ifs.iltis" label="ILTIS">
+      <description>
+         The ILTIS infrastructure layer
+      </description>
+   </category-def>
+   <category-def name="ch.hsr.ifs.iltis.dev" label="ILTIS Development Resources">
+      <description>
+         The ILTIS infrastructure layer Source
+      </description>
+   </category-def>
+</site>

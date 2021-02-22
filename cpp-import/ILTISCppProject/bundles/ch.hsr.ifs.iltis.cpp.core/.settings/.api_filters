@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="ch.hsr.ifs.iltis.cpp.core" version="2">
+    <resource path="src/ch/hsr/ifs/iltis/cpp/core/ast/nodefactory/ExtendedNodeFactory.java" type="ch.hsr.ifs.iltis.cpp.core.ast.nodefactory.ExtendedNodeFactory">
+        <filter comment="Must extend CPPNodeFactory for comfort" id="576720909">
+            <message_arguments>
+                <message_argument value="CPPNodeFactory"/>
+                <message_argument value="ExtendedNodeFactory"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/ch/hsr/ifs/iltis/cpp/core/wrappers/CxxModelsCache.java" type="ch.hsr.ifs.iltis.cpp.core.wrappers.CxxModelsCache">
+        <filter id="643842064">
+            <message_arguments>
+                <message_argument value="IControlFlowGraph"/>
+                <message_argument value="CxxModelsCache"/>
+                <message_argument value="getControlFlowGraph(IASTFunctionDefinition)"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/ch/hsr/ifs/iltis/cpp/core/wrappers/RefactoringAction.java" type="ch.hsr.ifs.iltis.cpp.core.wrappers.RefactoringAction">
+        <filter id="627060751">
+            <message_arguments>
+                <message_argument value="CEditor"/>
+                <message_argument value="RefactoringAction"/>
+                <message_argument value="fEditor"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>
