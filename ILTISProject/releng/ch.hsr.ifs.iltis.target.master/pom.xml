@@ -10,12 +10,12 @@
     <relativePath>../</relativePath>
     <groupId>ch.hsr.ifs.iltis</groupId>
     <artifactId>ch.hsr.ifs.iltis.releng</artifactId>
-    <version>2.5.0-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
   </parent>
 
   <groupId>ch.hsr.ifs.iltis</groupId>
   <artifactId>ch.hsr.ifs.iltis.target.master</artifactId>
-  <version>2.5.0-SNAPSHOT</version>
+  <version>4.0.0-SNAPSHOT</version>
   <packaging>eclipse-target-definition</packaging>
 
 </project>

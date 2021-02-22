@@ -2,7 +2,7 @@
 <feature
       id="ch.hsr.ifs.iltis.testing.core.feature"
       label="ILTIS Testing Core"
-      version="2.5.0.qualifier"
+      version="4.0.0.qualifier"
       provider-name="IFS Institute for Software">
 
    <description url="https://www.cevelop.com/">
