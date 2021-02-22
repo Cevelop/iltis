@@ -27,6 +27,18 @@
    <feature url="features/ch.hsr.ifs.iltis.testing.cpp.feature_2.5.0.qualifier.jar" id="ch.hsr.ifs.iltis.testing.cpp.feature" version="2.5.0.qualifier">
       <category name="ch.hsr.ifs.iltis.dev.tools"/>
    </feature>
+   <feature url="features/ch.hsr.ifs.iltis.cpp.core.feature_2.5.0.qualifier-sources-feature.jar" id="ch.hsr.ifs.iltis.cpp.core.feature.source" version="2.5.0.qualifier">
+      <category name="ch.hsr.ifs.iltis.dev"/>
+   </feature>
+   <feature url="features/ch.hsr.ifs.iltis.cpp.versionator.feature_2.5.0.qualifier-sources-feature.jar" id="ch.hsr.ifs.iltis.cpp.versionator.feature.source" version="2.5.0.qualifier">
+      <category name="ch.hsr.ifs.iltis.dev"/>
+   </feature>
+   <feature url="features/ch.hsr.ifs.iltis.cpp.core.feature_2.5.0.qualifier.jar" id="ch.hsr.ifs.iltis.cpp.core.feature" version="2.5.0.qualifier">
+      <category name="ch.hsr.ifs.iltis"/>
+   </feature>
+   <feature url="features/ch.hsr.ifs.iltis.cpp.versionator.feature_2.5.0.qualifier.jar" id="ch.hsr.ifs.iltis.cpp.versionator.feature" version="2.5.0.qualifier">
+      <category name="ch.hsr.ifs.iltis"/>
+   </feature>
    <category-def name="ch.hsr.ifs.iltis" label="ILTIS">
       <description>
          The ILTIS infrastructure layer

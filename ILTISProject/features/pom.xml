@@ -11,8 +11,10 @@
 	</parent>
 
 	<modules>
-		<module>ch.hsr.ifs.iltis.core.feature</module>
-		<module>ch.hsr.ifs.iltis.kotlin.feature</module>
+        <module>ch.hsr.ifs.iltis.cpp.core.feature</module>
+        <module>ch.hsr.ifs.iltis.cpp.versionator.feature</module>
+        <module>ch.hsr.ifs.iltis.core.feature</module>
+        <module>ch.hsr.ifs.iltis.kotlin.feature</module>
         <module>ch.hsr.ifs.iltis.testing.core.feature</module>
         <module>ch.hsr.ifs.iltis.testing.cpp.feature</module>
         <module>ch.hsr.ifs.iltis.testing.tools.feature</module>
