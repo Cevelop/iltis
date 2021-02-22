@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="C++ Test File Editor"
+            extensions="txt,rts,awts"
+            icon="icons/test_file.gif"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            class="name.graf.emanuel.testfileeditor.ui.Editor"
+            id="name.graf.emanuel.testfileeditor.editors.TestFileEditor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.documentProviders">
+      <provider
+            class="org.eclipse.ui.editors.text.TextFileDocumentProvider"
+            id="org.eclipse.ui.editors.text.StorageDocumentProvider"
+            inputTypes="org.eclipse.ui.IStorageEditorInput"/>
+   </extension>
+   <extension
+         id="TestFileDocumentSetupParticipant"
+         point="org.eclipse.core.filebuffers.documentSetup">
+      <participant
+            class="name.graf.emanuel.testfileeditor.ui.support.editor.DocumentSetupParticipant"
+            extensions="txt"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.workbench.texteditor.rulerColumns">
+      <column
+            class="name.graf.emanuel.testfileeditor.ui.VirtualLineNumberRuler"
+            enabled="true"
+            global="true"
+            id="name.graf.emanuel.testfileeditor.TestFileRulerColumn"
+            includeInMenu="true"
+            name="C++ Test-File sub-file-relative ruler">
+         <placement
+               gravity="1.0">
+         </placement>
+         <targetEditor
+               id="name.graf.emanuel.testfileeditor.editors.TestFileEditor">
+         </targetEditor>
+         <targetClass
+               class="name.graf.emanuel.testfileeditor.ui.Editor">
+         </targetClass>
+      </column>
+   </extension>
+   
+   <extension
+         id="name.graf.emanuel.testfileeditor.markers"
+         name="TestFileEditor root marker"
+         point="org.eclipse.core.resources.markers">
+      <persistent
+            value="false">
+      </persistent>
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+   </extension>
+   
+   <extension
+         id="name.graf.emanuel.testfileeditor.markers.SnakeCaseNameMarker"
+         name="RTS Test is snake case"
+         point="org.eclipse.core.resources.markers">
+      <persistent
+            value="false">
+      </persistent>
+      <super
+            type="name.graf.emanuel.testfileeditor.markers">
+      </super>
+   </extension>
+   
+   <extension
+         id="name.graf.emanuel.testfileeditor.markers.DuplicateTestMarker"
+         name="Duplicate RTS Test"
+         point="org.eclipse.core.resources.markers">
+      <persistent
+            value="false">
+      </persistent>
+      <super
+            type="name.graf.emanuel.testfileeditor.markers">
+      </super>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+      <specification
+            annotationType="name.graf.emanuel.testfileeditor.annotations.DuplicateTestMarkerAnnotation"
+            colorPreferenceKey="duplicateTestAnnotationColor"
+            colorPreferenceValue="255,0,0"
+            highlightPreferenceValue="true"
+            includeOnPreferencePage="true"
+            label="Duplicte RTS Test"
+            overviewRulerPreferenceKey="duplicateTestAnnotationOverviewRuler"
+            overviewRulerPreferenceValue="true"
+            symbolicIcon="error"
+            textPreferenceKey="duplicateTestAnnotationText"
+            textPreferenceValue="true"
+            verticalRulerPreferenceKey="duplicateTestAnnotationVerticalRuler"
+            verticalRulerPreferenceValue="true">
+      </specification>
+      <specification
+            annotationType="name.graf.emanuel.testfileeditor.annotations.SnakeCaseNameMarkerAnnotation"
+            colorPreferenceKey="duplicateTestAnnotationColor"
+            colorPreferenceValue="255,0,0"
+            highlightPreferenceValue="false"
+            includeOnPreferencePage="true"
+            label="Test name is snake-case"
+            overviewRulerPreferenceKey="duplicateTestAnnotationOverviewRuler"
+            overviewRulerPreferenceValue="true"
+            symbolicIcon="warning"
+            textPreferenceKey="duplicateTestAnnotationText"
+            textPreferenceValue="false"
+            verticalRulerPreferenceKey="duplicateTestAnnotationVerticalRuler"
+            verticalRulerPreferenceValue="true">
+      </specification>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors.annotationTypes">
+      <type
+            markerSeverity="2"
+            markerType="name.graf.emanuel.testfileeditor.markers.DuplicateTestMarker"
+            name="name.graf.emanuel.testfileeditor.annotations.DuplicateTestMarkerAnnotation"
+            super="org.eclipse.ui.workbench.texteditor.error">
+      </type>
+            <type
+            markerSeverity="2"
+            markerType="name.graf.emanuel.testfileeditor.markers.SnakeCaseNameMarker"
+            name="name.graf.emanuel.testfileeditor.annotations.SnakeCaseNameMarkerAnnotation"
+            super="org.eclipse.ui.workbench.texteditor.warning">
+      </type>
+   </extension>
+   
+   <!-- Preferences -->
+
+    <extension
+          id="preferences"
+          name="Test file editor preferences"
+          point="org.eclipse.core.runtime.preferences">
+        <initializer
+            class="name.graf.emanuel.testfileeditor.preferences.PreferenceInitializer"/>
+	</extension>
+	
+    <extension
+          point="org.eclipse.ui.preferencePages">
+        <page
+              category="org.eclipse.jdt.ui.preferences.JavaBasePreferencePage"
+              class="name.graf.emanuel.testfileeditor.preferences.PropertyAndPreferencePage"
+              id="name.graf.emanuel.testfileeditor.preferences.PropertyAndPreferencePage"
+              name="Test-File Editor"/>
+    </extension>
+
+</plugin>

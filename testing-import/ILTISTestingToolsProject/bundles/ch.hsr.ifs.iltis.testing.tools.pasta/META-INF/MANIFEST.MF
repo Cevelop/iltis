@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Painless AST Analysis
+Bundle-SymbolicName: ch.hsr.ifs.iltis.testing.tools.pasta;singleton:=true
+Bundle-Version: 2.4.0.qualifier
+Require-Bundle: ch.hsr.ifs.iltis.testing.tools.pasta.tree;bundle-version="1.0.0",
+ org.eclipse.ui.workbench,
+ org.eclipse.osgi,
+ org.eclipse.swt,
+ org.eclipse.jface,
+ org.eclipse.core.runtime,
+ org.eclipse.osgi.services,
+ org.eclipse.text,
+ org.eclipse.cdt.core,
+ org.eclipse.cdt.ui,
+ org.eclipse.jface.text,
+ ch.hsr.ifs.iltis.core.core;bundle-version="1.1.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: 
+ ch.hsr.ifs.iltis.testing.tools.pasta
+Bundle-Activator: ch.hsr.ifs.iltis.testing.tools.pasta.PastaPlugin
+Bundle-Vendor: IFS Institute for Software
+Automatic-Module-Name: ch.hsr.ifs.iltis.testing.tools.pasta

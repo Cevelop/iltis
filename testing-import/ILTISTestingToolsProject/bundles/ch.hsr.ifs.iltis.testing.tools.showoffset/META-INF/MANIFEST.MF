@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Showoffset
+Bundle-SymbolicName: ch.hsr.ifs.iltis.testing.tools.showoffset;singleton:=true
+Bundle-Version: 2.4.0.qualifier
+Bundle-Activator: ch.hsr.ifs.iltis.testing.tools.showoffset.ShowOffsetPlugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.console,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.jface.text
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: IFS Institute for Software
+Automatic-Module-Name: ch.hsr.ifs.iltis.testing.tools.showoffset
+
+
