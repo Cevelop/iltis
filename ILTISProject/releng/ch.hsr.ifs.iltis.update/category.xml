@@ -12,8 +12,14 @@
    <feature url="features/ch.hsr.ifs.iltis.testing.tools.feature_2.5.0.qualifier.jar" id="ch.hsr.ifs.iltis.testing.tools.feature" version="2.5.0.qualifier">
       <category name="ch.hsr.ifs.iltis.dev.tools"/>
    </feature>
-   <feature url="features/ch.hsr.ifs.iltis.testing.tools.pasta.feature_2.5.0.qualifier.jar"  id="ch.hsr.ifs.iltis.testing.tools.pasta.feature" version="2.5.0.qualifier">
+   <feature url="features/ch.hsr.ifs.iltis.testing.tools.pasta.feature_2.5.0.qualifier.jar" id="ch.hsr.ifs.iltis.testing.tools.pasta.feature" version="2.5.0.qualifier">
       <category name="ch.hsr.ifs.iltis.dev.tools"/>
+   </feature>
+   <feature url="features/ch.hsr.ifs.iltis.testing.core.feature_2.5.0.qualifier.jar" id="ch.hsr.ifs.iltis.testing.core.feature" version="2.5.0.qualifier">
+      <category name="ch.hsr.ifs.iltis.dev.tools"/>
+   </feature>
+   <feature url="features/ch.hsr.ifs.iltis.testing.core.feature.source_2.5.0.qualifier.jar" id="ch.hsr.ifs.iltis.testing.core.feature.source" version="2.5.0.qualifier">
+      <category name="ch.hsr.ifs.iltis.dev"/>
    </feature>
    <category-def name="ch.hsr.ifs.iltis" label="ILTIS">
       <description>

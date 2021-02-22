@@ -6,6 +6,7 @@ location "http://download.eclipse.org/releases/2019-12" {
 	org.eclipse.jdt.feature.group 3.18.200
 	org.eclipse.core.resources 3.13.600
 	org.eclipse.ui.ide.application 1.3.500
+	org.junit 4.12
 	org.junit.jupiter.api 5.5.1
 	org.junit.jupiter.engine 5.5.1
 	org.junit.platform.suite.api 1.5.1
