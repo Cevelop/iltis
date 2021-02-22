@@ -16,6 +16,7 @@
 		<module>ch.hsr.ifs.iltis.cpp.versionator.tests</module>
 		<module>ch.hsr.ifs.iltis.core.tests</module>
 		<module>ch.hsr.ifs.iltis.testing.tools.pasta.tree.tests</module>
+		<module>ch.hsr.ifs.iltis.testing.highlevel.testingplugin.tests</module>
 	</modules>
 
 	<properties>

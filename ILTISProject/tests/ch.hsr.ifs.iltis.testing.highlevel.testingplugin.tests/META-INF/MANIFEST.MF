@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: ch.hsr.ifs.iltis.testing.highlevel.tests
+Bundle-ManifestVersion: 2
+Bundle-Name: ILTIS Testing Highlevel Tests
+Bundle-SymbolicName: ch.hsr.ifs.iltis.testing.highlevel.testingplugin.tests;singleton:=true
+Bundle-Version: 2.5.0.qualifier
+Fragment-Host: ch.hsr.ifs.iltis.testing.highlevel.testingplugin
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.cdt.core,
+ org.eclipse.cdt.core.tests
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: IFS Institute for Software

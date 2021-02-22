@@ -15,6 +15,7 @@
         <module>ch.hsr.ifs.iltis.kotlin</module>
         <module>ch.hsr.ifs.iltis.testing.core</module>
         <module>ch.hsr.ifs.iltis.testing.cpp.core</module>
+        <module>ch.hsr.ifs.iltis.testing.highlevel.testingplugin</module>
         <module>ch.hsr.ifs.iltis.testing.tools.junitextensions</module>
         <module>ch.hsr.ifs.iltis.testing.tools.pasta</module>
         <module>ch.hsr.ifs.iltis.testing.tools.pasta.tree</module>
