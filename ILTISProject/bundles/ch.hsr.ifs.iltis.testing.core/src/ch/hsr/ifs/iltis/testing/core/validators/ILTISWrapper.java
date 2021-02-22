@@ -6,7 +6,7 @@
  * Contributors:
  * Institute for Software - initial API and implementation
  ******************************************************************************/
-package ch.hsr.ifs.iltis.testing.core.core.validators;
+package ch.hsr.ifs.iltis.testing.core.validators;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;

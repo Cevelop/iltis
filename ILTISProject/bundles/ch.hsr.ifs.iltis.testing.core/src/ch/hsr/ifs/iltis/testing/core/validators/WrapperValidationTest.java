@@ -1,4 +1,4 @@
-package ch.hsr.ifs.iltis.testing.core.core.validators;
+package ch.hsr.ifs.iltis.testing.core.validators;
 
 import static org.junit.Assert.assertTrue;
 

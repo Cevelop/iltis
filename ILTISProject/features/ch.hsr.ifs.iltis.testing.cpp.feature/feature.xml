@@ -2,7 +2,7 @@
 <feature
       id="ch.hsr.ifs.iltis.testing.cpp.feature"
       label="ILTIS Testing Cpp"
-      version="2.4.0.qualifier"
+      version="2.5.0.qualifier"
       provider-name="IFS Institute for Software">
 
    <description url="https://www.cevelop.com/">
@@ -107,7 +107,7 @@ Switzerland
    </url>
 
    <requires>
-      <import plugin="ch.hsr.ifs.iltis.testing.core.core" version="1.1.0" match="greaterOrEqual"/>
+      <import plugin="ch.hsr.ifs.iltis.testing.core" match="greaterOrEqual"/>
    </requires>
 
    <plugin
