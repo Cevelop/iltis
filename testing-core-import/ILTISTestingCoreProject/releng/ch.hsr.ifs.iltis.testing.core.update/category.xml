@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/ch.hsr.ifs.iltis.testing.core.core.feature_2.4.0.qualifier.jar" id="ch.hsr.ifs.iltis.testing.core.core.feature" version="2.4.0.qualifier">
+      <category name="ch.hsr.ifs.iltis.testing.core"/>
+   </feature>
+   <feature url="features/ch.hsr.ifs.iltis.testing.core.core.feature_2.4.0.qualifier-sources-feature.jar" id="ch.hsr.ifs.iltis.testing.core.core.feature.source" version="2.4.0.qualifier">
+      <category name="ch.hsr.ifs.iltis.testing.core"/>
+   </feature>
+   <category-def name="ch.hsr.ifs.iltis.testing" label="ILTIS Testing">
+      <description>
+         The ILTIS testing plug-ins
+      </description>
+   </category-def>
+   <category-def name="ch.hsr.ifs.iltis.testing.core" label="ILTIS Testing Core">
+      <category name="ch.hsr.ifs.iltis.testing"/>
+   </category-def>
+</site>
