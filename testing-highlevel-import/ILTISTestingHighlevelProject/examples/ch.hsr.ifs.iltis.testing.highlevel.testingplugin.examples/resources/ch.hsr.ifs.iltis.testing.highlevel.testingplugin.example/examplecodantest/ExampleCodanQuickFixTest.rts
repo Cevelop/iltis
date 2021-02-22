@@ -1,0 +1,6 @@
+//!ExampleCodanQuickFixTest
+//@main.cpp
+int foo() { }
+//=
+int bar() { }
+
