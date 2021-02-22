@@ -13,6 +13,8 @@
 	<modules>
 		<module>ch.hsr.ifs.iltis.core.feature</module>
 		<module>ch.hsr.ifs.iltis.kotlin.feature</module>
+        <module>ch.hsr.ifs.iltis.testing.tools.feature</module>
+        <module>ch.hsr.ifs.iltis.testing.tools.pasta.feature</module>
 	</modules>
 
 	<build>

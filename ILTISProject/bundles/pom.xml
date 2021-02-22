@@ -11,5 +11,10 @@
     <modules>
         <module>ch.hsr.ifs.iltis.core</module>
         <module>ch.hsr.ifs.iltis.kotlin</module>
+        <module>ch.hsr.ifs.iltis.testing.tools.junitextensions</module>
+        <module>ch.hsr.ifs.iltis.testing.tools.pasta</module>
+        <module>ch.hsr.ifs.iltis.testing.tools.pasta.tree</module>
+        <module>ch.hsr.ifs.iltis.testing.tools.showoffset</module>
+        <module>name.graf.emanuel.testfileeditor</module>
     </modules>
 </project>

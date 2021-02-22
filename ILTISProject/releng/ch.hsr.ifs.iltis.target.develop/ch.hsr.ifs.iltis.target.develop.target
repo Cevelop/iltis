@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="ILTIS Development" sequenceNumber="1613750987">
+<target name="ILTIS Development" sequenceNumber="1613987261">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.emf.common.ui.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.equinox.launcher" version="0.0.0"/>
       <unit id="org.eclipse.core.resources" version="0.0.0"/>
+      <unit id="org.eclipse.jdt.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.ui.ide.application" version="0.0.0"/>
       <unit id="org.junit.jupiter.api" version="0.0.0"/>
       <unit id="org.junit.platform.suite.api" version="0.0.0"/>
@@ -18,6 +19,10 @@
       <unit id="org.junit.vintage.engine" version="0.0.0"/>
       <unit id="org.eclipse.pde.api.tools.annotations" version="0.0.0"/>
       <repository location="http://download.eclipse.org/releases/2019-12"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.cdt.sdk.feature.group" version="0.0.0"/>
+      <repository location="http://download.eclipse.org/tools/cdt/releases/9.10/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.collections.feature.feature.group" version="0.0.0"/>

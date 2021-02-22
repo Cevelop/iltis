@@ -4,6 +4,7 @@ location "http://download.eclipse.org/releases/2019-12" {
 	org.eclipse.emf.common.ui.feature.group lazy
 	org.eclipse.equinox.launcher lazy
 	org.eclipse.core.resources lazy
+	org.eclipse.jdt.feature.group lazy
 	org.eclipse.ui.ide.application lazy
 	org.junit.jupiter.api lazy
 	org.junit.platform.suite.api lazy
@@ -14,6 +15,10 @@ location "http://download.eclipse.org/releases/2019-12" {
 	org.junit.platform.engine lazy
 	org.junit.vintage.engine lazy
 	org.eclipse.pde.api.tools.annotations lazy
+}
+
+location "http://download.eclipse.org/tools/cdt/releases/9.10/" {
+	org.eclipse.cdt.sdk.feature.group lazy
 }
 
 location "http://download.eclipse.org/collections/9.2.0/repository/" {
