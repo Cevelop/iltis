@@ -6,7 +6,7 @@
     <parent>
         <groupId>ch.hsr.ifs.iltis</groupId>
         <artifactId>ch.hsr.ifs.iltis.root</artifactId>
-        <version>4.0.1-SNAPSHOT</version>
+        <version>4.0.2-SNAPSHOT</version>
     </parent>
     <modules>
         <module>ch.hsr.ifs.iltis.update</module>
