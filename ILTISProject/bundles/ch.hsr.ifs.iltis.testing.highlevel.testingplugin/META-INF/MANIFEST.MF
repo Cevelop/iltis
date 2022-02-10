@@ -38,3 +38,4 @@ Export-Package: ch.hsr.ifs.iltis.testing.highlevel.testingplugin,
  ch.hsr.ifs.iltis.testing.highlevel.testingplugin.rts.junit4,
  ch.hsr.ifs.iltis.testing.highlevel.testingplugin.testsourcefile,
  ch.hsr.ifs.iltis.testing.highlevel.testingplugin.cdttest.comparison
+Bundle-RequiredExecutionEnvironment: JavaSE-11
