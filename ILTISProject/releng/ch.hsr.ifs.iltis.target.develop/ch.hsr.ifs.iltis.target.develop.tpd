@@ -1,6 +1,6 @@
 target "ILTIS Development" with source requirements
 
-location "http://download.eclipse.org/releases/2019-12" {
+location "https://download.eclipse.org/releases/2021-12" {
 	org.eclipse.emf.common.ui.feature.group lazy
 	org.eclipse.equinox.launcher lazy
 	org.eclipse.core.resources lazy
@@ -23,21 +23,21 @@ location "http://download.eclipse.org/releases/2019-12" {
 	org.eclipse.swtbot.generator.feature.feature.group lazy
 }
 
-location "http://download.eclipse.org/tools/orbit/downloads/drops/R20191126223242/repository/" {
+location "https://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository" {
 	org.mockito lazy
 	javax.xml.stream lazy
 }
 
-location "http://download.eclipse.org/tools/cdt/releases/9.10/" {
+location "https://download.eclipse.org/tools/cdt/releases/10.5" {
 	org.eclipse.cdt.feature.group lazy
 	org.eclipse.cdt.sdk.feature.group lazy
 }
 
-location "https://ci.eclipse.org/cdt/job/cdt-9.10/lastSuccessfulBuild/artifact/releng/org.eclipse.cdt.testing.repo/target/repository/" {
+location "https://ci.eclipse.org/cdt/job/cdt-10.5/lastSuccessfulBuild/artifact/releng/org.eclipse.cdt.testing.repo/target/repository/" {
 	org.eclipse.cdt.testing.feature.group lazy
 	org.eclipse.cdt.testing.source.feature.group lazy
 }
 
-location "http://download.eclipse.org/collections/9.2.0/repository/" {
+location "https://download.eclipse.org/collections/11.0.0/repository/" {
 	org.eclipse.collections.feature.feature.group lazy
 }

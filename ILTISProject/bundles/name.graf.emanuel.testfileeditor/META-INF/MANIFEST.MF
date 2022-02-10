@@ -4,7 +4,7 @@ Bundle-Name: RTS Testfileeditor
 Bundle-SymbolicName: name.graf.emanuel.testfileeditor;singleton:=true
 Bundle-Version: 4.0.1.qualifier
 Bundle-Activator: name.graf.emanuel.testfileeditor.Activator
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: name.graf.emanuel.testfileeditor
 Export-Package: name.graf.emanuel.testfileeditor.model;x-friends:="ch.hsr.ifs.iltis.testing.tools.junitextensions",
