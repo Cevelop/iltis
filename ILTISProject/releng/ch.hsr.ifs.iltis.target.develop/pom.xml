@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <relativePath>../</relativePath>
+    <relativePath>..</relativePath>
     <groupId>ch.hsr.ifs.iltis</groupId>
     <artifactId>ch.hsr.ifs.iltis.releng</artifactId>
     <version>4.0.2-SNAPSHOT</version>

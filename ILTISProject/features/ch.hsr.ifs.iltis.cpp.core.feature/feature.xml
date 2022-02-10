@@ -95,7 +95,6 @@ Switzerland
    </url>
 
    <requires>
-      <import plugin="ch.hsr.ifs.iltis.core"/>
       <import plugin="org.eclipse.cdt.codan.ui"/>
       <import plugin="org.eclipse.cdt.core"/>
       <import plugin="org.eclipse.equinox.common"/>
@@ -112,6 +111,11 @@ Switzerland
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.ui.editors"/>
       <import plugin="org.eclipse.collections"/>
+      <import plugin="ch.hsr.ifs.iltis.core"/>
+      <import plugin="ch.hsr.ifs.iltis.testing.core"/>
+      <import plugin="org.eclipse.text"/>
+      <import plugin="org.eclipse.cdt.managedbuilder.core"/>
+      <import plugin="org.eclipse.pde.api.tools.annotations" version="1.1.200" match="greaterOrEqual"/>
    </requires>
 
    <plugin

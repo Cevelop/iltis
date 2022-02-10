@@ -5,7 +5,6 @@ Bundle-SymbolicName: ch.hsr.ifs.iltis.kotlin
 Bundle-Version: 4.0.2.qualifier
 Bundle-Vendor: IFS Institute for Software
 Automatic-Module-Name: ch.hsr.ifs.iltis.kotlin
-Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: annotations-13.0.jar,
  kotlin-annotations-jvm.jar,
  kotlin-reflect.jar,
