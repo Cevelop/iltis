@@ -29,3 +29,4 @@ Export-Package: ch.hsr.ifs.iltis.cpp.versionator;
  ch.hsr.ifs.iltis.cpp.versionator.definition;uses:="org.eclipse.core.resources"
 Bundle-Vendor: IFS Institute for Software
 Automatic-Module-Name: ch.hsr.ifs.iltis.cpp.versionator
+Bundle-RequiredExecutionEnvironment: JavaSE-11

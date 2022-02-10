@@ -21,3 +21,4 @@ Export-Package:
 Bundle-Activator: ch.hsr.ifs.iltis.testing.tools.pasta.PastaPlugin
 Bundle-Vendor: IFS Institute for Software
 Automatic-Module-Name: ch.hsr.ifs.iltis.testing.tools.pasta
+Bundle-RequiredExecutionEnvironment: JavaSE-11

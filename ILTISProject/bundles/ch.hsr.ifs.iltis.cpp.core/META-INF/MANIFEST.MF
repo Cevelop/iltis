@@ -130,3 +130,4 @@ Export-Package: ch.hsr.ifs.iltis.cpp.core.ast;uses:="org.eclipse.cdt.core.dom.as
    org.eclipse.cdt.codan.core.model,
    org.eclipse.cdt.core.dom"
 Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-11
