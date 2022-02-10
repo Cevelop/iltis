@@ -8,3 +8,4 @@ Export-Package: ch.hsr.ifs.iltis.testing.tools.pasta.tree;x-friends:="ch.hsr.ifs
 Automatic-Module-Name: ch.hsr.ifs.iltis.testing.tools.pasta.tree
 Require-Bundle: org.eclipse.swt,
  ch.hsr.ifs.iltis.core
+Bundle-RequiredExecutionEnvironment: JavaSE-11

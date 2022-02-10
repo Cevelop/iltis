@@ -26,3 +26,4 @@ Require-Bundle: org.eclipse.ui.workbench,
  org.eclipse.jdt.ui,
  org.eclipse.jdt.core,
  ch.hsr.ifs.iltis.core
+Bundle-RequiredExecutionEnvironment: JavaSE-11
