@@ -12,5 +12,6 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: IFS Institute for Software
 Automatic-Module-Name: ch.hsr.ifs.iltis.testing.tools.showoffset
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 
 
