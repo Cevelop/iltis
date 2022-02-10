@@ -4,7 +4,7 @@ Bundle-Name: PASTA Tree
 Bundle-SymbolicName: ch.hsr.ifs.iltis.testing.tools.pasta.tree
 Bundle-Version: 4.0.1.qualifier
 Bundle-Vendor: IFS Institute for Software
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: ch.hsr.ifs.iltis.testing.tools.pasta.tree;x-friends:="ch.hsr.ifs.iltis.testing.tools.pasta,ch.hsr.ifs.iltis.testing.tools.pasta.tree.tests"
 Automatic-Module-Name: ch.hsr.ifs.iltis.testing.tools.pasta.tree
 Require-Bundle: org.eclipse.swt,

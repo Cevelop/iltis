@@ -8,10 +8,10 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<tycho-version>1.4.0</tycho-version>
-		<tycho-extras-version>1.4.0</tycho-extras-version>
+		<tycho-version>2.4.0</tycho-version>
+		<tycho-extras-version>2.4.0</tycho-extras-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.surefire.version>2.22.1</maven.surefire.version>
+		<maven.surefire.version>2.22.2</maven.surefire.version>
 		<kotlin.version>1.4.21</kotlin.version>
 	</properties>
 
@@ -90,7 +90,7 @@
 				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-versions-plugin</artifactId>
-					<version>1.2.0</version>
+					<version>${tycho-version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
@@ -105,12 +105,12 @@
 					</dependencies>
 					<configuration>
 						<timestampProvider>jgit</timestampProvider>
-						<jgit.ignore>
+<!--						<jgit.ignore>
 							pom.xml
 							.polyglot.build.properties
 							.gitlab-ci.yml
 						</jgit.ignore>
-					</configuration>
+-->					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -140,6 +140,11 @@
 						</artifact>
 					</target>
 					<environments>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>aarch64</arch>
+						</environment>
 						<environment>
 							<os>linux</os>
 							<ws>gtk</ws>

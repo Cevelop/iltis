@@ -10,7 +10,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.jface.text
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: IFS Institute for Software
 Automatic-Module-Name: ch.hsr.ifs.iltis.testing.tools.showoffset
 
