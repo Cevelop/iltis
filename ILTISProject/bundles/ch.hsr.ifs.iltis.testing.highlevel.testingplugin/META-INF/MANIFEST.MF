@@ -28,7 +28,6 @@ Require-Bundle:
  org.eclipse.cdt.codan.ui,
  org.eclipse.cdt.core.tests,
  org.eclipse.collections
-Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Export-Package: ch.hsr.ifs.iltis.testing.highlevel.testingplugin,
  ch.hsr.ifs.iltis.testing.highlevel.testingplugin.cdttest,

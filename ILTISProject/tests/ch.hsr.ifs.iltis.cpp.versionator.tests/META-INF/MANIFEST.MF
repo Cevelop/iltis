@@ -5,7 +5,6 @@ Bundle-SymbolicName: ch.hsr.ifs.iltis.cpp.versionator.tests;singleton:=true
 Bundle-Version: 4.0.2.qualifier
 Bundle-Vendor: IFS Institute for Software
 Automatic-Module-Name: ch.hsr.ifs.iltis.cpp.versionator.tests
-Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.junit,
  org.eclipse.core.resources,

@@ -96,6 +96,20 @@ Switzerland
       <update label="ILTIS Update Site" url="https://www.cevelop.com/iltis/"/>
    </url>
 
+   <requires>
+      <import plugin="org.eclipse.ui.workbench"/>
+      <import plugin="org.eclipse.emf.common"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.emf.common.ui"/>
+      <import plugin="ch.hsr.ifs.iltis.kotlin"/>
+      <import plugin="org.eclipse.collections"/>
+      <import plugin="org.eclipse.text"/>
+      <import plugin="org.eclipse.pde.api.tools.annotations"/>
+      <import plugin="org.eclipse.jface.text" version="3.13.0" match="greaterOrEqual"/>
+   </requires>
+
    <plugin
          id="ch.hsr.ifs.iltis.core"
          download-size="0"

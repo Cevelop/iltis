@@ -19,7 +19,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.cdt.codan.core,
  org.eclipse.core.commands,
  ch.hsr.ifs.iltis.kotlin
-Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Export-Package: ch.hsr.ifs.iltis.cpp.versionator;
   uses:="org.osgi.framework,
