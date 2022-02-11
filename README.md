@@ -2,6 +2,9 @@
 
 Enhanced testing and tooling for **Eclipse CDT C/C++** plug-in projects.
 
+> create new version using JavaSE-11 and most recent Eclipse Relase (2021-12, CDT10.5) on Branch Develop-PS
+> mainly to support M1 macs as well
+
 ## Installation
 
 TODO Update as soon as update site is defined
