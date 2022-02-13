@@ -18,7 +18,7 @@
          <documentation>
             The Elevenator Version Modification Operations enable the User to perform a set of actions that can be executed for a specific C dialect or for all dialects. 
 
-Supported dialects are CPP_98, CPP_03, CPP_11, CPP_14 and CPP_17
+Supported dialects are CPP_98, CPP_03, CPP_11, CPP_14, CPP_17 and CPP_20
          </documentation>
       </annotation>
       <complexType>
@@ -40,6 +40,9 @@ Supported dialects are CPP_98, CPP_03, CPP_11, CPP_14 and CPP_17
             </choice>
             <choice>
                <element ref="CPP_17"/>
+            </choice>
+            <choice>
+               <element ref="CPP_20"/>
             </choice>
          </choice>
          <attribute name="point" type="string" use="required">
@@ -138,6 +141,20 @@ Supported dialects are CPP_98, CPP_03, CPP_11, CPP_14 and CPP_17
       <annotation>
          <documentation>
             Root Node for Version Modifications for CPP_17.
+         </documentation>
+      </annotation>
+      <complexType>
+         <choice minOccurs="0" maxOccurs="unbounded">
+            <element ref="versionModification"/>
+            <element ref="group"/>
+         </choice>
+      </complexType>
+   </element>
+
+   <element name="CPP_20">
+      <annotation>
+         <documentation>
+            Root Node for Version Modifications for CPP_20.
          </documentation>
       </annotation>
       <complexType>

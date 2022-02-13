@@ -107,7 +107,7 @@ Switzerland
       <import plugin="org.eclipse.collections"/>
       <import plugin="org.eclipse.text"/>
       <import plugin="org.eclipse.pde.api.tools.annotations"/>
-      <import plugin="org.eclipse.jface.text" version="3.13.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jface.text"/>
    </requires>
 
    <plugin

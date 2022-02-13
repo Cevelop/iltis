@@ -96,14 +96,14 @@ Switzerland
 
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.cdt.ui" version="5.7.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.ide" version="3.7.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.resources" version="3.7.100" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.cdt.core" version="5.3.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.cdt.codan.ui" version="2.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.cdt.codan.core" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.cdt.ui"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.core.resources""/>
+      <import plugin="org.eclipse.cdt.core"/>
+      <import plugin="org.eclipse.cdt.codan.ui"/>
+      <import plugin="org.eclipse.cdt.codan.core"/>
       <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.cdt.managedbuilder.ui" version="8.2.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.cdt.managedbuilder.ui"/>
       <import plugin="org.eclipse.e4.core.di"/>
       <import plugin="org.eclipse.cdt.managedbuilder.core"/>
    </requires>
