@@ -3,5 +3,5 @@
 <plugin>
    <extension-point id="ch.hsr.ifs.iltis.core.extendedExampleInstallerWizard"
    					name="Extended Example Installer Wizard"
-   					schema="schema/ch.hsr.ifs.iltis.core.core.extendedExampleInstallerWizard.exsd"/>
+   					schema="schema/ch.hsr.ifs.iltis.core.extendedExampleInstallerWizard.exsd"/>
 </plugin>

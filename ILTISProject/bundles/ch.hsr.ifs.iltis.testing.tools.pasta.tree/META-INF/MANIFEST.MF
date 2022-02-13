@@ -7,5 +7,6 @@ Bundle-Vendor: IFS Institute for Software
 Export-Package: ch.hsr.ifs.iltis.testing.tools.pasta.tree;x-friends:="ch.hsr.ifs.iltis.testing.tools.pasta,ch.hsr.ifs.iltis.testing.tools.pasta.tree.tests"
 Automatic-Module-Name: ch.hsr.ifs.iltis.testing.tools.pasta.tree
 Require-Bundle: org.eclipse.swt,
- ch.hsr.ifs.iltis.core
+ ch.hsr.ifs.iltis.core,
+ org.eclipse.collections;bundle-version="11.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-11

@@ -5,12 +5,12 @@ Bundle-Name: ILTIS CPP
 Bundle-SymbolicName: ch.hsr.ifs.iltis.cpp.core;singleton:=true
 Bundle-Version: 4.0.2.qualifier
 Bundle-Vendor: IFS Institute for Software
-Require-Bundle: org.eclipse.cdt.codan.ui,
- org.eclipse.cdt.core,
- org.eclipse.equinox.common,
- org.eclipse.ltk.core.refactoring,
- org.eclipse.cdt.codan.core,
- org.eclipse.cdt.codan.core.cxx,
+Require-Bundle: org.eclipse.cdt.codan.ui;bundle-version="3.4.100",
+ org.eclipse.cdt.core;bundle-version="7.4.0",
+ org.eclipse.equinox.common;bundle-version="3.15.100",
+ org.eclipse.ltk.core.refactoring;bundle-version="3.12.100",
+ org.eclipse.cdt.codan.core;bundle-version="4.1.100",
+ org.eclipse.cdt.codan.core.cxx;bundle-version="3.5.100",
  org.eclipse.core.resources,
  org.eclipse.ui.workbench,
  org.eclipse.jface.text,
@@ -20,12 +20,12 @@ Require-Bundle: org.eclipse.cdt.codan.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.ide,
  org.eclipse.ui.editors,
- ch.hsr.ifs.iltis.testing.core,
- org.eclipse.collections,
+ ch.hsr.ifs.iltis.testing.core;bundle-version="4.0.2",
+ org.eclipse.collections;bundle-version="11.0.0",
  org.eclipse.text,
- org.eclipse.cdt.managedbuilder.core,
+ org.eclipse.cdt.managedbuilder.core;bundle-version="9.3.200",
  org.eclipse.pde.api.tools.annotations;bundle-version="1.1.200",
- ch.hsr.ifs.iltis.core
+ ch.hsr.ifs.iltis.core;bundle-version="4.0.2"
 Export-Package: ch.hsr.ifs.iltis.cpp.core.ast;uses:="org.eclipse.cdt.core.dom.ast.cpp,org.eclipse.cdt.core.dom.ast",
  ch.hsr.ifs.iltis.cpp.core.ast.cache;
   uses:="org.eclipse.cdt.core.dom.ast,

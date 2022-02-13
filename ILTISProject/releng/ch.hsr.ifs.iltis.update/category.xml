@@ -36,9 +36,6 @@
    <feature url="features/ch.hsr.ifs.iltis.cpp.core.feature_4.0.2.qualifier.jar" id="ch.hsr.ifs.iltis.cpp.core.feature" version="4.0.2.qualifier">
       <category name="ch.hsr.ifs.iltis"/>
    </feature>
-   <feature url="features/ch.hsr.ifs.iltis.cpp.versionator.feature_4.0.2.qualifier.jar" id="ch.hsr.ifs.iltis.cpp.versionator.feature" version="4.0.2.qualifier">
-      <category name="ch.hsr.ifs.iltis"/>
-   </feature>
    <feature url="features/ch.hsr.ifs.iltis.testing.highlevel.feature_4.0.2.qualifier.jar" id="ch.hsr.ifs.iltis.testing.highlevel.feature" version="4.0.2.qualifier">
       <category name="ch.hsr.ifs.iltis.dev.tools"/>
    </feature>
@@ -48,6 +45,9 @@
    <feature url="features/ch.hsr.ifs.iltis.testing.highlevel.examples.feature_4.0.2.qualifier.jar" id="ch.hsr.ifs.iltis.testing.highlevel.examples.feature" version="4.0.2.qualifier">
       <category name="ch.hsr.ifs.iltis.dev.tools"/>
    </feature>
+   <bundle id="ch.hsr.ifs.iltis.cpp.versionator">
+      <category name="ch.hsr.ifs.iltis"/>
+   </bundle>
    <category-def name="ch.hsr.ifs.iltis" label="ILTIS">
       <description>
          The ILTIS infrastructure layer
