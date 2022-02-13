@@ -7,7 +7,7 @@ Bundle-Activator: ch.hsr.ifs.iltis.cpp.versionator.Activator
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.cdt.managedbuilder.ui;bundle-version="8.2.1",
+ org.eclipse.cdt.managedbuilder.ui,
  org.eclipse.cdt.ui,
  org.eclipse.ui.ide,
  org.eclipse.core.resources,
