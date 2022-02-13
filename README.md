@@ -192,3 +192,5 @@ right-clicking the *TestSuiteAll.java* file in the
 *ch.hsr.ifs.cdttesting.example* package and selecting
 ***Run as... -> JUnit Plug-in Test***. You can find the associated test files
 in the *resources* folder of the project.
+
+
