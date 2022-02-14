@@ -10,5 +10,5 @@ Require-Bundle: ch.hsr.ifs.iltis.testing.core;bundle-version="4.0.2",
  org.eclipse.equinox.common;bundle-version="3.15.100",
  org.junit;bundle-version="4.13.2",
  org.eclipse.core.jobs;bundle-version="3.12.0",
- org.eclipse.cdt.sdk;bundle-version="9.6.0"
+ org.eclipse.cdt.sdk;bundle-version="10.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-11
