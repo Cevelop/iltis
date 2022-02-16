@@ -21,7 +21,8 @@
 	</modules>
 
 	<properties>
-		<osx-jvm-flags />
+	<!-- test:	<osx-jvm-flags /> -->
+				<osx-jvm-flags>-XstartOnFirstThread</osx-jvm-flags>
 	</properties>
 
 	<profiles>
