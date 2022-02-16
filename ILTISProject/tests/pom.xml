@@ -100,7 +100,7 @@
 							<goal>test</goal>
 						</goals>
 						<configuration>
-							<useUIThread>false</useUIThread>
+							<useUIThread>true</useUIThread>
 							<includes>
 								<include>**/PluginUITestSuiteAll.java</include>
 							</includes>
