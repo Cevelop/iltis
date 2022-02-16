@@ -14,15 +14,14 @@
 
 	<modules>
 		<module>ch.hsr.ifs.iltis.cpp.core.tests</module>
-	<!--<module>ch.hsr.ifs.iltis.cpp.versionator.tests</module>-->
+<!-- 	<module>ch.hsr.ifs.iltis.cpp.versionator.tests</module> --><!-- disable swtbot-based test for now, needs more investigation!-->
 		<module>ch.hsr.ifs.iltis.core.tests</module>
 		<module>ch.hsr.ifs.iltis.testing.tools.pasta.tree.tests</module>
 		<module>ch.hsr.ifs.iltis.testing.highlevel.testingplugin.tests</module>
 	</modules>
 
 	<properties>
-	<!-- test:	<osx-jvm-flags /> -->
-				<osx-jvm-flags>-XstartOnFirstThread</osx-jvm-flags>
+	<osx-jvm-flags />
 	</properties>
 
 	<profiles>
@@ -81,6 +80,7 @@
 				<version>${tycho-version}</version>
 				<configuration>
 					<useUIHarness>true</useUIHarness>
+					<useUIThread>false</useUIThread>
 					<failIfNoTests>false</failIfNoTests>
 				</configuration>
 				<executions>
@@ -91,6 +91,7 @@
 							<includes>
 								<include>**/PluginTestSuiteAll.java</include>
 							</includes>
+					<argLine>${osx-jvm-flags}</argLine>
 						</configuration>
 					</execution>
 
@@ -105,6 +106,7 @@
 							<includes>
 								<include>**/PluginUITestSuiteAll.java</include>
 							</includes>
+					<argLine>${osx-jvm-flags}</argLine>
 						</configuration>
 					</execution>
 
@@ -116,7 +118,7 @@
 						</goals>
 						<configuration>
 							<useUIHarness>true</useUIHarness>
-							<useUIThread>false</useUIThread>
+							<useUIThread>true</useUIThread>
 							<argLine>${osx-jvm-flags}
 								-Dorg.eclipse.swtbot.keyboard.layout=EN_US
 								-Dorg.eclipse.swtbot.playback.delay=60</argLine>
