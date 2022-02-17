@@ -56,4 +56,4 @@ jobs:
         directory: iltis/updatesite
         repository: Cevelop/updatesite
         github_token: ${{ secrets.CHECKIN_UPDATESITE }}
-        branch: develop
+        branch: develop-PS
