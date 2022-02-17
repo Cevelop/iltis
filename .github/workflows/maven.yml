@@ -19,6 +19,7 @@ jobs:
       with:
         submodules: recursive
         lfs: true
+        ref: 'develop-PS'
     - name: Set up JDK 11
       uses: actions/setup-java@v2
       with:
@@ -36,7 +37,7 @@ jobs:
         cd /home/runner/work/iltis/iltis/; xvfb-run -a ./releng-tools/build
     - name: Stage update site
       run: |
-        cp  iltis/ILTISProject/releng/ch.hsr.ifs.iltis.update/target/ch.hsr.ifs.iltis*.zip /home/runner/work/iltis/iltis/updatesite
+        cp   /home/runner/work/iltis/iltis/ILTISProject/releng/ch.hsr.ifs.iltis.update/target/ch.hsr.ifs.iltis*.zip /home/runner/work/iltis/iltis/updatesite
     - name: prepare check in
       shell: bash
       run:  |
