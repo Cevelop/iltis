@@ -19,7 +19,7 @@ jobs:
       with:
         submodules: recursive
         lfs: true
-        token: ${{ secrets.CHECKIN_UPDATESITE }}
+        token: ${{ secrets.SECRET_CEVELOP }}
     - name: Set up JDK 11
       uses: actions/setup-java@v2
       with:
