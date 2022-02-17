@@ -1,3 +1,6 @@
 [submodule "releng-tools"]
 	path = releng-tools
 	url = ../releng-tools/
+[submodule "updatesite"]
+	path = updatesite
+	url = ./updatesite
