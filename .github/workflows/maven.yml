@@ -53,7 +53,7 @@ jobs:
     - name: push changes
       uses: ad-m/github-push-action@master
       with:
-        directory: iltis/updatesite
+        directory: /home/runner/work/iltis/iltis/updatesite
         repository: Cevelop/updatesite
         github_token: ${{ secrets.CEVELOP_PS }}
         branch: develop-PS
