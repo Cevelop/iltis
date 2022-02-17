@@ -26,4 +26,4 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: |
-        cd /home/runner/work/iltis/iltis/; ./releng-tools/build
+        cd /home/runner/work/iltis/iltis/; xvfb-run -a ./releng-tools/build
