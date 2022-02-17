@@ -3,4 +3,4 @@
 	url = ../releng-tools/
 [submodule "updatesite"]
 	path = updatesite
-	url = git@github.com:Cevelop/updatesite.git
+	url = ../updatesite
