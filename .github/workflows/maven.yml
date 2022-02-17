@@ -41,7 +41,7 @@ jobs:
     - name: prepare check in
       shell: bash
       run:  |
-        cd /home/runner/work/iltis/iltis/updatesite
+        cd iltis/updatesite
         # git config user.name "Peter S. (GitHub Action)"
         # git config core.longpaths true
         git config --local user.name "PeterSommerlad"
