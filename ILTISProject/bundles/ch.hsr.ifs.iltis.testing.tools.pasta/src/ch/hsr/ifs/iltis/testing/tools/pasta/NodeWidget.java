@@ -342,7 +342,7 @@ public class NodeWidget extends Composite {
         // WARNING: All illegal access operations will be denied in a future release
         try {
             final Method getDeclaredFields0 = Class.class.getDeclaredMethod("getDeclaredFields0", boolean.class);
-            boolean accessibleBeforeSet = getDeclaredFields0.isAccessible();
+            boolean accessibleBeforeSet = getDeclaredFields0.isAccessible(); // .canAccess(object)
             getDeclaredFields0.setAccessible(true);
             Field[] fields = (Field[]) getDeclaredFields0.invoke(Field.class, false);
             getDeclaredFields0.setAccessible(accessibleBeforeSet);

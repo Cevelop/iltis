@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: RTS Testfileeditor
 Bundle-SymbolicName: name.graf.emanuel.testfileeditor;singleton:=true
-Bundle-Version: 4.0.2.qualifier
+Bundle-Version: 4.0.3.qualifier
 Bundle-Activator: name.graf.emanuel.testfileeditor.Activator
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: name.graf.emanuel.testfileeditor

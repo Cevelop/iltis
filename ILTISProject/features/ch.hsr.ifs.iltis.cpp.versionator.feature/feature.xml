@@ -2,7 +2,7 @@
 <feature
       id="ch.hsr.ifs.iltis.cpp.versionator.feature"
       label="ILTIS CPP Versionator"
-      version="4.0.2.qualifier"
+      version="4.0.3.qualifier"
       provider-name="IFS Institute for Software">
 
    <description url="https://www.cevelop.com">
@@ -114,7 +114,7 @@ Switzerland
          id="ch.hsr.ifs.iltis.cpp.versionator"
          download-size="62"
          install-size="122"
-         version="4.0.2.qualifier"
+         version="4.0.3.qualifier"
          unpack="false"/>
 
 </feature>

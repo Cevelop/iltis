@@ -311,7 +311,13 @@ public class FileUtil {
      * @return line separator for the given file
      */
     public static String getLineSeparator(final IFile file) {
-        return org.eclipse.core.internal.utils.FileUtil.getLineSeparator(file);
+        try {
+            return file.getLineSeparator(true);
+        } catch (CoreException e) {
+            // there shouldn't be any exception with argument true!
+            return "\n"; // sane default
+        }
+       // return org.eclipse.core.internal.utils.FileUtil.getLineSeparator(file);
     }
 
     /**

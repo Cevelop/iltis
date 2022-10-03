@@ -3,9 +3,9 @@ Automatic-Module-Name: ch.hsr.ifs.iltis.cpp.core
 Bundle-ManifestVersion: 2
 Bundle-Name: ILTIS CPP
 Bundle-SymbolicName: ch.hsr.ifs.iltis.cpp.core;singleton:=true
-Bundle-Version: 4.0.2.qualifier
+Bundle-Version: 4.0.3.qualifier
 Bundle-Vendor: IFS Institute for Software
-Require-Bundle: org.eclipse.cdt.codan.ui;bundle-version="3.4.100",
+Require-Bundle: org.eclipse.cdt.codan.ui;bundle-version="3.4.0",
  org.eclipse.cdt.core;bundle-version="7.4.0",
  org.eclipse.ltk.core.refactoring;bundle-version="3.12.100",
  org.eclipse.cdt.codan.core;bundle-version="4.1.100",
@@ -22,7 +22,8 @@ Require-Bundle: org.eclipse.cdt.codan.ui;bundle-version="3.4.100",
  org.eclipse.cdt.managedbuilder.core;bundle-version="9.3.200",
  org.eclipse.pde.api.tools.annotations;bundle-version="1.1.200",
  ch.hsr.ifs.iltis.core;bundle-version="4.0.2",
- org.eclipse.ui.editors;bundle-version="3.14.0"
+ org.eclipse.ui.editors;bundle-version="3.14.0",
+ org.eclipse.collections;visibility:=reexport
 Export-Package: ch.hsr.ifs.iltis.cpp.core.ast;uses:="org.eclipse.cdt.core.dom.ast.cpp,org.eclipse.cdt.core.dom.ast",
  ch.hsr.ifs.iltis.cpp.core.ast.cache;
   uses:="org.eclipse.cdt.core.dom.ast,

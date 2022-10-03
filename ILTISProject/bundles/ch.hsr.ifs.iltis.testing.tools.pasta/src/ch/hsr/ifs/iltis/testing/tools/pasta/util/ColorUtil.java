@@ -19,6 +19,6 @@ public class ColorUtil {
     protected void finalize() throws Throwable {
         if (!GOLDEN_YELLOW.isDisposed()) GOLDEN_YELLOW.dispose();
         if (!CUDA_GREEN.isDisposed()) CUDA_GREEN.dispose();
-        super.finalize();
+        // super.finalize();  // Java.lang.Object.finalize() is a no-op.
     }
 }
