@@ -107,7 +107,7 @@ Switzerland
       <import plugin="org.eclipse.pde.api.tools.annotations"/>
       <import plugin="org.eclipse.emf.common.ui"/>
       <import plugin="org.eclipse.emf.common"/>
-      <import plugin="org.eclipse.jface.text"  />
+      <import plugin="org.eclipse.jface.text"/>
    </requires>
 
    <plugin
