@@ -118,7 +118,6 @@ Switzerland
       <import plugin="org.eclipse.jface.text"/>
       <import plugin="org.eclipse.ui.views"/>
       <import plugin="org.eclipse.ui.workbench.texteditor"/>
-      <import plugin="org.eclipse.ui.ide" version="3.13.1" match="greaterOrEqual"/>
    </requires>
 
    <plugin
