@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
-<!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl --><target name="ILTIS Development" sequenceNumber="1664387580">
+<!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl --><target name="ILTIS Development" sequenceNumber="1664911919">
   <locations>
     <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.emf.common.ui.feature.group" version="0.0.0"/>

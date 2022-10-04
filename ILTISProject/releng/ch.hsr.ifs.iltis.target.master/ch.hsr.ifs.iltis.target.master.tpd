@@ -1,41 +1,41 @@
-target "ILTIS for Eclipse 2019-12" with source requirements
+target "ILTIS for Eclipse 2022-09" with source requirements
 
-location "http://download.eclipse.org/releases/2019-12" {
-	org.eclipse.emf.common.ui.feature.group 2.17
-	org.eclipse.equinox.launcher 1.5.600
-	org.eclipse.jdt.feature.group 3.18.200
-	org.eclipse.core.resources 3.13.600
-	org.eclipse.core.runtime 3.17.0
-	org.eclipse.ui.ide.application 1.3.500
-	org.eclipse.sdk.ide 4.14.0
-	org.junit 4.12
-	org.junit.jupiter.api 5.5.1
-	org.junit.jupiter.engine 5.5.1
-	org.junit.platform.suite.api 1.5.1
-	org.junit.platform.runner 1.5.1
-	org.junit.platform.launcher 1.5.1
-	org.junit.platform.commons 1.5.1
-	org.junit.platform.engine 1.5.1
-	org.junit.vintage.engine 5.5.1
-	org.eclipse.pde.api.tools.annotations 1.1.400
-	org.eclipse.swtbot.feature.group 2.8.0
-	org.eclipse.swtbot.eclipse.feature.group 2.8.0
-	org.eclipse.swtbot.generator.feature.feature.group 2.8.0
+location "https://download.eclipse.org/releases/2022-09" {
+	org.eclipse.emf.common.ui.feature.group  lazy
+	org.eclipse.equinox.launcher  lazy
+	org.eclipse.jdt.feature.group  lazy
+	org.eclipse.core.resources  lazy
+	org.eclipse.core.runtime  lazy
+	org.eclipse.ui.ide.application  lazy
+	org.eclipse.sdk.ide  lazy
+	org.junit  lazy
+	org.eclipse.pde.api.tools.annotations  lazy
+	org.eclipse.swtbot.feature.group  lazy
+	org.eclipse.swtbot.eclipse.feature.group  lazy
+	org.eclipse.swtbot.generator.feature.feature.group  lazy
 }
 
-location "http://download.eclipse.org/tools/orbit/downloads/drops/R20191126223242/repository/" {
-	org.mockito 2.23.0
+location "https://download.eclipse.org/tools/orbit/downloads/drops/R20220830213456/repository" {
+	org.mockito  lazy
+	org.junit.jupiter.api  lazy
+	org.junit.jupiter.engine  lazy
+	org.junit.platform.suite.api  lazy
+	org.junit.platform.runner  lazy
+	org.junit.platform.launcher  lazy
+	org.junit.platform.commons  lazy
+	org.junit.platform.engine  lazy
+	org.junit.vintage.engine  lazy
 }
 
-location "http://download.eclipse.org/tools/cdt/releases/9.10/" {
-	org.eclipse.cdt.feature.group 9.10.0
-	org.eclipse.cdt.sdk.feature.group 9.10.0
+location "https://download.eclipse.org/tools/cdt/releases/10.7" {
+	org.eclipse.cdt.feature.group  lazy
+	org.eclipse.cdt.sdk.feature.group  lazy
 }
 
-location "https://ci.eclipse.org/cdt/job/cdt-9.10/lastSuccessfulBuild/artifact/releng/org.eclipse.cdt.testing.repo/target/repository/" {
+location "https://ci.eclipse.org/cdt/job/cdt/job/cdt_10_7/lastStableBuild/artifact/releng/org.eclipse.cdt.testing.repo/target/repository//" {
 	org.eclipse.cdt.testing.feature.group lazy
 }
 
-location "http://download.eclipse.org/collections/9.2.0/repository/" {
-	org.eclipse.collections.feature.feature.group 9.2.0
+location "https://download.eclipse.org/collections/11.1.0/repository/" {
+	org.eclipse.collections.feature.feature.group lazy
 }

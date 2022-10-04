@@ -91,11 +91,11 @@ Switzerland
    </license>
 
    <url>
-      <update label="ILTIS Update Site" url="https://www.cevelop.com/iltis/"/>
+      <update label="ILTIS Update Site" url="https://eclipse-update-sites.s3.eu-central-1.amazonaws.com/iltis-update/"/>
    </url>
 
    <requires>
-      <import plugin="org.junit" version="4.12.0" match="greaterOrEqual"/>
+      <import plugin="org.junit"/>
    </requires>
 
    <plugin

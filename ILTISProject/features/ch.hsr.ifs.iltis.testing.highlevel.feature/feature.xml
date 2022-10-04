@@ -103,7 +103,7 @@ Switzerland
    </license>
 
    <url>
-      <update label="ILTIS Update Site" url="https://www.cevelop.com/iltis/"/>
+      <update label="ILTIS Update Site" url="https://eclipse-update-sites.s3.eu-central-1.amazonaws.com/iltis-update/"/>
       <discovery label="CDT Test Plug-ins" url="https://www.cevelop.com/cdt-test-plugins/mars"/>
    </url>
 
