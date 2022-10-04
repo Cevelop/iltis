@@ -107,7 +107,13 @@ Switzerland
    </url>
 
    <requires>
-      <import plugin="ch.hsr.ifs.iltis.testing.core" match="greaterOrEqual"/>
+      <import plugin="ch.hsr.ifs.iltis.testing.core" />
+      <import plugin="ch.hsr.ifs.iltis.core" />
+      <import plugin="org.eclipse.cdt.core" />
+      <import plugin="org.eclipse.equinox.common" />
+      <import plugin="org.junit" />
+      <import plugin="org.eclipse.core.jobs" />
+      <import plugin="org.eclipse.cdt.sdk"/>
    </requires>
 
    <plugin

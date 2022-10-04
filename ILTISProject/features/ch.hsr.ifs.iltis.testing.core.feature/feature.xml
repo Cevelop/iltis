@@ -95,7 +95,7 @@ Switzerland
    </url>
 
    <requires>
-      <import plugin="org.junit"/>
+      <import plugin="org.junit" version="4.12.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
