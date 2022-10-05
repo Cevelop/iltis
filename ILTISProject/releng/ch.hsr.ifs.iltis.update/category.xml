@@ -63,4 +63,9 @@
          The ILTIS infrastructure layer Development Tools
       </description>
    </category-def>
+   <repository-reference location="https://download.eclipse.org/releases/2022-09" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/tools/orbit/downloads/drops/R20220830213456/repository" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/tools/cdt/releases/10.7/cdt-10.7.1/" enabled="true" />
+   <repository-reference location="https://ci.eclipse.org/cdt/job/cdt/job/cdt_10_7/lastStableBuild/artifact/releng/org.eclipse.cdt.testing.repo/target/repository" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/collections/11.1.0/repository" enabled="true" />
 </site>
