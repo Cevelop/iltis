@@ -96,20 +96,6 @@ Switzerland
       <update label="ILTIS Update Site" url="https://eclipse-update-sites.s3.eu-central-1.amazonaws.com/iltis-update/"/>
    </url>
 
-   <requires>
-      <import plugin="org.eclipse.ui.workbench"/>
-      <import plugin="org.eclipse.jface"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="ch.hsr.ifs.iltis.kotlin"/>
-      <import plugin="org.eclipse.collections"/>
-      <import plugin="org.eclipse.text"/>
-      <import plugin="org.eclipse.pde.api.tools.annotations"/>
-      <import plugin="org.eclipse.emf.common.ui"/>
-      <import plugin="org.eclipse.emf.common"/>
-      <import plugin="org.eclipse.jface.text"/>
-   </requires>
-
    <plugin
          id="ch.hsr.ifs.iltis.core"
          download-size="0"

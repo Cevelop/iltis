@@ -18,7 +18,7 @@ public class ArrayUtil {
      * Removes the first matching element from an array. Whether an element matches is determined by {@link T#equals}.
      * 
      * @param <T>
-     * The element-type.
+     * The element-type. 
      * @param array
      * The array to search.
      * @param element

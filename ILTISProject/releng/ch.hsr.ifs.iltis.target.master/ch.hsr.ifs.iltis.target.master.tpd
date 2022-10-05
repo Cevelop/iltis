@@ -27,7 +27,7 @@ location "https://download.eclipse.org/tools/orbit/downloads/drops/R202208302134
 	org.junit.vintage.engine  lazy
 }
 
-location "https://download.eclipse.org/tools/cdt/releases/10.7" {
+location "https://download.eclipse.org/tools/cdt/releases/10.7/cdt-10.7.1/" {
 	org.eclipse.cdt.feature.group  lazy
 	org.eclipse.cdt.sdk.feature.group  lazy
 }

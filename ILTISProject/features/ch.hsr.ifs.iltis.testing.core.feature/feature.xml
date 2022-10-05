@@ -94,10 +94,6 @@ Switzerland
       <update label="ILTIS Update Site" url="https://eclipse-update-sites.s3.eu-central-1.amazonaws.com/iltis-update/"/>
    </url>
 
-   <requires>
-      <import plugin="org.junit" match="greaterOrEqual"/>
-   </requires>
-
    <plugin
          id="ch.hsr.ifs.iltis.testing.core"
          download-size="0"
