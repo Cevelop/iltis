@@ -107,6 +107,30 @@ Switzerland
       <discovery label="CDT Test Plug-ins" url="https://ci.eclipse.org/cdt/job/cdt/job/cdt_10_7/lastStableBuild/artifact/releng/org.eclipse.cdt.testing.repo/target/repository"/>
    </url>
 
+   <requires>
+      <import plugin="ch.hsr.ifs.iltis.testing.cpp.core"/>
+      <import plugin="ch.hsr.ifs.iltis.core"/>
+      <import plugin="ch.hsr.ifs.iltis.cpp.core"/>
+      <import plugin="org.eclipse.cdt.codan.core"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui.workbench"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.text"/>
+      <import plugin="org.eclipse.core.filesystem"/>
+      <import plugin="org.eclipse.cdt.ui"/>
+      <import plugin="org.eclipse.cdt.core"/>
+      <import plugin="org.junit"/>
+      <import plugin="org.eclipse.ltk.core.refactoring"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.cdt.ui.tests"/>
+      <import plugin="org.eclipse.cdt.codan.ui"/>
+      <import plugin="org.eclipse.cdt.core.tests"/>
+      <import plugin="org.eclipse.collections"/>
+   </requires>
+
    <plugin
          id="ch.hsr.ifs.iltis.testing.highlevel.testingplugin"
          download-size="0"
